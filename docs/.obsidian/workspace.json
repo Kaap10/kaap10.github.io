@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "System Design/LLD/30 Concepts.md",
+                "file": "B.Tech Subjects/Data Warehouse and Data Mining.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "30 Concepts"
+              "title": "Data Warehouse and Data Mining"
             }
           }
         ]
@@ -78,7 +78,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 300,
+    "collapsed": true
   },
   "right": {
     "id": "ff9d32db21a967e8",
@@ -185,9 +186,17 @@
   },
   "active": "f188169dc46127c3",
   "lastOpenFiles": [
+    "Pasted image 20260511094517.png",
+    "Pasted image 20260511094501.png",
+    "Pasted image 20260511094246.png",
+    "Pasted image 20260511092902.png",
+    "Pasted image 20260511092010.png",
+    "B.Tech Subjects/Untitled.md",
+    "B.Tech Subjects/Data Warehouse and Data Mining.md",
+    "Untitled.md",
+    "B.Tech Subjects",
     "Python/intro.md",
     "System Design/LLD/30 Concepts.md",
-    "System Design/LLD",
-    "Untitled"
+    "System Design/LLD"
   ]
 }
