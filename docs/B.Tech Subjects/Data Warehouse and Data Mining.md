@@ -1,3 +1,9 @@
+---
+sidebar_position: 2
+---
+
+# Data Warehouse and Data Mining
+
 # Unit-1
 
 # Unit-2
