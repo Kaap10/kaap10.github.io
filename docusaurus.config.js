@@ -34,7 +34,7 @@ const config = {
       ({
         docs: {
           sidebarPath: './sidebars.js',
-          routeBasePath: '/',   // 👈 wiki opens at root, not /docs
+          routeBasePath: '/notes',   // 👈 notes available at /notes
           editUrl: 'https://github.com/kaap10/kaap10.github.io/tree/main/',
         },
         blog: false,            // 👈 blog disable, wiki pe focus
@@ -55,13 +55,17 @@ const config = {
       navbar: {
         title: "Vardhman's Wiki",
         logo: {
-          alt: 'Wiki Logo',
-          src: 'img/logo.svg',
+          alt: 'Vardhman Profile',
+          src: 'img/profile-logo.png',
         },
         items: [
           {
-            type: 'docSidebar',
-            sidebarId: 'tutorialSidebar',
+            to: '/notes/About Me',
+            position: 'left',
+            label: 'About Me',
+          },
+          {
+            to: '/notes/intro',
             position: 'left',
             label: 'Notes',
           },
@@ -69,8 +73,16 @@ const config = {
             href: 'https://github.com/kaap10',
             label: 'GitHub',
             position: 'right',
+          },          {
+            href: 'http://www.linkedin.com/in/vardhman-gupta',
+            label: 'LinkedIn',
+            position: 'right',
           },
-        ],
+          {
+            href: 'https://leetcode.com/Kap10/',
+            label: 'LeetCode',
+            position: 'right',
+          },        ],
       },
       footer: {
         style: 'dark',
