@@ -1,32 +1,45 @@
-# Website
+# Vardhman's Wiki
 
-This website is built using [Docusaurus](https://docusaurus.io/), a modern static website generator.
+A personal knowledge base built with [Docusaurus](https://docusaurus.io/), a modern static website generator.
 
 ## Installation
 
 ```bash
-yarn
+npm install
 ```
 
 ## Local Development
 
 ```bash
-yarn start
+npm start
 ```
 
-This command starts a local development server and opens up a browser window. Most changes are reflected live without having to restart the server.
+This command starts a local development server at `http://localhost:3000/`. Most changes are reflected live without restarting the server.
 
 ## Build
 
 ```bash
-yarn build
+npm run build
 ```
 
-This command generates static content into the `build` directory and can be served using any static contents hosting service.
+This command generates static content into the `build` directory, which can be served using any static hosting service.
 
 ## Deployment
 
-Using SSH:
+Deploy to GitHub Pages using:
+
+```bash
+npm run deploy
+```
+
+## Project Structure
+
+- `docs/`: Markdown documentation files
+- `blog/`: Blog posts (currently disabled)
+- `src/`: React components and pages
+- `static/`: Static assets like images
+- `docusaurus.config.js`: Site configuration
+- `sidebars.js`: Documentation sidebar configuration
 
 ```bash
 USE_SSH=true yarn deploy
