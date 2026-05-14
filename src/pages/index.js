@@ -4,45 +4,34 @@ import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
 import styles from './index.module.css';
 
+const TOPIC_LINKS = {
+  dsa: '/notes/DSA/intro',
+  systemDesign: '/notes/System Design/HLD/30 Concepts',
+  aiml: '/notes/AIML/Python/intro',
+  development: '/notes/Development/intro',
+  coreSubjects: '/notes/Core Subjects/intro',
+  btech: '/notes/B.Tech Subjects/intro',
+};
+
 function Hero() {
   return (
     <section className={styles.hero}>
-      <div className={styles.heroContent}>
-        <div className={styles.eyebrow}>Personal Knowledge Base</div>
-        
+      <div className={styles.heroInner}>
+        <span className={styles.eyebrowPill}>Personal knowledge base</span>
         <h1 className={styles.heroTitle}>
-          Notes on <em>engineering</em> & systems.
+          <span className={styles.heroTitleLine}>Notes on</span>
+          <span className={styles.heroTitleLine}>
+            <em className={styles.heroItalic}>engineering</em> & systems.
+          </span>
         </h1>
-        
-        <p className={styles.subtitle}>
-          A living index of technical notes on DSA, system design, ML, and core CS. Written for recall.
+        <p className={styles.heroBody}>
+          A curated index of technical notes on DSA, system design, ML, and core
+          CS. Written for recall, not performance.
         </p>
-        
-        <Link to="/notes/intro" className={styles.ctaLink}>
+        <Link to="/notes/intro" className={styles.ctaButton}>
           Browse notes →
         </Link>
-      </div>
-    </section>
-  );
-}
-
-function StatsRow() {
-  const stats = [
-    { number: '6', label: 'Topics' },
-    { number: '40+', label: 'Notes' },
-    { number: '2026', label: 'Updated' },
-    { number: '∞', label: 'Ongoing' },
-  ];
-
-  return (
-    <section className={styles.statsSection}>
-      <div className={styles.statsGrid}>
-        {stats.map((stat, idx) => (
-          <div key={idx} className={styles.statCell}>
-            <div className={styles.statNumber}>{stat.number}</div>
-            <div className={styles.statLabel}>{stat.label}</div>
-          </div>
-        ))}
+        <div className={styles.heroRule} aria-hidden="true" />
       </div>
     </section>
   );
@@ -51,54 +40,81 @@ function StatsRow() {
 function TopicsGrid() {
   const topics = [
     {
-      num: '01',
-      name: 'System Design',
-      desc: 'HLD, LLD, scaling patterns, architectural concepts',
-      link: '/notes/System%20Design',
+      id: '01',
+      title: 'DSA',
+      desc: 'Arrays, trees, graphs, DP, algorithms',
+      to: TOPIC_LINKS.dsa,
+      accent: '#f59e0b',
+      icon: 'ti-binary-tree',
     },
     {
-      num: '02',
-      name: 'DSA',
-      desc: 'Arrays, trees, graphs, dynamic programming, algorithms',
-      link: '/notes/DSA',
+      id: '02',
+      title: 'System Design',
+      desc: 'HLD, LLD, scaling, architecture patterns',
+      to: TOPIC_LINKS.systemDesign,
+      accent: '#4f8ef7',
+      icon: 'ti-topology-star',
     },
     {
-      num: '03',
-      name: 'AI/ML',
-      desc: 'Machine learning, deep learning, GenAI, Python',
-      link: '/notes/AIML',
+      id: '03',
+      title: 'AI & ML',
+      desc: 'Machine learning, deep learning, GenAI',
+      to: TOPIC_LINKS.aiml,
+      accent: '#a78bfa',
+      icon: 'ti-brain',
     },
     {
-      num: '04',
-      name: 'Development',
-      desc: 'Web technologies, JavaScript, React, databases, backend',
-      link: '/notes/Development',
+      id: '04',
+      title: 'Development',
+      desc: 'Web tech, JavaScript, React, backend',
+      to: TOPIC_LINKS.development,
+      accent: '#34d399',
+      icon: 'ti-code',
     },
     {
-      num: '05',
-      name: 'Core Subjects',
-      desc: 'Operating systems, networking, databases, OOP, SQL',
-      link: '/notes/Core%20Subjects',
+      id: '05',
+      title: 'Core Subjects',
+      desc: 'OS, networking, databases, OOP',
+      to: TOPIC_LINKS.coreSubjects,
+      accent: '#f87171',
+      icon: 'ti-cpu',
     },
     {
-      num: '06',
-      name: 'B.Tech Subjects',
-      desc: 'University coursework, data mining, warehousing',
-      link: '/notes/B.Tech%20Subjects',
+      id: '06',
+      title: 'B.Tech',
+      desc: 'University coursework and subject notes',
+      to: TOPIC_LINKS.btech,
+      accent: '#94a3b8',
+      icon: 'ti-school',
     },
   ];
 
   return (
-    <section className={styles.topicsSection}>
-      <div className={styles.topicsLabel}>Topics</div>
-      <div className={styles.topicsGrid}>
-        {topics.map((topic, idx) => (
-          <Link key={idx} to={topic.link} className={styles.topicCell}>
-            <div className={styles.topicTag}>{topic.num}</div>
-            <h3 className={styles.topicName}>{topic.name}</h3>
-            <p className={styles.topicDesc}>{topic.desc}</p>
-          </Link>
-        ))}
+    <section className={styles.topics} aria-labelledby="topics-heading">
+      <div className={styles.topicsInner}>
+        <p id="topics-heading" className={styles.topicsHeading}>
+          Topics
+        </p>
+        <div className={styles.topicsGrid}>
+          {topics.map((t) => (
+            <Link
+              key={t.id}
+              to={t.to}
+              className={styles.topicCard}
+              style={{'--accent': t.accent}}>
+              <div className={styles.topicNum}>{t.id}</div>
+              <div className={styles.topicHeader}>
+                <i
+                  className={`ti ${t.icon}`}
+                  style={{color: t.accent, fontSize: '18px'}}
+                  aria-hidden
+                />
+                <h3 className={styles.topicName}>{t.title}</h3>
+              </div>
+              <p className={styles.topicDesc}>{t.desc}</p>
+            </Link>
+          ))}
+        </div>
       </div>
     </section>
   );
@@ -106,11 +122,11 @@ function TopicsGrid() {
 
 export default function Home() {
   const { siteConfig } = useDocusaurusContext();
+
   return (
     <Layout title={siteConfig.title} description={siteConfig.tagline}>
-      <main className={styles.main}>
+      <main className={styles.home}>
         <Hero />
-        <StatsRow />
         <TopicsGrid />
       </main>
     </Layout>

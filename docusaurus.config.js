@@ -9,6 +9,12 @@ const config = {
 
   future: {
     v4: true,
+    // Rspack dev + CSS HMR can panic on Windows (cssExtractHmr module graph).
+    // Keep Webpack for dev/build; other faster.* flags still follow v4 defaults.
+    faster: {
+      rspackBundler: false,
+      rspackPersistentCache: false,
+    },
   },
 
   headTags: [
@@ -22,8 +28,23 @@ const config = {
     {
       tagName: 'link',
       attributes: {
+        rel: 'preconnect',
+        href: 'https://fonts.gstatic.com',
+        crossorigin: 'anonymous',
+      },
+    },
+    {
+      tagName: 'link',
+      attributes: {
         rel: 'stylesheet',
-        href: 'https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap',
+        href: 'https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Instrument+Serif:ital@0;1&display=swap',
+      },
+    },
+    {
+      tagName: 'link',
+      attributes: {
+        rel: 'stylesheet',
+        href: 'https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.34.0/dist/tabler-icons.min.css',
       },
     },
   ],
@@ -79,29 +100,18 @@ const config = {
       navbar: {
         hideOnScroll: false,
         items: [
+          { to: '/', label: 'VG', position: 'left' },
+          { to: '/notes/intro', label: 'Notes', position: 'left' },
+          { to: '/notes/About Me', label: 'About', position: 'left' },
+          { href: 'https://github.com/kaap10', label: 'GitHub', position: 'right' },
           {
-            label: 'VG',
-            to: '/',
-            position: 'left',
-          },
-          {
-            to: '/notes/intro',
-            position: 'left',
-            label: 'Notes',
-          },
-          {
-            to: '/notes/About Me',
-            position: 'left',
-            label: 'About Me',
-          },
-          {
-            href: 'https://github.com/kaap10',
-            label: 'GitHub',
+            href: 'https://linkedin.com/in/vardhman-gupta',
+            label: 'LinkedIn',
             position: 'right',
           },
           {
-            href: 'https://www.linkedin.com/in/vardhman-gupta',
-            label: 'LinkedIn',
+            href: 'https://leetcode.com/Kap10/',
+            label: 'LeetCode',
             position: 'right',
           },
         ],

@@ -1,272 +1,271 @@
-.main {
+/* Homepage: premium dark surface (independent of global theme tokens) */
+
+.home {
   width: 100%;
   overflow-x: hidden;
+  box-sizing: border-box;
+  min-height: calc(100vh - var(--ifm-navbar-height, 60px));
+  background-color: #0d0d0c;
+  color: #f0f0ee;
 }
 
-/* ===== HERO SECTION ===== */
+/* --- Hero --- */
 .hero {
-  padding: 120px 2rem 80px;
-  max-width: 100%;
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  padding: 130px 2rem 100px;
+  box-sizing: border-box;
 }
 
-.heroContent {
-  max-width: 680px;
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    ellipse 80% 50% at 50% -10%,
+    rgba(79, 142, 247, 0.15) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+.heroInner {
+  position: relative;
+  z-index: 1;
+  max-width: 800px;
   margin: 0 auto;
 }
 
-.eyebrow {
+.eyebrowPill {
+  display: inline-flex;
+  align-items: center;
+  margin: 0 0 36px;
+  padding: 6px 14px;
+  border: 1px solid rgba(79, 142, 247, 0.4);
+  border-radius: 100px;
+  background: rgba(79, 142, 247, 0.08);
+  color: #4f8ef7;
   font-family: 'DM Mono', monospace;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 400;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--color-muted);
-  margin-bottom: 32px;
-  line-height: 1.6;
+  line-height: 1.4;
 }
 
 .heroTitle {
+  margin: 0 0 1.75rem;
+  padding: 0;
   font-family: 'Instrument Serif', serif;
-  font-size: 52px;
+  font-size: clamp(2.5rem, 5vw + 1.5rem, 4.5rem);
   font-weight: 400;
-  line-height: 1.1;
-  margin: 0 0 24px 0;
-  color: var(--color-text);
+  line-height: 1.04;
+  color: #f0f0ee;
 }
 
-.heroTitle em {
+.heroTitleLine {
+  display: block;
+}
+
+.heroItalic {
   font-style: italic;
   font-weight: 400;
+  color: #4f8ef7;
 }
 
-.subtitle {
+.heroBody {
+  margin: 0;
+  max-width: 480px;
   font-family: 'DM Mono', monospace;
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 400;
   line-height: 1.9;
-  color: var(--color-muted);
-  margin: 0 0 32px 0;
-  max-width: 400px;
+  color: rgba(255, 255, 255, 0.45);
 }
 
-.ctaLink {
+.ctaButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 36px;
+  padding: 12px 24px;
+  border: 1px solid rgba(79, 142, 247, 0.5);
+  border-radius: 6px;
+  background: rgba(79, 142, 247, 0.08);
+  color: #4f8ef7;
   font-family: 'DM Mono', monospace;
   font-size: 13px;
   font-weight: 400;
-  color: var(--color-text);
+  line-height: 1.4;
   text-decoration: none;
-  border-bottom: 1px solid var(--color-text);
-  transition: opacity 0.15s ease;
-  padding-bottom: 2px;
-  display: inline-block;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
 
-.ctaLink:hover {
-  opacity: 0.6;
+.ctaButton:hover {
+  background: rgba(79, 142, 247, 0.15);
+  border-color: rgba(122, 168, 250, 0.65);
+  color: #7aa8fa;
 }
 
-/* ===== STATS SECTION ===== */
-.statsSection {
-  padding: 80px 2rem;
-  border-top: 1px solid var(--color-border);
-  border-bottom: 1px solid var(--color-border);
+.heroRule {
+  width: 120px;
+  height: 1px;
+  margin-top: 48px;
+  background: rgba(255, 255, 255, 0.08);
 }
 
-.statsGrid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  max-width: 1200px;
+/* --- Topics --- */
+.topics {
+  width: 100%;
+  padding: 4rem 2rem 5.5rem;
+  box-sizing: border-box;
+}
+
+.topicsInner {
+  max-width: 820px;
   margin: 0 auto;
-  gap: 0;
-  border-left: 1px solid var(--color-border);
 }
 
-.statCell {
-  padding: 32px 2rem;
-  border-right: 1px solid var(--color-border);
-  text-align: left;
-  transition: background-color 0.15s ease;
-}
-
-.statCell:hover {
-  background-color: var(--color-bg-hover);
-}
-
-.statNumber {
-  font-family: 'Instrument Serif', serif;
-  font-size: 28px;
-  font-weight: 400;
-  line-height: 1.2;
-  color: var(--color-text);
-  margin-bottom: 12px;
-}
-
-.statLabel {
-  font-family: 'DM Mono', monospace;
-  font-size: 10px;
-  font-weight: 400;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--color-muted);
-}
-
-/* ===== TOPICS SECTION ===== */
-.topicsSection {
-  padding: 80px 2rem;
-}
-
-.topicsLabel {
+.topicsHeading {
+  margin: 0 0 36px;
+  padding: 0;
   font-family: 'DM Mono', monospace;
   font-size: 11px;
   font-weight: 400;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--color-muted);
-  margin-bottom: 48px;
-  max-width: 1200px;
-  margin-left: auto;
-  margin-right: auto;
+  color: rgba(255, 255, 255, 0.35);
+  border: none;
 }
 
 .topicsGrid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  max-width: 1200px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  max-width: 780px;
   margin: 0 auto;
-  gap: 0;
-  border: 1px solid var(--color-border);
-  border-collapse: collapse;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: rgba(255, 255, 255, 0.07);
+  box-sizing: border-box;
 }
 
-.topicCell {
-  padding: 48px 2rem;
-  border-right: 1px solid var(--color-border);
-  border-bottom: 1px solid var(--color-border);
-  text-decoration: none;
-  color: inherit;
-  transition: background-color 0.15s ease;
+.topicCard {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  padding: 40px 36px;
+  text-decoration: none;
+  color: inherit;
+  background: #111110;
+  border-left: 2px solid transparent;
+  box-sizing: border-box;
+  transition: background 0.15s ease, border-left-color 0.15s ease;
 }
 
-.topicCell:nth-child(even) {
-  border-right: none;
+.topicCard:hover {
+  background: #161614;
+  border-left-color: var(--accent, #4f8ef7);
 }
 
-.topicCell:nth-last-child(-n+2) {
-  border-bottom: none;
-}
-
-.topicCell:hover {
-  background-color: var(--color-bg-hover);
-}
-
-.topicTag {
+.topicNum {
+  margin-bottom: 20px;
   font-family: 'DM Mono', monospace;
   font-size: 10px;
   font-weight: 400;
-  letter-spacing: 0.08em;
-  color: var(--color-muted);
-  line-height: 1.6;
+  letter-spacing: 0.12em;
+  color: rgba(255, 255, 255, 0.2);
+}
+
+.topicHeader {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
 }
 
 .topicName {
-  font-family: 'Instrument Serif', serif;
-  font-size: 20px;
-  font-weight: 400;
-  line-height: 1.3;
   margin: 0;
-  color: var(--color-text);
+  padding: 0;
+  font-family: 'Instrument Serif', serif;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 1.2;
+  color: #f0f0ee;
 }
 
 .topicDesc {
+  margin: 0;
   font-family: 'DM Mono', monospace;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 400;
   line-height: 1.7;
-  color: var(--color-muted);
-  margin: 0;
+  color: rgba(255, 255, 255, 0.4);
 }
 
-/* ===== RESPONSIVE ===== */
+/* --- Responsive --- */
 @media (max-width: 768px) {
   .hero {
-    padding: 80px 1.5rem 60px;
+    padding: 104px 1.5rem 80px;
   }
 
   .heroTitle {
-    font-size: 36px;
+    font-size: clamp(2.25rem, 6vw + 0.5rem, 3.25rem);
   }
 
-  .statsGrid,
+  .topics {
+    padding: 3rem 1.5rem 4rem;
+  }
+
   .topicsGrid {
     grid-template-columns: 1fr;
   }
 
-  .statCell {
-    border-right: none;
-    border-bottom: 1px solid var(--color-border);
-  }
-
-  .statCell:last-child {
-    border-bottom: none;
-  }
-
-  .topicCell {
-    border-right: none;
-    border-bottom: 1px solid var(--color-border);
-    padding: 32px 1.5rem;
-  }
-
-  .topicCell:last-child {
-    border-bottom: none;
-  }
-
-  .statsSection {
-    padding: 60px 1.5rem;
-  }
-
-  .topicsSection {
-    padding: 60px 1.5rem;
+  .topicCard {
+    padding: 36px 28px;
   }
 }
 
 @media (max-width: 480px) {
   .hero {
-    padding: 60px 1rem 40px;
-  }
-
-  .eyebrow {
-    font-size: 10px;
-    margin-bottom: 24px;
+    padding: 88px 1rem 64px;
   }
 
   .heroTitle {
-    font-size: 28px;
-    margin-bottom: 18px;
+    font-size: clamp(2rem, 7vw + 0.35rem, 2.75rem);
   }
 
-  .subtitle {
+  .eyebrowPill {
+    font-size: 11px;
+    padding: 5px 12px;
+  }
+
+  .heroBody {
+    font-size: 13px;
+  }
+
+  .ctaButton {
     font-size: 12px;
-    margin-bottom: 24px;
+    padding: 10px 18px;
   }
 
-  .statNumber {
-    font-size: 24px;
+  .topics {
+    padding: 2.5rem 1rem 3.5rem;
+  }
+
+  .topicsHeading {
+    margin-bottom: 28px;
+  }
+
+  .topicCard {
+    padding: 32px 22px;
   }
 
   .topicName {
-    font-size: 18px;
-  }
-
-  .statsSection,
-  .topicsSection {
-    padding: 40px 1rem;
-  }
-
-  .statCell,
-  .topicCell {
-    padding: 24px 1rem;
+    font-size: 22px;
   }
 }
