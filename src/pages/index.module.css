@@ -1,82 +1,272 @@
-/**
- * Minimal homepage styles
- */
+.main {
+  width: 100%;
+  overflow-x: hidden;
+}
 
-.heroBanner {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 60vh;
-  padding: 2rem 1rem;
-  background: linear-gradient(135deg, var(--ifm-background-color) 0%, var(--ifm-background-surface-color) 100%);
+/* ===== HERO SECTION ===== */
+.hero {
+  padding: 120px 2rem 80px;
+  max-width: 100%;
 }
 
 .heroContent {
-  max-width: 700px;
-  text-align: center;
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+.eyebrow {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  margin-bottom: 32px;
+  line-height: 1.6;
 }
 
 .heroTitle {
-  font-size: 3.5rem;
-  font-weight: 700;
-  margin: 0;
-  color: var(--ifm-heading-color);
-  line-height: 1.2;
+  font-family: 'Instrument Serif', serif;
+  font-size: 52px;
+  font-weight: 400;
+  line-height: 1.1;
+  margin: 0 0 24px 0;
+  color: var(--color-text);
 }
 
-.heroSubtitle {
-  font-size: 1.25rem;
-  margin: 1.5rem 0 3rem;
-  color: var(--ifm-text-color-secondary);
-  line-height: 1.6;
+.heroTitle em {
+  font-style: italic;
   font-weight: 400;
 }
 
-.buttons {
-  display: flex;
-  gap: 1rem;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin-top: 2rem;
+.subtitle {
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.9;
+  color: var(--color-muted);
+  margin: 0 0 32px 0;
+  max-width: 400px;
 }
 
-.ctaButton {
-  display: inline-block;
-  padding: 0.75rem 2rem;
-  font-size: 1.1rem;
-  font-weight: 600;
+.ctaLink {
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--color-text);
   text-decoration: none;
-  border-radius: 0.375rem;
-  border: 2px solid var(--ifm-color-primary);
-  color: var(--ifm-color-primary);
-  background: transparent;
-  transition: all 0.3s ease;
-  cursor: pointer;
+  border-bottom: 1px solid var(--color-text);
+  transition: opacity 0.15s ease;
+  padding-bottom: 2px;
+  display: inline-block;
 }
 
-.ctaButton:hover {
-  background: var(--ifm-color-primary);
-  color: white;
-  transform: translateY(-2px);
+.ctaLink:hover {
+  opacity: 0.6;
 }
 
-.ctaButton:active {
-  transform: translateY(0);
+/* ===== STATS SECTION ===== */
+.statsSection {
+  padding: 80px 2rem;
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
 }
 
-@media screen and (max-width: 996px) {
-  .heroBanner {
-    min-height: 50vh;
-    padding: 2rem 1rem;
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  max-width: 1200px;
+  margin: 0 auto;
+  gap: 0;
+  border-left: 1px solid var(--color-border);
+}
+
+.statCell {
+  padding: 32px 2rem;
+  border-right: 1px solid var(--color-border);
+  text-align: left;
+  transition: background-color 0.15s ease;
+}
+
+.statCell:hover {
+  background-color: var(--color-bg-hover);
+}
+
+.statNumber {
+  font-family: 'Instrument Serif', serif;
+  font-size: 28px;
+  font-weight: 400;
+  line-height: 1.2;
+  color: var(--color-text);
+  margin-bottom: 12px;
+}
+
+.statLabel {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+/* ===== TOPICS SECTION ===== */
+.topicsSection {
+  padding: 80px 2rem;
+}
+
+.topicsLabel {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  margin-bottom: 48px;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.topicsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  max-width: 1200px;
+  margin: 0 auto;
+  gap: 0;
+  border: 1px solid var(--color-border);
+  border-collapse: collapse;
+}
+
+.topicCell {
+  padding: 48px 2rem;
+  border-right: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+  text-decoration: none;
+  color: inherit;
+  transition: background-color 0.15s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.topicCell:nth-child(even) {
+  border-right: none;
+}
+
+.topicCell:nth-last-child(-n+2) {
+  border-bottom: none;
+}
+
+.topicCell:hover {
+  background-color: var(--color-bg-hover);
+}
+
+.topicTag {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  color: var(--color-muted);
+  line-height: 1.6;
+}
+
+.topicName {
+  font-family: 'Instrument Serif', serif;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 1.3;
+  margin: 0;
+  color: var(--color-text);
+}
+
+.topicDesc {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 1.7;
+  color: var(--color-muted);
+  margin: 0;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .hero {
+    padding: 80px 1.5rem 60px;
   }
 
   .heroTitle {
-    font-size: 2.5rem;
+    font-size: 36px;
   }
 
-  .heroSubtitle {
-    font-size: 1.1rem;
-    margin: 1rem 0 2rem;
+  .statsGrid,
+  .topicsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .statCell {
+    border-right: none;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .statCell:last-child {
+    border-bottom: none;
+  }
+
+  .topicCell {
+    border-right: none;
+    border-bottom: 1px solid var(--color-border);
+    padding: 32px 1.5rem;
+  }
+
+  .topicCell:last-child {
+    border-bottom: none;
+  }
+
+  .statsSection {
+    padding: 60px 1.5rem;
+  }
+
+  .topicsSection {
+    padding: 60px 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero {
+    padding: 60px 1rem 40px;
+  }
+
+  .eyebrow {
+    font-size: 10px;
+    margin-bottom: 24px;
+  }
+
+  .heroTitle {
+    font-size: 28px;
+    margin-bottom: 18px;
+  }
+
+  .subtitle {
+    font-size: 12px;
+    margin-bottom: 24px;
+  }
+
+  .statNumber {
+    font-size: 24px;
+  }
+
+  .topicName {
+    font-size: 18px;
+  }
+
+  .statsSection,
+  .topicsSection {
+    padding: 40px 1rem;
+  }
+
+  .statCell,
+  .topicCell {
+    padding: 24px 1rem;
   }
 }

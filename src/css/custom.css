@@ -1,50 +1,446 @@
-/**
- * Pure black and grey minimal theme
- */
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap');
 
-/* Light mode - black and grey */
 :root {
+  --color-bg: #fafaf8;
+  --color-text: #000000;
+  --color-muted: #888880;
+  --color-border: #e8e8e4;
+  --color-bg-hover: #f4f4f0;
+  --color-surface: #ffffff;
+  --color-code-bg: #f4f4f0;
+
   --ifm-color-primary: #000000;
-  --ifm-color-primary-dark: #1a1a1a;
-  --ifm-color-primary-darker: #262626;
-  --ifm-color-primary-darkest: #333333;
-  --ifm-color-primary-light: #404040;
-  --ifm-color-primary-lighter: #595959;
-  --ifm-color-primary-lightest: #737373;
-  
-  --ifm-code-font-size: 95%;
-  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.08);
-  
-  --ifm-background-color: #ffffff;
-  --ifm-background-surface-color: #f5f5f5;
+  --ifm-background-color: #fafaf8;
+  --ifm-background-surface-color: #ffffff;
   --ifm-text-color-base: #000000;
   --ifm-heading-color: #000000;
+  --ifm-link-color: #000000;
+  --ifm-border-color: #e8e8e4;
+  
+  --ifm-code-font-size: 13px;
+  --ifm-font-family-base: 'DM Mono', monospace;
+  --ifm-font-family-monospace: 'DM Mono', monospace;
+  --ifm-h1-font-size: 2.5rem;
+  --ifm-h2-font-size: 1.75rem;
+  --ifm-h3-font-size: 1.5rem;
 }
 
-/* Dark mode - black and grey */
 [data-theme='dark'] {
-  --ifm-color-primary: #ffffff;
-  --ifm-color-primary-dark: #f2f2f2;
-  --ifm-color-primary-darker: #e5e5e5;
-  --ifm-color-primary-darkest: #cccccc;
-  --ifm-color-primary-light: #ffffff;
-  --ifm-color-primary-lighter: #ffffff;
-  --ifm-color-primary-lightest: #ffffff;
-  
-  --docusaurus-highlighted-code-line-bg: rgba(255, 255, 255, 0.1);
-  
-  --ifm-background-color: #121212;
-  --ifm-background-surface-color: #1e1e1e;
+  --color-bg: #0c0c0b;
+  --color-text: #ffffff;
+  --color-muted: #888880;
+  --color-border: #2a2a28;
+  --color-bg-hover: #1a1a18;
+  --color-surface: #161614;
+  --color-code-bg: #161614;
+
+  --ifm-background-color: #0c0c0b;
+  --ifm-background-surface-color: #161614;
   --ifm-text-color-base: #ffffff;
   --ifm-heading-color: #ffffff;
+  --ifm-link-color: #ffffff;
+  --ifm-border-color: #2a2a28;
 }
 
-/* Typography */
+/* ===== GLOBAL ===== */
 html {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  scroll-behavior: smooth;
 }
 
-/* Smooth transitions */
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
 * {
-  transition: color 0.3s ease, background-color 0.3s ease;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+/* Remove selection defaults */
+::selection {
+  background-color: var(--color-text);
+  color: var(--color-bg);
+}
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-muted);
+  border-radius: 0;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text);
+}
+
+/* ===== TYPOGRAPHY ===== */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Instrument Serif', serif;
+  font-weight: 400;
+  line-height: 1.2;
+  color: var(--color-text);
+}
+
+p {
+  line-height: 1.85;
+}
+
+a {
+  color: var(--color-text);
+  text-decoration: none;
+  transition: opacity 0.15s ease;
+}
+
+a:hover {
+  opacity: 0.7;
+}
+
+strong {
+  font-weight: 500;
+}
+
+em {
+  font-style: italic;
+}
+
+/* ===== NAVBAR ===== */
+.navbar {
+  background-color: transparent;
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--color-border);
+  box-shadow: none !important;
+  height: auto;
+  padding: 12px 2rem !important;
+}
+
+.navbar__inner {
+  max-width: 100%;
+  padding: 0;
+}
+
+.navbar__brand {
+  display: none;
+}
+
+.navbar__title {
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  margin-right: auto;
+}
+
+.navbar__logo {
+  display: none;
+}
+
+.navbar__items {
+  gap: 2rem;
+}
+
+.navbar__item {
+  padding: 0;
+}
+
+.navbar__link {
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--color-text);
+  padding: 0;
+}
+
+.navbar__link--active {
+  border-bottom: 1px solid var(--color-text);
+  opacity: 1;
+}
+
+.navbar__link:hover {
+  opacity: 0.7;
+}
+
+/* ===== SIDEBAR ===== */
+.docSidebarContainer {
+  border-right: 1px solid var(--color-border);
+  background: transparent;
+}
+
+.sidebar {
+  background: transparent;
+  border-right: none;
+  padding: 0;
+}
+
+.sidebar__inner {
+  padding: 2rem 2rem 2rem 0;
+}
+
+.sidebar__title {
+  font-family: 'Instrument Serif', serif;
+  font-size: 16px;
+  font-weight: 400;
+  margin-bottom: 1.5rem;
+}
+
+.menu {
+  padding: 0;
+}
+
+.menu__list {
+  padding: 0;
+}
+
+.menu__list-item {
+  margin: 0;
+  padding: 0;
+}
+
+.menu__link {
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+  font-weight: 400;
+  border-radius: 0;
+  padding: 6px 0;
+  color: var(--color-text);
+  background: transparent;
+}
+
+.menu__link:hover {
+  background: transparent;
+  opacity: 0.7;
+}
+
+.menu__link--active {
+  background: transparent;
+  border-bottom: 1px solid var(--color-text);
+}
+
+.menu__list-item--collapsed > .menu__link::after {
+  transform: rotate(0deg);
+}
+
+/* ===== MAIN CONTENT ===== */
+.main-wrapper {
+  padding: 0;
+  background: var(--color-bg);
+}
+
+.docItemContainer {
+  margin-bottom: 4rem;
+}
+
+.markdown {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 3rem 2rem;
+}
+
+.markdown h1 {
+  font-family: 'Instrument Serif', serif;
+  font-size: 2.5rem;
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+}
+
+.markdown h2 {
+  font-family: 'Instrument Serif', serif;
+  font-size: 1.75rem;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  border-top: 1px solid var(--color-border);
+  padding-top: 2rem;
+}
+
+.markdown h3,
+.markdown h4,
+.markdown h5,
+.markdown h6 {
+  font-family: 'Instrument Serif', serif;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.markdown p {
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+  line-height: 1.85;
+  margin: 1.5rem 0;
+}
+
+.markdown a {
+  border-bottom: 1px solid var(--color-text);
+  padding-bottom: 1px;
+}
+
+.markdown a:hover {
+  opacity: 0.7;
+}
+
+.markdown code {
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  background-color: var(--color-code-bg);
+  color: var(--color-text);
+  padding: 2px 6px;
+  border-radius: 0;
+}
+
+.markdown pre {
+  background-color: var(--color-code-bg) !important;
+  border: 1px solid var(--color-border);
+  border-radius: 0;
+  padding: 1rem;
+  overflow-x: auto;
+}
+
+.markdown pre code {
+  background: none;
+  padding: 0;
+  font-size: 12px;
+}
+
+.markdown blockquote {
+  border-left: 2px solid var(--color-border);
+  padding-left: 1.5rem;
+  margin: 1.5rem 0;
+  font-style: italic;
+  color: var(--color-muted);
+  background: transparent;
+  font-family: 'Instrument Serif', serif;
+}
+
+.markdown ul,
+.markdown ol {
+  margin: 1.5rem 0;
+  padding-left: 2rem;
+}
+
+.markdown li {
+  margin: 0.5rem 0;
+  line-height: 1.85;
+}
+
+.markdown table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1.5rem 0;
+  border: 1px solid var(--color-border);
+}
+
+.markdown table th {
+  border: 1px solid var(--color-border);
+  padding: 0.75rem;
+  text-align: left;
+  font-weight: 500;
+  font-family: 'DM Mono', monospace;
+  background: transparent;
+}
+
+.markdown table td {
+  border: 1px solid var(--color-border);
+  padding: 0.75rem;
+  font-family: 'DM Mono', monospace;
+}
+
+/* ===== FOOTER ===== */
+.footer {
+  background: transparent;
+  border-top: 1px solid var(--color-border);
+  color: var(--color-muted);
+  padding: 2rem;
+  text-align: center;
+}
+
+.footer__title {
+  display: none;
+}
+
+.footer__items {
+  display: none;
+}
+
+.footer__copyright {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--color-muted);
+}
+
+/* ===== DOCUSAURUS OVERRIDES ===== */
+.DocSearch-Button {
+  border: 1px solid var(--color-border);
+  border-radius: 0;
+  background: transparent;
+}
+
+.DocSearch-Button-Key {
+  display: none;
+}
+
+.breadcrumbs__link {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+}
+
+.pagination-nav__link {
+  border: 1px solid var(--color-border);
+  border-radius: 0;
+  background: transparent;
+  padding: 1rem;
+}
+
+.pagination-nav__link:hover {
+  background: var(--color-bg-hover);
+}
+
+/* ===== ADMONITIONS ===== */
+.alert {
+  border: 1px solid var(--color-border);
+  border-radius: 0;
+  background: transparent;
+}
+
+.alert--info,
+.alert--warning,
+.alert--danger,
+.alert--success {
+  border-left: 2px solid var(--color-text);
+}
+
+/* Remove Docusaurus default colors */
+.alert--info {
+  border-left-color: var(--color-text);
+  background: transparent;
+}
+
+.alert--warning {
+  border-left-color: var(--color-text);
+  background: transparent;
+}
+
+.alert--danger {
+  border-left-color: var(--color-text);
+  background: transparent;
+}
+
+.alert--success {
+  border-left-color: var(--color-text);
+  background: transparent;
 }

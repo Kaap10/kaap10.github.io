@@ -3,13 +3,30 @@ import {themes as prismThemes} from 'prism-react-renderer';
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: "Vardhman's Wiki",
-  tagline: 'My personal knowledge base',
+  title: 'VG / Wiki',
+  tagline: 'Notes on engineering & systems',
   favicon: 'img/favicon.ico',
 
   future: {
     v4: true,
   },
+
+  headTags: [
+    {
+      tagName: 'link',
+      attributes: {
+        rel: 'preconnect',
+        href: 'https://fonts.googleapis.com',
+      },
+    },
+    {
+      tagName: 'link',
+      attributes: {
+        rel: 'stylesheet',
+        href: 'https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap',
+      },
+    },
+  ],
 
   url: 'https://kaap10.github.io',
   baseUrl: '/',
@@ -38,13 +55,13 @@ const config = {
       /** @type {import('@docusaurus/preset-classic').Options} */
       ({
         docs: {
-          sidebarPath: './sidebars.js',
-          routeBasePath: '/notes',   // 👈 notes available at /notes
+          sidebarPath: require.resolve('./sidebars.js'),
+          routeBasePath: '/notes',
           editUrl: 'https://github.com/kaap10/kaap10.github.io/tree/main/',
         },
-        blog: false,            // 👈 blog disable, wiki pe focus
+        blog: false,
         theme: {
-          customCss: './src/css/custom.css',
+          customCss: require.resolve('./src/css/custom.css'),
         },
       }),
     ],
@@ -55,19 +72,17 @@ const config = {
     ({
       image: 'img/docusaurus-social-card.jpg',
       colorMode: {
-        respectPrefersColorScheme: true,  // 👈 dark/light auto
+        defaultMode: 'dark',
+        respectPrefersColorScheme: true,
+        disableSwitch: false,
       },
       navbar: {
-        title: "Vardhman's Wiki",
-        logo: {
-          alt: 'Vardhman Profile',
-          src: 'img/profile-logo.png',
-        },
+        hideOnScroll: false,
         items: [
           {
-            to: '/notes/About Me',
+            label: 'VG',
+            to: '/',
             position: 'left',
-            label: 'About Me',
           },
           {
             to: '/notes/intro',
@@ -75,23 +90,25 @@ const config = {
             label: 'Notes',
           },
           {
+            to: '/notes/About Me',
+            position: 'left',
+            label: 'About Me',
+          },
+          {
             href: 'https://github.com/kaap10',
             label: 'GitHub',
             position: 'right',
-          },          {
-            href: 'http://www.linkedin.com/in/vardhman-gupta',
+          },
+          {
+            href: 'https://www.linkedin.com/in/vardhman-gupta',
             label: 'LinkedIn',
             position: 'right',
           },
-          {
-            href: 'https://leetcode.com/Kap10/',
-            label: 'LeetCode',
-            position: 'right',
-          },        ],
+        ],
       },
       footer: {
         style: 'dark',
-        copyright: `Copyright © ${new Date().getFullYear()} Vardhman. Built with Docusaurus.`,
+        copyright: 'kaap10 — built with Docusaurus',
       },
       prism: {
         theme: prismThemes.github,
