@@ -1,9 +1,6 @@
-# Level-1
-## 1.1 Topics to cover
-![[Pasted image 20260520154328.png|586]]
-
-# Level-2
-![[Pasted image 20260520154352.png|578]]
-
-# Level-3
-![[Pasted image 20260520154420.png|571]]
+| OOPs Master Guide | 🔗 HTML Links |
+| :--- | :--- |
+| **1. OOPs Topics** | [Open File](pathname:///oops/oops_topics.html) |
+| **2. OOPs LEVEL-1** | [Open File](pathname:///oops/oops_level1.html) |
+| **3. OOPs LEVEL-2** | [Open File](pathname:///oops/oops_level2.html) |
+| **4. OOPs LEVEL-3** | [Open File](pathname:///oops/oops_level3.html) |
