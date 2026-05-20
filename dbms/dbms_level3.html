@@ -1,0 +1,1192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Database Concepts Guide</title>
+    <style>
+        :root {
+            --color-text-primary: #1a1a1a;
+            --color-text-secondary: #4a4a4a;
+            --color-text-tertiary: #757575;
+            --color-background-primary: #ffffff;
+            --color-background-secondary: #f4f5f7;
+            --color-background-tertiary: #e9ecef;
+            --color-border-secondary: #d1d5db;
+            --color-border-tertiary: #e5e7eb;
+            --border-radius-md: 8px;
+            --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            padding: 16px 0 12px;
+        }
+
+        .nav button {
+            font-size: 12px;
+            padding: 5px 11px;
+            border-radius: 20px;
+            border: 0.5px solid var(--color-border-secondary);
+            background: transparent;
+            color: var(--color-text-secondary);
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .nav button.active {
+            background: #FAEEDA;
+            color: #633806;
+            border-color: #E8A84A;
+            font-weight: 500;
+        }
+
+        .page {
+            display: none;
+            padding-bottom: 24px;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        .section {
+            margin-bottom: 20px;
+        }
+
+        .section h2 {
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--color-text-primary);
+            margin-bottom: 8px;
+            padding-bottom: 6px;
+            border-bottom: 0.5px solid var(--color-border-tertiary);
+        }
+
+        .section p {
+            font-size: 14px;
+            color: var(--color-text-secondary);
+            line-height: 1.7;
+            margin-bottom: 8px;
+        }
+
+        .section p strong {
+            color: var(--color-text-primary);
+            font-weight: 500;
+        }
+
+        .card-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            margin: 10px 0;
+        }
+
+        .card {
+            background: var(--color-background-secondary);
+            border-radius: var(--border-radius-md);
+            padding: 12px 14px;
+        }
+
+        .card .label {
+            font-size: 11px;
+            color: var(--color-text-tertiary);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            margin-bottom: 4px;
+        }
+
+        .card .val {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--color-text-primary);
+            line-height: 1.4;
+        }
+
+        .card .sub {
+            font-size: 12px;
+            color: var(--color-text-secondary);
+            margin-top: 3px;
+            line-height: 1.5;
+        }
+
+        .tag {
+            display: inline-block;
+            font-size: 11px;
+            font-weight: 500;
+            padding: 2px 8px;
+            border-radius: 10px;
+            margin: 2px 2px 2px 0;
+        }
+
+        .tag.blue { background: #E6F1FB; color: #0C447C; }
+        .tag.green { background: #EAF3DE; color: #27500A; }
+        .tag.amber { background: #FAEEDA; color: #633806; }
+        .tag.red { background: #FCEBEB; color: #791F1F; }
+        .tag.purple { background: #EEEDFE; color: #3C3489; }
+        .tag.teal { background: #E1F5EE; color: #085041; }
+        .tag.coral { background: #FAECE7; color: #712B13; }
+
+        code {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            background: var(--color-background-secondary);
+            padding: 1px 5px;
+            border-radius: 4px;
+            color: var(--color-text-primary);
+        }
+
+        .code-block {
+            background: var(--color-background-secondary);
+            border: 0.5px solid var(--color-border-tertiary);
+            border-radius: var(--border-radius-md);
+            padding: 12px 14px;
+            margin: 8px 0;
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--color-text-primary);
+            line-height: 1.8;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        .table-wrap {
+            overflow-x: auto;
+            margin: 8px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        th {
+            background: var(--color-background-secondary);
+            color: var(--color-text-secondary);
+            font-weight: 500;
+            text-align: left;
+            padding: 8px 10px;
+            border-bottom: 0.5px solid var(--color-border-secondary);
+        }
+
+        td {
+            padding: 7px 10px;
+            border-bottom: 0.5px solid var(--color-border-tertiary);
+            color: var(--color-text-primary);
+            vertical-align: top;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .qa {
+            border: 0.5px solid var(--color-border-tertiary);
+            border-radius: var(--border-radius-md);
+            margin: 8px 0;
+            overflow: hidden;
+        }
+
+        .qa-q {
+            padding: 10px 14px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--color-text-primary);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--color-background-secondary);
+        }
+
+        .qa-q:hover {
+            background: var(--color-background-tertiary);
+        }
+
+        .qa-a {
+            display: none;
+            padding: 10px 14px;
+            font-size: 13px;
+            color: var(--color-text-secondary);
+            line-height: 1.7;
+            border-top: 0.5px solid var(--color-border-tertiary);
+        }
+
+        .qa-a.open {
+            display: block;
+        }
+
+        .arrow {
+            font-size: 11px;
+            transition: transform 0.2s;
+            color: var(--color-text-tertiary);
+            flex-shrink: 0;
+            margin-left: 8px;
+        }
+
+        .arrow.open {
+            transform: rotate(180deg);
+        }
+
+        .highlight, .remember, .danger, .info {
+            padding: 10px 14px;
+            font-size: 13px;
+            line-height: 1.7;
+            margin: 8px 0;
+        }
+
+        .highlight {
+            background: #FAEEDA;
+            border-left: 3px solid #EF9F27;
+            color: #412402;
+        }
+
+        .remember {
+            background: #EAF3DE;
+            border-left: 3px solid #639922;
+            color: #173404;
+        }
+
+        .danger {
+            background: #FCEBEB;
+            border-left: 3px solid #E24B4A;
+            color: #501313;
+        }
+
+        .info {
+            background: #EEEDFE;
+            border-left: 3px solid #7B74E8;
+            color: #1E1A5E;
+        }
+
+        .step {
+            border: 0.5px solid var(--color-border-tertiary);
+            border-radius: var(--border-radius-md);
+            margin: 8px 0;
+            overflow: hidden;
+        }
+
+        .step-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            background: var(--color-background-secondary);
+        }
+
+        .step-num {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #FAEEDA;
+            color: #633806;
+            font-size: 12px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .step-title {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--color-text-primary);
+        }
+
+        .step-body {
+            padding: 10px 14px;
+            font-size: 13px;
+            color: var(--color-text-secondary);
+            line-height: 1.7;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .vs-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin: 10px 0;
+        }
+
+        .vs-card {
+            border-radius: var(--border-radius-md);
+            padding: 12px 14px;
+            border: 0.5px solid var(--color-border-tertiary);
+        }
+
+        .vs-card h4 {
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .vs-card ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .vs-card ul li {
+            font-size: 12px;
+            color: var(--color-text-secondary);
+            padding: 3px 0 3px 14px;
+            line-height: 1.5;
+            position: relative;
+        }
+
+        .vs-card ul li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--color-text-tertiary);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="nav" id="nav"></div>
+    <div id="pages"></div>
+
+    <script>
+        const topics = [
+            {
+                id: 't1',
+                label: 'Deadlock Deep Dive',
+                html: `
+                    <div class="section">
+                        <h2>What is a deadlock?</h2>
+                        <p>A deadlock is a situation where two or more transactions are permanently waiting for each other to release locks — a circular dependency with no way out.</p>
+                        <div class="code-block">T1: LOCK(A) → wants B
+T2: LOCK(B) → wants A
+Both wait forever → DEADLOCK</div>
+                        <div class="highlight">
+                            <strong>4 necessary conditions (Coffman conditions) — ALL must hold for deadlock:</strong><br>
+                            1. Mutual exclusion — resource held exclusively<br>
+                            2. Hold and wait — holding one lock while waiting for another<br>
+                            3. No preemption — locks can't be forcibly taken away<br>
+                            4. Circular wait — T1→T2→T3→T1 cycle
+                        </div>
+                    </div>
+                    <div class="section">
+                        <h2>Wait-for graph (detection)</h2>
+                        <p>DBMS maintains a directed graph: node = transaction, edge T1→T2 = "T1 is waiting for a lock held by T2". A <strong>cycle = deadlock</strong>.</p>
+                        <div class="code-block">Wait-for graph:
+T1 → T2 → T3 → T1    ← cycle! Deadlock detected.
+
+DBMS picks a victim (usually smallest undo cost):
+→ Rolls back T3, releases its locks
+→ T1 and T2 can now proceed</div>
+                    </div>
+                    <div class="section">
+                        <h2>Deadlock prevention — timestamp protocols</h2>
+                        <div class="card-row">
+                            <div class="card"><div class="label">Wait-Die scheme</div><div class="val">Older waits, younger dies</div><div class="sub">If T1(older) wants T2(younger)'s lock → T1 waits. If T1(younger) wants T2(older)'s lock → T1 dies (rolls back). Non-preemptive.</div></div>
+                            <div class="card"><div class="label">Wound-Wait scheme</div><div class="val">Older wounds, younger waits</div><div class="sub">If T1(older) wants T2(younger)'s lock → T1 wounds T2 (forces rollback). If T1(younger) wants T2(older)'s lock → T1 waits. Preemptive.</div></div>
+                        </div>
+                        <div class="remember"><strong>Key insight:</strong> In both schemes, older transactions are never rolled back (Wait-Die: older always waits; Wound-Wait: older always wins). A restarted transaction keeps its original timestamp so it won't be starved.</div>
+                    </div>
+                    <div class="section">
+                        <h2>Deadlock avoidance vs detection vs prevention</h2>
+                        <div class="table-wrap">
+                            <table>
+                                <tr><th>Approach</th><th>Strategy</th><th>Cost</th><th>Used in</th></tr>
+                                <tr><td><span class="tag blue">Prevention</span></td><td>Break one of 4 Coffman conditions before deadlock can form</td><td>Low concurrency</td><td>OS design</td></tr>
+                                <tr><td><span class="tag amber">Avoidance</span></td><td>Banker's algorithm — only grant lock if safe state maintained</td><td>High overhead</td><td>Rarely in DBMS</td></tr>
+                                <tr><td><span class="tag green">Detection + Recovery</span></td><td>Let deadlocks happen, detect via wait-for graph, roll back victim</td><td>Occasional rollback cost</td><td>Most real DBMS</td></tr>
+                                <tr><td><span class="tag purple">Timeout</span></td><td>Abort transaction if it waits more than T seconds</td><td>May abort non-deadlocked txns</td><td>Simple systems</td></tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="section">
+                        <h2>Interview Q&A</h2>
+                        <div class="qa">
+                            <div class="qa-q" onclick="tog(this)">Q1. What are the 4 conditions for a deadlock? How do you break them? <span class="arrow">▾</span></div>
+                            <div class="qa-a">Coffman's 4 conditions — all must hold simultaneously: (1) Mutual exclusion, (2) Hold-and-wait, (3) No preemption, (4) Circular wait. Break any one: (1) Make resources shareable where possible. (2) Require transactions to acquire all locks upfront before starting. (3) Allow preemption — if T1 needs T2's lock, force-rollback T2 (wound-wait). (4) Impose total ordering on lock acquisition — always lock table A before B before C. Circular wait cannot form if order is consistent.</div>
+                        </div>
+                        <div class="qa">
+                            <div class="qa-q" onclick="tog(this)">Q2. Compare Wait-Die and Wound-Wait schemes. <span class="arrow">▾</span></div>
+                            <div class="qa-a">Both use timestamps (older = lower number = higher priority). Wait-Die: if requester is older → wait; if younger → die (rollback). Non-preemptive — the running transaction is never disturbed. Wound-Wait: if requester is older → wound (preempt) the holder; if younger → wait. Preemptive — older transactions can force rollback of younger ones. Key difference: in Wait-Die, only the requesting transaction is affected; in Wound-Wait, the holding transaction may be forcibly rolled back. Wound-Wait causes fewer rollbacks for older transactions.</div>
+                        </div>
+                        <div class="qa">
+                            <div class="qa-q" onclick="tog(this)">Q3. How does MySQL/PostgreSQL handle deadlocks in practice? <span class="arrow">▾</span></div>
+                            <div class="qa-a">Both use detection + recovery. MySQL InnoDB: maintains a wait-for graph, checks for cycles after every lock request. When a cycle is found, the transaction with the smallest undo log (fewest changes) is chosen as victim and rolled back. The application receives a deadlock error (Error 1213) and should retry the transaction. PostgreSQL: similar approach — detects cycles, picks victim, returns error code 40P01. Best practice: always acquire locks in the same order across all transactions to prevent circular waits from forming.</div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                id: 't2',
+                label: 'Isolation Levels',
+                html: `
+                    <div class="section">
+                        <h2>Why isolation levels?</h2>
+                        <p>Perfect isolation (Serializable) is safe but slow — every transaction queues up. Real systems offer a <strong>spectrum of isolation</strong> so you can trade safety for performance where acceptable.</p>
+                    </div>
+                    <div class="section">
+                        <h2>The 4 isolation levels</h2>
+                        <div class="step">
+                            <div class="step-header"><div class="step-num">1</div><div class="step-title">READ UNCOMMITTED — lowest isolation</div></div>
+                            <div class="step-body">Transactions can read uncommitted changes from others. Fastest but dirtiest. Allows: Dirty Read ✓, Non-repeatable Read ✓, Phantom Read ✓. Use: real-time dashboards where approximate counts are acceptable.</div>
+                        </div>
+                        <div class="step">
+                            <div class="step-header"><div class="step-num">2</div><div class="step-title">READ COMMITTED — default in most databases</div></div>
+                            <div class="step-body">Only reads committed data. Prevents dirty reads. Allows: Non-repeatable Read ✓, Phantom Read ✓. Use: most OLTP apps (default in PostgreSQL, Oracle, SQL Server).</div>
+                        </div>
+                        <div class="step">
+                            <div class="step-header"><div class="step-num">3</div><div class="step-title">REPEATABLE READ — stronger</div></div>
+                            <div class="step-body">Rows read once are locked — reading the same row again in the same transaction gives the same value. Prevents dirty and non-repeatable reads. Allows: Phantom Read ✓. Default in MySQL InnoDB. InnoDB actually prevents phantoms too via gap locks.</div>
+                        </div>
+                        <div class="step">
+                            <div class="step-header"><div class="step-num">4</div><div class="step-title">SERIALIZABLE — highest isolation</div></div>
+                            <div class="step-body">Full isolation. Concurrent transactions execute as if they ran one after another. Prevents all anomalies. Slowest — high locking overhead. Use: financial systems, critical ledger operations.</div>
+                        </div>
+                    </div>
+                    <div class="section">
+                        <h2>Isolation vs anomaly matrix</h2>
+                        <div class="table-wrap">
+                            <table>
+                                <tr><th>Isolation Level</th><th>Dirty Read</th><th>Non-repeatable</th><th>Phantom</th><th>Lost Update</th></tr>
+                                <tr><td><span class="tag red">Read Uncommitted</span></td><td>Possible</td><td>Possible</td><td>Possible</td><td>Possible</td></tr>
+                                <tr><td><span class="tag amber">Read Committed</span></td><td>✓ Prevented</td><td>Possible</td><td>Possible</td><td>Possible</td></tr>
+                                <tr><td><span class="tag blue">Repeatable Read</span></td><td>✓</td><td>✓ Prevented</td><td>Possible*</td><td>✓</td></tr>
+                                <tr><td><span class="tag green">Serializable</span></td><td>✓</td><td>✓</td><td>✓ Prevented</td><td>✓</td></tr>
+                            </table>
+                        </div>
+                        <p>*MySQL InnoDB's Repeatable Read also prevents phantoms via gap locking.</p>
+                    </div>
+                    <div class="section">
+                        <h2>MVCC — how Read Committed & Repeatable Read actually work</h2>
+                        <p>Most modern DBMS use <strong>Multi-Version Concurrency Control (MVCC)</strong> instead of pure locking. Each row has multiple versions with timestamps. Readers see a consistent snapshot — they don't block writers and writers don't block readers.</p>
+                        <div class="card-row">
+                            <div class="card"><div class="label">Read Committed MVCC</div><div class="val">Fresh snapshot per statement</div><div class="sub">Each SELECT gets the latest committed data at that moment</div></div>
+                            <div class="card"><div class="label">Repeatable Read MVCC</div><div class="val">Snapshot at transaction start</div><div class="sub">All SELECTs in a transaction see the same DB state (the state when T began)</div></div>
+                        </div>
+                    </div>
+                    <div class="section">
+                        <h2>Setting isolation in SQL</h2>
+                        <div class="code-block">-- Set for current session (MySQL)
+SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;
+START TRANSACTION;
+  SELECT * FROM Account WHERE ID = 1;
+  UPDATE Account SET Balance = Balance - 500 WHERE ID = 1;
+COMMIT;</div>
+                    </div>
+                    <div class="section">
+                        <h2>Interview Q&A</h2>
+                        <div class="qa">
+                            <div class="qa-q" onclick="tog(this)">Q1. What is the default isolation level in MySQL and PostgreSQL? Why? <span class="arrow">▾</span></div>
+                            <div class="qa-a">MySQL InnoDB default: Repeatable Read. PostgreSQL default: Read Committed. MySQL chose Repeatable Read historically because of its statement-based binary logging — lower isolation could cause replication inconsistencies. PostgreSQL uses Read Committed as the default pragmatic choice: prevents dirty reads (most critical) while allowing good concurrency. Serializable is reserved for transactions that truly need it because of the significant locking overhead.</div>
+                        </div>
+                        <div class="qa">
+                            <div class="qa-q" onclick="tog(this)">Q2. What is MVCC? How does it improve concurrency? <span class="arrow">▾</span></div>
+                            <div class="qa-a">MVCC (Multi-Version Concurrency Control) maintains multiple versions of each row. When a row is updated, the old version is kept; the new version is added. Readers read the version that was current when their transaction started (or statement started, depending on isolation level). Result: readers never block writers, writers never block readers — massive concurrency improvement. The database garbage-collects old versions periodically. PostgreSQL and MySQL InnoDB both use MVCC. The overhead is storage for old versions and vacuum/purge processes to clean them up.</div>
+                        </div>
+                        <div class="qa">
+                            <div class="qa-q" onclick="tog(this)">Q3. A banking system is transferring money. Which isolation level should you use and why? <span class="arrow">▾</span></div>
+                            <div class="qa-a">Serializable or Repeatable Read. For a debit+credit transfer, the critical requirement is that both the read (check balance) and write (deduct) happen atomically without another transaction sneaking in. At Read Committed, a lost update scenario is possible — two concurrent transfers from the same account could both read the same balance. Serializable prevents this completely. In practice: use Repeatable Read + explicit SELECT FOR UPDATE to lock the rows you intend to modify. SELECT FOR UPDATE acquires an exclusive lock immediately, preventing concurrent modifications without the full overhead of Serializable.</div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                id: 't3',
+                label: 'Recovery & Logging',
+                html: `
+                    <div class="section">
+                        <h2>Why recovery?</h2>
+                        <p>Systems can fail — power outage, crash, disk error. The DBMS must ensure that committed transactions are never lost and uncommitted transactions are never partially applied.</p>
+                        <div class="card-row">
+                            <div class="card"><div class="label">After crash, DBMS must</div><div class="val">REDO committed txns</div><div class="sub">Re-apply committed changes that hadn't made it to disk yet</div></div>
+                            <div class="card"><div class="label">After crash, DBMS must</div><div class="val">UNDO uncommitted txns</div><div class="sub">Roll back any partial work from transactions that never committed</div></div>
+                        </div>
+                    </div>
+                    <div class="section">
+                        <h2>Write-Ahead Logging (WAL)</h2>
+                        <p>The golden rule: <strong>log the change before applying it to the database.</strong> Every modification is first written to a sequential log file on disk. Only after the log record is written does the actual data page get updated.</p>
+                        <div class="step">
+                            <div class="step-header"><div class="step-num">1</div><div class="step-title">Transaction begins — START log record written</div></div>
+                        </div>
+                        <div class="step">
+                            <div class="step-header"><div class="step-num">2</div><div class="step-title">Each update — log record written (before image, after image, LSN)</div></div>
+                            <div class="step-body">Log record contains: Transaction ID, LSN (Log Sequence Number), type (UPDATE/INSERT/DELETE), old value (for undo), new value (for redo).</div>
+                        </div>
+                        <div class="step">
+                            <div class="step-header"><div class="step-num">3</div><div class="step-title">COMMIT — COMMIT log record force-flushed to disk</div></div>
+                            <div class="step-body">Only now is the transaction considered durable. The log flush is what makes COMMIT durable — the data pages may still be in memory buffer.</div>
+                        </div>
+                        <div class="step">
+                            <div class="step-header"><div class="step-num">4</div><div class="step-title">Checkpoint — periodically flush dirty pages to disk</div></div>
+                            <div class="step-body">A checkpoint writes all modified (dirty) pages from buffer to disk and records a checkpoint in the log. On recovery, you only need to process log records after the last checkpoint — not the entire log.</div>
+                        </div>
+                    </div>
+                    <div class="section">
+                        <h2>Recovery process (ARIES algorithm)</h2>
+                        <p>ARIES (Algorithms for Recovery and Isolation Exploiting Semantics) is the industry-standard recovery algorithm used in IBM DB2, SQL Server, and many others.</p>
+                        <div class="card-row">
+                            <div class="card"><div class="label">Phase 1: Analysis</div><div class="val">Scan log from last checkpoint</div><div class="sub">Identify which transactions were active at crash (dirty page table + transaction table)</div></div>
+                            <div class="card"><div class="label">Phase 2: REDO</div><div class="val">Replay history from log</div><div class="sub">Re-apply ALL logged changes (even uncommitted ones) to restore exact pre-crash state</div></div>
+                            <div class="card"><div class="label">Phase 3: UNDO</div><div class="val">Roll back losers</div><div class="sub">Undo changes from transactions that were active at crash but never committed — using CLRs</div></div>
+                        </div>
+                        <div class="highlight"><strong>Key ARIES insight:</strong> REDO everything first (to get to exact pre-crash state), then UNDO uncommitted transactions. This handles all failure scenarios correctly including failures during recovery itself.</div>
+                    </div>
+                    <div class="section">
+                        <h2>Log record types</h2>
+                        <div class="table-wrap">
+                            <table>
+                                <tr><th>Record type</th><th>Purpose</th></tr>
+                                <tr><td><code>BEGIN</code></td><td>Transaction started</td></tr>
+                                <tr><td><code>UPDATE (tid, LSN, pageID, old, new)</code></td><td>A page was modified — stores both before (undo) and after (redo) images</td></tr>
+                                <tr><td><code>COMMIT</code></td><td>Transaction committed — must be on disk before returning success</td></tr>
+                                <tr><td><code>ABORT</code></td><td>Transaction rolled back</td></tr>
+                                <tr><td><code>CLR (Compensation Log Record)</code></td><td>Written during UNDO — records that an undo operation was performed (so undo is not repeated)</td></tr>
+                                <tr><td><code>CHECKPOINT</code></td><td>Dirty page table + active transaction table at this moment</td></tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="section">
+                        <h2>Interview Q&A</h2>
+                        <div class="qa">
+                            <div class="qa-q" onclick="tog(this)">Q1. What is Write-Ahead Logging? Why must the log be written before data? <span class="arrow">▾</span></div>
+                            <div class="qa-a">WAL requires that every modification be recorded in the log on stable storage before the corresponding data page is written to disk. This ensures: (1) If crash happens after log write but before data write — REDO from log restores the change. (2) If crash happens before log write — neither log nor data reflects the change, so nothing needs to be undone. The log record for COMMIT must be flushed to disk before returning success to the application — that single flush is what gives durability.</div>
+                        </div>
+                        <div class="qa">
+                            <div class="qa-q" onclick="tog(this)">Q2. Explain the 3 phases of ARIES recovery. <span class="arrow">▾</span></div>
+                            <div class="qa-a">Phase 1 — Analysis: Scan forward from the last checkpoint to reconstruct the Dirty Page Table (pages that were modified but not flushed) and Active Transaction Table (transactions in progress at crash). Phase 2 — REDO: Replay all log records from the oldest LSN in the dirty page table forward. Re-apply every operation regardless of commit status to bring disk to exact pre-crash state. Phase 3 — UNDO: For each loser transaction (never committed), scan log backward and undo its changes, writing CLRs. CLRs prevent re-undoing on subsequent crashes.</div>
+                        </div>
+                        <div class="qa">
+                            <div class="qa-q" onclick="tog(this)">Q3. What is a checkpoint? Why is it needed? <span class="arrow">▾</span></div>
+                            <div class="qa-a">A checkpoint is a periodic event where the DBMS flushes all dirty (modified) buffer pages to disk and records a checkpoint log entry. Without checkpoints, recovery would need to replay the entire log from the beginning — which could be days of log for a busy system. With checkpoints, recovery only needs to start from the last checkpoint. Fuzzy checkpoints (used by ARIES) allow checkpoint to proceed without stopping all transactions — a begin_checkpoint and end_checkpoint log record bracket the operation.</div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                id: 't4',
+                label: 'Query Optimization',
+                html: `
+                    <div class="section">
+                        <h2>What is query optimization?</h2>
+                        <p>The same SQL query can be executed in hundreds of different ways. The <strong>query optimizer</strong> is a component inside the DBMS that finds the most efficient execution plan automatically.</p>
+                        <div class="highlight">Example: SELECT * FROM Student S JOIN Dept D ON S.DeptID=D.DeptID WHERE S.Marks > 90.<br>Should we filter Students first then join, or join then filter? The optimizer decides.</div>
+                    </div>
+                    <div class="section">
+                        <h2>Query execution pipeline</h2>
+                        <div class="step">
+                            <div class="step-header"><div class="step-num">1</div><div class="step-title">Parsing — SQL text → parse tree</div></div>
+                            <div class="step-body">Syntax check. SQL is parsed into an internal tree structure.</div>
+                        </div>
+                        <div class="step">
+                            <div class="step-header"><div class="step-num">2</div><div class="step-title">Semantic Analysis — validate names, types</div></div>
+                            <div class="step-body">Check that table names, column names, and data types are valid. Resolve aliases.</div>
+                        </div>
+                        <div class="step">
+                            <div class="step-header"><div class="step-num">3</div><div class="step-title">Query Rewriting — logical optimization</div></div>
+                            <div class="step-body">Apply algebraic equivalences: push down selections (filter early), eliminate redundant operations, unnest subqueries into joins.</div>
+                        </div>
+                        <div class="step">
+                            <div class="step-header"><div class="step-num">4</div><div class="step-title">Plan Generation — enumerate physical plans</div></div>
+                            <div class="step-body">For each logical operation, consider alternatives: nested loop join vs hash join vs merge join; index scan vs sequential scan.</div>
+                        </div>
+                        <div class="step">
+                            <div class="step-header"><div class="step-num">5</div><div class="step-title">Cost Estimation — pick cheapest plan</div></div>
+                            <div class="step-body">Estimate I/O + CPU cost for each candidate plan using statistics (table sizes, cardinalities, histograms). Choose lowest-cost plan.</div>
+                        </div>
+                    </div>
+                    <div class="section">
+                        <h2>Join algorithms</h2>
+                        <div class="table-wrap">
+                            <table>
+                                <tr><th>Algorithm</th><th>Best for</th><th>Cost</th></tr>
+                                <tr><td><span class="tag blue">Nested Loop Join</span></td><td>Small tables, indexed inner table</td><td>O(n×m) worst case; O(n log m) with index</td></tr>
+                                <tr><td><span class="tag green">Hash Join</span></td><td>Large unsorted tables, equality joins</td><td>O(n+m) average; needs memory for hash table</td></tr>
+                                <tr><td><span class="tag purple">Merge Join</span></td><td>Both tables already sorted on join key</td><td>O(n+m); great for sorted/indexed data</td></tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="section">
+                        <h2>EXPLAIN — reading the query plan</h2>
+                        <div class="code-block">EXPLAIN SELECT S.Name, D.DeptName
+FROM Student S JOIN Dept D ON S.DeptID = D.DeptID
+WHERE S.Marks > 80;
+
+-- MySQL output (simplified):
+id | type  | table | key        | rows | Extra
+1  | ref   | D     | PRIMARY    |  3   | 
+1  | ref   | S     | idx_dept   | 25   | Using where
+
+-- Key columns to watch:
+-- type: const > eq_ref > ref > range > index > ALL (ALL = bad, full scan)
+-- key: which index is used (NULL = no index used!)
+-- rows: estimated rows scanned (lower = better)
+-- Extra: "Using filesort" or "Using temporary" = warning signs</div>
+                    </div>
+                    <div class="section">
+                        <h2>Optimization rules (what optimizer does automatically)</h2>
+                        <div class="card-row">
+                            <div class="card"><div class="label">Predicate pushdown</div><div class="val">Filter early</div><div class="sub">Apply WHERE before JOINs to reduce rows flowing into expensive operations</div></div>
+                            <div class="card"><div class="label">Index selection</div><div class="val">Use index if selective</div><div class="sub">If index reduces rows significantly, use it. Otherwise, sequential scan is cheaper.</div></div>
+                            <div class="card"><div class="label">Join reordering</div><div class="val">Small table first</div><div class="sub">Join the most selective (smallest result) tables first to minimize intermediate row counts</div></div>
+                            <div class="card"><div class="label">Subquery unnesting</div><div class="val">Subquery → JOIN</div><div class="sub">Correlated subqueries are rewritten as joins for better performance</div></div>
+                        </div>
+                    </div>
+                    <div class="section">
+                        <h2>Interview Q&A</h2>
+                        <div class="qa">
+                            <div class="qa-q" onclick="tog(this)">Q1. What is a query execution plan? How do you read EXPLAIN output? <span class="arrow">▾</span></div>
+                            <div class="qa-a">An execution plan shows how the database engine will physically retrieve and process data. Key EXPLAIN columns: (1) type — access method quality: const (single row by PK) is best, ALL (full table scan) is worst. (2) key — index used (NULL means no index). (3) rows — estimated rows to examine. (4) Extra — "Using index" (good, covering index), "Using filesort" (bad, sorting needed), "Using temporary" (bad, temp table). Optimize by eliminating full scans, adding missing indexes, and removing "Using temporary/filesort" for frequently-run queries.</div>
+                        </div>
+                        <div class="qa">
+                            <div class="qa-q" onclick="tog(this)">Q2. What is predicate pushdown? Why does it matter? <span class="arrow">▾</span></div>
+                            <div class="qa-a">Predicate pushdown moves filter conditions (WHERE clauses) as early as possible in the execution — ideally to the base table scan before any JOINs happen. Why it matters: if a table has 1 million rows but the WHERE clause matches only 100, applying the filter before the JOIN means joining 100 rows instead of 1 million. The optimizer does this automatically, but understanding it helps you write better queries — e.g., placing filter conditions directly on the table in the JOIN ON clause rather than in a post-JOIN WHERE can sometimes help.</div>
+                        </div>
+                        <div class="qa">
+                            <div class="qa-q" onclick="tog(this)">Q3. When does the optimizer NOT use an index even if one exists? <span class="arrow">▾</span></div>
+                            <div class="qa-a">(1) Low selectivity — index on Gender (M/F) returns 50% of rows; full scan is cheaper. (2) Function on indexed column: WHERE YEAR(DOB) = 2000 — the index on DOB can't be used because YEAR() transforms the value. Use WHERE DOB BETWEEN '2000-01-01' AND '2000-12-31' instead. (3) Implicit type conversion: WHERE VarcharID = 123 — number coerced to string, index skipped. (4) OR conditions across different columns often prevent index use. (5) Small tables where a full scan takes only 1-2 pages — index overhead isn't worth it.</div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                id: 't5',
+                label: 'Relational Algebra',
+                html: `
+                    <div class="section">
+                        <h2>What is relational algebra?</h2>
+                        <p>Relational algebra is a <strong>formal query language</strong> based on set theory. It's the theoretical foundation of SQL. Every SQL query can be expressed as a relational algebra expression. Exams ask this a lot.</p>
+                    </div>
+                    <div class="section">
+                        <h2>Core operations</h2>
+                        <div class="table-wrap">
+                            <table>
+                                <tr><th>Operation</th><th>Symbol</th><th>SQL equivalent</th><th>Meaning</th></tr>
+                                <tr><td>Selection</td><td>σ (sigma)</td><td>WHERE</td><td>Filter rows by condition</td></tr>
+                                <tr><td>Projection</td><td>π (pi)</td><td>SELECT columns</td><td>Keep only specified columns</td></tr>
+                                <tr><td>Union</td><td>∪</td><td>UNION</td><td>All rows from both (duplicates removed)</td></tr>
+                                <tr><td>Intersection</td><td>∩</td><td>INTERSECT</td><td>Rows in both relations</td></tr>
+                                <tr><td>Set Difference</td><td>−</td><td>EXCEPT</td><td>Rows in R1 but not R2</td></tr>
+                                <tr><td>Cartesian Product</td><td>×</td><td>CROSS JOIN</td><td>Every row paired with every row</td></tr>
+                                <tr><td>Rename</td><td>ρ (rho)</td><td>AS alias</td><td>Rename relation or attributes</td></tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="section">
+                        <h2>JOIN operations</h2>
+                        <div class="table-wrap">
+                            <table>
+                                <tr><th>Join type</th><th>Symbol</th><th>Meaning</th></tr>
+                                <tr><td>Natural Join</td><td>⋈</td><td>Join on common attribute names (auto)</td></tr>
+                                <tr><td>Theta Join</td><td>⋈θ</td><td>Join with any condition θ (e.g., S.age > E.age)</td></tr>
+                                <tr><td>Equi Join</td><td>⋈ (=)</td><td>Theta join where condition is equality</td></tr>
+                                <tr><td>Left Outer Join</td><td>⟕</td><td>All left tuples, NULLs for non-matching right</td></tr>
+                                <tr><td>Right Outer Join</td><td>⟖</td><td>All right tuples, NULLs for non-matching left</td></tr>
+                                <tr><td>Full Outer Join</td><td>⟗</td><td>All tuples from both, NULLs as needed</td></tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="section">
+                        <h2>Examples — translating between SQL and RA</h2>
+                        <div class="code-block">-- Q: Find names of CS students with marks > 80
+SQL:  SELECT Name FROM Student WHERE Dept='CS' AND Marks > 80
+RA:   π Name (σ Dept='CS' ∧ Marks>80 (Student))
+
+-- Q: Find student names and their department names
+SQL:  SELECT S.Name, D.DeptName FROM Student S JOIN Dept D ON S.DeptID=D.DeptID
+RA:   π Name,DeptName (Student ⋈ Dept)
+
+-- Q: Find students not enrolled in any course
+SQL:  SELECT * FROM Student WHERE RollNo NOT IN (SELECT RollNo FROM Enrollment)
+RA:   Student − π RollNo (Enrollment) ⋈ Student
+      (more precisely: π RollNo(Student) − π RollNo(Enrollment) then join back)</div>
+                    </div>
+                    <div class="section">
+                        <h2>Division operation</h2>
+                        <p>Division R ÷ S finds tuples in R that are related to ALL tuples in S. Used for "for all" queries.</p>
+                        <div class="highlight">
+                            Example: Find students who are enrolled in ALL courses.<br>
+                            Enrollment(RollNo, CourseID) ÷ Course(CourseID)<br>
+                            = RollNos that appear with every CourseID in Course
+                        </div>
+                    </div>
+                    <div class="section">
+                        <h2>Interview Q&A</h2>
+                        <div class="qa">
+                            <div class="qa-q" onclick="tog(this)">Q1. What is the difference between selection and projection? <span class="arrow">▾</span></div>
+                            <div class="qa-a">Selection (σ) filters rows — it's a horizontal subset. σ Marks>80 (Student) returns all columns but only rows where marks > 80. Equivalent to WHERE in SQL. Projection (π) filters columns — it's a vertical subset. π Name,Dept (Student) returns all rows but only the Name and Dept columns. Equivalent to SELECT column_list. You often combine them: π Name (σ Marks>80 (Student)) — select high-scorers, then project only their names.</div>
+                        </div>
+                        <div class="qa">
+                            <div class="qa-q" onclick="tog(this)">Q2. What is a natural join? What are its risks? <span class="arrow">▾</span></div>
+                            <div class="qa-a">Natural join automatically joins two relations on ALL columns that share the same name, and removes duplicate columns. Risk: if two tables coincidentally share a column name that isn't the intended join key (e.g., both have a column called "Date"), natural join will incorrectly join on it. This makes natural join dangerous in production — explicit JOIN ON conditions are always safer. In exams, natural join is the default ⋈ without a condition.</div>
+                        </div>
+                        <div class="qa">
+                            <div class="qa-q" onclick="tog(this)">Q3. How does the division operator work? Give an example. <span class="arrow">▾</span></div>
+                            <div class="qa-a">Division R(A,B) ÷ S(B) returns all values of A from R such that for every value b in S, the pair (A,b) exists in R. Classic use: "find students enrolled in all courses." If Enrollment(StudentID, CourseID) and AllCourses(CourseID), then Enrollment ÷ AllCourses gives StudentIDs enrolled in every course. SQL equivalent uses double NOT EXISTS: SELECT DISTINCT StudentID FROM Enrollment E1 WHERE NOT EXISTS (SELECT * FROM AllCourses C WHERE NOT EXISTS (SELECT * FROM Enrollment E2 WHERE E2.StudentID=E1.StudentID AND E2.CourseID=C.CourseID)).</div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                id: 't6',
+                label: 'Hashing Techniques',
+                html: `
+                    <div class="section">
+                        <h2>Why hashing in databases?</h2>
+                        <p>Hashing provides <strong>O(1) average lookup</strong> — faster than B-Tree's O(log n) for exact-match queries. Used for hash indexes, hash joins, and partitioning.</p>
+                        <div class="highlight">Best for: WHERE ID = 12345 (equality). Not suitable for: WHERE Marks > 80 (range queries) — hash functions don't preserve order.</div>
+                    </div>
+                    <div class="section">
+                        <h2>Static Hashing</h2>
+                        <p>Fixed number of buckets. Hash function h(key) = key mod N determines the bucket. Simple but problematic — bucket count is fixed forever.</p>
+                        <div class="code-block">h(RollNo) = RollNo mod 5
+RollNo 101 → bucket 1
+RollNo 102 → bucket 2
+RollNo 106 → bucket 1 ← collision! Chaining used.</div>
+                        <div class="danger"><strong>Problem with static hashing:</strong> If data grows beyond capacity, buckets overflow (long chains) and performance degrades. If data shrinks, many buckets are empty and wasted. Solution: dynamic hashing.</div>
+                    </div>
+                    <div class="section">
+                        <h2>Extendible Hashing (Dynamic)</h2>
+                        <p>Grows and shrinks dynamically by splitting buckets without rehashing all data. Uses a <strong>global depth</strong> (directory) and <strong>local depth</strong> (per bucket).</p>
+                        <div class="step">
+                            <div class="step-header"><div class="step-num">1</div><div class="step-title">Global depth — bits used by directory to map to buckets</div></div>
+                            <div class="step-body">The directory has 2^global_depth entries. Each entry points to a bucket.</div>
+                        </div>
+                        <div class="step">
+                            <div class="step-header"><div class="step-num">2</div><div class="step-title">Local depth — bits actually used by a specific bucket</div></div>
+                            <div class="step-body">When a bucket overflows, split it: increment its local depth, redistribute its entries. If local depth > global depth, double the directory (increment global depth). Only the overflowing bucket is rehashed, not the whole table.</div>
+                        </div>
+                        <div class="remember"><strong>Key advantage:</strong> Only the overflowing bucket is split. Directory doubles only when necessary. No full rehash of the entire hash table — scalable for large databases.</div>
+                    </div>
+                    <div class="section">
+                        <h2>Linear Hashing</h2>
+                        <p>Another dynamic technique. Splits buckets in a <strong>predetermined linear order</strong> — split pointer moves left to right through buckets. Doesn't require doubling the directory.</p>
+                        <div class="card-row">
+                            <div class="card"><div class="label">Extendible Hashing</div><div class="val">Directory-based</div><div class="sub">Split exactly the overflowing bucket. Directory may double.</div></div>
+                            <div class="card"><div class="label">Linear Hashing</div><div class="val">Split pointer</div><div class="sub">Split in order (round-robin). No directory needed. Handles overflow with overflow pages temporarily.</div></div>
+                        </div>
+                    </div>
+                    <div class="section">
+                        <h2>Hash join (in query processing)</h2>
+                        <div class="code-block">-- Executing: SELECT * FROM Student S JOIN Dept D ON S.DeptID = D.DeptID
+Phase 1 (Build):
+  Read smaller table (Dept). For each row, compute h(DeptID) → build hash table in memory.
+Phase 2 (Probe):
+  Read larger table (Student). For each row, compute h(DeptID) → probe hash table → emit matching pairs.
+Cost: O(n+m) — linear in table sizes. Much better than nested loop O(n×m).</div>
+                    </div>
+                    <div class="section">
+                        <h2>Interview Q&A</h2>
+                        <div class="qa">
+                            <div class="qa-q" onclick="tog(this)">Q1. What is the difference between static and dynamic hashing? <span class="arrow">▾</span></div>
+                            <div class="qa-a">Static hashing uses a fixed number of buckets — the hash function is fixed (e.g., key mod N). Simple but suffers from overflow (too full) or waste (too empty) as data grows/shrinks. Dynamic hashing adapts: Extendible Hashing splits the overflowing bucket and may double the directory. Linear Hashing splits buckets in sequence using a split pointer. Both avoid full rehashing. Dynamic hashing is used in practice for databases where data volumes change.</div>
+                        </div>
+                        <div class="qa">
+                            <div class="qa-q" onclick="tog(this)">Q2. Why is hashing NOT suitable for range queries? <span class="arrow">▾</span></div>
+                            <div class="qa-a">Hash functions distribute keys uniformly and randomly — there's no relationship between similar keys. Key 80 and key 81 end up in completely different buckets. So a range query WHERE Marks BETWEEN 80 AND 90 would need to probe all buckets to find all matching keys. B-Trees preserve order — keys 80-90 are stored in adjacent leaf nodes, so range queries need only one traversal from 80. Rule: hash indexes for equality (=), B-tree indexes for ranges (>, <, BETWEEN, ORDER BY).</div>
+                        </div>
+                        <div class="qa">
+                            <div class="qa-q" onclick="tog(this)">Q3. Explain extendible hashing with a simple example. <span class="arrow">▾</span></div>
+                            <div class="qa-a">Start: global depth = 1, 2 buckets (0, 1). Hash keys by last 1 bit. Insert keys 2(10), 3(11), 4(100). Both 2 and 3 map to bucket 1 (last bit = 0 and 1). Bucket 1 overflows. Split: increment local depth of bucket 1 to 2, redistribute using last 2 bits. Now have buckets 00, 01, 10, 11. Global depth becomes 2 (directory doubles to 4 entries). Only bucket 1's keys were rehashed — keys in bucket 0 were untouched.</div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                id: 't7',
+                label: 'NoSQL vs SQL + CAP',
+                html: `
+                    <div class="section">
+                        <h2>SQL vs NoSQL — the core difference</h2>
+                        <div class="vs-grid">
+                            <div class="vs-card">
+                                <h4 style="color:#27500A">SQL (Relational)</h4>
+                                <ul>
+                                    <li>Fixed schema — define columns before inserting</li>
+                                    <li>ACID transactions — strong consistency</li>
+                                    <li>Scales vertically (bigger server)</li>
+                                    <li>SQL is universal query language</li>
+                                    <li>Best for structured, relational data</li>
+                                    <li>MySQL, PostgreSQL, Oracle, SQL Server</li>
+                                </ul>
+                            </div>
+                            <div class="vs-card">
+                                <h4 style="color:#633806">NoSQL</h4>
+                                <ul>
+                                    <li>Flexible/dynamic schema — schema-on-read</li>
+                                    <li>BASE properties — eventual consistency</li>
+                                    <li>Scales horizontally (more servers)</li>
+                                    <li>Each DB has its own query API</li>
+                                    <li>Best for unstructured, high-volume data</li>
+                                    <li>MongoDB, Cassandra, Redis, DynamoDB</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="section">
+                        <h2>NoSQL categories</h2>
+                        <div class="card-row">
+                            <div class="card"><div class="label">Document store</div><div class="val">MongoDB, CouchDB</div><div class="sub">JSON-like documents. Flexible schema. Good for product catalogs, user profiles.</div></div>
+                            <div class="card"><div class="label">Key-Value</div><div class="val">Redis, DynamoDB</div><div class="sub">Simple dict. Ultra-fast. Good for sessions, caching, leaderboards.</div></div>
+                            <div class="card"><div class="label">Wide Column</div><div class="val">Cassandra, HBase</div><div class="sub">Rows with dynamic columns. Massive write throughput. IoT, time-series.</div></div>
+                            <div class="card"><div class="label">Graph DB</div><div class="val">Neo4j, Amazon Neptune</div><div class="sub">Nodes + edges. Social networks, fraud detection, recommendation engines.</div></div>
+                        </div>
+                    </div>
+                    <div class="section">
+                        <h2>CAP Theorem</h2>
+                        <p>Proposed by Eric Brewer (2000). In a distributed database, you can only guarantee <strong>2 out of 3</strong> properties simultaneously:</p>
+                        <div class="step">
+                            <div class="step-header"><div class="step-num">C</div><div class="step-title">Consistency — every read returns the most recent write</div></div>
+                            <div class="step-body">All nodes see the same data at the same time. After a write completes, any subsequent read returns that value.</div>
+                        </div>
+                        <div class="step">
+                            <div class="step-header"><div class="step-num">A</div><div class="step-title">Availability — every request gets a response</div></div>
+                            <div class="step-body">Every request (even to failed nodes) receives a response — not necessarily the latest data, but some response.</div>
+                        </div>
+                        <div class="step">
+                            <div class="step-header"><div class="step-num">P</div><div class="step-title">Partition Tolerance — system works despite network splits</div></div>
+                            <div class="step-body">The system continues operating even if network partitions divide nodes and messages are lost between them.</div>
+                        </div>
+                        <div class="highlight"><strong>Practical reality:</strong> Network partitions (P) happen in any real distributed system. So the real choice is between CP (consistency + partition tolerance) and AP (availability + partition tolerance).</div>
+                        <div class="table-wrap">
+                            <table>
+                                <tr><th>Type</th><th>Guarantees</th><th>Examples</th><th>Use when</th></tr>
+                                <tr><td><span class="tag blue">CP</span></td><td>Consistent + Partition-tolerant</td><td>MongoDB, HBase, Zookeeper</td><td>Banking, inventory — correctness critical</td></tr>
+                                <tr><td><span class="tag green">AP</span></td><td>Available + Partition-tolerant</td><td>Cassandra, DynamoDB, CouchDB</td><td>Social media, DNS — uptime critical</td></tr>
+                                <tr><td><span class="tag amber">CA</span></td><td>Consistent + Available</td><td>Traditional RDBMS (single node)</td><td>Not truly distributed — no partitions assumed</td></tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="section">
+                        <h2>BASE properties (NoSQL's alternative to ACID)</h2>
+                        <div class="card-row">
+                            <div class="card"><div class="label">BA — Basically Available</div><div class="val">Always responds</div><div class="sub">May return stale or partial data, but never fails to respond</div></div>
+                            <div class="card"><div class="label">S — Soft state</div><div class="val">State can change</div><div class="sub">Even without input, data may change as eventual consistency propagates</div></div>
+                            <div class="card"><div class="label">E — Eventually consistent</div><div class="val">Converges over time</div><div class="sub">All nodes will eventually have the same data — just not immediately</div></div>
+                        </div>
+                    </div>
+                    <div class="section">
+                        <h2>Interview Q&A</h2>
+                        <div class="qa">
+                            <div class="qa-q" onclick="tog(this)">Q1. Explain CAP theorem. Which two does your favourite DB choose? <span class="arrow">▾</span></div>
+                            <div class="qa-a">CAP theorem states a distributed database can guarantee at most 2 of: Consistency (all reads return latest write), Availability (all requests get a response), Partition Tolerance (system works despite network splits). Since partitions are inevitable in real networks, the real choice is CP vs AP. MySQL/PostgreSQL (single node) = CA. MongoDB (with replica sets) = CP. Cassandra = AP. DynamoDB = AP (with tunable consistency). Redis Cluster = CP. Choose CP for financial/inventory systems; AP for social feeds, analytics, DNS.</div>
+                        </div>
+                        <div class="qa">
+                            <div class="qa-q" onclick="tog(this)">Q2. What is eventual consistency? Give a real-world example. <span class="arrow">▾</span></div>
+                            <div class="qa-a">Eventual consistency means that if no new updates are made, all replicas will eventually converge to the same value — but reads during propagation may return stale data. Real-world example: You post on Twitter. Your post immediately appears to you, but someone in another region might see your tweet a few seconds later — their replica hasn't received the update yet. Eventually (in milliseconds to seconds), all replicas converge. DNS propagation is another classic example — updated DNS records take up to 48 hours to propagate worldwide.</div>
+                        </div>
+                        <div class="qa">
+                            <div class="qa-q" onclick="tog(this)">Q3. When would you choose NoSQL over SQL in a real project? <span class="arrow">▾</span></div>
+                            <div class="qa-a">Choose NoSQL when: (1) Schema is evolving rapidly — NoSQL's flexible schema avoids costly ALTER TABLE migrations. (2) Massive horizontal scale needed — Cassandra/DynamoDB scale to petabytes across hundreds of nodes. (3) Data is inherently non-relational — social graphs (Neo4j), real-time sessions (Redis), IoT sensor streams (Cassandra). (4) Read/write throughput exceeds what a single SQL server can handle. Choose SQL when: data is structured with complex relationships, transactions spanning multiple tables are needed (e.g., bank transfers), reporting/analytics require complex JOINs, or compliance requires ACID guarantees.</div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                id: 't8',
+                label: 'Sharding & Replication',
+                html: `
+                    <div class="section">
+                        <h2>Why distribute data?</h2>
+                        <p>A single database server has limits — CPU, RAM, disk, network bandwidth. When your app outgrows one machine, you need to distribute data across multiple servers.</p>
+                        <div class="card-row">
+                            <div class="card"><div class="label">Vertical scaling</div><div class="val">Bigger machine</div><div class="sub">More RAM, faster CPU. Simple but has a hard limit — you can't scale forever.</div></div>
+                            <div class="card"><div class="label">Horizontal scaling</div><div class="val">More machines</div><div class="sub">Sharding + replication. No theoretical limit. Used by Google, Amazon, Facebook.</div></div>
+                        </div>
+                    </div>
+                    <div class="section">
+                        <h2>Replication — copies for availability</h2>
+                        <p>Replication keeps <strong>identical copies</strong> of the database on multiple servers. Improves read performance and provides fault tolerance.</p>
+                        <div class="step">
+                            <div class="step-header"><div class="step-num">1</div><div class="step-title">Primary-Replica (Master-Slave) replication</div></div>
+                            <div class="step-body">One primary accepts all writes. Replicas receive changes and serve reads. If primary fails, a replica is promoted. Used by MySQL, PostgreSQL. Problem: replica reads may be slightly stale (replication lag).</div>
+                        </div>
+                        <div class="step">
+                            <div class="step-header"><div class="step-num">2</div><div class="step-title">Multi-Primary replication</div></div>
+                            <div class="step-body">Multiple nodes accept writes. Higher write availability but complex — write conflicts must be resolved. Used in geo-distributed systems (Cassandra, DynamoDB).</div>
+                        </div>
+                        <div class="step">
+                            <div class="step-header"><div class="step-num">3</div><div class="step-title">Synchronous vs Asynchronous replication</div></div>
+                            <div class="step-body">Synchronous: primary waits for replica to confirm before committing. Consistent but slower. Asynchronous: primary commits immediately, replica updates later. Faster but replica may be slightly behind (replication lag).</div>
+                        </div>
+                    </div>
+                    <div class="section">
+                        <h2>Sharding (Horizontal Partitioning)</h2>
+                        <p>Sharding splits data across multiple servers — each server (shard) holds a <strong>subset of rows</strong>. Each shard is an independent database that handles only its portion of the data.</p>
+                        <div class="card-row">
+                            <div class="card"><div class="label">Range sharding</div><div class="val">RollNo 1-1000 → Shard 1</div><div class="sub">Simple. Good for range queries. Risk: hotspots if data isn't uniform.</div></div>
+                            <div class="card"><div class="label">Hash sharding</div><div class="val">hash(UserID) mod N → shard</div><div class="sub">Uniform distribution. No hotspots. Bad for range queries.</div></div>
+                            <div class="card"><div class="label">Directory sharding</div><div class="val">Lookup table → shard</div><div class="sub">Flexible routing. Extra lookup overhead. Easy to rebalance.</div></div>
+                            <div class="card"><div class="label">Geo sharding</div><div class="val">Region → shard</div><div class="sub">Users in India → India shard. Low latency. Used by global apps.</div></div>
+                        </div>
+                    </div>
+                    <div class="section">
+                        <h2>Sharding vs Partitioning</h2>
+                        <div class="table-wrap">
+                            <table>
+                                <tr><th></th><th>Partitioning</th><th>Sharding</th></tr>
+                                <tr><td>Where</td><td>Within a single database/server</td><td>Across multiple servers</td></tr>
+                                <tr><td>Goal</td><td>Query performance, manageability</td><td>Scale beyond one machine</td></tr>
+                                <tr><td>Transparency</td><td>Transparent to app (DB handles it)</td><td>App must know about shards (usually)</td></tr>
+                                <tr><td>Example</td><td>MySQL PARTITION BY RANGE (Year)</td><td>User shard 1: IDs 1-1M, Shard 2: 1M-2M</td></tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="section">
+                        <h2>Challenges of sharding</h2>
+                        <div class="danger">
+                            <strong>Sharding problems to know for interviews:</strong><br>
+                            Cross-shard JOINs — a query joining tables on different shards is expensive (data must travel over network)<br>
+                            Cross-shard transactions — ACID across shards requires distributed transactions (2-phase commit) — complex and slow<br>
+                            Rebalancing — when adding a new shard, data must be redistributed (consistent hashing minimizes this)<br>
+                            Hotspots — if one shard gets disproportionate traffic (celebrity user problem)
+                        </div>
+                    </div>
+                    <div class="section">
+                        <h2>Consistent Hashing</h2>
+                        <p>Used by Cassandra, DynamoDB, Redis Cluster. Places both servers and keys on a conceptual ring. Adding/removing a server only moves a fraction of keys — not all of them.</p>
+                        <div class="remember">Normal hashing: add 1 server → rehash all keys (catastrophic cache miss). Consistent hashing: add 1 server → only ~1/N of keys move. Essential for large-scale systems.</div>
+                    </div>
+                    <div class="section">
+                        <h2>Interview Q&A</h2>
+                        <div class="qa">
+                            <div class="qa-q" onclick="tog(this)">Q1. What is the difference between replication and sharding? <span class="arrow">▾</span></div>
+                            <div class="qa-a">Replication copies the same data to multiple servers. Benefits: read scalability (spread reads across replicas), high availability (if primary fails, replica takes over), disaster recovery. But every server stores ALL the data — storage doesn't scale. Sharding distributes different rows to different servers. Benefits: storage scales linearly, write throughput scales. But every shard only has a SUBSET of data — cross-shard queries are complex. In practice, systems combine both: each shard is also replicated (e.g., 3 replicas per shard in Cassandra).</div>
+                        </div>
+                        <div class="qa">
+                            <div class="qa-q" onclick="tog(this)">Q2. What is consistent hashing? Why is it better than simple hash-based sharding? <span class="arrow">▾</span></div>
+                            <div class="qa-a">Consistent hashing places servers and data keys on a circular ring using the same hash function. A key is assigned to the nearest server clockwise. When a server is added/removed, only the keys between it and the previous server in the ring need to move — approximately 1/N of total keys. Simple modulo-based hashing (key mod N): adding one server changes N to N+1, so almost all keys hash to different servers — massive reshuffling. Consistent hashing is used by Cassandra, DynamoDB, Redis Cluster, and CDN systems for this reason.</div>
+                        </div>
+                        <div class="qa">
+                            <div class="qa-q" onclick="tog(this)">Q3. How would you design a database for a system like IRCTC that handles millions of concurrent users? <span class="arrow">▾</span></div>
+                            <div class="qa-a">Multi-layer approach: (1) Read replicas: 80% of traffic is reads (checking availability). Route reads to replicas, writes to primary. (2) Caching: Redis cache for train schedules, seat availability — avoid DB hits for static data. (3) Sharding: partition the booking table by train number or date. Each shard handles a subset of trains. (4) Queue bookings: during peak load (Tatkal), use a message queue (Kafka) to serialize requests per train — prevents race conditions on seat inventory. (5) Optimistic locking: when booking a seat, use version numbers — if two users book the same seat simultaneously, one gets a conflict error and retries. (6) ACID transactions: the actual seat deduction must be a transaction — check availability + deduct + create booking atomically.</div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                id: 't9',
+                label: 'Advanced SQL',
+                html: `
+                    <div class="section">
+                        <h2>Window functions</h2>
+                        <p>Window functions perform calculations across a set of rows <strong>related to the current row</strong> — without collapsing rows like GROUP BY does. The most powerful SQL feature for analytics.</p>
+                        <div class="code-block">-- Syntax
+function_name() OVER (
+  PARTITION BY column   -- divide into groups (like GROUP BY but keeps rows)
+  ORDER BY column       -- order within each partition
+  ROWS/RANGE frame      -- optional: define which rows to include
+)</div>
+                    </div>
+                    <div class="section">
+                        <h2>Ranking functions</h2>
+                        <div class="code-block">SELECT Name, Dept, Marks,
+  RANK()       OVER (PARTITION BY Dept ORDER BY Marks DESC) AS rank,
+  DENSE_RANK() OVER (PARTITION BY Dept ORDER BY Marks DESC) AS dense_rank,
+  ROW_NUMBER() OVER (PARTITION BY Dept ORDER BY Marks DESC) AS row_num
+FROM Student;
+
+-- If marks are 90, 90, 85:
+-- RANK():       1, 1, 3    (gap after tie)
+-- DENSE_RANK(): 1, 1, 2    (no gap)
+-- ROW_NUMBER(): 1, 2, 3    (always unique, arbitrary for ties)</div>
+                        <div class="remember">Interview tip: To find the Nth highest salary per department — use DENSE_RANK() and filter WHERE dense_rank = N. Handles ties correctly.</div>
+                    </div>
+                    <div class="section">
+                        <h2>Analytical functions</h2>
+                        <div class="code-block">SELECT Name, Dept, Marks,
+  SUM(Marks)  OVER (PARTITION BY Dept) AS dept_total,
+  AVG(Marks)  OVER (PARTITION BY Dept) AS dept_avg,
+  -- Running total within department, ordered by marks:
+  SUM(Marks)  OVER (PARTITION BY Dept ORDER BY Marks) AS running_total,
+  -- Lead/Lag: access next/previous row
+  LAG(Marks, 1)  OVER (ORDER BY RollNo) AS prev_student_marks,
+  LEAD(Marks, 1) OVER (ORDER BY RollNo) AS next_student_marks
+FROM Student;</div>
+                    </div>
+                    <div class="section">
+                        <h2>CTEs — Common Table Expressions</h2>
+                        <p>A CTE is a named temporary result set defined with <code>WITH</code>. Makes complex queries readable and allows recursive queries.</p>
+                        <div class="code-block">-- Basic CTE: find top students per department
+WITH RankedStudents AS (
+  SELECT Name, Dept, Marks,
+    DENSE_RANK() OVER (PARTITION BY Dept ORDER BY Marks DESC) AS rnk
+  FROM Student
+)
+SELECT Name, Dept, Marks FROM RankedStudents WHERE rnk = 1;
+
+-- Multiple CTEs (chained)
+WITH 
+  DeptAvg AS (SELECT Dept, AVG(Marks) AS avg_marks FROM Student GROUP BY Dept),
+  AboveAvg AS (SELECT S.* FROM Student S JOIN DeptAvg D ON S.Dept=D.Dept WHERE S.Marks > D.avg_marks)
+SELECT * FROM AboveAvg ORDER BY Dept, Marks DESC;</div>
+                    </div>
+                    <div class="section">
+                        <h2>Recursive CTE — organizational hierarchy</h2>
+                        <div class="code-block">-- Employee table: EmpID, Name, ManagerID
+-- Find all employees under Manager ID 1 (entire hierarchy)
+WITH RECURSIVE OrgChart AS (
+  -- Base case: the root manager
+  SELECT EmpID, Name, ManagerID, 0 AS level
+  FROM Employee WHERE EmpID = 1
+  
+  UNION ALL
+  
+  -- Recursive case: find direct reports of previous level
+  SELECT E.EmpID, E.Name, E.ManagerID, O.level + 1
+  FROM Employee E
+  JOIN OrgChart O ON E.ManagerID = O.EmpID
+)
+SELECT * FROM OrgChart ORDER BY level, Name;</div>
+                    </div>
+                    <div class="section">
+                        <h2>NTILE, PERCENT_RANK, FIRST_VALUE</h2>
+                        <div class="code-block">SELECT Name, Marks,
+  NTILE(4) OVER (ORDER BY Marks DESC) AS quartile,
+  -- 1 = top 25%, 2 = next 25%, etc.
+  
+  PERCENT_RANK() OVER (ORDER BY Marks) AS pct_rank,
+  -- 0.0 to 1.0: relative rank in the sorted result
+  
+  FIRST_VALUE(Name) OVER (PARTITION BY Dept ORDER BY Marks DESC) AS top_student
+  -- Name of the top-scoring student in each dept, shown on every row
+FROM Student;</div>
+                    </div>
+                    <div class="section">
+                        <h2>Interview Q&A</h2>
+                        <div class="qa">
+                            <div class="qa-q" onclick="tog(this)">Q1. What is the difference between RANK, DENSE_RANK, and ROW_NUMBER? <span class="arrow">▾</span></div>
+                            <div class="qa-a">All three number rows. ROW_NUMBER: always unique, no ties — 1,2,3,4 regardless of duplicate values. RANK: ties get the same number but the next rank skips — if two rows tie for rank 2, the next is rank 4 (gap). DENSE_RANK: ties get same number, next rank is continuous — two rows tie for rank 2, next is rank 3 (no gap). Rule: use DENSE_RANK for "find Nth highest" questions to correctly handle ties; use ROW_NUMBER when you need a unique identifier for each row; use RANK for competition-style leaderboards.</div>
+                        </div>
+                        <div class="qa">
+                            <div class="qa-q" onclick="tog(this)">Q2. What is a CTE and how is it different from a subquery? <span class="arrow">▾</span></div>
+                            <div class="qa-a">A CTE (WITH clause) defines a named temporary result set that can be referenced multiple times in the same query. Differences: (1) Readability — CTE can be named meaningfully and defined at the top; nested subqueries become spaghetti. (2) Reusability — a CTE can be referenced multiple times in the main query; a subquery would need to be duplicated. (3) Recursion — CTEs support recursive queries (RECURSIVE keyword); subqueries cannot. (4) Performance — in most databases, CTEs and subqueries have similar performance (optimizer may inline the CTE anyway). (5) CTEs improve maintainability for complex multi-step queries.</div>
+                        </div>
+                        <div class="qa">
+                            <div class="qa-q" onclick="tog(this)">Q3. Write a query to find the top 3 students by marks in each department. <span class="arrow">▾</span></div>
+                            <div class="qa-a">Using DENSE_RANK window function: WITH Ranked AS (SELECT Name, Dept, Marks, DENSE_RANK() OVER (PARTITION BY Dept ORDER BY Marks DESC) AS rnk FROM Student) SELECT Name, Dept, Marks FROM Ranked WHERE rnk &lt;= 3 ORDER BY Dept, rnk; Why DENSE_RANK not RANK? If two students both score 90 (rank 1), RANK would skip rank 2 and show rank 3 next — you'd get fewer than 3 students. DENSE_RANK gives 1,1,2 — you always get up to 3 positions. Why CTE instead of subquery? The CTE makes it readable — you can clearly see "first rank the students, then filter top 3".</div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                id: 't10',
+                label: 'Top Interview Q&A',
+                html: `
+                    <div class="section">
+                        <h2>Most asked DBMS interview questions</h2>
+                        <p>These are the questions that appear most frequently in campus placements, FAANG interviews, and competitive exams. Every answer is exam-ready.</p>
+                    </div>
+                    <div class="section">
+                        <h2>Concept questions</h2>
+                        <div class="qa">
+                            <div class="qa-q" onclick="tog(this)">Q1. What is the difference between a primary key and a foreign key? <span class="arrow">▾</span></div>
+                            <div class="qa-a">Primary key: uniquely identifies each row in its own table. Cannot be NULL. Only one per table. Creates a clustered index by default. Foreign key: a column in one table that references the primary key of another table. Enforces referential integrity — you cannot insert a FK value that doesn't exist in the referenced table. A table can have multiple FKs. FK columns can be NULL (meaning "no reference"). Example: Student.DeptID is a FK referencing Department.DeptID.</div>
+                        </div>
+                        <div class="qa">
+                            <div class="qa-q" onclick="tog(this)">Q2. What is normalization? Up to which normal form is practically used? <span class="arrow">▾</span></div>
+                            <div class="qa-a">Normalization is the process of structuring tables to reduce data redundancy and eliminate update anomalies. In practice, most databases are normalized up to 3NF — it eliminates partial and transitive dependencies, which are the most common anomaly sources. BCNF is used when there are overlapping candidate keys. 4NF and 5NF deal with multi-valued and join dependencies — used in theory/exams but rarely in practice. Over-normalizing can hurt query performance due to excessive JOINs. Many production systems intentionally denormalize for read performance.</div>
+                        </div>
+                        <div class="qa">
+                            <div class="qa-q" onclick="tog(this)">Q3. What is a deadlock? How do databases resolve it? <span class="arrow">▾</span></div>
+                            <div class="qa-a">A deadlock occurs when two or more transactions form a circular wait — each holds a lock that the other needs. Four conditions must all hold: mutual exclusion, hold-and-wait, no preemption, circular wait. Resolution: DBMS maintains a wait-for graph. When a cycle is detected, a victim transaction is selected (usually the one with least work done / smallest undo log) and rolled back. The rolled-back transaction should be retried by the application. Prevention: always acquire locks in a consistent global order across all transactions.</div>
+                        </div>
+                        <div class="qa">
+                            <div class="qa-q" onclick="tog(this)">Q4. Explain ACID properties with a real-world example. <span class="arrow">▾</span></div>
+                            <div class="qa-a">Bank transfer of ₹1000 from Rahul to Priya: Atomicity — both debit Rahul and credit Priya must succeed together or neither happens (no half-transfer). Consistency — total money before = total money after. Business rules (no negative balance) always hold. Isolation — if two transfers happen simultaneously, they don't interfere. Each sees a consistent view. Durability — once committed, the transfer is permanent even if the server crashes the next second. The WAL log on disk guarantees this.</div>
+                        </div>
+                        <div class="qa">
+                            <div class="qa-q" onclick="tog(this)">Q5. What is a view? What is a materialized view? <span class="arrow">▾</span></div>
+                            <div class="qa-a">A view is a virtual table — a saved SELECT query. It doesn't store data; it's executed every time you query it. Always returns fresh data. A materialized view is a view whose result IS stored on disk. Query performance is fast (precomputed) but data may be stale — needs periodic refresh. Use materialized views for expensive aggregations queried frequently (dashboards, reports) where slight staleness is acceptable. Regular views for security (hiding columns), simplicity (abstracting complex JOINs), and always-fresh data requirements.</div>
+                        </div>
+                    </div>
+                    <div class="section">
+                        <h2>SQL coding questions</h2>
+                        <div class="qa">
+                            <div class="qa-q" onclick="tog(this)">Q6. Find duplicate records in a table. <span class="arrow">▾</span></div>
+                            <div class="qa-a">SELECT Name, COUNT(*) as cnt FROM Student GROUP BY Name HAVING COUNT(*) > 1; This finds names that appear more than once. To see the full duplicate rows: SELECT * FROM Student WHERE Name IN (SELECT Name FROM Student GROUP BY Name HAVING COUNT(*) > 1) ORDER BY Name; To delete duplicates keeping the lowest ID: DELETE FROM Student WHERE ID NOT IN (SELECT MIN(ID) FROM Student GROUP BY Name).</div>
+                        </div>
+                        <div class="qa">
+                            <div class="qa-q" onclick="tog(this)">Q7. Write a query to get the Nth highest salary. <span class="arrow">▾</span></div>
+                            <div class="qa-a">Best approach — DENSE_RANK: SELECT Salary FROM (SELECT Salary, DENSE_RANK() OVER (ORDER BY Salary DESC) AS rnk FROM Employee) t WHERE rnk = N; Alternative — subquery (works without window functions): SELECT MIN(Salary) FROM Employee WHERE Salary IN (SELECT DISTINCT TOP N Salary FROM Employee ORDER BY Salary DESC); Or: SELECT DISTINCT Salary FROM Employee ORDER BY Salary DESC LIMIT 1 OFFSET N-1; DENSE_RANK is preferred in interviews — handles ties correctly and works across all major databases.</div>
+                        </div>
+                        <div class="qa">
+                            <div class="qa-q" onclick="tog(this)">Q8. Find employees who earn more than their manager. <span class="arrow">▾</span></div>
+                            <div class="qa-a">Self join on the Employee table: SELECT E.Name AS Employee, E.Salary, M.Name AS Manager, M.Salary AS ManagerSalary FROM Employee E JOIN Employee M ON E.ManagerID = M.EmpID WHERE E.Salary > M.Salary; This joins Employee to itself — E represents the employee, M represents their manager. The WHERE clause keeps only pairs where the employee earns more. This is the classic self-join interview question.</div>
+                        </div>
+                        <div class="qa">
+                            <div class="qa-q" onclick="tog(this)">Q9. Write a query to find students who enrolled in all courses. <span class="arrow">▾</span></div>
+                            <div class="qa-a">Using double NOT EXISTS (relational division): SELECT DISTINCT S.Name FROM Student S WHERE NOT EXISTS ( SELECT * FROM Course C WHERE NOT EXISTS ( SELECT * FROM Enrollment E WHERE E.StudentID = S.StudentID AND E.CourseID = C.CourseID ) ); Reading it: "find students for whom there is NO course that they have NOT enrolled in" = students enrolled in every course. The division approach: SELECT StudentID FROM Enrollment GROUP BY StudentID HAVING COUNT(DISTINCT CourseID) = (SELECT COUNT(*) FROM Course);</div>
+                        </div>
+                        <div class="qa">
+                            <div class="qa-q" onclick="tog(this)">Q10. What is the difference between UNION and UNION ALL? <span class="arrow">▾</span></div>
+                            <div class="qa-a">UNION combines results of two SELECT queries and removes duplicate rows — it internally sorts and deduplicates. UNION ALL combines results and keeps ALL rows including duplicates — faster because no dedup step. Rules for both: same number of columns, compatible data types in corresponding positions, column names taken from first query. Use UNION ALL when you know there are no duplicates (or you want them), or when performance matters. UNION's duplicate removal can be expensive on large result sets.</div>
+                        </div>
+                    </div>
+                    <div class="section">
+                        <h2>Design & scenario questions</h2>
+                        <div class="qa">
+                            <div class="qa-q" onclick="tog(this)">Q11. How would you design a schema for a library management system? <span class="arrow">▾</span></div>
+                            <div class="qa-a">Core entities: Book(BookID PK, ISBN, Title, AuthorID FK, Genre, TotalCopies, AvailableCopies), Author(AuthorID PK, Name, Country), Member(MemberID PK, Name, Email, MembershipExpiry), BorrowRecord(RecordID PK, MemberID FK, BookID FK, BorrowDate, DueDate, ReturnDate, FineAmount). Relationships: Book-Author is M:N (book can have multiple authors) → BookAuthor junction table. One member can borrow many books (1:N). Key constraints: AvailableCopies >= 0 (CHECK constraint), DueDate > BorrowDate, Index on BookID and MemberID in BorrowRecord for fast lookups.</div>
+                        </div>
+                        <div class="qa">
+                            <div class="qa-q" onclick="tog(this)">Q12. What happens if you don't index a column that's used in WHERE clause of a frequently run query? <span class="arrow">▾</span></div>
+                            <div class="qa-a">The database performs a full table scan — reads every row in the table to find matches. For a table with 10 million rows, that's 10 million row comparisons and potentially thousands of disk I/O operations per query. Symptoms: slow query response times, high CPU/disk usage, EXPLAIN shows type=ALL and key=NULL. Fix: CREATE INDEX on the column(s) in the WHERE clause. For composite conditions (WHERE Dept='CS' AND Marks>80), a composite index on (Dept, Marks) is most effective. Always run EXPLAIN before and after adding an index to verify it's being used.</div>
+                        </div>
+                    </div>
+                `
+            }
+        ];
+
+        const nav = document.getElementById('nav');
+        const pages = document.getElementById('pages');
+        
+        topics.forEach((t, i) => {
+            const btn = document.createElement('button');
+            btn.textContent = t.label;
+            btn.className = i === 0 ? 'active' : '';
+            btn.onclick = () => {
+                document.querySelectorAll('.nav button').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+                document.getElementById(t.id).classList.add('active');
+            };
+            nav.appendChild(btn);
+            
+            const page = document.createElement('div');
+            page.className = 'page' + (i === 0 ? ' active' : '');
+            page.id = t.id;
+            page.innerHTML = t.html;
+            pages.appendChild(page);
+        });
+
+        function tog(el) {
+            const ans = el.nextElementSibling;
+            const arrow = el.querySelector('.arrow');
+            ans.classList.toggle('open');
+            arrow.classList.toggle('open');
+        }
+    </script>
+</body>
+</html>
