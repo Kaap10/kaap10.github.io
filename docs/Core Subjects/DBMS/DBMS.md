@@ -4,6 +4,14 @@
 - also a part of AKTU 3rd sem syllabus 
 - Important for Interview / OA (mcq + coding)
 - In the era of AI - data is the new oil
+
+| DBMS Master Guide | 🔗 HTML Links |
+| :--- | :--- |
+| **1. DBMS Topics** | [Open File](/dbms/dbms_topics.html/) |
+| **2. DBMS LEVEL-1** | [Open File](/dbms/dbms_level1.html/) |
+| **3. DBMS LEVEL-2** | [Open File](/dbms/dbms_level2.html/) |
+| **4. DBMS LEVEL-3** | [Open File](/dbms/dbms_level3.html/) |
+
 # Level-1
 ## 1.1 Topics to cover
 ![[Pasted image 20260520113916.png|481]]
@@ -101,12 +109,85 @@
 ### Interview QnA
 ![[Pasted image 20260520123333.png|548]]
 ## 1.6 ER Model & ER Diagrams
+- Entity Relationship Model -> Blueprint of DB
+- what it shows? - Data + Relationships
+### Component of ER Model
+- Entity -> Real world object (Rectangle)
+- Attribute -> property of an entity (oval)
+- Relationship -> link between entities (Diamond)
+- Key Attribute -> uniquely identifies (underlined oval)
+### Types of Attributes
+1. Simple -> Can't divide further (age, roll no etc)
+2. Composite -> Can divide in sub parts (name -> first, middle and last name & address etc)
+3. Derived -> calculate from other attributes (age derived from DOB)
+4. Multi-valued -> can have multiple values (phone no etc)
+### Relationship Types (Cardinality)
+![[Pasted image 20260520151301.png|641]]
+### Weak Entity
+- can't uniquely identified by own, need other attributes to be uniquely identified
+- (double rectangle)
+- Ex: Fees submit (but need transaction no)
+### Interview QnA
+![[Pasted image 20260520151503.png|622]]
+### ER-Diagram Example
 ## 1.7 Relational Model Basics
-
-
+- propose by E.F. Codd (1970)
+ ![[Pasted image 20260520151915.png|506]]
+### Properties of Relation
+![[Pasted image 20260520152027.png|563]]
+### Interview QnA
+![[Pasted image 20260520152101.png|582]]
 ## 1.8 Types of Keys
+- helps to find uniquely identified rows and establish relationship between tables
+![[Pasted image 20260520152244.png|589]]
+### Super Key vs Candidate Key
+- super key -> any combination that give uniqueness
+- candidate key -> minimal super key
+### Foreign Key
+- maintain referential integrity
+![[Pasted image 20260520152517.png|566]]
 ## 1.9 Basic SQL (DDL + DML)
+### SQL Categories
+![[Pasted image 20260520152608.png|579]]
+### DDL
+![[Pasted image 20260520152727.png|529]]
+### DML
+![[Pasted image 20260520152755.png|541]]
+### Important Constraints
+![[Pasted image 20260520152828.png|557]]
+### Drop vs Delete vs Truncate
+![[Pasted image 20260520152900.png|561]]
+### Interview QnA
+![[Pasted image 20260520152945.png|546]]
 # Level-2
 ![[Pasted image 20260520113729.png|493]]
+## 2.1 Normalization
+- Normalization removes **data redundancy** and **update anomalies** from tables by organizing them into well-structured smaller tables.
+![[Pasted image 20260520170828.png|398]]
+![[Pasted image 20260520170924.png|638]]
+![[Pasted image 20260520171003.png|630]]
+![[Pasted image 20260520171038.png|628]]
+### Interview QnA
+![[Pasted image 20260520171123.png|571]]
+## 2.1 Functional Dependencies
+## 2.2 SQL Joins (all types)
+## 2.3 Aggregation & GROUP BY
+## 2.4 Subqueries & Nested SQL
+## 2.5 Views, Procedures & Triggers
+## 2.6 Transactional & ACID
+## 2.7 Concurrency Problems
+## 2.8 Locking & 2PL
+## 2.9 Indexing & B-tree
 # Level-3
+## Topics to cover
 ![[Pasted image 20260520113806.png]]
+## 3.1 Deadlock 
+## 3.2 Isolation Levels
+## 3.3 Recovery & Logging
+## 3.4 Query Optimization
+## 3.5 Relational Algebra
+## 3.6 Hashing Techniques
+## 3.7 NoSQL vs SQL + CAP
+## 3.8 Sharding & Replication
+## 3.9 Advanced SQL
+## 3.10 Top Interview QnA

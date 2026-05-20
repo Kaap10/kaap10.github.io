@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Database & DBMS Interactive Guide</title>
+    <style>
+        :root {
+            --color-text-primary: #1a1a1a;
+            --color-text-secondary: #4a4a4a;
+            --color-text-tertiary: #757575;
+            --color-text-success: #3B6D11;
+            --color-text-danger: #A32D2D;
+            --color-background-primary: #ffffff;
+            --color-background-secondary: #f4f5f7;
+            --color-background-tertiary: #e9ecef;
+            --color-border-secondary: #d1d5db;
+            --color-border-tertiary: #e5e7eb;
+            --border-radius-md: 8px;
+            --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            padding: 16px 0 12px;
+        }
+
+        .nav button {
+            font-size: 12px;
+            padding: 5px 11px;
+            border-radius: 20px;
+            border: 0.5px solid var(--color-border-secondary);
+            background: transparent;
+            color: var(--color-text-secondary);
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .nav button.active {
+            background: #E6F1FB;
+            color: #0C447C;
+            border-color: #85B7EB;
+            font-weight: 500;
+        }
+
+        .page {
+            display: none;
+            padding-bottom: 24px;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        .section {
+            margin-bottom: 20px;
+        }
+
+        .section h2 {
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--color-text-primary);
+            margin-bottom: 8px;
+            padding-bottom: 6px;
+            border-bottom: 0.5px solid var(--color-border-tertiary);
+        }
+
+        .section p {
+            font-size: 14px;
+            color: var(--color-text-secondary);
+            line-height: 1.7;
+            margin-bottom: 8px;
+        }
+
+        .section p strong {
+            color: var(--color-text-primary);
+            font-weight: 500;
+        }
+
+        .card-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 10px;
+            margin: 10px 0;
+        }
+
+        .card {
+            background: var(--color-background-secondary);
+            border-radius: var(--border-radius-md);
+            padding: 12px 14px;
+        }
+
+        .card .label {
+            font-size: 11px;
+            color: var(--color-text-tertiary);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            margin-bottom: 4px;
+        }
+
+        .card .val {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--color-text-primary);
+        }
+
+        .card .sub {
+            font-size: 12px;
+            color: var(--color-text-secondary);
+            margin-top: 3px;
+            line-height: 1.5;
+        }
+
+        .tag {
+            display: inline-block;
+            font-size: 11px;
+            font-weight: 500;
+            padding: 2px 8px;
+            border-radius: 10px;
+            margin: 2px 2px 2px 0;
+        }
+
+        .tag.blue { background: #E6F1FB; color: #0C447C; }
+        .tag.green { background: #EAF3DE; color: #27500A; }
+        .tag.amber { background: #FAEEDA; color: #633806; }
+        .tag.red { background: #FCEBEB; color: #791F1F; }
+        .tag.purple { background: #EEEDFE; color: #3C3489; }
+        .tag.teal { background: #E1F5EE; color: #085041; }
+
+        code {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            background: var(--color-background-secondary);
+            padding: 1px 5px;
+            border-radius: 4px;
+            color: var(--color-text-primary);
+        }
+
+        .code-block {
+            background: var(--color-background-secondary);
+            border: 0.5px solid var(--color-border-tertiary);
+            border-radius: var(--border-radius-md);
+            padding: 12px 14px;
+            margin: 8px 0;
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--color-text-primary);
+            line-height: 1.8;
+            white-space: pre-wrap;
+        }
+
+        .table-wrap {
+            overflow-x: auto;
+            margin: 8px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        th {
+            background: var(--color-background-secondary);
+            color: var(--color-text-secondary);
+            font-weight: 500;
+            text-align: left;
+            padding: 8px 10px;
+            border-bottom: 0.5px solid var(--color-border-secondary);
+        }
+
+        td {
+            padding: 7px 10px;
+            border-bottom: 0.5px solid var(--color-border-tertiary);
+            color: var(--color-text-primary);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .qa {
+            border: 0.5px solid var(--color-border-tertiary);
+            border-radius: var(--border-radius-md);
+            margin: 8px 0;
+            overflow: hidden;
+        }
+
+        .qa-q {
+            padding: 10px 14px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--color-text-primary);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--color-background-secondary);
+        }
+
+        .qa-q:hover {
+            background: var(--color-background-tertiary);
+        }
+
+        .qa-a {
+            display: none;
+            padding: 10px 14px;
+            font-size: 13px;
+            color: var(--color-text-secondary);
+            line-height: 1.7;
+            border-top: 0.5px solid var(--color-border-tertiary);
+            background: var(--color-background-primary);
+        }
+
+        .qa-a.open {
+            display: block;
+        }
+
+        .arrow {
+            font-size: 11px;
+            transition: transform 0.2s;
+            color: var(--color-text-tertiary);
+        }
+
+        .arrow.open {
+            transform: rotate(180deg);
+        }
+
+        .highlight, .remember {
+            padding: 10px 14px;
+            font-size: 13px;
+            line-height: 1.7;
+            margin: 8px 0;
+            border-radius: 0;
+        }
+
+        .highlight {
+            background: #FAEEDA;
+            border-left: 3px solid #EF9F27;
+            color: #412402;
+        }
+
+        .remember {
+            background: #EAF3DE;
+            border-left: 3px solid #639922;
+            color: #173404;
+        }
+
+        .vs-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin: 10px 0;
+        }
+
+        .vs-card {
+            border-radius: var(--border-radius-md);
+            padding: 12px 14px;
+            border: 0.5px solid var(--color-border-tertiary);
+        }
+
+        .vs-card h4 {
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .vs-card ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .vs-card ul li {
+            font-size: 12px;
+            color: var(--color-text-secondary);
+            padding: 3px 0;
+            line-height: 1.5;
+        }
+
+        .vs-card ul li::before {
+            content: "+ ";
+            color: var(--color-text-success);
+        }
+
+        .vs-card.bad ul li::before {
+            content: "- ";
+            color: var(--color-text-danger);
+        }
+
+        .progress {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--color-border-secondary);
+        }
+
+        .dot.done {
+            background: #378ADD;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="nav" id="nav"></div>
+    <div id="pages"></div>
+
+    <script>
+        const topics = [
+            {
+                id: 't1', 
+                label: 'What is DB & DBMS',
+                html: `
+                    <div class="section">
+                        <h2>What is data?</h2>
+                        <p>Raw facts. <strong>Example:</strong> "Rahul", 21, "Delhi", 85% — these are data points about a student.</p>
+                    </div>
+                    <div class="section">
+                        <h2>What is a database?</h2>
+                        <p>An <strong>organized collection of related data</strong> stored so it can be accessed, managed, and updated easily.</p>
+                        <div class="highlight">Real example: Your college stores every student's roll number, name, marks, fees — all in a database. Finding "Rahul's marks" takes milliseconds.</div>
+                        <div class="card-row">
+                            <div class="card"><div class="label">Without DB</div><div class="val">Random Excel files</div><div class="sub">Scattered, duplicate, hard to find</div></div>
+                            <div class="card"><div class="label">With DB</div><div class="val">Organized tables</div><div class="sub">Fast search, no duplicates, reliable</div></div>
+                        </div>
+                    </div>
+                    <div class="section">
+                        <h2>What is a DBMS?</h2>
+                        <p>A <strong>Database Management System</strong> is software that creates, manages, and controls access to a database.</p>
+                        <p>Think of it this way: Database = Library. DBMS = Librarian. You ask the librarian (DBMS) for a book (data) — you don't dig through shelves yourself.</p>
+                        <div class="card-row">
+                            <div class="card"><div class="label">DBMS Software</div><div class="val">MySQL, Oracle</div><div class="sub">PostgreSQL, MongoDB, SQL Server</div></div>
+                            <div class="card"><div class="label">DBMS does</div><div class="val">CRUD operations</div><div class="sub">Create, Read, Update, Delete</div></div>
+                            <div class="card"><div class="label">Also handles</div><div class="val">Security & backup</div><div class="sub">User access, recovery, concurrency</div></div>
+                        </div>
+                    </div>
+                    <div class="section">
+                        <h2>Interview Q&A</h2>
+                        <div class="qa">
+                            <div class="qa-q" onclick="tog(this)">Q1. Define DBMS. How is it different from a database? <span class="arrow">▾</span></div>
+                            <div class="qa-a">A <strong>database</strong> is a collection of organized data. A <strong>DBMS</strong> is the software used to interact with that database. The database stores the data; the DBMS provides tools to create, read, update, and delete it. Example: MySQL is a DBMS; the student records it manages form the database.</div>
+                        </div>
+                        <div class="qa">
+                            <div class="qa-q" onclick="tog(this)">Q2. Why do we need a DBMS instead of just files? <span class="arrow">▾</span></div>
+                            <div class="qa-a">Files have no built-in security, no query support, and cause data redundancy and inconsistency. DBMS solves all of this — it provides structured queries (SQL), access control, backup & recovery, and handles multiple users simultaneously.</div>
+                        </div>
+                        <div class="qa">
+                            <div class="qa-q" onclick="tog(this)">Q3. Name 5 real-world applications of DBMS. <span class="arrow">▾</span></div>
+                            <div class="qa-a">1. Banking (account transactions) 2. Railways (ticket booking — IRCTC) 3. E-commerce (Amazon product catalog) 4. Hospitals (patient records) 5. Social media (Facebook user data). All of these use databases to store and manage millions of records.</div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                id: 't2', 
+                label: 'DBMS vs File System',
+                html: `
+                    <div class="section">
+                        <h2>The problem with file systems</h2>
+                        <p>Before DBMS, data was stored in plain files (like .txt or Excel). This caused serious problems.</p>
+                        <div class="vs-grid">
+                            <div class="vs-card bad">
+                                <h4 style="color:#A32D2D">File system problems</h4>
+                                <ul>
+                                    <li>Data redundancy (same data stored multiple times)</li>
+                                    <li>Data inconsistency (different copies, different values)</li>
+                                    <li>No query language</li>
+                                    <li>No access control</li>
+                                    <li>No backup/recovery</li>
+                                    <li>Can't handle multiple users</li>
+                                </ul>
+                            </div>
+                            <div class="vs-card">
+                                <h4 style="color:#3B6D11">DBMS advantages</h4>
+                                <ul>
+                                    <li>No redundancy (normalization)</li>
+                                    <li>Data consistency guaranteed</li>
+                                    <li>SQL for powerful queries</li>
+                                    <li>Role-based access control</li>
+                                    <li>Automatic backup & recovery</li>
+                                    <li>Handles concurrent users</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="section">
+                        <h2>Real example</h2>
+                        <p>A college stores student data in two departments — Exam and Library — as separate files.</p>
+                        <div class="highlight"><strong>File System:</strong> Exam file has Rahul's address as "Delhi" but Library file says "Noida" — both updated differently. Now nobody knows the correct address. This is data inconsistency.</div>
+                        <div class="remember"><strong>DBMS solution:</strong> Address is stored once in a central Student table. Both departments read from the same source. Always consistent.</div>
+                    </div>
+                    <div class="section">
+                        <h2>Comparison table</h2>
+                        <div class="table-wrap">
+                            <table>
+                                <tr><th>Feature</th><th>File System</th><th>DBMS</th></tr>
+                                <tr><td>Data redundancy</td><td>High</td><td>Minimal</td></tr>
+                                <tr><td>Data consistency</td><td>Not guaranteed</td><td>Guaranteed</td></tr>
+                                <tr><td>Query support</td><td>No</td><td>Yes (SQL)</td></tr>
+                                <tr><td>Access control</td><td>OS-level only</td><td>Fine-grained</td></tr>
+                                <tr><td>Crash recovery</td><td>Manual</td><td>Automatic</td></tr>
+                                <tr><td>Multi-user support</td><td>No</td><td>Yes</td></tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="section">
+                        <h2>Interview Q&A</h2>
+                        <div class="qa">
+                            <div class="qa-q" onclick="tog(this)">Q1. What is data redundancy? How does DBMS reduce it? <span class="arrow">▾</span></div>
+                            <div class="qa-a">Data redundancy means the same data is stored in multiple places. In a file system, student name and address might be in 5 different files. DBMS uses normalization — data is stored in one table, and all other tables reference it via foreign keys. No duplication.</div>
+                        </div>
+                        <div class="qa">
+                            <div class="qa-q" onclick="tog(this)">Q2. What is data inconsistency? Give an example. <span class="arrow">▾</span></div>
+                            <div class="qa-a">Data inconsistency is when the same attribute has different values in different places. Example: A bank updates your address in the savings account file but not the loan file. Now the two files disagree. DBMS prevents this by centralizing data storage.</div>
+                        </div>
+                        <div class="qa">
+                            <div class="qa-q" onclick="tog(this)">Q3. What are the disadvantages of file-based systems? <span class="arrow">▾</span></div>
+                            <div class="qa-a">Data redundancy, inconsistency, difficult data access (need to write custom programs for every query), data isolation (data scattered across many formats), integrity problems, atomicity problems, concurrent access issues, and security problems — all are limitations of file-based systems.</div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                id: 't3', 
+                label: 'Types of DBMS',
+                html: `
+                    <div class="section">
+                        <h2>4 main types of DBMS</h2>
+                        <div class="card-row">
+                            <div class="card"><div class="label">Type 1</div><div class="val">Hierarchical</div><div class="sub">Tree structure. Parent→child. IBM IMS. Rigid, fast.</div></div>
+                            <div class="card"><div class="label">Type 2</div><div class="val">Network</div><div class="sub">Graph structure. Many-to-many links. IDMS. Complex.</div></div>
+                            <div class="card"><div class="label">Type 3</div><div class="val">Relational (RDBMS)</div><div class="sub">Tables + SQL. MySQL, Oracle. Most widely used.</div></div>
+                            <div class="card"><div class="label">Type 4</div><div class="val">NoSQL</div><div class="sub">Flexible schemas. MongoDB, Redis. For big/unstructured data.</div></div>
+                        </div>
+                    </div>
+                    <div class="section">
+                        <h2>Hierarchical DBMS</h2>
+                        <p>Data arranged in a <strong>tree (parent-child)</strong> structure. One parent, many children. Like an org chart.</p>
+                        <p>Example: A company database where CEO → Managers → Employees. Fast but inflexible — a child can only have one parent.</p>
+                        <span class="tag amber">Example: IBM IMS</span><span class="tag amber">Used in: early banking systems</span>
+                    </div>
+                    <div class="section">
+                        <h2>Network DBMS</h2>
+                        <p>Like hierarchical but a <strong>child can have multiple parents</strong>. Uses graph/network structure. More flexible but very complex to manage.</p>
+                        <span class="tag teal">Example: IDMS</span><span class="tag teal">Overcomes: single-parent limitation</span>
+                    </div>
+                    <div class="section">
+                        <h2>Relational DBMS (RDBMS)</h2>
+                        <p>Data stored in <strong>tables (rows and columns)</strong>. Tables are linked via keys. Uses SQL. Most important type — almost all interviews focus on this.</p>
+                        <div class="code-block">Student table:
+RollNo | Name  | Marks
+101    | Rahul | 85
+102    | Priya | 92</div>
+                        <span class="tag blue">MySQL</span><span class="tag blue">PostgreSQL</span><span class="tag blue">Oracle</span><span class="tag blue">SQL Server</span>
+                    </div>
+                    <div class="section">
+                        <h2>NoSQL DBMS</h2>
+                        <p>No fixed schema. Stores data as documents, key-value, graphs, or wide columns. Built for scale and flexibility — used by Facebook, Google, Amazon.</p>
+                        <div class="card-row">
+                            <div class="card"><div class="label">Document store</div><div class="val">MongoDB</div><div class="sub">JSON-like documents</div></div>
+                            <div class="card"><div class="label">Key-value</div><div class="val">Redis</div><div class="sub">Fast cache, sessions</div></div>
+                            <div class="card"><div class="label">Graph DB</div><div class="val">Neo4j</div><div class="sub">Social networks, maps</div></div>
+                            <div class="card"><div class="label">Wide column</div><div class="val">Cassandra</div><div class="sub">Huge scale, IoT data</div></div>
+                        </div>
+                    </div>
+                    <div class="section">
+                        <h2>Interview Q&A</h2>
+                        <div class="qa">
+                            <div class="qa-q" onclick="tog(this)">Q1. What is RDBMS? How is it different from DBMS? <span class="arrow">▾</span></div>
+                            <div class="qa-a">DBMS is a general term for software managing databases. RDBMS (Relational DBMS) is a specific type where data is stored in tables and relationships are defined using primary and foreign keys. All RDBMS are DBMS, but not all DBMS are RDBMS. MySQL, PostgreSQL are RDBMS. MongoDB is DBMS but not RDBMS.</div>
+                        </div>
+                        <div class="qa">
+                            <div class="qa-q" onclick="tog(this)">Q2. When would you use NoSQL over SQL? <span class="arrow">▾</span></div>
+                            <div class="qa-a">Use NoSQL when: (1) data is unstructured or semi-structured (social media posts, logs), (2) schema changes frequently, (3) need to handle massive scale horizontally (millions of users), (4) need high read/write speed (caching with Redis). Use SQL when data is structured, relationships matter, and ACID compliance is required (banking, e-commerce).</div>
+                        </div>
+                        <div class="qa">
+                            <div class="qa-q" onclick="tog(this)">Q3. Why is RDBMS the most popular type? <span class="arrow">▾</span></div>
+                            <div class="qa-a">RDBMS is popular because: tables are intuitive, SQL is a universal query language, it enforces data integrity via constraints, supports ACID transactions (safe for money/records), and has decades of tooling and support. It fits 80%+ of real-world business applications.</div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                id: 't4', 
+                label: '3-Tier Architecture',
+                html: `
+                    <div class="section">
+                        <h2>Why 3 tiers?</h2>
+                        <p>DBMS separates concerns into 3 levels so users don't need to know how data is physically stored, and changes at one level don't break the others. This is called <strong>data independence</strong>.</p>
+                    </div>
+                    <div class="section">
+                        <h2>The 3 tiers</h2>
+                        <div class="card-row">
+                            <div class="card"><div class="label">Tier 1 — External / View</div><div class="val">What users see</div><div class="sub">Each user/app sees only the data relevant to them. Rahul sees only his marks; teacher sees all marks.</div></div>
+                            <div class="card"><div class="label">Tier 2 — Conceptual / Logical</div><div class="val">What data exists</div><div class="sub">Describes entire database — all tables, columns, relationships, constraints. The "blueprint".</div></div>
+                            <div class="card"><div class="label">Tier 3 — Internal / Physical</div><div class="val">How data is stored</div><div class="sub">Actual file storage, indexes, blocks on disk. The DBA manages this layer.</div></div>
+                        </div>
+                    </div>
+                    <div class="section">
+                        <h2>Real-world analogy</h2>
+                        <div class="highlight">
+                            <strong>Think of a restaurant:</strong><br>
+                            External = Menu (customer sees only dishes, not recipes)<br>
+                            Conceptual = Kitchen plan (all dishes, ingredients, relationships)<br>
+                            Internal = Storage room (where flour, rice, vegetables are physically kept)
+                        </div>
+                    </div>
+                    <div class="section">
+                        <h2>Data independence</h2>
+                        <p>The key benefit of 3-tier architecture is that changes at a lower level don't affect higher levels.</p>
+                        <div class="card-row">
+                            <div class="card"><div class="label">Logical independence</div><div class="val">Change conceptual → doesn't affect views</div><div class="sub">Add a new column to a table — user's view stays same</div></div>
+                            <div class="card"><div class="label">Physical independence</div><div class="val">Change internal → doesn't affect conceptual</div><div class="sub">Move data to a new disk — no impact on logical schema</div></div>
+                        </div>
+                    </div>
+                    <div class="section">
+                        <h2>Interview Q&A</h2>
+                        <div class="qa">
+                            <div class="qa-q" onclick="tog(this)">Q1. Explain the 3-schema (ANSI/SPARC) architecture of DBMS. <span class="arrow">▾</span></div>
+                            <div class="qa-a">The ANSI/SPARC 3-schema architecture has three levels: (1) External schema — individual user views, (2) Conceptual schema — logical structure of the entire database (tables, columns, relationships), (3) Internal schema — physical storage details. This separation ensures data independence and security.</div>
+                        </div>
+                        <div class="qa">
+                            <div class="qa-q" onclick="tog(this)">Q2. What is data independence? What are its types? <span class="arrow">▾</span></div>
+                            <div class="qa-a">Data independence means changes to one level of the schema don't require changes to higher levels. Two types: (1) Logical data independence — changing the conceptual schema (e.g., adding a column) doesn't affect external views. (2) Physical data independence — changing internal storage (e.g., adding an index) doesn't affect the conceptual schema.</div>
+                        </div>
+                        <div class="qa">
+                            <div class="qa-q" onclick="tog(this)">Q3. What is a schema? What is an instance? <span class="arrow">▾</span></div>
+                            <div class="qa-a">Schema is the structure/design of a database — the table names, column names, data types, and constraints. It is fixed and changes rarely. An instance is the actual data stored in the database at a given moment. Schema = blueprint of a house. Instance = the furniture inside it right now.</div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                id: 't5', 
+                label: 'ER Model & Diagrams',
+                html: `
+                    <div class="section">
+                        <h2>What is the ER Model?</h2>
+                        <p>The <strong>Entity-Relationship Model</strong> is a visual blueprint of your database — drawn before you write a single line of SQL. It shows what data exists and how entities relate to each other.</p>
+                    </div>
+                    <div class="section">
+                        <h2>Core components</h2>
+                        <div class="card-row">
+                            <div class="card"><div class="label">Entity</div><div class="val">Rectangle</div><div class="sub">A real-world object. Student, Course, Teacher. Gets its own table.</div></div>
+                            <div class="card"><div class="label">Attribute</div><div class="val">Ellipse/Oval</div><div class="sub">Property of an entity. Student has: Name, RollNo, Age.</div></div>
+                            <div class="card"><div class="label">Relationship</div><div class="val">Diamond</div><div class="sub">Link between entities. Student "enrolls in" Course.</div></div>
+                            <div class="card"><div class="label">Key attribute</div><div class="val">Underlined oval</div><div class="sub">Uniquely identifies entity. RollNo for Student.</div></div>
+                        </div>
+                    </div>
+                    <div class="section">
+                        <h2>Types of attributes</h2>
+                        <div class="table-wrap">
+                            <table>
+                                <tr><th>Type</th><th>Meaning</th><th>Example</th></tr>
+                                <tr><td><span class="tag blue">Simple</span></td><td>Cannot be divided further</td><td>Age, RollNo</td></tr>
+                                <tr><td><span class="tag green">Composite</span></td><td>Can be divided into sub-parts</td><td>Name → First, Last</td></tr>
+                                <tr><td><span class="tag amber">Derived</span></td><td>Calculated from other attributes</td><td>Age derived from DOB</td></tr>
+                                <tr><td><span class="tag purple">Multi-valued</span></td><td>Can have multiple values</td><td>Phone numbers</td></tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="section">
+                        <h2>Cardinality (relationship types)</h2>
+                        <div class="card-row">
+                            <div class="card"><div class="label">One-to-One (1:1)</div><div class="val">Person ↔ Passport</div><div class="sub">Each person has exactly one passport</div></div>
+                            <div class="card"><div class="label">One-to-Many (1:N)</div><div class="val">Teacher → Students</div><div class="sub">One teacher teaches many students</div></div>
+                            <div class="card"><div class="label">Many-to-Many (M:N)</div><div class="val">Student ↔ Course</div><div class="sub">Many students enroll in many courses</div></div>
+                        </div>
+                    </div>
+                    <div class="section">
+                        <h2>Weak entity</h2>
+                        <p>An entity that <strong>cannot be uniquely identified</strong> by its own attributes alone — it depends on another (owner) entity. Drawn with a <strong>double rectangle</strong>.</p>
+                        <div class="highlight">Example: A bank <strong>Loan</strong> entity has <code>LoanNo</code>, but <strong>LoanPayment</strong> (weak entity) only has <code>PaymentNo</code> which is only unique within a specific loan. LoanPayment depends on Loan.</div>
+                    </div>
+                    <div class="section">
+                        <h2>Interview Q&A</h2>
+                        <div class="qa">
+                            <div class="qa-q" onclick="tog(this)">Q1. What is a weak entity? How is it different from a strong entity? <span class="arrow">▾</span></div>
+                            <div class="qa-a">A strong entity has its own primary key and exists independently (e.g., Student with RollNo). A weak entity has no primary key of its own — it's identified by combining its partial key with the primary key of its owner entity. Drawn with double rectangle and double diamond for the identifying relationship. Example: OrderItem is weak; it needs OrderID + ItemNo to be unique.</div>
+                        </div>
+                        <div class="qa">
+                            <div class="qa-q" onclick="tog(this)">Q2. What is participation constraint? What are its types? <span class="arrow">▾</span></div>
+                            <div class="qa-a">Participation constraint defines whether all or some entity instances must participate in a relationship. Total participation (double line) — every instance must participate. Example: every Employee must work in some Department. Partial participation (single line) — some instances may not participate. Example: not every Employee manages a Department.</div>
+                        </div>
+                        <div class="qa">
+                            <div class="qa-q" onclick="tog(this)">Q3. What is the difference between a derived attribute and a stored attribute? <span class="arrow">▾</span></div>
+                            <div class="qa-a">A stored attribute is directly stored in the database (e.g., DateOfBirth). A derived attribute is computed from stored attributes and usually not stored itself (e.g., Age = CurrentDate - DateOfBirth). Derived attributes are shown with dashed ovals in ER diagrams. Storing them would cause redundancy and inconsistency if the base data changes.</div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                id: 't6', 
+                label: 'Relational Model',
+                html: `
+                    <div class="section">
+                        <h2>What is the relational model?</h2>
+                        <p>Proposed by <strong>E.F. Codd in 1970</strong>. Data is organized in <strong>tables (called relations)</strong>. Each table has rows (tuples) and columns (attributes). This is the foundation of all SQL databases.</p>
+                    </div>
+                    <div class="section">
+                        <h2>Key terminology</h2>
+                        <div class="table-wrap">
+                            <table>
+                                <tr><th>Formal term</th><th>Common term</th><th>Example</th></tr>
+                                <tr><td>Relation</td><td>Table</td><td>Student table</td></tr>
+                                <tr><td>Tuple</td><td>Row / Record</td><td>One student's data</td></tr>
+                                <tr><td>Attribute</td><td>Column / Field</td><td>RollNo, Name, Marks</td></tr>
+                                <tr><td>Domain</td><td>Allowed values</td><td>Marks domain: 0–100</td></tr>
+                                <tr><td>Degree</td><td>Number of columns</td><td>Student has 4 attrs → degree 4</td></tr>
+                                <tr><td>Cardinality</td><td>Number of rows</td><td>500 students → cardinality 500</td></tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="section">
+                        <h2>Example relation</h2>
+                        <div class="code-block">STUDENT (RollNo, Name, Dept, Marks)
+─────────────────────────────────
+101    Rahul    CS     85
+102    Priya    IT     92
+103    Arjun    CS     78</div>
+                        <p>Degree = 4 (columns). Cardinality = 3 (rows). RollNo is the primary key.</p>
+                    </div>
+                    <div class="section">
+                        <h2>Properties of a relation</h2>
+                        <div class="card-row">
+                            <div class="card"><div class="label">No duplicate tuples</div><div class="val">Every row is unique</div><div class="sub">Primary key enforces this</div></div>
+                            <div class="card"><div class="label">Atomic values</div><div class="val">Each cell = one value</div><div class="sub">No lists or nested tables</div></div>
+                            <div class="card"><div class="label">Order doesn't matter</div><div class="val">Rows & columns unordered</div><div class="sub">Row 1 or Row 3 — same relation</div></div>
+                            <div class="card"><div class="label">Column names unique</div><div class="val">No two cols same name</div><div class="sub">Within one table</div></div>
+                        </div>
+                    </div>
+                    <div class="section">
+                        <h2>Interview Q&A</h2>
+                        <div class="qa">
+                            <div class="qa-q" onclick="tog(this)">Q1. What is a relation? List its properties. <span class="arrow">▾</span></div>
+                            <div class="qa-a">A relation is a table in relational model. Properties: (1) No duplicate tuples — every row is unique. (2) Each attribute has an atomic value — no multi-valued cells. (3) Attribute names are unique within a relation. (4) Order of tuples doesn't matter. (5) Order of attributes doesn't matter. (6) Each column has a defined domain (valid range of values).</div>
+                        </div>
+                        <div class="qa">
+                            <div class="qa-q" onclick="tog(this)">Q2. What is a domain? What is an atomic value? <span class="arrow">▾</span></div>
+                            <div class="qa-a">Domain is the set of allowed values for an attribute. E.g., domain of Marks = {0,1,2...100}, domain of Gender = {'M','F'}. Atomic value means each cell holds exactly one indivisible value — you cannot store a list of phone numbers in one cell. This is the First Normal Form (1NF) requirement.</div>
+                        </div>
+                        <div class="qa">
+                            <div class="qa-q" onclick="tog(this)">Q3. Who proposed the relational model? What was revolutionary about it? <span class="arrow">▾</span></div>
+                            <div class="qa-a">E.F. Codd proposed it in his 1970 paper "A Relational Model of Data for Large Shared Data Banks." It was revolutionary because: (1) It gave a mathematical (set-theory) foundation to databases. (2) Introduced SQL as a high-level query language — users describe WHAT they want, not HOW to get it. (3) Enforced data independence — physical storage is hidden from users.</div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                id: 't7', 
+                label: 'Types of Keys',
+                html: `
+                    <div class="section">
+                        <h2>Why keys?</h2>
+                        <p>Keys uniquely identify rows in a table and establish relationships between tables. This is one of the most common interview topics — know all types cold.</p>
+                    </div>
+                    <div class="section">
+                        <h2>All key types — at a glance</h2>
+                        <div class="table-wrap">
+                            <table>
+                                <tr><th>Key</th><th>Definition</th><th>Example</th></tr>
+                                <tr><td><span class="tag purple">Super key</span></td><td>Any set of columns that uniquely identifies a row</td><td>{RollNo}, {RollNo, Name}, {RollNo, Name, Age}</td></tr>
+                                <tr><td><span class="tag blue">Candidate key</span></td><td>Minimal super key — no unnecessary columns</td><td>{RollNo}, {Email} — both minimal &amp; unique</td></tr>
+                                <tr><td><span class="tag green">Primary key</span></td><td>The chosen candidate key. Cannot be NULL.</td><td>RollNo chosen as PK</td></tr>
+                                <tr><td><span class="tag amber">Alternate key</span></td><td>Candidate keys NOT chosen as primary key</td><td>Email (since RollNo is PK)</td></tr>
+                                <tr><td><span class="tag teal">Foreign key</span></td><td>Column referencing another table's primary key</td><td>Dept_ID in Student refs Department</td></tr>
+                                <tr><td><span class="tag red">Composite key</span></td><td>Primary key made of 2+ columns</td><td>(StudentID + CourseID) in Enrollment</td></tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="section">
+                        <h2>Super key vs Candidate key — the key difference</h2>
+                        <div class="highlight">
+                            <strong>Super key:</strong> ANY combination that gives uniqueness. {RollNo, Name} is a super key — it's unique, but Name is extra baggage.<br><br>
+                            <strong>Candidate key:</strong> The MINIMAL super key. Remove any column and it loses uniqueness. {RollNo} alone is enough — so it's a candidate key. {RollNo, Name} is NOT a candidate key.
+                        </div>
+                    </div>
+                    <div class="section">
+                        <h2>Foreign key — referential integrity</h2>
+                        <div class="code-block">DEPARTMENT table:          STUDENT table:
+DeptID | DeptName          RollNo | Name  | DeptID ← FK
+  10   | CS          →       101  | Rahul |   10
+  20   | IT                  102  | Priya |   20
+                             103  | Arjun |   99  ← ERROR! 99 doesn't exist</div>
+                        <p>A foreign key ensures that the value in <code>Student.DeptID</code> must exist in <code>Department.DeptID</code>. This is called <strong>referential integrity</strong>.</p>
+                    </div>
+                    <div class="section">
+                        <h2>Interview Q&A</h2>
+                        <div class="qa">
+                            <div class="qa-q" onclick="tog(this)">Q1. What is the difference between primary key and unique key? <span class="arrow">▾</span></div>
+                            <div class="qa-a">Both enforce uniqueness, but: Primary key cannot be NULL (mandatory), only one per table, and it's the main identifier. Unique key CAN have NULL (treated as unknown, not duplicate), a table can have multiple unique keys. Example: RollNo is PK (never null). Email is unique key (student might not have provided it yet).</div>
+                        </div>
+                        <div class="qa">
+                            <div class="qa-q" onclick="tog(this)">Q2. Can a table have multiple candidate keys? Give an example. <span class="arrow">▾</span></div>
+                            <div class="qa-a">Yes. A table can have multiple candidate keys — all are capable of being the primary key. Example: STUDENT(RollNo, AadhaarNo, Email, Name). Here RollNo, AadhaarNo, and Email are all candidate keys — each uniquely identifies a student. You choose one as primary key; the rest become alternate keys.</div>
+                        </div>
+                        <div class="qa">
+                            <div class="qa-q" onclick="tog(this)">Q3. What is referential integrity? What happens on delete? <span class="arrow">▾</span></div>
+                            <div class="qa-a">Referential integrity means a foreign key value must always match an existing primary key in the referenced table (or be NULL). On delete of a parent row, options are: (1) CASCADE — delete child rows too, (2) SET NULL — set FK to null, (3) RESTRICT/NO ACTION — block delete if children exist, (4) SET DEFAULT — set FK to default value. This prevents "orphan records."</div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                id: 't8', 
+                label: 'Basic SQL',
+                html: `
+                    <div class="section">
+                        <h2>SQL categories</h2>
+                        <div class="card-row">
+                            <div class="card"><div class="label">DDL</div><div class="val">Data Definition</div><div class="sub">CREATE, ALTER, DROP, TRUNCATE — define structure</div></div>
+                            <div class="card"><div class="label">DML</div><div class="val">Data Manipulation</div><div class="sub">INSERT, UPDATE, DELETE, SELECT — manage data</div></div>
+                            <div class="card"><div class="label">DCL</div><div class="val">Data Control</div><div class="sub">GRANT, REVOKE — access permissions</div></div>
+                            <div class="card"><div class="label">TCL</div><div class="val">Transaction Control</div><div class="sub">COMMIT, ROLLBACK, SAVEPOINT</div></div>
+                        </div>
+                    </div>
+                    <div class="section">
+                        <h2>DDL — defining structure</h2>
+                        <div class="code-block">CREATE TABLE Student (
+  RollNo  INT PRIMARY KEY,
+  Name    VARCHAR(50) NOT NULL,
+  Dept    VARCHAR(20),
+  Marks   INT CHECK (Marks &gt;= 0 AND Marks &lt;= 100)
+);
+
+ALTER TABLE Student ADD COLUMN Email VARCHAR(100);
+
+DROP TABLE Student;       -- deletes table + data permanently
+TRUNCATE TABLE Student;   -- deletes all rows, keeps structure</div>
+                    </div>
+                    <div class="section">
+                        <h2>DML — working with data</h2>
+                        <div class="code-block">-- INSERT
+INSERT INTO Student VALUES (101, 'Rahul', 'CS', 85);
+INSERT INTO Student (RollNo, Name) VALUES (102, 'Priya');
+
+-- SELECT
+SELECT * FROM Student;
+SELECT Name, Marks FROM Student WHERE Dept = 'CS';
+SELECT * FROM Student WHERE Marks &gt; 80 ORDER BY Marks DESC;
+
+-- UPDATE
+UPDATE Student SET Marks = 90 WHERE RollNo = 101;
+
+-- DELETE
+DELETE FROM Student WHERE RollNo = 101;
+DELETE FROM Student;   -- deletes all rows (no WHERE)</div>
+                    </div>
+                    <div class="section">
+                        <h2>Important constraints</h2>
+                        <div class="table-wrap">
+                            <table>
+                                <tr><th>Constraint</th><th>Meaning</th><th>Example</th></tr>
+                                <tr><td><code>PRIMARY KEY</code></td><td>Unique + NOT NULL</td><td>RollNo INT PRIMARY KEY</td></tr>
+                                <tr><td><code>NOT NULL</code></td><td>Value must be provided</td><td>Name VARCHAR(50) NOT NULL</td></tr>
+                                <tr><td><code>UNIQUE</code></td><td>No duplicates allowed</td><td>Email VARCHAR(100) UNIQUE</td></tr>
+                                <tr><td><code>CHECK</code></td><td>Custom value rule</td><td>Marks INT CHECK (Marks &lt;= 100)</td></tr>
+                                <tr><td><code>DEFAULT</code></td><td>Value if none given</td><td>Dept VARCHAR(20) DEFAULT 'CS'</td></tr>
+                                <tr><td><code>FOREIGN KEY</code></td><td>References another table's PK</td><td>FOREIGN KEY (DeptID) REFERENCES Dept(ID)</td></tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="section">
+                        <h2>DROP vs TRUNCATE vs DELETE</h2>
+                        <div class="table-wrap">
+                            <table>
+                                <tr><th>Command</th><th>Removes structure?</th><th>Can rollback?</th><th>Speed</th></tr>
+                                <tr><td><code>DROP</code></td><td>Yes (table gone)</td><td>No</td><td>Fast</td></tr>
+                                <tr><td><code>TRUNCATE</code></td><td>No (keeps columns)</td><td>No (DDL)</td><td>Fast</td></tr>
+                                <tr><td><code>DELETE</code></td><td>No (keeps columns)</td><td>Yes (DML)</td><td>Slow (row-by-row)</td></tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="section">
+                        <h2>Interview Q&A</h2>
+                        <div class="qa">
+                            <div class="qa-q" onclick="tog(this)">Q1. What is the difference between DELETE, TRUNCATE, and DROP? <span class="arrow">▾</span></div>
+                            <div class="qa-a">DELETE removes specific rows (uses WHERE clause), is a DML command, fires triggers, and can be rolled back. TRUNCATE removes all rows at once, is DDL, doesn't fire row-level triggers, cannot be rolled back, but is faster. DROP removes the entire table including its structure — the table no longer exists. Remember: DELETE is row-level, TRUNCATE is table-level data, DROP is table-level structure.</div>
+                        </div>
+                        <div class="qa">
+                            <div class="qa-q" onclick="tog(this)">Q2. What is the difference between WHERE and HAVING? <span class="arrow">▾</span></div>
+                            <div class="qa-a">WHERE filters rows before grouping — it works on individual rows and cannot use aggregate functions. HAVING filters groups after GROUP BY — it works on aggregated results. Example: SELECT Dept, AVG(Marks) FROM Student WHERE Marks > 40 GROUP BY Dept HAVING AVG(Marks) > 75; — WHERE removes students with marks ≤ 40 first, then HAVING keeps only departments with avg > 75.</div>
+                        </div>
+                        <div class="qa">
+                            <div class="qa-q" onclick="tog(this)">Q3. What are SQL constraints? Why are they important? <span class="arrow">▾</span></div>
+                            <div class="qa-a">Constraints are rules enforced on table columns to maintain data integrity. Types: NOT NULL (no empty values), UNIQUE (no duplicates), PRIMARY KEY (unique + not null identifier), FOREIGN KEY (referential integrity), CHECK (custom validation rule), DEFAULT (fallback value). They prevent bad data from entering the database — catching errors at the database level, not just in application code.</div>
+                        </div>
+                        <div class="qa">
+                            <div class="qa-q" onclick="tog(this)">Q4. What is DDL vs DML? Give examples. <span class="arrow">▾</span></div>
+                            <div class="qa-a">DDL (Data Definition Language) defines database structure — CREATE, ALTER, DROP, TRUNCATE. DDL changes are auto-committed (can't rollback). DML (Data Manipulation Language) works with data — SELECT, INSERT, UPDATE, DELETE. DML operations can be rolled back within a transaction. Simple rule: DDL = schema changes, DML = data changes.</div>
+                        </div>
+                    </div>
+                `
+            }
+        ];
+
+        const nav = document.getElementById('nav');
+        const pages = document.getElementById('pages');
+
+        topics.forEach((t, i) => {
+            const btn = document.createElement('button');
+            btn.textContent = t.label;
+            btn.className = i === 0 ? 'active' : '';
+            
+            btn.onclick = () => {
+                document.querySelectorAll('.nav button').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                
+                document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+                document.getElementById(t.id).classList.add('active');
+            };
+            
+            nav.appendChild(btn);
+
+            const page = document.createElement('div');
+            page.className = 'page' + (i === 0 ? ' active' : '');
+            page.id = t.id;
+            page.innerHTML = t.html;
+            pages.appendChild(page);
+        });
+
+        function tog(el) {
+            const ans = el.nextElementSibling;
+            const arrow = el.querySelector('.arrow');
+            ans.classList.toggle('open');
+            arrow.classList.toggle('open');
+        }
+    </script>
+</body>
+</html>

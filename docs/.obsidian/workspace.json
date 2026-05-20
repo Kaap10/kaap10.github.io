@@ -8,17 +8,17 @@
         "type": "tabs",
         "children": [
           {
-            "id": "6039d9a14c8f8dd2",
+            "id": "fae21adcc2feeda1",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Core Subjects/DBMS.md",
+                "file": "Development/JavaScript.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "DBMS"
+              "title": "JavaScript"
             }
           }
         ]
@@ -184,24 +184,39 @@
       "bases:Create new base": false
     }
   },
-  "active": "6039d9a14c8f8dd2",
+  "active": "fae21adcc2feeda1",
   "lastOpenFiles": [
-    "Core Subjects/OOPs.md",
-    "Pasted image 20260520123333.png",
-    "Pasted image 20260520123258.png",
-    "Pasted image 20260520121623.png",
-    "Pasted image 20260520120444.png",
-    "Pasted image 20260520120337.png",
-    "Pasted image 20260520115723.png",
-    "Pasted image 20260520113916.png",
-    "Pasted image 20260520113806.png",
-    "Pasted image 20260520113729.png",
-    "Pasted image 20260520113650.png",
+    "intro.md",
     "Core Subjects/intro.md",
+    "Core Subjects/DBMS/dbms_topics.html",
+    "Core Subjects/DBMS/dbms_level3.html",
+    "Core Subjects/DBMS/dbms_level2.html",
+    "Core Subjects/DBMS/dbms_level1.html",
+    "Core Subjects/OOPs.md",
+    "Core Subjects/OOPs/OOPs.md",
+    "Core Subjects/OOPs",
+    "Core Subjects/New folder",
+    "Core Subjects/DBMS/dbms_level2.md",
+    "Core Subjects/DBMS/dbms_level1.md",
     "Core Subjects/DBMS.md",
+    "Core Subjects/DBMS/DBMS.md",
+    "Core Subjects/DBMS",
+    "Pasted image 20260520171123.png",
+    "Pasted image 20260520171038.png",
+    "Pasted image 20260520171003.png",
+    "Pasted image 20260520170924.png",
+    "Pasted image 20260520170828.png",
+    "Pasted image 20260520155237.png",
+    "Pasted image 20260520155212.png",
+    "Pasted image 20260520155202.png",
+    "Development/JavaScript.md",
+    "Pasted image 20260520154641.png",
+    "Pasted image 20260520154609.png",
+    "About Me.md",
+    "Data Warehouse and Data Mining.pdf",
+    "Untitled.md",
     "OOPs.md",
     "B.Tech Subjects/Data Warehouse and Data Mining.md",
-    "Data Warehouse and Data Mining.pdf",
     "B.Tech Subjects/intro.md",
     "B.Tech Subjects/Untitled.md",
     "B.Tech Subjects",
