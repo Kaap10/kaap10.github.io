@@ -1,0 +1,186 @@
+
+<style>
+.road{padding:20px 0;font-family:var(--font-sans)}
+.level-card{border-radius:var(--border-radius-lg);border:0.5px solid var(--color-border-tertiary);margin-bottom:18px;overflow:hidden}
+.level-header{display:flex;align-items:center;gap:12px;padding:14px 18px;cursor:pointer;user-select:none;background:var(--color-background-secondary)}
+.level-badge{font-size:11px;font-weight:500;padding:3px 10px;border-radius:20px}
+.level-title{font-size:15px;font-weight:500;color:var(--color-text-primary);flex:1}
+.level-sub{font-size:12px;color:var(--color-text-secondary);margin-top:2px}
+.chevron{font-size:12px;color:var(--color-text-tertiary);transition:transform .25s}
+.chevron.open{transform:rotate(180deg)}
+.level-body{padding:12px 16px 16px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.topic{display:flex;align-items:flex-start;gap:8px;padding:9px 12px;border-radius:8px;background:var(--color-background-secondary);cursor:pointer;transition:background .15s;border:0.5px solid transparent}
+.topic:hover{background:var(--color-background-tertiary);border-color:var(--color-border-tertiary)}
+.topic-dot{width:7px;height:7px;border-radius:50%;margin-top:5px;flex-shrink:0}
+.topic-text{font-size:13px;color:var(--color-text-primary);line-height:1.4}
+.topic-tag{font-size:10px;font-weight:500;padding:1px 6px;border-radius:10px;margin-top:3px;display:inline-block}
+.divider{height:0.5px;background:var(--color-border-tertiary);margin:0 16px}
+@media(max-width:500px){.level-body{grid-template-columns:1fr}}
+</style>
+<div class="road">
+
+<div class="level-card" id="l1">
+  <div class="level-header" onclick="tog('l1')">
+    <span class="level-badge" style="background:#E6F1FB;color:#0C447C">Level 1</span>
+    <div>
+      <div class="level-title">Foundations of OOPs</div>
+      <div class="level-sub">Core concepts every beginner must lock in first</div>
+    </div>
+    <span class="chevron open" id="ch1">▾</span>
+  </div>
+  <div class="divider"></div>
+  <div class="level-body" id="b1">
+    <div class="topic" onclick="sendPrompt('Teach me: What is OOPs? Why do we need it? With real-world examples vs procedural programming')">
+      <span class="topic-dot" style="background:#185FA5"></span>
+      <div><div class="topic-text">What is OOPs & Why it exists</div><span class="topic-tag" style="background:#E6F1FB;color:#0C447C">concept</span></div>
+    </div>
+    <div class="topic" onclick="sendPrompt('Teach me: Classes and Objects in OOPs with real-world examples — car, student, bank account')">
+      <span class="topic-dot" style="background:#185FA5"></span>
+      <div><div class="topic-text">Classes & Objects</div><span class="topic-tag" style="background:#E6F1FB;color:#0C447C">core</span></div>
+    </div>
+    <div class="topic" onclick="sendPrompt('Teach me: Constructors and Destructors — types, usage, real examples in Java/C++/Python')">
+      <span class="topic-dot" style="background:#185FA5"></span>
+      <div><div class="topic-text">Constructors & Destructors</div><span class="topic-tag" style="background:#E6F1FB;color:#0C447C">core</span></div>
+    </div>
+    <div class="topic" onclick="sendPrompt('Teach me: Access modifiers — public, private, protected with real-world analogy and examples')">
+      <span class="topic-dot" style="background:#185FA5"></span>
+      <div><div class="topic-text">Access Modifiers</div><span class="topic-tag" style="background:#E6F1FB;color:#0C447C">core</span></div>
+    </div>
+    <div class="topic" onclick="sendPrompt('Teach me: Encapsulation in OOPs — what it is, why it matters, real examples with getters and setters')">
+      <span class="topic-dot" style="background:#185FA5"></span>
+      <div><div class="topic-text">Encapsulation</div><span class="topic-tag" style="background:#E6F1FB;color:#0C447C">pillar</span></div>
+    </div>
+    <div class="topic" onclick="sendPrompt('Teach me: Abstraction in OOPs — abstract classes vs interfaces, real-world examples')">
+      <span class="topic-dot" style="background:#185FA5"></span>
+      <div><div class="topic-text">Abstraction</div><span class="topic-tag" style="background:#E6F1FB;color:#0C447C">pillar</span></div>
+    </div>
+    <div class="topic" onclick="sendPrompt('Teach me: this keyword in OOPs — what it refers to, how it works, common uses with examples')">
+      <span class="topic-dot" style="background:#185FA5"></span>
+      <div><div class="topic-text">The `this` keyword</div><span class="topic-tag" style="background:#E6F1FB;color:#0C447C">concept</span></div>
+    </div>
+    <div class="topic" onclick="sendPrompt('Teach me: static keyword in OOPs — static variables, methods, blocks with real examples')">
+      <span class="topic-dot" style="background:#185FA5"></span>
+      <div><div class="topic-text">Static keyword & members</div><span class="topic-tag" style="background:#E6F1FB;color:#0C447C">concept</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="level-card" id="l2">
+  <div class="level-header" onclick="tog('l2')">
+    <span class="level-badge" style="background:#EAF3DE;color:#27500A">Level 2</span>
+    <div>
+      <div class="level-title">Core Deep Dive</div>
+      <div class="level-sub">Inheritance, polymorphism & the real power of OOPs</div>
+    </div>
+    <span class="chevron open" id="ch2">▾</span>
+  </div>
+  <div class="divider"></div>
+  <div class="level-body" id="b2">
+    <div class="topic" onclick="sendPrompt('Teach me: Inheritance in OOPs — types (single, multiple, multilevel, hierarchical, hybrid) with real examples')">
+      <span class="topic-dot" style="background:#3B6D11"></span>
+      <div><div class="topic-text">Inheritance (all types)</div><span class="topic-tag" style="background:#EAF3DE;color:#3B6D11">pillar</span></div>
+    </div>
+    <div class="topic" onclick="sendPrompt('Teach me: Method overriding vs method overloading — differences, rules, examples, interview traps')">
+      <span class="topic-dot" style="background:#3B6D11"></span>
+      <div><div class="topic-text">Overriding vs Overloading</div><span class="topic-tag" style="background:#EAF3DE;color:#3B6D11">must-know</span></div>
+    </div>
+    <div class="topic" onclick="sendPrompt('Teach me: Polymorphism — compile-time vs runtime polymorphism with detailed real-world examples')">
+      <span class="topic-dot" style="background:#3B6D11"></span>
+      <div><div class="topic-text">Polymorphism (both types)</div><span class="topic-tag" style="background:#EAF3DE;color:#3B6D11">pillar</span></div>
+    </div>
+    <div class="topic" onclick="sendPrompt('Teach me: super keyword in OOPs — how to call parent constructor and methods, with examples')">
+      <span class="topic-dot" style="background:#3B6D11"></span>
+      <div><div class="topic-text">super keyword</div><span class="topic-tag" style="background:#EAF3DE;color:#3B6D11">concept</span></div>
+    </div>
+    <div class="topic" onclick="sendPrompt('Teach me: Abstract classes in OOPs — when to use them, rules, real-world examples vs interfaces')">
+      <span class="topic-dot" style="background:#3B6D11"></span>
+      <div><div class="topic-text">Abstract Classes</div><span class="topic-tag" style="background:#EAF3DE;color:#3B6D11">core</span></div>
+    </div>
+    <div class="topic" onclick="sendPrompt('Teach me: Interfaces in OOPs — what they are, default methods, multiple inheritance via interfaces, real examples')">
+      <span class="topic-dot" style="background:#3B6D11"></span>
+      <div><div class="topic-text">Interfaces</div><span class="topic-tag" style="background:#EAF3DE;color:#3B6D11">core</span></div>
+    </div>
+    <div class="topic" onclick="sendPrompt('Teach me: final keyword in Java/C++ — final variable, final method, final class with examples')">
+      <span class="topic-dot" style="background:#3B6D11"></span>
+      <div><div class="topic-text">final / const keyword</div><span class="topic-tag" style="background:#EAF3DE;color:#3B6D11">concept</span></div>
+    </div>
+    <div class="topic" onclick="sendPrompt('Teach me: Exception handling in OOPs — try/catch/finally, custom exceptions, best practices with examples')">
+      <span class="topic-dot" style="background:#3B6D11"></span>
+      <div><div class="topic-text">Exception Handling</div><span class="topic-tag" style="background:#EAF3DE;color:#3B6D11">core</span></div>
+    </div>
+    <div class="topic" onclick="sendPrompt('Teach me: Object relationships — Association, Aggregation, Composition with real-world examples and differences')">
+      <span class="topic-dot" style="background:#3B6D11"></span>
+      <div><div class="topic-text">Association, Aggregation & Composition</div><span class="topic-tag" style="background:#EAF3DE;color:#3B6D11">design</span></div>
+    </div>
+    <div class="topic" onclick="sendPrompt('Teach me: Coupling and Cohesion in OOPs — what they mean, why loose coupling and high cohesion matters')">
+      <span class="topic-dot" style="background:#3B6D11"></span>
+      <div><div class="topic-text">Coupling & Cohesion</div><span class="topic-tag" style="background:#EAF3DE;color:#3B6D11">design</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="level-card" id="l3">
+  <div class="level-header" onclick="tog('l3')">
+    <span class="level-badge" style="background:#FAEEDA;color:#633806">Level 3</span>
+    <div>
+      <div class="level-title">Interview Level</div>
+      <div class="level-sub">Design patterns, SOLID principles & what interviewers actually ask</div>
+    </div>
+    <span class="chevron open" id="ch3">▾</span>
+  </div>
+  <div class="divider"></div>
+  <div class="level-body" id="b3">
+    <div class="topic" onclick="sendPrompt('Teach me: SOLID principles in OOPs — all 5 with real-world code examples and why each matters')">
+      <span class="topic-dot" style="background:#854F0B"></span>
+      <div><div class="topic-text">SOLID Principles (all 5)</div><span class="topic-tag" style="background:#FAEEDA;color:#633806">interview</span></div>
+    </div>
+    <div class="topic" onclick="sendPrompt('Teach me: Design Patterns in OOPs — Creational, Structural, Behavioural with examples (Singleton, Factory, Observer, Strategy)')">
+      <span class="topic-dot" style="background:#854F0B"></span>
+      <div><div class="topic-text">Design Patterns overview</div><span class="topic-tag" style="background:#FAEEDA;color:#633806">interview</span></div>
+    </div>
+    <div class="topic" onclick="sendPrompt('Teach me: Singleton design pattern — implementation, thread safety, real-world uses, pros/cons')">
+      <span class="topic-dot" style="background:#854F0B"></span>
+      <div><div class="topic-text">Singleton Pattern</div><span class="topic-tag" style="background:#FAEEDA;color:#633806">pattern</span></div>
+    </div>
+    <div class="topic" onclick="sendPrompt('Teach me: Factory & Abstract Factory design pattern with real-world examples and code')">
+      <span class="topic-dot" style="background:#854F0B"></span>
+      <div><div class="topic-text">Factory Pattern</div><span class="topic-tag" style="background:#FAEEDA;color:#633806">pattern</span></div>
+    </div>
+    <div class="topic" onclick="sendPrompt('Teach me: Observer design pattern — event-driven systems, real examples like notification systems, with code')">
+      <span class="topic-dot" style="background:#854F0B"></span>
+      <div><div class="topic-text">Observer Pattern</div><span class="topic-tag" style="background:#FAEEDA;color:#633806">pattern</span></div>
+    </div>
+    <div class="topic" onclick="sendPrompt('Teach me: Strategy & Decorator design patterns — real-world examples, differences, when to use')">
+      <span class="topic-dot" style="background:#854F0B"></span>
+      <div><div class="topic-text">Strategy & Decorator</div><span class="topic-tag" style="background:#FAEEDA;color:#633806">pattern</span></div>
+    </div>
+    <div class="topic" onclick="sendPrompt('Teach me: Virtual functions and vtable in C++ — how runtime polymorphism works internally, pure virtual functions')">
+      <span class="topic-dot" style="background:#854F0B"></span>
+      <div><div class="topic-text">Virtual functions & vtable</div><span class="topic-tag" style="background:#FAEEDA;color:#633806">internals</span></div>
+    </div>
+    <div class="topic" onclick="sendPrompt('Teach me: Diamond problem in multiple inheritance — what it is, how C++ and Java solve it, with examples')">
+      <span class="topic-dot" style="background:#854F0B"></span>
+      <div><div class="topic-text">Diamond Problem</div><span class="topic-tag" style="background:#FAEEDA;color:#633806">interview</span></div>
+    </div>
+    <div class="topic" onclick="sendPrompt('Teach me: Object cloning in OOPs — shallow copy vs deep copy, clone() method, real examples')">
+      <span class="topic-dot" style="background:#854F0B"></span>
+      <div><div class="topic-text">Shallow vs Deep Copy</div><span class="topic-tag" style="background:#FAEEDA;color:#633806">interview</span></div>
+    </div>
+    <div class="topic" onclick="sendPrompt('Top 25 OOPs interview questions and answers for placement level with examples')">
+      <span class="topic-dot" style="background:#854F0B"></span>
+      <div><div class="topic-text">Top OOPs Interview Q&A</div><span class="topic-tag" style="background:#FAEEDA;color:#633806">interview</span></div>
+    </div>
+  </div>
+</div>
+
+</div>
+<script>
+function tog(id){
+  const num=id.slice(1);
+  const body=document.getElementById('b'+num);
+  const ch=document.getElementById('ch'+num);
+  const open=body.style.display!=='none';
+  body.style.display=open?'none':'grid';
+  ch.classList.toggle('open',!open);
+}
+</script>
