@@ -5,12 +5,12 @@
 - Important for Interview / OA (mcq + coding)
 - In the era of AI - data is the new oil
 
-| DBMS Master Guide | 🔗 HTML Links |
+| 📘 DBMS Master Guide | 🔗 HTML Links |
 | :--- | :--- |
-| **1. DBMS Topics** | [Open File](/dbms/dbms_topics.html/) |
-| **2. DBMS LEVEL-1** | [Open File](/dbms/dbms_level1.html/) |
-| **3. DBMS LEVEL-2** | [Open File](/dbms/dbms_level2.html/) |
-| **4. DBMS LEVEL-3** | [Open File](/dbms/dbms_level3.html/) |
+| **1. DBMS Topics** | [Open File](pathname:///dbms/dbms_topics.html) |
+| **2. DBMS LEVEL-1** | [Open File](pathname:///dbms/dbms_level1.html) |
+| **3. DBMS LEVEL-2** | [Open File](pathname:///dbms/dbms_level2.html) |
+| **4. DBMS LEVEL-3** | [Open File](pathname:///dbms/dbms_level3.html) |
 
 # Level-1
 ## 1.1 Topics to cover
