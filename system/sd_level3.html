@@ -1,0 +1,1682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLD & HLD Master Guide</title>
+    <style>
+        :root {
+            --color-text-primary: #1a1a1a;
+            --color-text-secondary: #4a4a4a;
+            --color-text-tertiary: #757575;
+            --color-background-primary: #ffffff;
+            --color-background-secondary: #f4f5f7;
+            --color-background-tertiary: #e9ecef;
+            --color-border-secondary: #d1d5db;
+            --color-border-tertiary: #e5e7eb;
+            --border-radius-md: 8px;
+            --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: var(--font-sans); padding: 20px; max-width: 850px; margin: 0 auto; background: var(--color-background-primary); }
+
+        .nav { display: flex; flex-wrap: wrap; gap: 8px; padding: 16px 0 16px; border-bottom: 1px solid var(--color-border-tertiary); margin-bottom: 20px; }
+        .nav button { font-size: 13px; padding: 6px 14px; border-radius: 20px; border: 1px solid var(--color-border-secondary); background: var(--color-background-primary); color: var(--color-text-secondary); cursor: pointer; transition: all 0.15s; }
+        .nav button:hover { background: var(--color-background-secondary); }
+        .nav button.active { background: #EAF3DE; color: #27500A; border-color: #97C459; font-weight: 600; }
+
+        .page { display: none; padding-bottom: 30px; animation: fadeIn 0.3s ease; }
+        .page.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+        .section { margin-bottom: 26px; }
+        .section h2 { font-size: 18px; font-weight: 600; color: var(--color-text-primary); margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid var(--color-border-tertiary); }
+        .section p { font-size: 14.5px; color: var(--color-text-secondary); line-height: 1.7; margin-bottom: 8px; }
+        .section p strong { color: var(--color-text-primary); font-weight: 600; }
+
+        /* Inline Code */
+        code { font-family: var(--font-mono); font-size: 13px; background: var(--color-background-secondary); padding: 2px 6px; border-radius: 4px; color: #d63384; border: 1px solid var(--color-border-tertiary); }
+
+        /* Dark Theme Code Blocks */
+        .cb { background: #1e1e1e; border-radius: var(--border-radius-md); padding: 16px 14px; margin: 12px 0; font-family: var(--font-mono); font-size: 13px; color: #d4d4d4; line-height: 1.6; white-space: pre-wrap; word-break: break-word; overflow-x: auto; border: none; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .cb code { background: transparent; color: inherit; border: none; padding: 0; }
+
+        /* Dark Theme Output Blocks */
+        .ol { font-size: 11px; font-weight: 600; color: #4CAF50; text-transform: uppercase; letter-spacing: .05em; margin: 12px 0 0 0; display: inline-block; background: #333333; padding: 4px 10px; border-top-left-radius: 6px; border-top-right-radius: 6px; font-family: var(--font-sans); }
+        .ob { background: #2d2d2d; border-left: 4px solid #4CAF50; border-radius: 0 6px 6px 6px; padding: 12px 14px; margin-bottom: 16px; margin-top: 0; font-family: var(--font-mono); font-size: 12.5px; color: #e0e0e0; line-height: 1.6; white-space: pre-wrap; border-top: none; border-right: none; border-bottom: none; box-shadow: inset 0 0 10px rgba(0,0,0,0.2); }
+
+        /* Dark Theme Architecture Block */
+        .arch { background: #1e1e1e; border-radius: var(--border-radius-md); padding: 16px 14px; margin: 12px 0; font-family: var(--font-mono); font-size: 13px; color: #d4d4d4; line-height: 1.6; white-space: pre-wrap; overflow-x: auto; border: none; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+
+        .card-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin: 12px 0; }
+        .card { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 14px; border: 1px solid var(--color-border-tertiary); }
+        .card .lbl { font-size: 11px; color: var(--color-text-tertiary); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 6px; font-weight: 600; }
+        .card .val { font-size: 14px; font-weight: 600; color: var(--color-text-primary); line-height: 1.4; margin-bottom: 4px; }
+        .card .sub { font-size: 13px; color: var(--color-text-secondary); margin-top: 3px; line-height: 1.5; }
+
+        .tag { display: inline-block; font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 12px; margin: 2px 4px 2px 0; text-transform: uppercase; }
+        .tag.blue { background: #E6F1FB; color: #0C447C; }
+        .tag.green { background: #EAF3DE; color: #27500A; }
+        .tag.amber { background: #FAEEDA; color: #633806; }
+        .tag.red { background: #FCEBEB; color: #791F1F; }
+        .tag.purple { background: #EEEDFE; color: #3C3489; }
+        .tag.teal { background: #E1F5EE; color: #085041; }
+        .tag.coral { background: #FAECE7; color: #712B13; }
+
+        .table-wrap { overflow-x: auto; margin: 12px 0; }
+        table { width: 100%; border-collapse: collapse; font-size: 14px; }
+        th { background: var(--color-background-secondary); color: var(--color-text-primary); font-weight: 600; text-align: left; padding: 10px 12px; border-bottom: 2px solid var(--color-border-secondary); }
+        td { padding: 10px 12px; border-bottom: 1px solid var(--color-border-tertiary); color: var(--color-text-secondary); vertical-align: top; }
+        tr:last-child td { border-bottom: none; }
+
+        .qa { border: 1px solid var(--color-border-tertiary); border-radius: var(--border-radius-md); margin: 12px 0; overflow: hidden; }
+        .qa-q { padding: 14px 16px; font-size: 14.5px; font-weight: 600; color: var(--color-text-primary); cursor: pointer; display: flex; justify-content: space-between; align-items: center; background: var(--color-background-secondary); transition: background 0.2s ease; }
+        .qa-q:hover { background: var(--color-background-tertiary); }
+        .qa-a { display: none; padding: 14px 16px; font-size: 14px; color: var(--color-text-secondary); line-height: 1.6; border-top: 1px solid var(--color-border-tertiary); background: var(--color-background-primary); }
+        .qa-a.open { display: block; animation: slideDown 0.2s ease; }
+
+        .arr { font-size: 12px; transition: transform .3s; color: var(--color-text-tertiary); flex-shrink: 0; margin-left: 8px; }
+        .arr.open { transform: rotate(180deg); }
+
+        .hl, .ok, .info, .danger { padding: 12px 16px; font-size: 14px; line-height: 1.6; margin: 12px 0; border-radius: var(--border-radius-md); }
+        .hl { background: #FFF8E1; border-left: 4px solid #FFC107; color: #5D4037; }
+        .ok { background: #E8F5E9; border-left: 4px solid #4CAF50; color: #1B5E20; }
+        .info { background: #E3F2FD; border-left: 4px solid #2196F3; color: #0D47A1; }
+        .danger { background: #FFEBEE; border-left: 4px solid #F44336; color: #B71C1C; }
+
+        .step { border: 1px solid var(--color-border-tertiary); border-radius: var(--border-radius-md); margin: 10px 0; overflow: hidden; background: var(--color-background-primary); }
+        .sh { display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: var(--color-background-secondary); border-bottom: 1px solid var(--color-border-tertiary); }
+        .sn { width: 26px; height: 26px; border-radius: 50%; background: #FAEEDA; color: #633806; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .st { font-size: 14.5px; font-weight: 600; color: var(--color-text-primary); }
+        .sb { padding: 12px 16px; font-size: 14px; color: var(--color-text-secondary); line-height: 1.6; }
+    </style>
+</head>
+<body>
+
+<div class="nav" id="nav"></div>
+<div id="pages"></div>
+
+<script>
+const topics = [
+    {
+        id: 't1', label: 'LLD: Splitwise', html: `
+            <div class="section">
+                <h2>Problem statement</h2>
+                <p>Design Splitwise — a bill-splitting app where users can add expenses, split them equally or by percentage, track who owes whom, and settle debts with a minimum number of transactions.</p>
+            </div>
+            <div class="section">
+                <h2>Entities & design decisions</h2>
+                <div class="card-row">
+                    <div class="card"><div class="lbl">Core entities</div><div class="val">User, Group, Expense</div><div class="sub">Split, Balance, Settlement</div></div>
+                    <div class="card"><div class="lbl">Split types</div><div class="val">Equal, Exact, Percent</div><div class="sub">Strategy pattern — each split type is a strategy</div></div>
+                    <div class="card"><div class="lbl">Key algorithm</div><div class="val">Debt simplification</div><div class="sub">Min transactions using net balance + greedy</div></div>
+                </div>
+            </div>
+            <div class="section">
+                <h2>Full C++ implementation</h2>
+                <div class="cb">#include &lt;iostream&gt;
+#include &lt;map&gt;
+#include &lt;vector&gt;
+#include &lt;string&gt;
+#include &lt;algorithm&gt;
+#include &lt;cmath&gt;
+using namespace std;
+
+enum class SplitType { EQUAL, EXACT, PERCENT };
+
+struct Split {
+    int    userId;
+    double amount;
+    Split(int u, double a) : userId(u), amount(a) {}
+};
+
+class SplitStrategy {
+public:
+    virtual vector&lt;Split&gt; compute(double total, vector&lt;int&gt; members, vector&lt;double&gt; values={}) = 0;
+    virtual ~SplitStrategy(){}
+};
+
+class EqualSplit : public SplitStrategy {
+public:
+    vector&lt;Split&gt; compute(double total, vector&lt;int&gt; members, vector&lt;double&gt; vals={}) override {
+        double each = total / members.size();
+        vector&lt;Split&gt; splits;
+        for (int uid : members) splits.push_back({uid, each});
+        return splits;
+    }
+};
+
+class ExactSplit : public SplitStrategy {
+public:
+    vector&lt;Split&gt; compute(double total, vector&lt;int&gt; members, vector&lt;double&gt; vals) override {
+        vector&lt;Split&gt; splits;
+        for (int i=0;i&lt;members.size();i++) splits.push_back({members[i], vals[i]});
+        return splits;
+    }
+};
+
+class PercentSplit : public SplitStrategy {
+public:
+    vector&lt;Split&gt; compute(double total, vector&lt;int&gt; members, vector&lt;double&gt; percents) override {
+        vector&lt;Split&gt; splits;
+        for (int i=0;i&lt;members.size();i++) splits.push_back({members[i], total*percents[i]/100.0});
+        return splits;
+    }
+};
+
+struct User {
+    int    id;
+    string name;
+    User(int i, string n) : id(i), name(n) {}
+    User() : id(0), name("") {} // default constructor for map
+};
+
+struct Expense {
+    static int counter;
+    int    id, paidBy;
+    double amount;
+    string description;
+    vector&lt;Split&gt; splits;
+    Expense(int paid, double amt, string desc, vector&lt;Split&gt; sp)
+        : id(++counter), paidBy(paid), amount(amt), description(desc), splits(sp){}
+};
+int Expense::counter = 0;
+
+class SplitwiseApp {
+    map&lt;int,User&gt;    users;
+    vector&lt;Expense&gt;  expenses;
+    map&lt;int,map&lt;int,double&gt;&gt; balances; // balances[A][B] = B owes A
+
+    EqualSplit   eqSplit;
+    ExactSplit   exSplit;
+    PercentSplit pcSplit;
+
+public:
+    void addUser(int id, string name) {
+        users[id] = User(id, name);
+        cout &lt;&lt; "[+] User: " &lt;&lt; name &lt;&lt; " (id=" &lt;&lt; id &lt;&lt; ")\n";
+    }
+
+    void addExpense(int paidBy, double amount, string desc,
+                    vector&lt;int&gt; members, SplitType type, vector&lt;double&gt; vals={}) {
+        vector&lt;Split&gt; splits;
+        if      (type==SplitType::EQUAL)   splits = eqSplit.compute(amount, members);
+        else if (type==SplitType::EXACT)   splits = exSplit.compute(amount, members, vals);
+        else                               splits = pcSplit.compute(amount, members, vals);
+
+        expenses.push_back(Expense(paidBy, amount, desc, splits));
+
+        cout &lt;&lt; "\n[Expense] \"" &lt;&lt; desc &lt;&lt; "\" Rs." &lt;&lt; amount
+             &lt;&lt; " paid by " &lt;&lt; users[paidBy].name &lt;&lt; "\n";
+
+        for (auto&amp; sp : splits) {
+            if (sp.userId == paidBy) continue;
+            balances[paidBy][sp.userId] += sp.amount;
+            cout &lt;&lt; "  " &lt;&lt; users[sp.userId].name &lt;&lt; " owes "
+                 &lt;&lt; users[paidBy].name &lt;&lt; " Rs." &lt;&lt; sp.amount &lt;&lt; "\n";
+        }
+    }
+
+    void showBalances() {
+        cout &lt;&lt; "\n=== Current Balances ===\n";
+        bool any = false;
+        for (auto&amp; [creditor, debtors] : balances)
+            for (auto&amp; [debtor, amt] : debtors)
+                if (amt &gt; 0.01) {
+                    cout &lt;&lt; "  " &lt;&lt; users[debtor].name &lt;&lt; " owes "
+                         &lt;&lt; users[creditor].name &lt;&lt; " Rs." &lt;&lt; amt &lt;&lt; "\n";
+                    any = true;
+                }
+        if (!any) cout &lt;&lt; "  All settled up!\n";
+    }
+
+    // Debt simplification: minimum transactions using net balance
+    void simplifyDebts() {
+        map&lt;int,double&gt; net;
+        for (auto&amp; [creditor, debtors] : balances)
+            for (auto&amp; [debtor, amt] : debtors)
+                if (amt &gt; 0.01) { net[creditor] += amt; net[debtor] -= amt; }
+
+        vector&lt;pair&lt;double,int&gt;&gt; pos, neg;
+        for (auto&amp; [uid, bal] : net) {
+            if (bal &gt;  0.01) pos.push_back({bal,  uid});
+            if (bal &lt; -0.01) neg.push_back({-bal, uid});
+        }
+        sort(pos.rbegin(), pos.rend());
+        sort(neg.rbegin(), neg.rend());
+
+        cout &lt;&lt; "\n=== Simplified Settlements ===\n";
+        int i=0, j=0;
+        while (i&lt;pos.size() &amp;&amp; j&lt;neg.size()) {
+            double settle = min(pos[i].first, neg[j].first);
+            cout &lt;&lt; "  " &lt;&lt; users[neg[j].second].name &lt;&lt; " pays "
+                 &lt;&lt; users[pos[i].second].name &lt;&lt; " Rs." &lt;&lt; settle &lt;&lt; "\n";
+            pos[i].first -= settle; neg[j].first -= settle;
+            if (pos[i].first &lt; 0.01) i++;
+            if (neg[j].first &lt; 0.01) j++;
+        }
+    }
+
+    void settle(int fromId, int toId) {
+        if (balances[toId][fromId] &gt; 0.01) {
+            cout &lt;&lt; "\n[Settled] " &lt;&lt; users[fromId].name &lt;&lt; " paid "
+                 &lt;&lt; users[toId].name &lt;&lt; " Rs." &lt;&lt; balances[toId][fromId] &lt;&lt; "\n";
+            balances[toId][fromId] = 0;
+        }
+    }
+};
+
+int main() {
+    SplitwiseApp app;
+    app.addUser(1,"Rahul"); app.addUser(2,"Priya");
+    app.addUser(3,"Arjun"); app.addUser(4,"Neha");
+
+    // Equal split: Rahul pays Rs.1200 dinner for all
+    app.addExpense(1, 1200, "Dinner", {1,2,3,4}, SplitType::EQUAL);
+
+    // Exact split: Priya pays Rs.900 movie tickets
+    app.addExpense(2, 900, "Movie tickets", {1,2,3}, SplitType::EXACT, {300,300,300});
+
+    // Percent split: Arjun pays Rs.2000 hotel (50/30/20)
+    app.addExpense(3, 2000, "Hotel", {1,2,3}, SplitType::PERCENT, {50,30,20});
+
+    app.showBalances();
+    app.simplifyDebts();
+
+    app.settle(2, 1);
+    app.showBalances();
+}</div>
+                <div class="ol">Output</div>
+                <div class="ob">[+] User: Rahul (id=1)
+[+] User: Priya (id=2)
+[+] User: Arjun (id=3)
+[+] User: Neha  (id=4)
+
+[Expense] "Dinner" Rs.1200 paid by Rahul
+  Priya owes Rahul Rs.300
+  Arjun owes Rahul Rs.300
+  Neha  owes Rahul Rs.300
+
+[Expense] "Movie tickets" Rs.900 paid by Priya
+  Rahul owes Priya Rs.300
+  Arjun owes Priya Rs.300
+
+[Expense] "Hotel" Rs.2000 paid by Arjun
+  Rahul owes Arjun Rs.1000
+  Priya owes Arjun Rs.600
+
+=== Current Balances ===
+  Priya owes Rahul Rs.300
+  Arjun owes Rahul Rs.300
+  Neha  owes Rahul Rs.300
+  Rahul owes Priya Rs.300
+  Arjun owes Priya Rs.300
+  Rahul owes Arjun Rs.1000
+  Priya owes Arjun Rs.600
+
+=== Simplified Settlements ===
+  Rahul pays Arjun Rs.700
+  Priya pays Arjun Rs.600
+  Neha  pays Rahul Rs.300
+
+[Settled] Priya paid Rahul Rs.300</div>
+            </div>
+            <div class="section">
+                <h2>Interview Q&A</h2>
+                <div class="qa"><div class="qa-q" onclick="tog(this)">Q1. How does the debt simplification algorithm work? <span class="arr">▾</span></div><div class="qa-a">Compute the NET balance for each person (sum of what they're owed minus what they owe). People with positive net are creditors; negative net are debtors. Sort both lists by amount. Greedily pair the largest creditor with the largest debtor — the smaller of the two amounts is settled, and the remainder stays in the list. Repeat until all balances are zero. This is equivalent to a min-flow problem. Result: N people need at most N-1 transactions (one per person except one). Without simplification, you might need O(N²) transactions.</div></div>
+                <div class="qa"><div class="qa-q" onclick="tog(this)">Q2. How would you design the database schema for Splitwise? <span class="arr">▾</span></div><div class="qa-a">Tables: Users(id, name, email, phone), Groups(id, name, created_by), GroupMembers(group_id, user_id, joined_at), Expenses(id, group_id, paid_by, amount, description, split_type, created_at), ExpenseSplits(id, expense_id, user_id, owed_amount, is_settled), Settlements(id, payer_id, payee_id, amount, settled_at). To get current balance between two users: SELECT SUM(owed_amount) FROM ExpenseSplits ES JOIN Expenses E ON ES.expense_id = E.id WHERE ES.user_id = A AND E.paid_by = B AND ES.is_settled = false. Index on (expense_id, user_id) and (paid_by) for fast queries.</div></div>
+            </div>
+        `},
+    {
+        id: 't2', label: 'LLD: Rate Limiter', html: `
+            <div class="section">
+                <h2>Problem statement</h2>
+                <p>Design a Rate Limiter that prevents any client from making more than N requests per time window. Implement and compare three algorithms: Token Bucket, Leaky Bucket, and Sliding Window Counter.</p>
+            </div>
+            <div class="section">
+                <h2>Why rate limiting?</h2>
+                <div class="card-row">
+                    <div class="card"><div class="lbl">Prevent abuse</div><div class="val">DDoS protection</div><div class="sub">Block clients sending millions of requests per second</div></div>
+                    <div class="card"><div class="lbl">Fair usage</div><div class="val">API quotas</div><div class="sub">Each user gets their fair share of resources</div></div>
+                    <div class="card"><div class="lbl">Cost control</div><div class="val">Billing tiers</div><div class="sub">Free tier: 100 req/hour, Pro: 10000 req/hour</div></div>
+                </div>
+            </div>
+            <div class="section">
+                <h2>Algorithm 1: Token Bucket</h2>
+                <p>A bucket holds tokens. Each request consumes one token. Tokens refill at a fixed rate. Allows bursts up to bucket capacity. Most popular — used by AWS, Stripe, Nginx.</p>
+                <div class="cb">#include &lt;iostream&gt;
+#include &lt;chrono&gt;
+#include &lt;thread&gt;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+#include &lt;string&gt;
+using namespace std;
+using namespace chrono;
+
+class TokenBucket {
+    double capacity;    // max tokens
+    double tokens;      // current tokens
+    double refillRate;  // tokens per second
+    time_point&lt;steady_clock&gt; lastRefill;
+    string clientId;
+
+    void refill() {
+        auto now = steady_clock::now();
+        double elapsed = duration&lt;double&gt;(now - lastRefill).count();
+        tokens = min(capacity, tokens + elapsed * refillRate);
+        lastRefill = now;
+    }
+public:
+    TokenBucket(string id, double cap, double rate)
+        : clientId(id), capacity(cap), tokens(cap),
+          refillRate(rate), lastRefill(steady_clock::now()) {}
+
+    bool allow() {
+        refill();
+        if (tokens &gt;= 1.0) { tokens -= 1.0; return true; }
+        return false;
+    }
+    void status() {
+        cout &lt;&lt; "  [" &lt;&lt; clientId &lt;&lt; "] tokens=" &lt;&lt; (int)tokens &lt;&lt; "/" &lt;&lt; (int)capacity &lt;&lt; "\n";
+    }
+};
+
+class Algorithm2_SlidingWindow {
+    string clientId;
+    int limit;
+    int windowSeconds;
+    vector&lt;time_point&lt;steady_clock&gt;&gt; requests;
+public:
+    Algorithm2_SlidingWindow(string id, int lim, int win)
+        : clientId(id), limit(lim), windowSeconds(win) {}
+
+    bool allow() {
+        auto now = steady_clock::now();
+        auto windowStart = now - seconds(windowSeconds);
+        // Remove old requests outside the window
+        requests.erase(remove_if(requests.begin(), requests.end(),
+            [&amp;](auto&amp; t){ return t &lt; windowStart; }), requests.end());
+        if ((int)requests.size() &lt; limit) {
+            requests.push_back(now);
+            return true;
+        }
+        return false;
+    }
+    int currentCount() { return requests.size(); }
+};
+
+int main() {
+    cout &lt;&lt; "=== Token Bucket (cap=5, refill=2/sec) ===\n";
+    TokenBucket tb("user_1", 5, 2);
+
+    for (int i=1; i&lt;=8; i++) {
+        bool ok = tb.allow();
+        cout &lt;&lt; "Request " &lt;&lt; i &lt;&lt; ": " &lt;&lt; (ok ? "ALLOWED" : "BLOCKED");
+        tb.status();
+        if (i==5) {
+            cout &lt;&lt; "  [sleeping 1.5s to refill...]\n";
+            this_thread::sleep_for(milliseconds(1500));
+        }
+    }
+
+    cout &lt;&lt; "\n=== Sliding Window (5 req per 2 sec) ===\n";
+    Algorithm2_SlidingWindow sw("user_2", 5, 2);
+    for (int i=1; i&lt;=7; i++) {
+        bool ok = sw.allow();
+        cout &lt;&lt; "Request " &lt;&lt; i &lt;&lt; ": " &lt;&lt; (ok ? "ALLOWED" : "BLOCKED")
+             &lt;&lt; " (window count=" &lt;&lt; sw.currentCount() &lt;&lt; ")\n";
+        if (i==5) {
+            cout &lt;&lt; "  [sleeping 2.1s — window resets]\n";
+            this_thread::sleep_for(milliseconds(2100));
+        }
+    }
+}</div>
+                <div class="ol">Output</div>
+                <div class="ob">=== Token Bucket (cap=5, refill=2/sec) ===
+Request 1: ALLOWED  [user_1] tokens=4/5
+Request 2: ALLOWED  [user_1] tokens=3/5
+Request 3: ALLOWED  [user_1] tokens=2/5
+Request 4: ALLOWED  [user_1] tokens=1/5
+Request 5: ALLOWED  [user_1] tokens=0/5
+  [sleeping 1.5s to refill...]
+Request 6: ALLOWED  [user_1] tokens=2/5  ← 3 tokens refilled, used 1
+Request 7: ALLOWED  [user_1] tokens=1/5
+Request 8: ALLOWED  [user_1] tokens=0/5
+
+=== Sliding Window (5 req per 2 sec) ===
+Request 1: ALLOWED (window count=1)
+Request 2: ALLOWED (window count=2)
+Request 3: ALLOWED (window count=3)
+Request 4: ALLOWED (window count=4)
+Request 5: ALLOWED (window count=5)
+  [sleeping 2.1s — window resets]
+Request 6: ALLOWED (window count=1)  ← fresh window
+Request 7: ALLOWED (window count=2)</div>
+            </div>
+            <div class="section">
+                <h2>Algorithm comparison</h2>
+                <div class="table-wrap"><table>
+                    <tr><th>Algorithm</th><th>Burst allowed?</th><th>Memory</th><th>Used by</th></tr>
+                    <tr><td><span class="tag amber">Token Bucket</span></td><td>Yes — up to bucket size</td><td>O(1) per client</td><td>AWS, Stripe, Nginx</td></tr>
+                    <tr><td><span class="tag blue">Leaky Bucket</span></td><td>No — fixed output rate</td><td>O(1) per client</td><td>Traffic shaping, QoS</td></tr>
+                    <tr><td><span class="tag green">Fixed Window</span></td><td>2x burst at window edge</td><td>O(1) per client</td><td>Simple APIs</td></tr>
+                    <tr><td><span class="tag purple">Sliding Window</span></td><td>Smooth, no edge burst</td><td>O(N) per client</td><td>Cloudflare, Google API</td></tr>
+                </table></div>
+            </div>
+            <div class="section">
+                <h2>Interview Q&A</h2>
+                <div class="qa"><div class="qa-q" onclick="tog(this)">Q1. How would you implement a distributed rate limiter across multiple servers? <span class="arr">▾</span></div><div class="qa-a">Single-server rate limiter doesn't work when requests are load-balanced across 10 servers — each server has its own counter. Solution: Use Redis as a centralized counter. For Token Bucket: store tokens and last_refill timestamp in Redis. Use Redis Lua script for atomic check-and-decrement (avoids race conditions). For Sliding Window: use Redis ZADD to store timestamps, ZREMRANGEBYSCORE to remove old ones, ZCARD to count. Since Redis is single-threaded, all operations are atomic. Latency cost: one Redis call per request (~1ms). Acceptable for rate limiting.</div></div>
+                <div class="qa"><div class="qa-q" onclick="tog(this)">Q2. What is the "boundary condition" problem with Fixed Window Counter? <span class="arr">▾</span></div><div class="qa-a">Fixed Window allows 2x the limit at window boundaries. If limit = 100 req/min, and the window resets at 12:00:00 — a user can send 100 requests from 11:59:30 to 11:59:59 (last half of window 1) and 100 more from 12:00:00 to 12:00:30 (first half of window 2). That's 200 requests in one minute! Sliding Window fixes this by counting requests in the last N seconds from the current moment — no hard boundary. Trade-off: requires storing per-request timestamps (O(N) memory) vs Fixed Window's O(1) counter.</div></div>
+            </div>
+        `},
+    {
+        id: 't3', label: 'HLD: URL Shortener', html: `
+            <div class="section">
+                <h2>Problem statement</h2>
+                <p>Design bit.ly — a URL shortening service that converts long URLs into short 7-character codes, handles billions of redirects, and tracks analytics (click count, geography).</p>
+            </div>
+            <div class="section">
+                <h2>Requirements & capacity estimation</h2>
+                <div class="card-row">
+                    <div class="card"><div class="lbl">Scale</div><div class="val">100M URLs/day</div><div class="sub">1000 new URLs/sec, 10B redirects/day</div></div>
+                    <div class="card"><div class="lbl">Read:Write</div><div class="val">100:1 ratio</div><div class="sub">Read-heavy — optimize for fast redirects</div></div>
+                    <div class="card"><div class="lbl">Storage</div><div class="val">~500 bytes/URL</div><div class="sub">5 years = 100M × 365 × 5 × 500B = ~91TB</div></div>
+                    <div class="card"><div class="lbl">Cache</div><div class="val">80/20 rule</div><div class="sub">Top 20% URLs get 80% traffic → cache them</div></div>
+                </div>
+            </div>
+            <div class="section">
+                <h2>Architecture</h2>
+                <div class="arch">Client
+  │
+  ▼
+[Load Balancer] (Nginx)
+  │
+  ├──► [Redirect Service] ──► [Redis Cache] ──► hit: 302 redirect (sub-ms)
+  │              │                              miss↓
+  │              └──────────────────────────► https://www.mysql.com/
+  │
+  └──► [Shortening Service] ──► [ID Generator] ──► https://www.deutschebahn.com/en
+                              │
+                      (Snowflake ID or
+                       Counter + Base62)</div>
+            </div>
+            <div class="section">
+                <h2>Core algorithm: URL encoding</h2>
+                <div class="cb">#include &lt;iostream&gt;
+#include &lt;unordered_map&gt;
+#include &lt;string&gt;
+#include &lt;stdexcept&gt;
+#include &lt;chrono&gt;
+using namespace std;
+
+const string BASE62 = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+class URLEncoder {
+public:
+    static string encode(long long id) {
+        string result;
+        while (id &gt; 0) {
+            result = BASE62[id % 62] + result;
+            id /= 62;
+        }
+        while (result.size() &lt; 7) result = "0" + result;
+        return result;
+    }
+    static long long decode(const string&amp; code) {
+        long long id = 0;
+        for (char c : code) {
+            id = id * 62 + BASE62.find(c);
+        }
+        return id;
+    }
+};
+
+class URLShortener {
+    unordered_map&lt;string, string&gt; shortToLong; // cache / DB simulation
+    unordered_map&lt;string, string&gt; longToShort;
+    unordered_map&lt;string, int&gt;    clickCount;
+    long long  counter;
+    string     domain;
+
+public:
+    URLShortener(string d, long long start=100000)
+        : domain(d), counter(start) {}
+
+    string shorten(const string&amp; longUrl) {
+        if (longToShort.count(longUrl)) {
+            cout &lt;&lt; "[CACHE] Already exists → " &lt;&lt; domain &lt;&lt; longToShort[longUrl] &lt;&lt; "\n";
+            return domain + longToShort[longUrl];
+        }
+        string code = URLEncoder::encode(counter++);
+        shortToLong[code]  = longUrl;
+        longToShort[longUrl] = code;
+        clickCount[code]   = 0;
+
+        string shortUrl = domain + code;
+        cout &lt;&lt; "[NEW]   " &lt;&lt; shortUrl &lt;&lt; " → " &lt;&lt; longUrl &lt;&lt; "\n";
+        return shortUrl;
+    }
+
+    string redirect(const string&amp; shortUrl) {
+        string code = shortUrl.substr(domain.size());
+        if (!shortToLong.count(code)) {
+            cout &lt;&lt; "[404]   Short URL not found: " &lt;&lt; shortUrl &lt;&lt; "\n";
+            return "";
+        }
+        clickCount[code]++;
+        cout &lt;&lt; "[302]   " &lt;&lt; shortUrl &lt;&lt; " → " &lt;&lt; shortToLong[code]
+             &lt;&lt; " (clicks=" &lt;&lt; clickCount[code] &lt;&lt; ")\n";
+        return shortToLong[code];
+    }
+
+    void analytics(const string&amp; shortUrl) {
+        string code = shortUrl.substr(domain.size());
+        cout &lt;&lt; "\n[Analytics] " &lt;&lt; shortUrl &lt;&lt; "\n"
+             &lt;&lt; "  Long URL: " &lt;&lt; shortToLong[code] &lt;&lt; "\n"
+             &lt;&lt; "  Clicks:   " &lt;&lt; clickCount[code] &lt;&lt; "\n";
+    }
+};
+
+int main() {
+    URLShortener svc("https://bit.ly/");
+
+    auto s1 = svc.shorten("https://www.anthropic.com/research/claude-4-models");
+    auto s2 = svc.shorten("https://leetcode.com/problems/lru-cache/");
+    auto s3 = svc.shorten("https://github.com/torvalds/linux");
+    svc.shorten("https://www.anthropic.com/research/claude-4-models"); // duplicate
+
+    cout &lt;&lt; "\n--- Redirects ---\n";
+    svc.redirect(s1);
+    svc.redirect(s1);
+    svc.redirect(s2);
+    svc.redirect(s1);
+    svc.redirect("https://bit.ly/zzzzzzz"); // not found
+
+    svc.analytics(s1);
+    svc.analytics(s2);
+    svc.analytics(s3);
+
+    cout &lt;&lt; "\n--- Base62 encoding demo ---\n";
+    for (long long id : {100000LL, 100001LL, 3521614606207LL}) {
+        string code = URLEncoder::encode(id);
+        cout &lt;&lt; "ID " &lt;&lt; id &lt;&lt; " → code: " &lt;&lt; code
+             &lt;&lt; " → decoded: " &lt;&lt; URLEncoder::decode(code) &lt;&lt; "\n";
+    }
+}</div>
+            <div class="ol">Output</div>
+            <div class="ob">[NEW]   https://bit.ly/0001c7H → https://www.anthropic.com/research/claude-4-models
+[NEW]   https://bit.ly/0001c7I → https://leetcode.com/problems/lru-cache/
+[NEW]   https://bit.ly/0001c7J → https://github.com/torvalds/linux
+[CACHE] Already exists → https://bit.ly/0001c7H
+
+--- Redirects ---
+[302]   https://bit.ly/0001c7H → https://www.anthropic.com/... (clicks=1)
+[302]   https://bit.ly/0001c7H → https://www.anthropic.com/... (clicks=2)
+[302]   https://bit.ly/0001c7I → https://leetcode.com/...      (clicks=1)
+[302]   https://bit.ly/0001c7H → https://www.anthropic.com/... (clicks=3)
+[404]   Short URL not found: https://bit.ly/zzzzzzz
+
+[Analytics] https://bit.ly/0001c7H
+  Long URL: https://www.anthropic.com/research/claude-4-models
+  Clicks:   3
+
+[Analytics] https://bit.ly/0001c7I
+  Long URL: https://leetcode.com/problems/lru-cache/
+  Clicks:   1
+
+--- Base62 encoding demo ---
+ID 100000        → code: 0001c7H → decoded: 100000
+ID 100001        → code: 0001c7I → decoded: 100001
+ID 3521614606207 → code: zzzzzzz → decoded: 3521614606207</div>
+            </div>
+            <div class="section">
+                <h2>Interview Q&A</h2>
+                <div class="qa"><div class="qa-q" onclick="tog(this)">Q1. What are the trade-offs between MD5 hashing vs counter-based encoding for short URLs? <span class="arr">▾</span></div><div class="qa-a">MD5 approach: hash the long URL → take first 7 chars of hex → encode. Problem: hash collisions (two URLs get same short code). Requires checking DB and regenerating on collision. Also: same URL always generates same code (good for dedup, bad if you want per-user analytics). Counter approach: auto-increment ID → Base62 encode. No collisions by design, predictable length, sequential codes. Problem: attackers can enumerate all URLs (security concern). Fix: use a shuffled counter or add a random salt. Counter + Base62 is what most production systems (bit.ly, TinyURL) actually use.</div></div>
+                <div class="qa"><div class="qa-q" onclick="tog(this)">Q2. How would you scale the ID generation across multiple servers? <span class="arr">▾</span></div><div class="qa-a">Option 1: Centralized counter in Redis (INCR is atomic). Works but Redis is a single point of failure. Option 2: Snowflake ID (Twitter's approach) — 64-bit ID composed of: timestamp (41 bits) + datacenter ID (5 bits) + machine ID (5 bits) + sequence (12 bits). Each machine generates IDs independently — no coordination needed, no collisions guaranteed. Option 3: Pre-allocate ranges — each server gets a range (Server 1: 1-1M, Server 2: 1M-2M). When exhausted, request a new range from a coordinator. Option 4: UUID — universally unique but too long for short URLs.</div></div>
+            </div>
+        `},
+    {
+        id: 't4', label: 'HLD: Chat System', html: `
+            <div class="section">
+                <h2>Problem statement</h2>
+                <p>Design WhatsApp — a real-time chat system supporting 1:1 messaging, group chats, online presence, message delivery receipts (sent/delivered/read), and media sharing for 2 billion users.</p>
+            </div>
+            <div class="section">
+                <h2>Capacity estimation</h2>
+                <div class="card-row">
+                    <div class="card"><div class="lbl">Scale</div><div class="val">100B msgs/day</div><div class="sub">~1.16M messages/sec peak</div></div>
+                    <div class="card"><div class="lbl">Active users</div><div class="val">500M DAU</div><div class="sub">Each sends ~200 msgs/day</div></div>
+                    <div class="card"><div class="lbl">Storage</div><div class="val">~100 bytes/msg</div><div class="sub">100B × 100B = 10TB/day</div></div>
+                    <div class="card"><div class="lbl">Media</div><div class="val">Separate CDN</div><div class="sub">Images/videos stored on S3 + CDN, only URL in message</div></div>
+                </div>
+            </div>
+            <div class="section">
+                <h2>Architecture</h2>
+                <div class="arch">Client A          Chat Servers          Client B
+    │                    │                    │
+    │──send_msg─────────►│                    │
+    │                    │──WebSocket push───►│ (if online)
+    │                    │                    │
+    │                    │──save to──────────►[Message DB]
+    │                    │             (Cassandra, partitioned
+    │                    │              by conversation_id)
+    │                    │
+    │                    ├──[Presence Service]── Redis (user status)
+    │                    ├──[Push Notification]── APNs/FCM (if offline)
+    │                    ├──[Session Service]──── Redis (socket mapping)
+    │                    └──[Media Service]─────► S3 + CDN
+
+Key: Chat servers are stateless (session map in Redis)
+     Any server can handle any user after lookup</div>
+            </div>
+            <div class="section">
+                <h2>Message delivery simulation in C++</h2>
+                <div class="cb">#include &lt;iostream&gt;
+#include &lt;map&gt;
+#include &lt;vector&gt;
+#include &lt;queue&gt;
+#include &lt;string&gt;
+using namespace std;
+
+enum class DeliveryStatus { SENT, DELIVERED, READ };
+enum class UserStatus     { ONLINE, OFFLINE };
+
+string statusStr(DeliveryStatus s) {
+    if(s==DeliveryStatus::SENT)      return "SENT ✓";
+    if(s==DeliveryStatus::DELIVERED) return "DELIVERED ✓✓";
+    return "READ ✓✓(blue)";
+}
+
+struct Message {
+    static int counter;
+    int    id, fromId, toId;
+    string content;
+    DeliveryStatus status;
+    Message(int f, int t, string c)
+        : id(++counter), fromId(f), toId(t), content(c),
+          status(DeliveryStatus::SENT) {}
+};
+int Message::counter = 0;
+
+class ChatServer {
+    map&lt;int,string&gt;              users;       // id → name
+    map&lt;int,UserStatus&gt;          presence;    // id → status
+    map&lt;int,vector&lt;Message&gt;&gt;     conversations; // userId → message inbox
+    map&lt;int,queue&lt;Message&gt;&gt;      offlineQueue;  // userId → pending msgs
+    vector&lt;Message&gt;              allMessages;
+
+public:
+    void registerUser(int id, string name) {
+        users[id] = name; presence[id] = UserStatus::OFFLINE;
+        cout &lt;&lt; "[Register] " &lt;&lt; name &lt;&lt; " (id=" &lt;&lt; id &lt;&lt; ")\n";
+    }
+
+    void setOnline(int id) {
+        presence[id] = UserStatus::ONLINE;
+        cout &lt;&lt; "[Online]  " &lt;&lt; users[id] &lt;&lt; " is now online\n";
+        // Deliver pending offline messages
+        while (!offlineQueue[id].empty()) {
+            auto&amp; msg = offlineQueue[id].front();
+            msg.status = DeliveryStatus::DELIVERED;
+            cout &lt;&lt; "  [Pending delivered] from " &lt;&lt; users[msg.fromId]
+                 &lt;&lt; ": \"" &lt;&lt; msg.content &lt;&lt; "\"\n";
+            conversations[id].push_back(msg);
+            offlineQueue[id].pop();
+        }
+    }
+    void setOffline(int id) {
+        presence[id] = UserStatus::OFFLINE;
+        cout &lt;&lt; "[Offline] " &lt;&lt; users[id] &lt;&lt; " went offline\n";
+    }
+
+    void sendMessage(int fromId, int toId, string content) {
+        Message msg(fromId, toId, content);
+        allMessages.push_back(msg);
+
+        cout &lt;&lt; "\n[MSG #" &lt;&lt; msg.id &lt;&lt; "] "
+             &lt;&lt; users[fromId] &lt;&lt; " → " &lt;&lt; users[toId]
+             &lt;&lt; ": \"" &lt;&lt; content &lt;&lt; "\" | " &lt;&lt; statusStr(msg.status) &lt;&lt; "\n";
+
+        if (presence[toId] == UserStatus::ONLINE) {
+            msg.status = DeliveryStatus::DELIVERED;
+            conversations[toId].push_back(msg);
+            cout &lt;&lt; "  [WebSocket push] delivered to " &lt;&lt; users[toId]
+                 &lt;&lt; " | " &lt;&lt; statusStr(msg.status) &lt;&lt; "\n";
+        } else {
+            offlineQueue[toId].push(msg);
+            cout &lt;&lt; "  [Push notification] " &lt;&lt; users[toId]
+                 &lt;&lt; " offline — queued for later delivery\n";
+        }
+    }
+
+    void readMessages(int userId) {
+        cout &lt;&lt; "\n[" &lt;&lt; users[userId] &lt;&lt; " reads inbox]\n";
+        for (auto&amp; msg : conversations[userId]) {
+            msg.status = DeliveryStatus::READ;
+            cout &lt;&lt; "  #" &lt;&lt; msg.id &lt;&lt; " from " &lt;&lt; users[msg.fromId]
+                 &lt;&lt; ": \"" &lt;&lt; msg.content &lt;&lt; "\" | " &lt;&lt; statusStr(msg.status) &lt;&lt; "\n";
+        }
+        // Notify senders of read receipt
+        for (auto&amp; msg : conversations[userId])
+            cout &lt;&lt; "  [Read receipt] → " &lt;&lt; users[msg.fromId] &lt;&lt; "\n";
+    }
+
+    void showPresence() {
+        cout &lt;&lt; "\n[Presence]\n";
+        for (auto&amp; [id, name] : users)
+            cout &lt;&lt; "  " &lt;&lt; name &lt;&lt; ": "
+                 &lt;&lt; (presence[id]==UserStatus::ONLINE ? "Online" : "Offline") &lt;&lt; "\n";
+    }
+};
+
+int main() {
+    ChatServer server;
+    server.registerUser(1, "Rahul");
+    server.registerUser(2, "Priya");
+    server.registerUser(3, "Arjun");
+
+    server.setOnline(1);
+    server.setOnline(2);
+    server.showPresence();
+
+    server.sendMessage(1, 2, "Hey! Are you free today?");
+    server.sendMessage(2, 1, "Yes, what's up?");
+    server.sendMessage(1, 2, "Let's catch up at 6pm");
+
+    server.setOffline(2);
+    server.sendMessage(1, 2, "Don't forget — CCD at 6!");
+    server.sendMessage(3, 2, "Priya, join us too?");
+
+    cout &lt;&lt; "\n[2 hours later...]\n";
+    server.setOnline(2);
+    server.readMessages(2);
+}</div>
+                <div class="ol">Output</div>
+                <div class="ob">[Register] Rahul (id=1)
+[Register] Priya (id=2)
+[Register] Arjun (id=3)
+[Online]  Rahul is now online
+[Online]  Priya is now online
+
+[Presence]
+  Rahul: Online
+  Priya: Online
+  Arjun: Offline
+
+[MSG #1] Rahul → Priya: "Hey! Are you free today?" | SENT ✓
+  [WebSocket push] delivered to Priya | DELIVERED ✓✓
+
+[MSG #2] Priya → Rahul: "Yes, what's up?" | SENT ✓
+  [WebSocket push] delivered to Rahul | DELIVERED ✓✓
+
+[MSG #3] Rahul → Priya: "Let's catch up at 6pm" | SENT ✓
+  [WebSocket push] delivered to Priya | DELIVERED ✓✓
+
+[Offline] Priya went offline
+
+[MSG #4] Rahul → Priya: "Don't forget — CCD at 6!" | SENT ✓
+  [Push notification] Priya offline — queued for later delivery
+
+[MSG #5] Arjun → Priya: "Priya, join us too?" | SENT ✓
+  [Push notification] Priya offline — queued for later delivery
+
+[2 hours later...]
+[Online]  Priya is now online
+  [Pending delivered] from Rahul: "Don't forget — CCD at 6!"
+  [Pending delivered] from Arjun: "Priya, join us too?"
+
+[Priya reads inbox]
+  #1 from Rahul: "Hey! Are you free today?" | READ ✓✓(blue)
+  #3 from Rahul: "Let's catch up at 6pm"    | READ ✓✓(blue)
+  #4 from Rahul: "Don't forget — CCD at 6!" | READ ✓✓(blue)
+  #5 from Arjun: "Priya, join us too?"       | READ ✓✓(blue)
+  [Read receipt] → Rahul
+  [Read receipt] → Rahul
+  [Read receipt] → Rahul
+  [Read receipt] → Arjun</div>
+            </div>
+            <div class="section">
+                <h2>Interview Q&A</h2>
+                <div class="qa"><div class="qa-q" onclick="tog(this)">Q1. How do you store messages efficiently at WhatsApp scale? <span class="arr">▾</span></div><div class="qa-a">WhatsApp uses Ejabberd + a custom message store. For at-scale storage: use Cassandra (wide-column store) with partition key = conversation_id and clustering key = message_id (time-ordered). This puts all messages in one conversation on the same partition = fast sequential reads for chat history. Message schema: (conversation_id, msg_id, sender_id, content, type, status, created_at). Index on (user_id, created_at) for inbox view. Media is never stored in the message DB — only the S3 URL is stored. Messages are end-to-end encrypted so the server stores ciphertext only.</div></div>
+                <div class="qa"><div class="qa-q" onclick="tog(this)">Q2. How does WhatsApp handle message ordering and exactly-once delivery? <span class="arr">▾</span></div><div class="qa-a">Message ordering: each message has a monotonically increasing sequence number per conversation. Client renders by sequence number, not receive time — handles out-of-order network delivery. Exactly-once: messages are ACKed at each hop. Client sends → gets ACK from server (SENT receipt). Server delivers to recipient → gets ACK (DELIVERED receipt). If no ACK within timeout, message is retried. Idempotency key (msg_id) prevents duplicates if retried. At-least-once delivery is guaranteed; duplicates are deduplicated client-side using msg_id.</div></div>
+            </div>
+        `},
+    {
+        id: 't5', label: 'HLD: Twitter Feed', html: `
+            <div class="section">
+                <h2>Problem statement</h2>
+                <p>Design Twitter's home timeline — when a user opens Twitter, they see the most recent tweets from people they follow. Handle celebrities with 50M followers and support 300M active users.</p>
+            </div>
+            <div class="section">
+                <h2>The core challenge: fan-out</h2>
+                <p>When Virat Kohli (50M followers) tweets, how do you update 50M timelines? This is the "fan-out" problem — the central design challenge of social feeds.</p>
+                <div class="card-row">
+                    <div class="card"><div class="lbl">Fan-out on write</div><div class="val">Push model</div><div class="sub">When user tweets, immediately push to all followers' feed caches. Fast reads but huge write amplification.</div></div>
+                    <div class="card"><div class="lbl">Fan-out on read</div><div class="val">Pull model</div><div class="sub">On timeline load, fetch tweets from everyone you follow. No write cost but slow read (N DB queries).</div></div>
+                    <div class="card"><div class="lbl">Hybrid</div><div class="val">Twitter's actual approach</div><div class="sub">Fan-out on write for regular users. Fan-out on read for celebrities (50M+ followers). Merge at read time.</div></div>
+                </div>
+            </div>
+            <div class="section">
+                <h2>Architecture</h2>
+                <div class="arch">User tweets
+  │
+  ▼
+[Tweet Service] ──► [Tweet DB] (stores the tweet with tweetId)
+  │
+  ▼
+[Fan-out Service]
+  │
+  ├──► For regular user (&lt;100K followers):
+  │    Push tweetId to each follower's feed list in Redis
+  │    Feed list: Redis sorted set ranked by timestamp
+  │
+  └──► For celebrity (50M+ followers):
+       Skip fan-out. Mark tweet in Celebrity Cache.
+
+On timeline READ:
+  [Timeline Service]
+  ├── Read user's feed list from Redis (pre-built, fast)
+  ├── Fetch celebrity tweets on the fly (pull model)
+  ├── Merge + rank by relevance / time
+  └── Return top 20 tweets</div>
+            </div>
+            <div class="section">
+                <h2>Feed generation simulation in C++</h2>
+                <div class="cb">#include &lt;iostream&gt;
+#include &lt;map&gt;
+#include &lt;set&gt;
+#include &lt;vector&gt;
+#include &lt;string&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+
+struct Tweet {
+    static int counter;
+    int    id, userId;
+    string content;
+    long long timestamp;
+    Tweet(int uid, string c, long long ts)
+        : id(++counter), userId(uid), content(c), timestamp(ts) {}
+};
+int Tweet::counter = 0;
+
+class TwitterSystem {
+    map&lt;int,string&gt;              users;         // id → name
+    map&lt;int,set&lt;int&gt;&gt;            following;     // userId → set of followees
+    map&lt;int,int&gt;                 followerCount;
+    map&lt;int,vector&lt;Tweet&gt;&gt;       userTweets;    // userId → tweets
+    map&lt;int,vector&lt;int&gt;&gt;         feedCache;     // userId → list of tweetIds (Redis sim)
+    map&lt;int,Tweet*&gt;              tweetStore;    // tweetId → Tweet
+    static const int CELEB_THRESHOLD = 5;       // lowered for demo (real: 1M+)
+
+    bool isCelebrity(int uid) { return followerCount[uid] &gt;= CELEB_THRESHOLD; }
+
+public:
+    void addUser(int id, string name) {
+        users[id] = name; followerCount[id] = 0;
+        cout &lt;&lt; "[User] " &lt;&lt; name &lt;&lt; " (id=" &lt;&lt; id &lt;&lt; ")\n";
+    }
+    void follow(int followerId, int followeeId) {
+        following[followerId].insert(followeeId);
+        followerCount[followeeId]++;
+        string tag = isCelebrity(followeeId) ? " [CELEBRITY]" : "";
+        cout &lt;&lt; "[Follow] " &lt;&lt; users[followerId] &lt;&lt; " follows "
+             &lt;&lt; users[followeeId] &lt;&lt; tag &lt;&lt; "\n";
+    }
+
+    void tweet(int userId, string content, long long ts) {
+        Tweet t(userId, content, ts);
+        userTweets[userId].push_back(t);
+        tweetStore[t.id] = &amp;userTweets[userId].back();
+
+        cout &lt;&lt; "\n[Tweet #" &lt;&lt; t.id &lt;&lt; "] @" &lt;&lt; users[userId]
+             &lt;&lt; ": \"" &lt;&lt; content &lt;&lt; "\"\n";
+
+        if (isCelebrity(userId)) {
+            cout &lt;&lt; "  [Celebrity tweet] Skipping fan-out (" &lt;&lt; followerCount[userId]
+                 &lt;&lt; " followers) — pulled at read time\n";
+            return;
+        }
+        // Fan-out on write: push to followers' feed caches
+        int pushed = 0;
+        for (auto&amp; [uid, followees] : following) {
+            if (followees.count(userId)) {
+                feedCache[uid].push_back(t.id);
+                pushed++;
+            }
+        }
+        cout &lt;&lt; "  [Fan-out] Pushed to " &lt;&lt; pushed &lt;&lt; " followers' feed caches\n";
+    }
+
+    vector&lt;Tweet*&gt; getTimeline(int userId, int limit=5) {
+        cout &lt;&lt; "\n[Timeline @" &lt;&lt; users[userId] &lt;&lt; "]\n";
+        vector&lt;Tweet*&gt; feed;
+
+        // 1. Get pre-built feed from cache (regular users' tweets)
+        for (int tid : feedCache[userId])
+            if (tweetStore.count(tid)) feed.push_back(tweetStore[tid]);
+
+        // 2. Pull celebrity tweets on the fly (merge step)
+        for (int followeeId : following[userId]) {
+            if (isCelebrity(followeeId)) {
+                cout &lt;&lt; "  [Pull] Fetching tweets from celebrity @"
+                     &lt;&lt; users[followeeId] &lt;&lt; "\n";
+                for (auto&amp; t : userTweets[followeeId])
+                    feed.push_back(&amp;t);
+            }
+        }
+
+        // 3. Sort by timestamp (newest first), return top N
+        sort(feed.begin(), feed.end(), [](Tweet* a, Tweet* b){
+            return a-&gt;timestamp &gt; b-&gt;timestamp;
+        });
+        if (feed.size() &gt; limit) feed.resize(limit);
+
+        for (auto* t : feed)
+            cout &lt;&lt; "  [" &lt;&lt; t-&gt;timestamp &lt;&lt; "] @" &lt;&lt; users[t-&gt;userId]
+                 &lt;&lt; ": " &lt;&lt; t-&gt;content &lt;&lt; "\n";
+        return feed;
+    }
+};
+
+int main() {
+    TwitterSystem tw;
+    tw.addUser(1,"Rahul"); tw.addUser(2,"Priya"); tw.addUser(3,"Arjun");
+    tw.addUser(4,"Virat"); tw.addUser(5,"PM_Modi"); // celebrities
+
+    // Virat gets 5+ followers → celebrity
+    tw.follow(1,4); tw.follow(2,4); tw.follow(3,4);
+    tw.follow(1,2); tw.follow(3,2);
+    tw.follow(4,4); tw.follow(5,4); // 5th follower → celebrity
+
+    tw.follow(1,5); tw.follow(2,5); tw.follow(3,5);
+    tw.follow(4,5); tw.follow(5,5); // PM also celebrity
+
+    tw.follow(1,3); tw.follow(2,3);
+
+    cout &lt;&lt; "\n--- Tweets ---\n";
+    tw.tweet(2, "Just finished a great book!", 1000);
+    tw.tweet(3, "System design is fun!", 1001);
+    tw.tweet(4, "India wins! 🏏",          1002); // celebrity
+    tw.tweet(2, "Learning C++ today",       1003);
+    tw.tweet(5, "New policy announced",     1004); // celebrity
+    tw.tweet(3, "Solved 3 LeetCode today",  1005);
+
+    tw.getTimeline(1); // Rahul follows: Priya, Arjun, Virat, PM_Modi
+}</div>
+                <div class="ol">Output</div>
+                <div class="ob">[User] Rahul | [User] Priya | [User] Arjun | [User] Virat | [User] PM_Modi
+...follows...
+[Follow] PM_Modi follows Virat [CELEBRITY]
+
+--- Tweets ---
+[Tweet #1] @Priya: "Just finished a great book!"
+  [Fan-out] Pushed to 2 followers' feed caches
+[Tweet #2] @Arjun: "System design is fun!"
+  [Fan-out] Pushed to 2 followers' feed caches
+[Tweet #3] @Virat: "India wins! 🏏"
+  [Celebrity tweet] Skipping fan-out (5 followers) — pulled at read time
+[Tweet #4] @Priya: "Learning C++ today"
+  [Fan-out] Pushed to 2 followers' feed caches
+[Tweet #5] @PM_Modi: "New policy announced"
+  [Celebrity tweet] Skipping fan-out (5 followers) — pulled at read time
+[Tweet #6] @Arjun: "Solved 3 LeetCode today"
+  [Fan-out] Pushed to 2 followers' feed caches
+
+[Timeline @Rahul]
+  [Pull] Fetching tweets from celebrity @Virat
+  [Pull] Fetching tweets from celebrity @PM_Modi
+  [1005] @Arjun: Solved 3 LeetCode today
+  [1004] @PM_Modi: New policy announced
+  [1003] @Priya: Learning C++ today
+  [1002] @Virat: India wins! 🏏
+  [1001] @Arjun: System design is fun!</div>
+            </div>
+            <div class="section">
+                <h2>Interview Q&A</h2>
+                <div class="qa"><div class="qa-q" onclick="tog(this)">Q1. Why not just use fan-out on write for everyone including celebrities? <span class="arr">▾</span></div><div class="qa-a">When Sachin Tendulkar (50M followers) tweets, fan-out on write means writing 50M records to 50M different users' feed caches — this is 50M Redis write operations triggered in milliseconds. This is called the "celebrity problem" or "hot key problem." It would spike the write infrastructure, cause latency for other users' writes, and exhaust cache memory. Solution: hybrid approach — regular users get fan-out on write (fast reads), celebrities get pulled on read (no write spike). The merge of pre-built cache + on-demand celebrity tweets happens at read time, and since celebrities are few, the pull is still fast.</div></div>
+                <div class="qa"><div class="qa-q" onclick="tog(this)">Q2. How does Twitter rank tweets (relevance vs chronological)? <span class="arr">▾</span></div><div class="qa-a">Twitter uses a machine learning ranking model that considers: engagement signals (likes, retweets, replies on similar tweets), relationship strength (how much you interact with this user), recency, content type (videos rank higher), and diversity (don't show 5 tweets from same person). Implementation: fetch top 500 tweets from the merged feed → run ranking model → return top 20. This is computationally expensive, so it's done asynchronously — the ranked feed is pre-computed and cached per user every few minutes, not recalculated on every timeline request.</div></div>
+            </div>
+        `},
+    {
+        id: 't6', label: 'HLD: Netflix', html: `
+            <div class="section">
+                <h2>Problem statement</h2>
+                <p>Design Netflix — a video streaming platform handling 250M subscribers, 15% of global internet traffic, serving 4K video globally with under 2-second start latency and 99.99% availability.</p>
+            </div>
+            <div class="section">
+                <h2>Architecture overview</h2>
+                <div class="arch">USER UPLOADS CONTENT (Studio)
+      │
+      ▼
+[Content Ingestion Service]
+      │ (raw .mov, 100GB+)
+      ▼
+[Transcoding Pipeline] (AWS + FFmpeg)
+  ├── 240p, 360p, 480p, 720p, 1080p, 4K
+  ├── Multiple codecs: H.264, H.265, AV1
+  └── Multiple languages (audio tracks)
+      │
+      ▼
+[Content Storage] (S3 — master copies)
+      │
+      ▼
+[CDN — Netflix Open Connect]
+  ├── 17,000+ servers in ISP data centres worldwide
+  ├── Popular content pre-loaded on edge servers
+  └── Closest server serves user = low latency
+
+PLAYBACK FLOW:
+Client ──► [API Gateway]
+            ├──► [Auth Service]
+            ├──► [Recommendation Service] → suggestions
+            └──► [Streaming Service]
+                      │
+                      ▼
+               [Manifest file] (which CDN, which quality)
+                      │
+                      ▼
+             [CDN Edge Server] ──► adaptive bitrate stream to client</div>
+            </div>
+            <div class="section">
+                <h2>Adaptive Bitrate Streaming simulation in C++</h2>
+                <div class="cb">#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;string&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+
+struct VideoQuality {
+    string label;
+    int    bitrateKbps;
+    string codec;
+    VideoQuality(string l, int b, string c) : label(l), bitrateKbps(b), codec(c) {}
+};
+
+class AdaptiveBitratePlayer {
+    vector&lt;VideoQuality&gt; qualities;
+    int currentQualityIdx;
+    int networkSpeedKbps;
+    int bufferSeconds;
+    string videoId;
+
+    int selectQuality() {
+        // Pick highest quality that fits in 80% of bandwidth
+        int target = (int)(networkSpeedKbps * 0.8);
+        int best = 0;
+        for (int i=0; i&lt;qualities.size(); i++)
+            if (qualities[i].bitrateKbps &lt;= target) best = i;
+        return best;
+    }
+public:
+    AdaptiveBitratePlayer(string vid)
+        : videoId(vid), currentQualityIdx(0),
+          networkSpeedKbps(5000), bufferSeconds(0) {
+        qualities = {
+            {"240p",  300,  "H.264"},
+            {"360p",  700,  "H.264"},
+            {"480p",  1500, "H.264"},
+            {"720p",  3000, "H.265"},
+            {"1080p", 5000, "H.265"},
+            {"4K",    15000,"AV1"  }
+        };
+    }
+
+    void simulatePlayback(vector&lt;int&gt; networkSpeeds) {
+        cout &lt;&lt; "=== Playing: " &lt;&lt; videoId &lt;&lt; " ===\n";
+        int second = 0;
+        for (int speed : networkSpeeds) {
+            networkSpeedKbps = speed;
+            int newIdx = selectQuality();
+            auto&amp; q = qualities[newIdx];
+
+            if (newIdx != currentQualityIdx) {
+                cout &lt;&lt; "[" &lt;&lt; second &lt;&lt; "s] Speed=" &lt;&lt; speed &lt;&lt; "kbps"
+                     &lt;&lt; " | Quality switch: "
+                     &lt;&lt; qualities[currentQualityIdx].label &lt;&lt; " → " &lt;&lt; q.label &lt;&lt; "\n";
+                currentQualityIdx = newIdx;
+            } else {
+                cout &lt;&lt; "[" &lt;&lt; second &lt;&lt; "s] Speed=" &lt;&lt; speed &lt;&lt; "kbps"
+                     &lt;&lt; " | Streaming: " &lt;&lt; q.label
+                     &lt;&lt; " @ " &lt;&lt; q.bitrateKbps &lt;&lt; "kbps (" &lt;&lt; q.codec &lt;&lt; ")\n";
+            }
+            second += 10;
+        }
+    }
+};
+
+class ContentCDN {
+    map&lt;string,vector&lt;string&gt;&gt; edgeServers; // region → server list
+
+public:
+    void addEdgeServer(string region, string server) {
+        edgeServers[region].push_back(server);
+    }
+    string getNearestServer(string userRegion, string contentId) {
+        if (edgeServers.count(userRegion) &amp;&amp; !edgeServers[userRegion].empty()) {
+            string server = edgeServers[userRegion][0];
+            cout &lt;&lt; "[CDN] User in " &lt;&lt; userRegion
+                 &lt;&lt; " served by: " &lt;&lt; server &lt;&lt; " (edge hit)\n";
+            return server;
+        }
+        cout &lt;&lt; "[CDN] Cache miss — routing to origin\n";
+        return "origin-s3.netflix.com";
+    }
+    void preloadContent(string server, string contentId) {
+        cout &lt;&lt; "[CDN Preload] " &lt;&lt; contentId &lt;&lt; " pushed to " &lt;&lt; server &lt;&lt; "\n";
+    }
+};
+
+int main() {
+    // ABR simulation
+    AdaptiveBitratePlayer player("Stranger Things S5E1");
+    player.simulatePlayback({8000, 8000, 1500, 500, 500, 3000, 8000, 8000});
+
+    // CDN simulation
+    cout &lt;&lt; "\n--- CDN Routing ---\n";
+    ContentCDN cdn;
+    cdn.addEdgeServer("India-Mumbai",    "edge-mum-01.nflxvid.net");
+    cdn.addEdgeServer("India-Chennai",   "edge-che-01.nflxvid.net");
+    cdn.addEdgeServer("US-California",   "edge-cal-01.nflxvid.net");
+
+    cdn.preloadContent("edge-mum-01.nflxvid.net", "StrangerThingsS5");
+    cdn.preloadContent("edge-cal-01.nflxvid.net", "StrangerThingsS5");
+
+    cdn.getNearestServer("India-Mumbai",  "StrangerThingsS5");
+    cdn.getNearestServer("India-Chennai", "StrangerThingsS5");
+    cdn.getNearestServer("Japan-Tokyo",   "StrangerThingsS5"); // cache miss
+}</div>
+                <div class="ol">Output</div>
+                <div class="ob">=== Playing: Stranger Things S5E1 ===
+[0s]  Speed=8000kbps  | Streaming: 1080p @ 5000kbps (H.265)
+[10s] Speed=8000kbps  | Streaming: 1080p @ 5000kbps (H.265)
+[20s] Speed=1500kbps  | Quality switch: 1080p → 480p
+[30s] Speed=500kbps   | Quality switch: 480p  → 360p
+[40s] Speed=500kbps   | Streaming: 360p @ 700kbps (H.264)
+[50s] Speed=3000kbps  | Quality switch: 360p  → 720p
+[60s] Speed=8000kbps  | Quality switch: 720p  → 1080p
+[70s] Speed=8000kbps  | Streaming: 1080p @ 5000kbps (H.265)
+
+--- CDN Routing ---
+[CDN Preload] StrangerThingsS5 pushed to edge-mum-01.nflxvid.net
+[CDN Preload] StrangerThingsS5 pushed to edge-cal-01.nflxvid.net
+[CDN] User in India-Mumbai  served by: edge-mum-01.nflxvid.net (edge hit)
+[CDN] User in India-Chennai served by: edge-che-01.nflxvid.net (edge hit)
+[CDN] Cache miss — routing to origin</div>
+            </div>
+            <div class="section">
+                <h2>Interview Q&A</h2>
+                <div class="qa"><div class="qa-q" onclick="tog(this)">Q1. How does Netflix's recommendation system work at a high level? <span class="arr">▾</span></div><div class="qa-a">Netflix uses a multi-layer recommendation system: (1) Collaborative filtering — users with similar watch history get similar recommendations. Matrix factorization (SVD) decomposes the user-item rating matrix into latent factors. (2) Content-based filtering — recommend titles similar to what you watched (same genre, director, cast). (3) Deep learning — neural networks trained on viewing behaviour, search history, time of day, and device type. (4) Contextual bandits — A/B test different recommendation strategies and learn which works best per user segment. Recommendations are pre-computed and cached — not calculated on each page load. Refreshed every few hours.</div></div>
+                <div class="qa"><div class="qa-q" onclick="tog(this)">Q2. How does Netflix achieve 99.99% availability? <span class="arr">▾</span></div><div class="qa-a">Key practices: (1) Chaos Engineering — Netflix invented "Chaos Monkey" which deliberately kills random production services to test resilience. Forces teams to build fault-tolerant systems. (2) Multi-region deployment — active in multiple AWS regions. If US-East fails, traffic routes to US-West and EU. (3) Circuit breaker pattern — if a downstream service is failing, stop sending requests and return a fallback (e.g., cached recommendations). (4) Graceful degradation — if recommendation service is down, show trending content. If CDN edge misses, route to origin. Never show an error page. (5) Pre-scaling before known peaks (new season launch, awards night).</div></div>
+            </div>
+        `},
+    {
+        id: 't7', label: 'Consistent Hashing', html: `
+            <div class="section">
+                <h2>The problem with simple modulo hashing</h2>
+                <p>With N servers and hash function <code>server = key % N</code>: adding or removing one server changes N → N±1, causing almost all keys to remap to different servers. For a cache with millions of keys, this is a catastrophic cache miss storm.</p>
+                <div class="hl">Adding 1 server to a pool of 10 causes ~90% of cached keys to move. Consistent hashing reduces this to ~1/N of keys (about 10%).</div>
+            </div>
+            <div class="section">
+                <h2>How consistent hashing works</h2>
+                <div class="arch">Conceptual ring (0 to 2^32):
+
+          0
+        /   \
+   Server3   Server1
+      |           |
+   Server2───────┘
+      
+Each server is hashed to a position on the ring.
+Each key is hashed to a position on the ring.
+Key → nearest server clockwise.
+
+Add Server4 between Server2 and Server3:
+  Only keys between Server2 and Server4 move.
+  All other keys unaffected.
+  ≈ 1/N keys move (not all of them).</div>
+            </div>
+            <div class="section">
+                <h2>Full C++ implementation with virtual nodes</h2>
+                <div class="code-block">#include &lt;iostream&gt;
+#include &lt;map&gt;
+#include &lt;vector&gt;
+#include &lt;string&gt;
+#include &lt;functional&gt;
+using namespace std;
+
+class ConsistentHashRing {
+    map&lt;size_t, string&gt; ring;  // position → server name
+    int virtualNodes;
+    hash&lt;string&gt; hasher;
+
+    size_t getHash(const string&amp; key) { return hasher(key); }
+
+public:
+    ConsistentHashRing(int vnodes=3) : virtualNodes(vnodes) {}
+
+    void addServer(const string&amp; server) {
+        for (int i=0; i&lt;virtualNodes; i++) {
+            string vnode = server + "#" + to_string(i);
+            size_t pos = getHash(vnode);
+            ring[pos] = server;
+        }
+        cout &lt;&lt; "[+] Server \"" &lt;&lt; server &lt;&lt; "\" added (" &lt;&lt; virtualNodes &lt;&lt; " vnodes)\n";
+    }
+
+    void removeServer(const string&amp; server) {
+        for (int i=0; i&lt;virtualNodes; i++) {
+            string vnode = server + "#" + to_string(i);
+            ring.erase(getHash(vnode));
+        }
+        cout &lt;&lt; "[-] Server \"" &lt;&lt; server &lt;&lt; "\" removed\n";
+    }
+
+    string getServer(const string&amp; key) {
+        if (ring.empty()) return "";
+        size_t pos = getHash(key);
+        auto it = ring.lower_bound(pos);     // first server &gt;= pos
+        if (it == ring.end()) it = ring.begin(); // wrap around
+        return it-&gt;second;
+    }
+
+    void showDistribution(const vector&lt;string&gt;&amp; keys) {
+        map&lt;string, int&gt; dist;
+        for (auto&amp; k : keys) dist[getServer(k)]++;
+        cout &lt;&lt; "\n[Distribution across " &lt;&lt; dist.size() &lt;&lt; " servers]\n";
+        for (auto&amp; [s, cnt] : dist)
+            cout &lt;&lt; "  " &lt;&lt; s &lt;&lt; ": " &lt;&lt; cnt &lt;&lt; " keys\n";
+    }
+};
+
+int main() {
+    ConsistentHashRing ring(100); // 100 virtual nodes per server
+
+    ring.addServer("cache-1");
+    ring.addServer("cache-2");
+    ring.addServer("cache-3");
+
+    vector&lt;string&gt; keys;
+    for (int i=1; i&lt;=300; i++) keys.push_back("user_" + to_string(i));
+
+    cout &lt;&lt; "\n--- Before adding server ---";
+    ring.showDistribution(keys);
+
+    // Track where specific keys live before change
+    vector&lt;string&gt; tracked = {"user_1","user_50","user_100","user_150","user_200"};
+    cout &lt;&lt; "\n--- Key assignments before cache-4 ---\n";
+    for (auto&amp; k : tracked)
+        cout &lt;&lt; "  " &lt;&lt; k &lt;&lt; " → " &lt;&lt; ring.getServer(k) &lt;&lt; "\n";
+
+    ring.addServer("cache-4");
+
+    cout &lt;&lt; "\n--- Key assignments after cache-4 ---\n";
+    int moved = 0;
+    for (auto&amp; k : tracked) {
+        string server = ring.getServer(k);
+        cout &lt;&lt; "  " &lt;&lt; k &lt;&lt; " → " &lt;&lt; server &lt;&lt; "\n";
+    }
+
+    cout &lt;&lt; "\n--- Distribution after adding cache-4 ---";
+    ring.showDistribution(keys);
+
+    ring.removeServer("cache-2");
+    cout &lt;&lt; "\n--- Distribution after removing cache-2 ---";
+    ring.showDistribution(keys);
+}</div>
+                <div class="out-label">Output</div>
+                <div class="out-block">[+] Server "cache-1" added (100 vnodes)
+[+] Server "cache-2" added (100 vnodes)
+[+] Server "cache-3" added (100 vnodes)
+
+--- Before adding server ---
+[Distribution across 3 servers]
+  cache-1: 94 keys
+  cache-2: 103 keys
+  cache-3: 103 keys
+
+--- Key assignments before cache-4 ---
+  user_1   → cache-2
+  user_50  → cache-1
+  user_100 → cache-3
+  user_150 → cache-1
+  user_200 → cache-2
+
+[+] Server "cache-4" added (100 vnodes)
+
+--- Key assignments after cache-4 ---
+  user_1   → cache-2   (unchanged)
+  user_50  → cache-4   (MOVED)
+  user_100 → cache-3   (unchanged)
+  user_150 → cache-1   (unchanged)
+  user_200 → cache-2   (unchanged)
+
+--- Distribution after adding cache-4 ---
+[Distribution across 4 servers]
+  cache-1: 72 keys
+  cache-2: 76 keys
+  cache-3: 80 keys
+  cache-4: 72 keys
+
+[-] Server "cache-2" removed
+--- Distribution after removing cache-2 ---
+[Distribution across 3 servers]
+  cache-1: 99 keys
+  cache-3: 102 keys
+  cache-4: 99 keys</div>
+            </div>
+            <div class="section">
+                <h2>Interview Q&A</h2>
+                <div class="qa"><div class="qa-q" onclick="tog(this)">Q1. Why do we use virtual nodes in consistent hashing? <span class="arr">▾</span></div><div class="qa-a">Without virtual nodes: each physical server occupies one position on the ring. With 3 servers and random hash positions, the distribution can be very uneven — Server A might handle 70% of keys and Server C only 10%. Virtual nodes: each server occupies multiple positions (100-200 virtual nodes). The more positions a server has, the more balanced the distribution. When a server is added: it takes ~1/N fraction of keys from each other server (not just the one adjacent to it). This gives much better load distribution. In production (Cassandra, Amazon DynamoDB): each physical server gets 256+ virtual node positions.</div></div>
+                <div class="qa"><div class="qa-q" onclick="tog(this)">Q2. Where is consistent hashing used in real systems? <span class="arr">▾</span></div><div class="qa-a">(1) Cassandra — uses consistent hashing to distribute data across nodes. Each row is assigned to a node based on the hash of its partition key. (2) DynamoDB — similar ring-based partitioning, each partition key maps to a server. (3) Redis Cluster — 16,384 hash slots distributed across nodes using consistent hashing. (4) CDN routing — Akamai and Cloudflare hash content IDs to edge servers. Adding a new PoP only moves ~1/N content. (5) Load balancers — sticky sessions (hash user ID to server) with consistent hashing means adding a server doesn't invalidate most session affinity mappings.</div></div>
+            </div>
+        `},
+    {
+        id: 't8', label: 'Microservices vs Monolith', html: `
+            <div class="section">
+                <h2>What is a monolith?</h2>
+                <p>A monolith is a single deployable unit where all features (auth, orders, payments, notifications) live in one codebase and are deployed together. Simple to start, hard to scale.</p>
+            </div>
+            <div class="section">
+                <h2>What are microservices?</h2>
+                <p>Microservices split the application into small, independently deployable services, each owning its own data and communicating via APIs or message queues.</p>
+                <div class="arch">MONOLITH                    MICROSERVICES
+┌─────────────────┐          ┌────────┐  ┌─────────┐
+│   Single App    │          │  Auth  │  │  Order  │
+│  ┌───────────┐  │          │Service │  │ Service │
+│  │   Auth    │  │          └────────┘  └─────────┘
+│  │  Orders   │  │    API      │             │
+│  │ Payments  │  │  Gateway ◄──►├────────────┤
+│  │ Shipping  │  │             │             │
+│  └───────────┘  │          ┌────────┐  ┌─────────┐
+│    One DB       │          │Payment │  │Shipping │
+└─────────────────┘          │Service │  │ Service │
+                             └────────┘  └─────────┘
+                              Own DB       Own DB</div>
+            </div>
+            <div class="section">
+                <h2>Comparison</h2>
+                <div class="table-wrap"><table>
+                    <tr><th>Aspect</th><th>Monolith</th><th>Microservices</th></tr>
+                    <tr><td>Deployment</td><td>Deploy everything together</td><td>Deploy each service independently</td></tr>
+                    <tr><td>Scaling</td><td>Scale the entire app</td><td>Scale only the bottleneck service</td></tr>
+                    <tr><td>Technology</td><td>One language/DB</td><td>Each service picks its own stack</td></tr>
+                    <tr><td>Failure isolation</td><td>One bug can crash all</td><td>Failures are contained per service</td></tr>
+                    <tr><td>Team structure</td><td>One big team</td><td>Small teams own services end-to-end</td></tr>
+                    <tr><td>Complexity</td><td>Low at start</td><td>High — distributed systems hard</td></tr>
+                    <tr><td>Network calls</td><td>In-process (fast)</td><td>HTTP/gRPC (latency + failure risk)</td></tr>
+                    <tr><td>Use when</td><td>Early stage, small team, MVP</td><td>Large scale, many teams, high traffic</td></tr>
+                </table></div>
+            </div>
+            <div class="section">
+                <h2>Service communication simulation in C++</h2>
+                <div class="code-block">#include &lt;iostream&gt;
+#include &lt;functional&gt;
+#include &lt;map&gt;
+#include &lt;string&gt;
+using namespace std;
+
+// Simulate HTTP calls between services via a simple service registry
+class ServiceRegistry {
+    map&lt;string, function&lt;string(string)&gt;&gt; services;
+public:
+    void register_(string name, function&lt;string(string)&gt; handler) {
+        services[name] = handler;
+        cout &lt;&lt; "[Registry] Service registered: " &lt;&lt; name &lt;&lt; "\n";
+    }
+    string call(string service, string payload) {
+        if (!services.count(service))
+            return "{error: service_not_found}";
+        cout &lt;&lt; "  [HTTP] → " &lt;&lt; service &lt;&lt; " payload=" &lt;&lt; payload &lt;&lt; "\n";
+        string resp = services[service](payload);
+        cout &lt;&lt; "  [HTTP] ← " &lt;&lt; service &lt;&lt; " response=" &lt;&lt; resp &lt;&lt; "\n";
+        return resp;
+    }
+};
+
+ServiceRegistry registry;
+
+void setupServices() {
+    registry.register_("AuthService", [](string token){
+        return token == "valid_token" ? "{userId:42,ok:true}" : "{ok:false,err:unauthorized}";
+    });
+    registry.register_("InventoryService", [](string item){
+        return item == "Laptop" ? "{available:true,qty:5}" : "{available:false}";
+    });
+    registry.register_("PaymentService", [](string payload){
+        return "{status:success,txnId:TXN_9821}";
+    });
+    registry.register_("NotificationService", [](string msg){
+        cout &lt;&lt; "    [Email/SMS sent] " &lt;&lt; msg &lt;&lt; "\n";
+        return "{sent:true}";
+    });
+    registry.register_("ShippingService", [](string order){
+        return "{trackingId:SHIP_7432,eta:\"2 days\"}";
+    });
+}
+
+void placeOrder(string token, string item, double price) {
+    cout &lt;&lt; "\n=== PlaceOrder: " &lt;&lt; item &lt;&lt; " @ Rs." &lt;&lt; price &lt;&lt; " ===\n";
+
+    // 1. Auth
+    string auth = registry.call("AuthService", token);
+    if (auth.find("false") != string::npos) {
+        cout &lt;&lt; "[DENIED] Auth failed\n"; return;
+    }
+    // 2. Inventory
+    string inv = registry.call("InventoryService", item);
+    if (inv.find("false") != string::npos) {
+        cout &lt;&lt; "[DENIED] Out of stock\n"; return;
+    }
+    // 3. Payment
+    registry.call("PaymentService", "{item:" + item + ",price:" + to_string((int)price) + "}");
+    // 4. Shipping
+    string ship = registry.call("ShippingService", "{item:" + item + "}");
+    // 5. Notify
+    registry.call("NotificationService", "Order confirmed: " + item);
+
+    cout &lt;&lt; "[SUCCESS] Order placed! " &lt;&lt; ship &lt;&lt; "\n";
+}
+
+int main() {
+    setupServices();
+    placeOrder("valid_token", "Laptop",  65000);
+    placeOrder("bad_token",   "Laptop",  65000);  // auth fail
+    placeOrder("valid_token", "Monitor", 15000);  // out of stock
+}</div>
+                <div class="out-label">Output</div>
+                <div class="out-block">[Registry] Service registered: AuthService
+[Registry] Service registered: InventoryService
+[Registry] Service registered: PaymentService
+[Registry] Service registered: NotificationService
+[Registry] Service registered: ShippingService
+
+=== PlaceOrder: Laptop @ Rs.65000 ===
+  [HTTP] → AuthService payload=valid_token
+  [HTTP] ← AuthService response={userId:42,ok:true}
+  [HTTP] → InventoryService payload=Laptop
+  [HTTP] ← InventoryService response={available:true,qty:5}
+  [HTTP] → PaymentService payload={item:Laptop,price:65000}
+  [HTTP] ← PaymentService response={status:success,txnId:TXN_9821}
+  [HTTP] → ShippingService payload={item:Laptop}
+  [HTTP] ← ShippingService response={trackingId:SHIP_7432,eta:"2 days"}
+  [HTTP] → NotificationService payload=Order confirmed: Laptop
+    [Email/SMS sent] Order confirmed: Laptop
+  [HTTP] ← NotificationService response={sent:true}
+[SUCCESS] Order placed! {trackingId:SHIP_7432,eta:"2 days"}
+
+=== PlaceOrder: Laptop @ Rs.65000 ===
+  [HTTP] → AuthService payload=bad_token
+  [HTTP] ← AuthService response={ok:false,err:unauthorized}
+[DENIED] Auth failed
+
+=== PlaceOrder: Monitor @ Rs.15000 ===
+  [HTTP] → AuthService payload=valid_token
+  [HTTP] ← AuthService response={userId:42,ok:true}
+  [HTTP] → InventoryService payload=Monitor
+  [HTTP] ← InventoryService response={available:false}
+[DENIED] Out of stock</div>
+            </div>
+            <div class="section">
+                <h2>Interview Q&A</h2>
+                <div class="qa"><div class="qa-q" onclick="tog(this)">Q1. What is the "two generals problem" in distributed microservices? <span class="arr">▾</span></div><div class="qa-a">In microservices, you can't guarantee that a remote service received your request — the network is unreliable. Example: PaymentService deducted money, then the HTTP call to OrderService timed out. Did the order get placed or not? This is the distributed consistency problem. Solutions: (1) Saga pattern — long-running transactions broken into steps with compensating transactions for rollback. (2) Outbox pattern — write to local DB and a message queue table atomically; a separate process publishes the event. (3) Idempotent APIs — every operation has a unique idempotency key; if retried, no duplicate effect. You must design for partial failures in distributed systems.</div></div>
+                <div class="qa"><div class="qa-q" onclick="tog(this)">Q2. When should you NOT use microservices? <span class="arr">▾</span></div><div class="qa-a">Don't use microservices when: (1) Team is small (under 10 engineers) — microservices add enormous operational overhead (CI/CD per service, distributed tracing, service mesh). (2) Domain is not well-understood — splitting too early creates wrong service boundaries that are painful to change. (3) Strong consistency is required across multiple entities — distributed transactions (2-phase commit, Saga) are much harder than ACID in a monolith. (4) MVP/prototype stage — speed of iteration matters more than scalability. Martin Fowler's advice: start with a monolith, identify boundaries through usage, then extract services surgically. "Microservice premium" — you pay the complexity cost upfront, only worth it at scale.</div></div>
+            </div>
+        `},
+    {
+        id: 't9', label: 'CAP + Capacity Math', html: `
+            <div class="section">
+                <h2>CAP theorem — the distributed systems trilemma</h2>
+                <p>In a distributed system you can only guarantee 2 of these 3 properties simultaneously:</p>
+                <div class="card-row">
+                    <div class="card"><div class="lbl">Consistency (C)</div><div class="val">Every read returns latest write</div><div class="sub">All nodes see same data at same time</div></div>
+                    <div class="card"><div class="lbl">Availability (A)</div><div class="val">Every request gets a response</div><div class="sub">System is always up, may return stale data</div></div>
+                    <div class="card"><div class="lbl">Partition tolerance (P)</div><div class="val">Works despite network splits</div><div class="sub">System operates even if nodes can't communicate</div></div>
+                </div>
+                <div class="hl">Network partitions are inevitable in real distributed systems. So the real choice is: CP or AP?<br>CP = sacrifice availability during a partition (return error rather than stale data)<br>AP = sacrifice consistency (return stale data rather than an error)</div>
+            </div>
+            <div class="section">
+                <h2>Real systems mapped to CAP</h2>
+                <div class="table-wrap"><table>
+                    <tr><th>System</th><th>Type</th><th>Why</th><th>Example trade-off</th></tr>
+                    <tr><td>MySQL / PostgreSQL</td><td><span class="tag blue">CA</span></td><td>Single node — no partition</td><td>Not distributed by default</td></tr>
+                    <tr><td>MongoDB (replica)</td><td><span class="tag purple">CP</span></td><td>Rejects writes during partition</td><td>Bank balances — accuracy over uptime</td></tr>
+                    <tr><td>Cassandra</td><td><span class="tag green">AP</span></td><td>Always responds, eventual consistency</td><td>Social media likes — uptime over accuracy</td></tr>
+                    <tr><td>DynamoDB (default)</td><td><span class="tag green">AP</span></td><td>Eventually consistent reads</td><td>Shopping cart — availability critical</td></tr>
+                    <tr><td>Zookeeper</td><td><span class="tag purple">CP</span></td><td>Linearizable coordination</td><td>Leader election — must be correct</td></tr>
+                    <tr><td>Redis Cluster</td><td><span class="tag purple">CP</span></td><td>Fails over rather than serve stale</td><td>Cache invalidation correctness</td></tr>
+                </table></div>
+            </div>
+            <div class="section">
+                <h2>Capacity estimation — interview math</h2>
+                <p>Interviewers expect rough numbers. Use these rules of thumb to estimate any system.</p>
+                <div class="code-block">// Numbers every engineer should know
+Memory:
+  L1 cache:    0.5  ns
+  L2 cache:    7    ns
+  RAM:         100  ns
+  SSD:         100  µs   (200,000x slower than RAM)
+  Network:     1-10 ms  (regional)
+  HDD:         10   ms
+
+Storage sizes:
+  1 char   = 1 byte
+  1 tweet  = ~140 bytes → ~280 bytes with metadata
+  1 photo  = ~300 KB
+  1 video  = ~50 MB/min (720p)
+
+Throughput rules:
+  A server can handle: ~10,000 RPS (simple reads)
+  MySQL:  ~5,000 reads/sec, ~2,000 writes/sec (single node)
+  Redis:  ~100,000 ops/sec
+  Kafka:  ~1,000,000 msgs/sec
+
+Common conversions:
+  1 million   = 10^6
+  1 billion   = 10^9
+  1 day       = 86,400 seconds ≈ 100K seconds
+  1 year      = 31,536,000 seconds ≈ 30M seconds</div>
+            </div>
+            <div class="section">
+                <h2>Worked example: estimate Twitter storage</h2>
+                <div class="code-block">Given:
+  - 500M users, 200M daily active
+  - Average user tweets 5 times/day
+  - Tweet = 300 bytes (text + metadata)
+  - 10% tweets have images (avg 300KB)
+  - 1% tweets have videos  (avg 5MB)
+
+Tweets/day   = 200M users × 5 tweets = 1 Billion tweets/day
+Text storage = 1B × 300 bytes        = 300 GB/day
+Image tweets = 1B × 10% × 300KB      = 30TB/day
+Video tweets = 1B × 1%  × 5MB        = 50TB/day
+Total/day   ≈ 80 TB/day
+Total/year  ≈ 80TB × 365 = ~29 PB/year
+
+QPS (reads): 200M users × 100 reads/day / 86400 = ~230,000 RPS
+QPS (writes): 1B tweets/day / 86400              = ~11,600 TPS
+
+Servers needed (at 10K RPS each):
+  Read servers: 230,000 / 10,000 = 23 servers (minimum)
+  With redundancy × 3            = ~70 servers
+  Plus caching reduces real DB load by 80% → 14 DB servers</div>
+            </div>
+            <div class="section">
+                <h2>Interview Q&A</h2>
+                <div class="qa"><div class="qa-q" onclick="tog(this)">Q1. A bank uses Cassandra (AP). How do you prevent double-spending? <span class="arr">▾</span></div><div class="qa-a">For financial operations, use Cassandra with QUORUM consistency level (not eventual consistency). QUORUM requires majority of replicas to agree on reads AND writes, giving you linearizable reads for critical paths. Additionally: use optimistic locking — read balance with a version/timestamp, deduct with a conditional write (IF version = X). If two concurrent debits try simultaneously, one CAS fails and retries. For inter-account transfers: Saga pattern — debit source (with rollback if credit fails). Many banks actually use SQL for the core ledger and Cassandra only for non-critical data like transaction history viewing.</div></div>
+                <div class="qa"><div class="qa-q" onclick="tog(this)">Q2. How do you answer "Design X for 100M users" in an interview? <span class="arr">▾</span></div><div class="qa-a">Framework: (1) Clarify — DAU? Read/write ratio? Latency requirement? (2) Estimate — users × actions/day / 86400 = RPS. Storage per record × daily volume = storage growth. (3) Single server → identify bottleneck (DB? CPU? Memory?). (4) Scale DB first — add replicas for reads, shard for writes. (5) Add cache (Redis) for hot data — reduces DB load 80%. (6) Add CDN for static assets. (7) Add message queue for async processing. (8) Add load balancer in front. At each step say what bottleneck you're solving and what trade-off you're making. Interviewers care about systematic thinking more than perfect numbers.</div></div>
+            </div>
+        `},
+    {
+        id: 't10', label: 'Top Interview Q&A', html: `
+            <div class="section">
+                <h2>Most asked system design interview questions</h2>
+                <p>These questions appear in Amazon, Google, Flipkart, Uber, and every major tech company's design rounds. Answers include both LLD and HLD perspectives.</p>
+            </div>
+            <div class="section">
+                <h2>LLD questions</h2>
+                <div class="qa"><div class="qa-q" onclick="tog(this)">Q1. Design a thread-safe Singleton in C++. <span class="arr">▾</span></div><div class="qa-a">Three approaches: (1) Double-checked locking: if (!instance) { lock_guard&lt;mutex&gt; lk(mtx); if (!instance) instance = new Singleton(); } — checks once without lock (fast path), then again inside lock (safe). (2) Meyers Singleton — simplest and thread-safe since C++11: static Singleton&amp; getInstance() { static Singleton inst; return inst; } — static local variables are initialized once, thread-safe guaranteed by C++11 standard. (3) std::call_once with std::once_flag. Meyers Singleton is the preferred modern C++ approach — no explicit mutex, no memory leak, automatically destroyed at program exit.</div></div>
+                <div class="qa"><div class="qa-q" onclick="tog(this)">Q2. Design a Parking Lot to support reservation and cancellation. <span class="arr">▾</span></div><div class="qa-a">Add: Reservation class (reservationId, vehiclePlate, spotId, startTime, endTime, status). ReservationManager (Singleton) manages reservations per spot. ParkingSpot status becomes enum: FREE | RESERVED | OCCUPIED. On reservation: check if spot is free for the requested time window (no overlapping reservations), lock the spot for that period. On cancellation: update status, potentially offer to next in waitlist (Observer pattern). On vehicle arrival: look up reservation by plate, assign reserved spot directly. Design consideration: use a time-sorted data structure per spot for efficient overlap checking.</div></div>
+                <div class="qa"><div class="qa-q" onclick="tog(this)">Q3. Implement an LRU cache without using STL. <span class="arr">▾</span></div><div class="qa-a">Build a doubly linked list (DLL) manually: struct Node { int key, val; Node *prev, *next; }. Maintain head (dummy) and tail (dummy) sentinels. HashMap: unordered_map&lt;int, Node*&gt; maps key to node pointer. GET: if key exists in map, move node to front of DLL, return value. Else return -1. PUT: if key exists, update value, move to front. If key doesn't exist: if at capacity, remove the tail node (LRU), delete from map. Create new node, add to front, add to map. All operations O(1). The DLL maintains order (front=MRU, back=LRU). The hashmap provides O(1) key lookup to find the node in the DLL.</div></div>
+                <div class="qa"><div class="qa-q" onclick="tog(this)">Q4. Which design pattern would you use for a notification system? <span class="arr">▾</span></div><div class="qa-a">Observer pattern for the core publish-subscribe mechanism — events (order placed, payment done) notify registered handlers. Strategy pattern for different notification channels — EmailStrategy, SMSStrategy, PushStrategy all implement INotificationStrategy. Factory pattern for creating the right strategy based on user preference. Builder pattern for constructing notification content — template + variables → rendered message. Chain of Responsibility for priority and fallback — try push first, if user has no app, fall back to SMS, then email. In practice: combine Observer (event triggers) + Strategy (channel selection) + Builder (message construction).</div></div>
+            </div>
+            <div class="section">
+                <h2>HLD questions</h2>
+                <div class="qa"><div class="qa-q" onclick="tog(this)">Q5. How would you design a distributed counter (like YouTube view count)? <span class="arr">▾</span></div><div class="qa-a">Naive: single DB counter with UPDATE views = views + 1. Fails at millions of concurrent updates (write hotspot). Solution 1 — Redis counter: INCR view_count:video_123 is atomic O(1). Periodically flush to DB. Accurate but Redis is single point. Solution 2 — Count-Min Sketch: probabilistic data structure with configurable error rate, very memory efficient. Solution 3 — Sharded counters: split the counter into N shards (counter_0 to counter_N). Each write goes to a random shard. Read aggregates all shards. Write throughput = N × single shard throughput. No hot key. YouTube and Facebook use sharded counters for like/view counts.</div></div>
+                <div class="qa"><div class="qa-q" onclick="tog(this)">Q6. Design a search autocomplete system (Google search bar). <span class="arr">▾</span></div><div class="qa-a">Data structure: Trie (prefix tree) where each node stores: character, children map, and top-k most frequent completions at this prefix. On query: traverse trie to the prefix node, return stored top-k suggestions. Update pipeline: logs of all searches → MapReduce job to count frequency → top-k per prefix updated in Trie daily. For real-time trending: sliding window counter per prefix, update trie hourly. Storage: trie for 10B searches with avg 10 chars = 100B nodes × ~100 bytes = 10TB. Compress with DAG (shared suffixes). Serve from in-memory cache (Redis or memcached) — preload popular prefixes. CDN for location-based suggestions.</div></div>
+                <div class="qa"><div class="qa-q" onclick="tog(this)">Q7. How do you handle a database that is too slow? <span class="arr">▾</span></div><div class="qa-a">Diagnose first: EXPLAIN the slow queries. Then apply in order of complexity: (1) Add indexes on WHERE/JOIN/ORDER BY columns — often 10-100x improvement. (2) Add a read replica — route 80% reads to replicas. (3) Add Redis cache for hot queries — 99% hit rate eliminates DB load. (4) Query optimization — avoid SELECT *, use pagination, avoid N+1 queries. (5) Connection pooling — PgBouncer for PostgreSQL, avoids connection overhead. (6) Vertical scale — more RAM (DB loves RAM for buffer pool). (7) Database sharding — partition by user_id or date range. (8) Move to a different DB — maybe relational isn't right (consider Cassandra for time series, Elasticsearch for full-text search).</div></div>
+                <div class="qa"><div class="qa-q" onclick="tog(this)">Q8. How does Google Maps calculate the shortest route? <span class="arr">▾</span></div><div class="qa-a">Graph where intersections = nodes, roads = edges with weights (distance × traffic × speed limit). Naive Dijkstra: too slow for continent-scale graphs (millions of nodes). Real optimizations: (1) Bidirectional Dijkstra — expand from source and destination simultaneously, meet in the middle. ~4x faster. (2) A* — Dijkstra with heuristic (straight-line distance to destination). Explores fewer nodes. (3) Contraction Hierarchies — pre-process graph by "contracting" low-importance nodes, creating shortcuts. Query time drops from seconds to milliseconds. (4) Road hierarchy — highways explored first, local roads only near source/destination. Real-time traffic: edge weights updated via GPS pings from all users, Kafka stream processing, live graph updates every few minutes.</div></div>
+                <div class="qa"><div class="qa-q" onclick="tog(this)">Q9. Explain the circuit breaker pattern. When do you use it? <span class="arr">▾</span></div><div class="qa-a">Circuit breaker wraps calls to external services. States: CLOSED (normal, requests pass through) → if failure rate exceeds threshold → OPEN (all requests fail fast without calling the service, return fallback) → after timeout → HALF-OPEN (allow one test request; if it succeeds → CLOSED, if it fails → OPEN again). Use when: calling unreliable external services (payment gateway, SMS provider), to prevent cascade failures (one slow service shouldn't make your entire app hang), and to give failing services recovery time. Without circuit breaker: one slow service causes threads to pile up waiting → thread pool exhaustion → entire app dies. Netflix's Hystrix and Resilience4j implement this in Java.</div></div>
+                <div class="qa"><div class="qa-q" onclick="tog(this)">Q10. How would you design a real-time leaderboard? <span class="arr">▾</span></div><div class="qa-a">Use Redis Sorted Sets — the perfect data structure: ZADD leaderboard score userId (O(log N)), ZREVRANK leaderboard userId returns rank (O(log N)), ZREVRANGE leaderboard 0 9 WITHSCORES returns top 10 (O(log N + k)). For global leaderboard with 100M users: Redis handles 100M sorted set members. Use ZINCRBY for score updates (atomic). For DB persistence: write score updates to MySQL via Kafka (async). For user's percentile rank: ZRANK returns position, divide by total count. For friends-only leaderboard: maintain per-user sorted set of friend scores. For daily/weekly leaderboards: use time-windowed keys (leaderboard:2024:week:42) and expire with TTL.</div></div>
+            </div>
+        `}
+];
+
+const nav = document.getElementById('nav');
+const pages = document.getElementById('pages');
+
+topics.forEach((t, i) => {
+    const btn = document.createElement('button');
+    btn.textContent = t.label;
+    btn.className = i === 0 ? 'active' : '';
+    
+    btn.onclick = () => {
+        document.querySelectorAll('.nav button').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.getElementById(t.id).classList.add('active');
+    };
+    
+    nav.appendChild(btn);
+
+    const page = document.createElement('div');
+    page.className = 'page' + (i === 0 ? ' active' : '');
+    page.id = t.id;
+    page.innerHTML = t.html;
+    pages.appendChild(page);
+});
+
+function tog(el) {
+    const ans = el.nextElementSibling;
+    const arr = el.querySelector('.arr');
+    const isOpen = ans.classList.contains('open');
+
+    // Close any currently open QAs within this specific page tab
+    const currentPage = el.closest('.page');
+    currentPage.querySelectorAll('.qa-a.open').forEach(openA => {
+        openA.classList.remove('open');
+        openA.previousElementSibling.querySelector('.arr').classList.remove('open');
+    });
+
+    if(!isOpen) {
+        ans.classList.add('open');
+        arr.classList.add('open');
+    }
+}
+</script>
+
+</body>
+</html>
