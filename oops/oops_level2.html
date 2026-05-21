@@ -1,109 +1,138 @@
-<style>
-    :root {
-        --color-text-primary: #1a1a1a;
-        --color-text-secondary: #4a4a4a;
-        --color-text-tertiary: #757575;
-        --color-text-success: #3B6D11;
-        --color-text-danger: #A32D2D;
-        --color-background-primary: #ffffff;
-        --color-background-secondary: #f4f5f7;
-        --color-background-tertiary: #e9ecef;
-        --color-border-secondary: #d1d5db;
-        --color-border-tertiary: #e5e7eb;
-        --border-radius-md: 8px;
-        --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-        --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-    }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OOPs Level 2 - Core Deep Dive</title>
+    <style>
+        :root {
+            --color-text-primary: #1a1a1a;
+            --color-text-secondary: #4a4a4a;
+            --color-text-tertiary: #757575;
+            --color-text-success: #3B6D11;
+            --color-text-danger: #A32D2D;
+            --color-background-primary: #ffffff;
+            --color-background-secondary: #f4f5f7;
+            --color-background-tertiary: #e9ecef;
+            --color-border-secondary: #d1d5db;
+            --color-border-tertiary: #e5e7eb;
+            --border-radius-md: 8px;
+            --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: var(--font-sans); padding: 20px; max-width: 800px; margin: 0 auto; }
-    
-    .nav { display: flex; flex-wrap: wrap; gap: 6px; padding: 16px 0 12px; }
-    .nav button { font-size: 12px; padding: 5px 11px; border-radius: 20px; border: 0.5px solid var(--color-border-secondary); background: transparent; color: var(--color-text-secondary); cursor: pointer; transition: all 0.15s; }
-    .nav button.active { background: #EAF3DE; color: #27500A; border-color: #97C459; font-weight: 500; }
-    
-    .page { display: none; padding-bottom: 24px; }
-    .page.active { display: block; }
-    
-    .section { margin-bottom: 20px; }
-    .section h2 { font-size: 16px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 8px; padding-bottom: 6px; border-bottom: 0.5px solid var(--color-border-tertiary); }
-    .section p { font-size: 14px; color: var(--color-text-secondary); line-height: 1.7; margin-bottom: 8px; }
-    .section p strong { color: var(--color-text-primary); font-weight: 500; }
-    
-    .card-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; margin: 10px 0; }
-    .card { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 12px 14px; }
-    .card .label { font-size: 11px; color: var(--color-text-tertiary); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 4px; }
-    .card .val { font-size: 14px; font-weight: 500; color: var(--color-text-primary); }
-    .card .sub { font-size: 12px; color: var(--color-text-secondary); margin-top: 3px; line-height: 1.5; }
-    
-    .tag { display: inline-block; font-size: 11px; font-weight: 500; padding: 2px 8px; border-radius: 10px; margin: 2px 2px 2px 0; }
-    .tag.blue { background: #E6F1FB; color: #0C447C; }
-    .tag.green { background: #EAF3DE; color: #27500A; }
-    .tag.amber { background: #FAEEDA; color: #633806; }
-    .tag.red { background: #FCEBEB; color: #791F1F; }
-    .tag.purple { background: #EEEDFE; color: #3C3489; }
-    .tag.teal { background: #E1F5EE; color: #085041; }
-    
-    code { font-family: var(--font-mono); font-size: 12px; background: var(--color-background-secondary); padding: 1px 5px; border-radius: 4px; color: var(--color-text-primary); }
-    .code-block { background: var(--color-background-secondary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-md); padding: 12px 14px; margin: 8px 0; font-family: var(--font-mono); font-size: 12px; color: var(--color-text-primary); line-height: 1.8; white-space: pre-wrap; }
-    
-    .table-wrap { overflow-x: auto; margin: 8px 0; }
-    table { width: 100%; border-collapse: collapse; font-size: 13px; }
-    th { background: var(--color-background-secondary); color: var(--color-text-secondary); font-weight: 500; text-align: left; padding: 8px 10px; border-bottom: 0.5px solid var(--color-border-secondary); }
-    td { padding: 7px 10px; border-bottom: 0.5px solid var(--color-border-tertiary); color: var(--color-text-primary); }
-    tr:last-child td { border-bottom: none; }
-    
-    .qa { border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-md); margin: 8px 0; overflow: hidden; }
-    .qa-q { padding: 10px 14px; font-size: 13px; font-weight: 500; color: var(--color-text-primary); cursor: pointer; display: flex; justify-content: space-between; align-items: center; background: var(--color-background-secondary); }
-    .qa-q:hover { background: var(--color-background-tertiary); }
-    .qa-a { display: none; padding: 10px 14px; font-size: 13px; color: var(--color-text-secondary); line-height: 1.7; border-top: 0.5px solid var(--color-border-tertiary); background: var(--color-background-primary); }
-    .qa-a.open { display: block; }
-    .arrow { font-size: 11px; transition: transform 0.2s; color: var(--color-text-tertiary); }
-    .arrow.open { transform: rotate(180deg); }
-    
-    .highlight, .remember { padding: 10px 14px; font-size: 13px; line-height: 1.7; margin: 8px 0; border-radius: 0; }
-    .highlight { background: #FAEEDA; border-left: 3px solid #EF9F27; color: #412402; }
-    .remember { background: #EAF3DE; border-left: 3px solid #639922; color: #173404; }
-    
-    .vs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 10px 0; }
-    .vs-card { border-radius: var(--border-radius-md); padding: 12px 14px; border: 0.5px solid var(--color-border-tertiary); }
-    .vs-card h4 { font-size: 13px; font-weight: 500; margin-bottom: 8px; }
-    .vs-card ul { list-style: none; padding: 0; }
-    .vs-card ul li { font-size: 12px; color: var(--color-text-secondary); padding: 3px 0; line-height: 1.5; }
-    .vs-card ul li::before { content: "+ "; color: var(--color-text-success); }
-    .vs-card.bad ul li::before { content: "- "; color: var(--color-text-danger); }
-</style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: var(--font-sans); padding: 20px; max-width: 800px; margin: 0 auto; background: var(--color-background-primary); }
+        
+        .nav { display: flex; flex-wrap: wrap; gap: 8px; padding: 16px 0 16px; border-bottom: 1px solid var(--color-border-tertiary); margin-bottom: 20px; }
+        .nav button { font-size: 13px; padding: 6px 14px; border-radius: 20px; border: 1px solid var(--color-border-secondary); background: var(--color-background-primary); color: var(--color-text-secondary); cursor: pointer; transition: all 0.2s ease; }
+        .nav button:hover { background: var(--color-background-secondary); }
+        .nav button.active { background: #EAF3DE; color: #27500A; border-color: #97C459; font-weight: 600; }
+        
+        .page { display: none; padding-bottom: 30px; animation: fadeIn 0.3s ease; }
+        .page.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .section { margin-bottom: 24px; }
+        .section h2 { font-size: 18px; font-weight: 600; color: var(--color-text-primary); margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid var(--color-border-tertiary); }
+        .section p { font-size: 14.5px; color: var(--color-text-secondary); line-height: 1.6; margin-bottom: 10px; }
+        .section p strong { color: var(--color-text-primary); font-weight: 600; }
+        
+        .card-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin: 12px 0; }
+        .card { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 14px; border: 1px solid var(--color-border-tertiary); }
+        .card .label { font-size: 11px; color: var(--color-text-tertiary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; font-weight: 600; }
+        .card .val { font-size: 15px; font-weight: 600; color: var(--color-text-primary); margin-bottom: 4px; }
+        .card .sub { font-size: 13px; color: var(--color-text-secondary); line-height: 1.5; }
+        
+        .tag { display: inline-block; font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 12px; margin: 2px 4px 2px 0; text-transform: uppercase; }
+        .tag.blue { background: #E6F1FB; color: #0C447C; }
+        .tag.green { background: #EAF3DE; color: #27500A; }
+        .tag.amber { background: #FAEEDA; color: #633806; }
+        .tag.red { background: #FCEBEB; color: #791F1F; }
+        .tag.purple { background: #EEEDFE; color: #3C3489; }
+        .tag.teal { background: #E1F5EE; color: #085041; }
+        
+        /* Inline Code Styling */
+        code { font-family: var(--font-mono); font-size: 13px; background: var(--color-background-secondary); padding: 2px 6px; border-radius: 4px; color: #d63384; border: 1px solid var(--color-border-tertiary); }
+        
+        /* Dark Theme Code Block */
+        .code-block { 
+            background: #1e1e1e; 
+            border-radius: var(--border-radius-md); 
+            padding: 16px 14px; 
+            margin: 12px 0; 
+            font-family: var(--font-mono); 
+            font-size: 13px; 
+            color: #d4d4d4; 
+            line-height: 1.6; 
+            white-space: pre-wrap; 
+            overflow-x: auto; 
+            border: none; 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1); 
+        }
+        .code-block code { background: transparent; color: inherit; border: none; padding: 0; }
+        
+        .table-wrap { overflow-x: auto; margin: 12px 0; }
+        table { width: 100%; border-collapse: collapse; font-size: 14px; }
+        th { background: var(--color-background-secondary); color: var(--color-text-primary); font-weight: 600; text-align: left; padding: 10px 12px; border-bottom: 2px solid var(--color-border-secondary); }
+        td { padding: 10px 12px; border-bottom: 1px solid var(--color-border-tertiary); color: var(--color-text-secondary); }
+        tr:last-child td { border-bottom: none; }
+        
+        .qa { border: 1px solid var(--color-border-tertiary); border-radius: var(--border-radius-md); margin: 12px 0; overflow: hidden; }
+        .qa-q { padding: 14px 16px; font-size: 14.5px; font-weight: 600; color: var(--color-text-primary); cursor: pointer; display: flex; justify-content: space-between; align-items: center; background: var(--color-background-secondary); transition: background 0.2s ease; }
+        .qa-q:hover { background: var(--color-background-tertiary); }
+        .qa-a { display: none; padding: 14px 16px; font-size: 14px; color: var(--color-text-secondary); line-height: 1.6; border-top: 1px solid var(--color-border-tertiary); background: var(--color-background-primary); }
+        .qa-a.open { display: block; animation: slideDown 0.2s ease; }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .arrow { font-size: 12px; transition: transform 0.3s ease; color: var(--color-text-tertiary); }
+        .arrow.open { transform: rotate(180deg); }
+        
+        .highlight, .remember { padding: 12px 16px; font-size: 14px; line-height: 1.6; margin: 12px 0; border-radius: var(--border-radius-md); }
+        .highlight { background: #FFF8E1; border-left: 4px solid #FFC107; color: #5D4037; }
+        .remember { background: #E8F5E9; border-left: 4px solid #4CAF50; color: #1B5E20; }
+        
+        .vs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 12px 0; }
+        .vs-card { border-radius: var(--border-radius-md); padding: 14px; border: 1px solid var(--color-border-tertiary); background: var(--color-background-secondary); }
+        .vs-card h4 { font-size: 14px; font-weight: 600; margin-bottom: 10px; }
+        .vs-card ul { list-style: none; padding: 0; }
+        .vs-card ul li { font-size: 13px; color: var(--color-text-secondary); padding: 4px 0; line-height: 1.5; }
+        .vs-card ul li::before { content: "+ "; color: var(--color-text-success); font-weight: bold; }
+        .vs-card.bad ul li::before { content: "- "; color: var(--color-text-danger); font-weight: bold; }
+    </style>
+</head>
+<body>
 
-<div class="nav" id="nav"></div>
-<div id="pages"></div>
+    <div class="nav" id="nav"></div>
+    <div id="pages"></div>
 
-<script>
-    const topics = [
-        {
-            id: 't1',
-            label: 'Inheritance Types',
-            html: `
-                <div class="section">
-                    <h2>What is Inheritance?</h2>
-                    <p>Inheritance allows a <strong>Child (Derived) class</strong> to inherit properties and behaviors from a <strong>Parent (Base) class</strong>. It promotes code reusability and builds a hierarchical relationship.</p>
-                    <div class="highlight"><strong>Real-world Analogy:</strong> A "Vehicle" is a parent class. "Car", "Truck", and "Motorcycle" are child classes. They inherit common features like "engine" and "speed" but add unique options.</div>
-                </div>
-                <div class="section">
-                    <h2>The 5 Types of Inheritance</h2>
-                    <div class="table-wrap">
-                        <table>
-                            <tr><th>Type</th><th>Structure</th><th>Description</th></tr>
-                            <tr><td><span class="tag blue">Single</span></td><td>A → B</td><td>One child inherits from exactly one parent.</td></tr>
-                            <tr><td><span class="tag purple">Multilevel</span></td><td>A → B → C</td><td>A child inherits from a parent, which is also a child of another class.</td></tr>
-                            <tr><td><span class="tag red">Multiple</span></td><td>{A, B} → C</td><td>One child class inherits from more than one parent class directly.</td></tr>
-                            <tr><td><span class="tag amber">Hierarchical</span></td><td>A → {B, C}</td><td>Multiple child classes inherit from a single parent class.</td></tr>
-                            <tr><td><span class="tag teal">Hybrid</span></td><td>Mix of above</td><td>A combination of two or more types of inheritance.</td></tr>
-                        </table>
+    <script>
+        const topics = [
+            {
+                id: 't1',
+                label: 'Inheritance Types',
+                html: `
+                    <div class="section">
+                        <h2>What is Inheritance?</h2>
+                        <p>Inheritance allows a <strong>Child (Derived) class</strong> to inherit properties and behaviors from a <strong>Parent (Base) class</strong>. It promotes code reusability and builds a hierarchical relationship.</p>
+                        <div class="highlight"><strong>Real-world Analogy:</strong> A "Vehicle" is a parent class. "Car", "Truck", and "Motorcycle" are child classes. They inherit common features like "engine" and "speed" but add unique options.</div>
                     </div>
-                </div>
-                <div class="section">
-                    <h2>C++ Example: Multiple Inheritance</h2>
-                    <div class="code-block">#include &lt;iostream&gt;
+                    <div class="section">
+                        <h2>The 5 Types of Inheritance</h2>
+                        <div class="table-wrap">
+                            <table>
+                                <tr><th>Type</th><th>Structure</th><th>Description</th></tr>
+                                <tr><td><span class="tag blue">Single</span></td><td>A → B</td><td>One child inherits from exactly one parent.</td></tr>
+                                <tr><td><span class="tag purple">Multilevel</span></td><td>A → B → C</td><td>A child inherits from a parent, which is also a child of another class.</td></tr>
+                                <tr><td><span class="tag red">Multiple</span></td><td>{A, B} → C</td><td>One child class inherits from more than one parent class directly.</td></tr>
+                                <tr><td><span class="tag amber">Hierarchical</span></td><td>A → {B, C}</td><td>Multiple child classes inherit from a single parent class.</td></tr>
+                                <tr><td><span class="tag teal">Hybrid</span></td><td>Mix of above</td><td>A combination of two or more types of inheritance.</td></tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="section">
+                        <h2>C++ Example: Multiple Inheritance</h2>
+                        <div class="code-block">#include &lt;iostream&gt;
 using namespace std;
 
 class Engine {
@@ -137,41 +166,41 @@ Engine started...
 Chassis intact...
 Car is rolling! 
 */</div>
-                </div>
-                <div class="section">
-                    <h2>Interview Q&A</h2>
-                    <div class="qa">
-                        <div class="qa-q" onclick="tog(this)">Q1. Why is Multiple Inheritance supported in C++ but avoided in Java? <span class="arrow">▾</span></div>
-                        <div class="qa-a">Because of the <strong>Diamond Problem</strong>. If class B and C both inherit from A, and D inherits from B and C, calling a method defined in A from object D creates ambiguity (which path to take?). C++ solves this using <code>virtual inheritance</code>. Java avoids the complexity entirely by allowing multiple inheritance only through interfaces.</div>
                     </div>
-                    <div class="qa">
-                        <div class="qa-q" onclick="tog(this)">Q2. What is the size of an empty class in C++? <span class="arrow">▾</span></div>
-                        <div class="qa-a"><strong>1 byte.</strong> The compiler allocates 1 byte so that every object of the class gets a unique, distinct memory address. Without this, tracking objects would be impossible.</div>
+                    <div class="section">
+                        <h2>Interview Q&A</h2>
+                        <div class="qa">
+                            <div class="qa-q" onclick="tog(this)">Q1. Why is Multiple Inheritance supported in C++ but avoided in Java? <span class="arrow">▾</span></div>
+                            <div class="qa-a">Because of the <strong>Diamond Problem</strong>. If class B and C both inherit from A, and D inherits from B and C, calling a method defined in A from object D creates ambiguity (which path to take?). C++ solves this using <code>virtual inheritance</code>. Java avoids the complexity entirely by allowing multiple inheritance only through interfaces.</div>
+                        </div>
+                        <div class="qa">
+                            <div class="qa-q" onclick="tog(this)">Q2. What is the size of an empty class in C++? <span class="arrow">▾</span></div>
+                            <div class="qa-a"><strong>1 byte.</strong> The compiler allocates 1 byte so that every object of the class gets a unique, distinct memory address. Without this, tracking objects would be impossible.</div>
+                        </div>
                     </div>
-                </div>
-            `
-        },
-        {
-            id: 't2',
-            label: 'Polymorphism',
-            html: `
-                <div class="section">
-                    <h2>What is Polymorphism?</h2>
-                    <p>Polymorphism means <strong>many forms</strong>. It allows a single function, operator, or object to behave differently depending on the context.</p>
-                </div>
-                <div class="section">
-                    <h2>Compile-Time vs Runtime Polymorphism</h2>
-                    <div class="table-wrap">
-                        <table>
-                            <tr><th>Feature</th><th>Compile-Time (Early Binding)</th><th>Runtime (Late Binding)</th></tr>
-                            <tr><td><strong>Mechanism</strong></td><td>Function / Operator Overloading</td><td>Method Overriding via Virtual Functions</td></tr>
-                            <tr><td><strong>Execution</strong></td><td>Resolved during code compilation. Faster execution.</td><td>Resolved at runtime using pointers. More flexible.</td></tr>
-                        </table>
+                `
+            },
+            {
+                id: 't2',
+                label: 'Polymorphism',
+                html: `
+                    <div class="section">
+                        <h2>What is Polymorphism?</h2>
+                        <p>Polymorphism means <strong>many forms</strong>. It allows a single function, operator, or object to behave differently depending on the context.</p>
                     </div>
-                </div>
-                <div class="section">
-                    <h2>C++ Code: Overloading vs Overriding</h2>
-                    <div class="code-block">#include &lt;iostream&gt;
+                    <div class="section">
+                        <h2>Compile-Time vs Runtime Polymorphism</h2>
+                        <div class="table-wrap">
+                            <table>
+                                <tr><th>Feature</th><th>Compile-Time (Early Binding)</th><th>Runtime (Late Binding)</th></tr>
+                                <tr><td><strong>Mechanism</strong></td><td>Function / Operator Overloading</td><td>Method Overriding via Virtual Functions</td></tr>
+                                <tr><td><strong>Execution</strong></td><td>Resolved during code compilation. Faster execution.</td><td>Resolved at runtime using pointers. More flexible.</td></tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="section">
+                        <h2>C++ Code: Overloading vs Overriding</h2>
+                        <div class="code-block">#include &lt;iostream&gt;
 using namespace std;
 
 class MathOperations {
@@ -210,31 +239,31 @@ int main() {
 15
 Woof Woof!
 */</div>
-                </div>
-                <div class="section">
-                    <h2>Interview Q&A</h2>
-                    <div class="qa">
-                        <div class="qa-q" onclick="tog(this)">Q1. Can we override a non-virtual function? <span class="arrow">▾</span></div>
-                        <div class="qa-a">Technically, you can declare a function with the same name in the derived class, but this is called <strong>Function Hiding</strong>, not overriding. If you call it using a base class pointer, the compiler will use early binding and execute the base class version. To get proper runtime overriding, the base function <strong>must</strong> be <code>virtual</code>.</div>
                     </div>
-                    <div class="qa">
-                        <div class="qa-q" onclick="tog(this)">Q2. Can a Constructor be virtual? What about a Destructor? <span class="arrow">▾</span></div>
-                        <div class="qa-a"><strong>No</strong>, a constructor cannot be virtual because the object's vtable (which tracks virtual functions) isn't fully created until the constructor finishes. <br><strong>Yes</strong>, destructors should almost always be virtual in base classes to prevent memory leaks when deleting derived objects via a base pointer.</div>
+                    <div class="section">
+                        <h2>Interview Q&A</h2>
+                        <div class="qa">
+                            <div class="qa-q" onclick="tog(this)">Q1. Can we override a non-virtual function? <span class="arrow">▾</span></div>
+                            <div class="qa-a">Technically, you can declare a function with the same name in the derived class, but this is called <strong>Function Hiding</strong>, not overriding. If you call it using a base class pointer, the compiler will use early binding and execute the base class version. To get proper runtime overriding, the base function <strong>must</strong> be <code>virtual</code>.</div>
+                        </div>
+                        <div class="qa">
+                            <div class="qa-q" onclick="tog(this)">Q2. Can a Constructor be virtual? What about a Destructor? <span class="arrow">▾</span></div>
+                            <div class="qa-a"><strong>No</strong>, a constructor cannot be virtual because the object's vtable (which tracks virtual functions) isn't fully created until the constructor finishes. <br><br><strong>Yes</strong>, destructors should almost always be virtual in base classes to prevent memory leaks when deleting derived objects via a base pointer.</div>
+                        </div>
                     </div>
-                </div>
-            `
-        },
-        {
-            id: 't3',
-            label: 'Base Class Access',
-            html: `
-                <div class="section">
-                    <h2>The "super" equivalent in C++</h2>
-                    <p>Languages like Java have a <code>super</code> keyword to access parent constructors and methods. C++ doesn't have <code>super</code>. Instead, C++ uses the <strong>Base Class Name with the Scope Resolution Operator (::)</strong> or <strong>Member Initialization Lists</strong>.</p>
-                </div>
-                <div class="section">
-                    <h2>C++ Code: Invoking Parent Actions</h2>
-                    <div class="code-block">#include &lt;iostream&gt;
+                `
+            },
+            {
+                id: 't3',
+                label: 'Base Class Access',
+                html: `
+                    <div class="section">
+                        <h2>The "super" equivalent in C++</h2>
+                        <p>Languages like Java have a <code>super</code> keyword to access parent constructors and methods. C++ doesn't have <code>super</code>. Instead, C++ uses the <strong>Base Class Name with the Scope Resolution Operator (::)</strong> or <strong>Member Initialization Lists</strong>.</p>
+                    </div>
+                    <div class="section">
+                        <h2>C++ Code: Invoking Parent Actions</h2>
+                        <div class="code-block">#include &lt;iostream&gt;
 using namespace std;
 
 class Parent {
@@ -275,31 +304,31 @@ Child Constructor Initialized.
 Executing Parent show().
 Executing Child customized show().
 */</div>
-                </div>
-                <div class="section">
-                    <h2>Interview Q&A</h2>
-                    <div class="qa">
-                        <div class="qa-q" onclick="tog(this)">Q1. What is the execution order of constructors and destructors in Inheritance? <span class="arrow">▾</span></div>
-                        <div class="qa-a">Constructors run from <strong>Base to Derived</strong> (Parent builds first, then Child). Destructors run in exact reverse: <strong>Derived to Base</strong> (Child cleans up first, then Parent).</div>
                     </div>
-                </div>
-            `
-        },
-        {
-            id: 't4',
-            label: 'Abstract vs Interface',
-            html: `
-                <div class="section">
-                    <h2>Abstract Classes</h2>
-                    <p>A class with at least one <strong>Pure Virtual Function</strong> (<code>virtual void func() = 0;</code>) becomes an abstract class. You cannot create instances (objects) of this class directly.</p>
-                </div>
-                <div class="section">
-                    <h2>Pure Interfaces in C++</h2>
-                    <p>C++ doesn't have an explicit <code>interface</code> keyword like Java or C#. An interface is simulated in C++ by creating an abstract class that contains <strong>ONLY pure virtual functions</strong> and <strong>NO data members</strong> (no instance variables).</p>
-                </div>
-                <div class="section">
-                    <h2>C++ Code: Interface Simulation</h2>
-                    <div class="code-block">#include &lt;iostream&gt;
+                    <div class="section">
+                        <h2>Interview Q&A</h2>
+                        <div class="qa">
+                            <div class="qa-q" onclick="tog(this)">Q1. What is the execution order of constructors and destructors in Inheritance? <span class="arrow">▾</span></div>
+                            <div class="qa-a">Constructors run from <strong>Base to Derived</strong> (Parent builds first, then Child). Destructors run in exact reverse: <strong>Derived to Base</strong> (Child cleans up first, then Parent).</div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                id: 't4',
+                label: 'Abstract vs Interface',
+                html: `
+                    <div class="section">
+                        <h2>Abstract Classes</h2>
+                        <p>A class with at least one <strong>Pure Virtual Function</strong> (<code>virtual void func() = 0;</code>) becomes an abstract class. You cannot create instances (objects) of this class directly.</p>
+                    </div>
+                    <div class="section">
+                        <h2>Pure Interfaces in C++</h2>
+                        <p>C++ doesn't have an explicit <code>interface</code> keyword like Java or C#. An interface is simulated in C++ by creating an abstract class that contains <strong>ONLY pure virtual functions</strong> and <strong>NO data members</strong> (no instance variables).</p>
+                    </div>
+                    <div class="section">
+                        <h2>C++ Code: Interface Simulation</h2>
+                        <div class="code-block">#include &lt;iostream&gt;
 using namespace std;
 
 // Simulating an Interface
@@ -330,42 +359,42 @@ int main() {
 Data encrypted with AES-256.
 Data decrypted cleanly.
 */</div>
-                </div>
-                <div class="section">
-                    <h2>Interview Q&A</h2>
-                    <div class="qa">
-                        <div class="qa-q" onclick="tog(this)">Q1. Can an abstract class have constructors? <span class="arrow">▾</span></div>
-                        <div class="qa-a">Yes. Even though you cannot instantiate an abstract class directly, derived classes still need to invoke the base class constructor to initialize any common state (data members) held inside the abstract class.</div>
                     </div>
-                </div>
-            `
-        },
-        {
-            id: 't5',
-            label: 'Object Relationships',
-            html: `
-                <div class="section">
-                    <h2>Object Association Spectrum</h2>
-                    <p>Objects don't live in isolation. They connect to establish context. There are 3 core structural relationships:</p>
-                </div>
-                <div class="section">
-                    <h2>Aggregation vs Composition</h2>
-                    <div class="card-row">
-                        <div class="card">
-                            <div class="label">Aggregation (Weak HAS-A)</div>
-                            <div class="val">Independent Lifecycles</div>
-                            <div class="sub">The child can exist if the parent is destroyed. Example: A Teacher and a Department. If Department closes, Teacher still lives.</div>
-                        </div>
-                        <div class="card">
-                            <div class="label">Composition (Strong HAS-A)</div>
-                            <div class="val">Dependent Lifecycles</div>
-                            <div class="sub">The child dies with the parent. Example: A House and its Rooms. If you demolish the House, the Rooms vanish instantly.</div>
+                    <div class="section">
+                        <h2>Interview Q&A</h2>
+                        <div class="qa">
+                            <div class="qa-q" onclick="tog(this)">Q1. Can an abstract class have constructors? <span class="arrow">▾</span></div>
+                            <div class="qa-a">Yes. Even though you cannot instantiate an abstract class directly, derived classes still need to invoke the base class constructor to initialize any common state (data members) held inside the abstract class.</div>
                         </div>
                     </div>
-                </div>
-                <div class="section">
-                    <h2>C++ Code: Implementation</h2>
-                    <div class="code-block">#include &lt;iostream&gt;
+                `
+            },
+            {
+                id: 't5',
+                label: 'Object Relationships',
+                html: `
+                    <div class="section">
+                        <h2>Object Association Spectrum</h2>
+                        <p>Objects don't live in isolation. They connect to establish context. There are 3 core structural relationships:</p>
+                    </div>
+                    <div class="section">
+                        <h2>Aggregation vs Composition</h2>
+                        <div class="card-row">
+                            <div class="card">
+                                <div class="label">Aggregation (Weak HAS-A)</div>
+                                <div class="val">Independent Lifecycles</div>
+                                <div class="sub">The child can exist if the parent is destroyed. Example: A Teacher and a Department. If Department closes, Teacher still lives.</div>
+                            </div>
+                            <div class="card">
+                                <div class="label">Composition (Strong HAS-A)</div>
+                                <div class="val">Dependent Lifecycles</div>
+                                <div class="sub">The child dies with the parent. Example: A House and its Rooms. If you demolish the House, the Rooms vanish instantly.</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="section">
+                        <h2>C++ Code: Implementation</h2>
+                        <div class="code-block">#include &lt;iostream&gt;
 using namespace std;
 
 class Room { public: ~Room() { cout &lt;&lt; "Room destroyed." &lt;&lt; endl; } };
@@ -409,53 +438,53 @@ Room destroyed.
 ------------------
 Department closed, but Dr. Sharma lives!
 */</div>
-                </div>
-                <div class="section">
-                    <h2>Interview Q&A</h2>
-                    <div class="qa">
-                        <div class="qa-q" onclick="tog(this)">Q1. How is Composition implemented in C++ versus Aggregation? <span class="arrow">▾</span></div>
-                        <div class="qa-a">In <strong>Composition</strong>, the child object is usually instantiated inside the parent's constructor and deleted in its destructor (or held as a direct value member). In <strong>Aggregation</strong>, the child object is created externally and passed to the parent via a pointer or reference, so the parent doesn't delete it.</div>
                     </div>
-                </div>
-            `
-        },
-        {
-            id: 't6',
-            label: 'Coupling & Cohesion',
-            html: `
-                <div class="section">
-                    <h2>Software Design Golden Rule</h2>
-                    <div class="remember">For robust, scalable software architecture, always strive for: <strong>Loose Coupling</strong> and <strong>High Cohesion</strong>.</div>
-                </div>
-                <div class="section">
-                    <h2>Definitions</h2>
-                    <p><strong>Coupling:</strong> Refers to the degree of dependency between different modules or classes. If Class A crashes every time Class B is altered, they are tightly coupled. This makes code brittle.</p>
-                    <p><strong>Cohesion:</strong> Refers to how focused a single class or module's responsibilities are. A class that handles user authentication, generates invoice PDFs, and connects to the database has low cohesion. It should be split into unique modules doing single focused tasks.</p>
-                </div>
-                <div class="section">
-                    <h2>Interview Q&A</h2>
-                    <div class="qa">
-                        <div class="qa-q" onclick="tog(this)">Q1. How do you achieve loose coupling in production code? <span class="arrow">▾</span></div>
-                        <div class="qa-a">Loose coupling is achieved by <strong>programming to interfaces rather than implementations</strong> (using Dependency Injection). By using abstract classes or interfaces as abstraction boundaries, classes depend on a general contract rather than the internal concrete layout of another class.</div>
+                    <div class="section">
+                        <h2>Interview Q&A</h2>
+                        <div class="qa">
+                            <div class="qa-q" onclick="tog(this)">Q1. How is Composition implemented in C++ versus Aggregation? <span class="arrow">▾</span></div>
+                            <div class="qa-a">In <strong>Composition</strong>, the child object is usually instantiated inside the parent's constructor and deleted in its destructor (or held as a direct value member). In <strong>Aggregation</strong>, the child object is created externally and passed to the parent via a pointer or reference, so the parent doesn't delete it.</div>
+                        </div>
                     </div>
-                    <div class="qa">
-                        <div class="qa-q" onclick="tog(this)">Q2. What is the ideal state of coupling and cohesion? <span class="arrow">▾</span></div>
-                        <div class="qa-a">The golden rule is <strong>Loose Coupling</strong> (modules should be as independent as possible) and <strong>High Cohesion</strong> (a module should do exactly one thing and do it perfectly).</div>
+                `
+            },
+            {
+                id: 't6',
+                label: 'Coupling & Cohesion',
+                html: `
+                    <div class="section">
+                        <h2>Software Design Golden Rule</h2>
+                        <div class="remember">For robust, scalable software architecture, always strive for: <strong>Loose Coupling</strong> and <strong>High Cohesion</strong>.</div>
                     </div>
-                </div>
-            `
-        },
-        {
-            id: 't7',
-            label: 'Exception Handling',
-            html: `
-                <div class="section">
-                    <h2>Runtime Errors</h2>
-                    <p>Exception handling provides a safe architecture to manage runtime operational failures (like division by zero, null pointer access, or missing database files) without crashing the entire program.</p>
-                </div>
-                <div class="section">
-                    <h2>C++ Code: Custom Exceptions</h2>
-                    <div class="code-block">#include &lt;iostream&gt;
+                    <div class="section">
+                        <h2>Definitions</h2>
+                        <p><strong>Coupling:</strong> Refers to the degree of dependency between different modules or classes. If Class A crashes every time Class B is altered, they are tightly coupled. This makes code brittle.</p>
+                        <p><strong>Cohesion:</strong> Refers to how focused a single class or module's responsibilities are. A class that handles user authentication, generates invoice PDFs, and connects to the database has low cohesion. It should be split into unique modules doing single focused tasks.</p>
+                    </div>
+                    <div class="section">
+                        <h2>Interview Q&A</h2>
+                        <div class="qa">
+                            <div class="qa-q" onclick="tog(this)">Q1. How do you achieve loose coupling in production code? <span class="arrow">▾</span></div>
+                            <div class="qa-a">Loose coupling is achieved by <strong>programming to interfaces rather than implementations</strong> (using Dependency Injection). By using abstract classes or interfaces as abstraction boundaries, classes depend on a general contract rather than the internal concrete layout of another class.</div>
+                        </div>
+                        <div class="qa">
+                            <div class="qa-q" onclick="tog(this)">Q2. What is the ideal state of coupling and cohesion? <span class="arrow">▾</span></div>
+                            <div class="qa-a">The golden rule is <strong>Loose Coupling</strong> (modules should be as independent as possible) and <strong>High Cohesion</strong> (a module should do exactly one thing and do it perfectly).</div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                id: 't7',
+                label: 'Exception Handling',
+                html: `
+                    <div class="section">
+                        <h2>Runtime Errors</h2>
+                        <p>Exception handling provides a safe architecture to manage runtime operational failures (like division by zero, null pointer access, or missing database files) without crashing the entire program.</p>
+                    </div>
+                    <div class="section">
+                        <h2>C++ Code: Custom Exceptions</h2>
+                        <div class="code-block">#include &lt;iostream&gt;
 #include &lt;exception&gt;
 using namespace std;
 
@@ -498,36 +527,36 @@ int main() {
 /* Output:
 Caught Error: Transaction Denied: Account balance cannot drop below zero!
 */</div>
-                </div>
-                <div class="section">
-                    <h2>Interview Q&A</h2>
-                    <div class="qa">
-                        <div class="qa-q" onclick="tog(this)">Q1. Why use Exception Handling instead of standard if-else error codes? <span class="arrow">▾</span></div>
-                        <div class="qa-a">Error codes clutter the business logic and can be easily ignored by the developer. Exceptions separate the normal program flow from the error-handling flow and <strong>force</strong> the developer to handle the error (or the program safely aborts).</div>
                     </div>
-                    <div class="qa">
-                        <div class="qa-q" onclick="tog(this)">Q2. Why is throwing exceptions from a destructor dangerous? <span class="arrow">▾</span></div>
-                        <div class="qa-a">If a destructor throws an exception while another exception is already being processed (during stack unwinding), C++ will immediately call <code>std::terminate()</code>, permanently crashing the program. Always catch exceptions internally inside destructors!</div>
+                    <div class="section">
+                        <h2>Interview Q&A</h2>
+                        <div class="qa">
+                            <div class="qa-q" onclick="tog(this)">Q1. Why use Exception Handling instead of standard if-else error codes? <span class="arrow">▾</span></div>
+                            <div class="qa-a">Error codes clutter the business logic and can be easily ignored by the developer. Exceptions separate the normal program flow from the error-handling flow and <strong>force</strong> the developer to handle the error (or the program safely aborts).</div>
+                        </div>
+                        <div class="qa">
+                            <div class="qa-q" onclick="tog(this)">Q2. Why is throwing exceptions from a destructor dangerous? <span class="arrow">▾</span></div>
+                            <div class="qa-a">If a destructor throws an exception while another exception is already being processed (during stack unwinding), C++ will immediately call <code>std::terminate()</code>, permanently crashing the program. Always catch exceptions internally inside destructors!</div>
+                        </div>
                     </div>
-                </div>
-            `
-        },
-        {
-            id: 't8',
-            label: 'Final & Const',
-            html: `
-                <div class="section">
-                    <h2>The <code>final</code> Keyword (C++11)</h2>
-                    <p>The <code>final</code> specifier serves two clear diagnostic roles in class hierarchies:</p>
-                    <p>1. Prevents a class from being inherited further.<br>2. Prevents a specific virtual function from being overridden in derived child classes.</p>
-                </div>
-                <div class="section">
-                    <h2>The <code>const</code> Keyword</h2>
-                    <p>Enforces read-only safety. A <code>const</code> member function guarantees that it will not modify any data members of the calling object.</p>
-                </div>
-                <div class="section">
-                    <h2>C++ Structural Example</h2>
-                    <div class="code-block">#include &lt;iostream&gt;
+                `
+            },
+            {
+                id: 't8',
+                label: 'Final & Const',
+                html: `
+                    <div class="section">
+                        <h2>The <code>final</code> Keyword (C++11)</h2>
+                        <p>The <code>final</code> specifier serves two clear diagnostic roles in class hierarchies:</p>
+                        <p>1. Prevents a class from being inherited further.<br>2. Prevents a specific virtual function from being overridden in derived child classes.</p>
+                    </div>
+                    <div class="section">
+                        <h2>The <code>const</code> Keyword</h2>
+                        <p>Enforces read-only safety. A <code>const</code> member function guarantees that it will not modify any data members of the calling object.</p>
+                    </div>
+                    <div class="section">
+                        <h2>C++ Structural Example</h2>
+                        <div class="code-block">#include &lt;iostream&gt;
 using namespace std;
 
 class Base {
@@ -569,47 +598,60 @@ int main() {
 /* Output:
 Wallet cash value: 250
 */</div>
-                </div>
-                <div class="section">
-                    <h2>Interview Q&A</h2>
-                    <div class="qa">
-                        <div class="qa-q" onclick="tog(this)">Q1. What is the difference between <code>const int* ptr</code> and <code>int* const ptr</code>? <span class="arrow">▾</span></div>
-                        <div class="qa-a"><code>const int* ptr</code> is a pointer to a constant integer (the integer's value cannot be changed). <code>int* const ptr</code> is a constant pointer to an integer (the pointer itself cannot point to a different address, but the value it currently points to CAN change).</div>
                     </div>
-                </div>
-            `
-        }
-    ];
+                    <div class="section">
+                        <h2>Interview Q&A</h2>
+                        <div class="qa">
+                            <div class="qa-q" onclick="tog(this)">Q1. What is the difference between <code>const int* ptr</code> and <code>int* const ptr</code>? <span class="arrow">▾</span></div>
+                            <div class="qa-a"><code>const int* ptr</code> is a pointer to a constant integer (the integer's value cannot be changed). <code>int* const ptr</code> is a constant pointer to an integer (the pointer itself cannot point to a different address, but the value it currently points to CAN change).</div>
+                        </div>
+                    </div>
+                `
+            }
+        ];
 
-    const nav = document.getElementById('nav');
-    const pages = document.getElementById('pages');
-    
-    topics.forEach((t, i) => {
-        const btn = document.createElement('button');
-        btn.textContent = t.label;
-        btn.className = i === 0 ? 'active' : '';
+        const nav = document.getElementById('nav');
+        const pages = document.getElementById('pages');
         
-        btn.onclick = () => {
-            document.querySelectorAll('.nav button').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
+        topics.forEach((t, i) => {
+            const btn = document.createElement('button');
+            btn.textContent = t.label;
+            btn.className = i === 0 ? 'active' : '';
             
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.getElementById(t.id).classList.add('active');
-        };
-        
-        nav.appendChild(btn);
+            btn.onclick = () => {
+                document.querySelectorAll('.nav button').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                
+                document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+                document.getElementById(t.id).classList.add('active');
+            };
+            
+            nav.appendChild(btn);
 
-        const page = document.createElement('div');
-        page.className = 'page' + (i === 0 ? ' active' : '');
-        page.id = t.id;
-        page.innerHTML = t.html;
-        pages.appendChild(page);
-    });
+            const page = document.createElement('div');
+            page.className = 'page' + (i === 0 ? ' active' : '');
+            page.id = t.id;
+            page.innerHTML = t.html;
+            pages.appendChild(page);
+        });
 
-    function tog(el) {
-        const ans = el.nextElementSibling;
-        const arrow = el.querySelector('.arrow');
-        ans.classList.toggle('open');
-        arrow.classList.toggle('open');
-    }
-</script>
+        function tog(el) {
+            const ans = el.nextElementSibling;
+            const arrow = el.querySelector('.arrow');
+            
+            if (ans.classList.contains('open')) {
+                ans.classList.remove('open');
+                arrow.classList.remove('open');
+            } else {
+                // Optional: Close other open QAs
+                document.querySelectorAll('.qa-a.open').forEach(openAns => {
+                    openAns.classList.remove('open');
+                    openAns.previousElementSibling.querySelector('.arrow').classList.remove('open');
+                });
+                ans.classList.add('open');
+                arrow.classList.add('open');
+            }
+        }
+    </script>
+</body>
+</html>
