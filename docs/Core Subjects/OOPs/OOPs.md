@@ -1,4 +1,4 @@
-| OOPs Master Guide | 🔗 HTML Links |
+| OOPs Master Guide | Links |
 | :--- | :--- |
 | **1. OOPs Topics** | [Open File](pathname:///oops/oops_topics.html) |
 | **2. OOPs LEVEL-1** | [Open File](pathname:///oops/oops_level1.html) |

@@ -5,7 +5,7 @@
 - Important for Interview / OA (mcq + coding)
 - In the era of AI - data is the new oil
 
-| 📘 DBMS Master Guide | 🔗 HTML Links |
+| DBMS Master Guide | Links |
 | :--- | :--- |
 | **1. DBMS Topics** | [Open File](pathname:///dbms/dbms_topics.html) |
 | **2. DBMS LEVEL-1** | [Open File](pathname:///dbms/dbms_level1.html) |
