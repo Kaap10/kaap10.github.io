@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Design Learning Roadmap</title>
+    <style>
+        :root {
+            --color-text-primary: #1a1a1a;
+            --color-text-secondary: #4a4a4a;
+            --color-text-tertiary: #757575;
+            --color-background-primary: #ffffff;
+            --color-background-secondary: #f4f5f7;
+            --color-background-tertiary: #e9ecef;
+            --color-border-secondary: #d1d5db;
+            --color-border-tertiary: #e5e7eb;
+            --border-radius-md: 6px;
+            --border-radius-lg: 12px;
+            --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: var(--font-sans); padding: 20px; max-width: 800px; margin: 0 auto; }
+
+        .road { padding: 20px 0; font-family: var(--font-sans); }
+
+        .level-card { border-radius: var(--border-radius-lg); border: 0.5px solid var(--color-border-tertiary); margin-bottom: 18px; overflow: hidden; }
+        .level-header { display: flex; align-items: center; gap: 12px; padding: 14px 18px; cursor: pointer; user-select: none; -webkit-user-select: none; background: var(--color-background-secondary); }
+        
+        .level-badge { font-size: 11px; font-weight: 500; padding: 3px 10px; border-radius: 20px; }
+        .badge-blue { background: #E6F1FB; color: #0C447C; }
+        .badge-green { background: #EAF3DE; color: #27500A; }
+        .badge-amber { background: #FAEEDA; color: #633806; }
+
+        .level-title-wrap { flex: 1; }
+        .level-title { font-size: 15px; font-weight: 600; color: var(--color-text-primary); }
+        .level-sub { font-size: 12px; color: var(--color-text-secondary); margin-top: 2px; }
+        
+        .chevron { font-size: 12px; color: var(--color-text-tertiary); transition: transform 0.25s; }
+        .chevron.open { transform: rotate(180deg); }
+
+        .section-label { font-size: 11px; font-weight: 600; color: var(--color-text-tertiary); text-transform: uppercase; letter-spacing: 0.05em; padding: 10px 16px 4px; background: var(--color-background-primary); }
+        
+        .level-body { padding: 8px 16px 16px; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .body-pt { padding-top: 4px; }
+        
+        .topic { display: flex; align-items: flex-start; gap: 8px; padding: 9px 12px; border-radius: 8px; background: var(--color-background-secondary); cursor: pointer; transition: background 0.15s; border: 0.5px solid transparent; }
+        .topic:hover { background: var(--color-background-tertiary); border-color: var(--color-border-tertiary); }
+        
+        .topic-dot { width: 7px; height: 7px; border-radius: 50%; margin-top: 5px; flex-shrink: 0; }
+        .dot-blue { background: #185FA5; }
+        .dot-green { background: #3B6D11; }
+        .dot-amber { background: #854F0B; }
+
+        .topic-text { font-size: 13px; color: var(--color-text-primary); line-height: 1.4; font-weight: 500; }
+        .topic-tag { font-size: 10px; font-weight: 600; padding: 2px 6px; border-radius: 10px; margin-top: 4px; display: inline-block; }
+
+        .divider { height: 0.5px; background: var(--color-border-tertiary); margin: 0 16px; }
+        .sep { height: 0.5px; background: var(--color-border-tertiary); margin: 4px 16px 0; }
+
+        /* Dark Theme Code Blocks (from Level 2/3 designs) */
+        .cb { position: relative; background: #1e1e1e; border-radius: var(--border-radius-md); padding: 16px 14px; margin: 12px 0; font-family: var(--font-mono); font-size: 13px; color: #d4d4d4; line-height: 1.6; white-space: pre-wrap; word-break: break-word; overflow-x: auto; border: none; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .cb-label { position: absolute; top: 0; right: 0; background: #333333; padding: 4px 8px; border-bottom-left-radius: 6px; border-top-right-radius: var(--border-radius-md); font-size: 11px; font-weight: 600; color: #4CAF50; font-family: var(--font-sans); }
+        .out { background: #2d2d2d; border-left: 4px solid #4CAF50; border-radius: 4px; padding: 12px 14px; margin: 4px 0 16px; font-family: var(--font-mono); font-size: 12.5px; color: #e0e0e0; line-height: 1.6; white-space: pre-wrap; box-shadow: inset 0 0 10px rgba(0,0,0,0.2); }
+
+        @media(max-width:500px) { .level-body { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+<div class="road">
+
+    <div class="level-card" id="l1">
+        <div class="level-header" onclick="tog('l1')">
+            <span class="level-badge badge-blue">Level 1</span>
+            <div class="level-title-wrap">
+                <div class="level-title">Foundations — thinking like a designer</div>
+                <div class="level-sub">Mental models, OOPs design basics & first LLD problems</div>
+            </div>
+            <span class="chevron open" id="ch1">▾</span>
+        </div>
+        <div class="divider"></div>
+        <div id="b1">
+            <div class="section-label">Mental models</div>
+            <div class="level-body body-pt">
+                <div class="topic" onclick="sendPrompt('Teach me: What is System Design? Difference between LLD and HLD — with real-world examples and when each is used in interviews')">
+                    <span class="topic-dot dot-blue"></span>
+                    <div><div class="topic-text">LLD vs HLD — what & when</div><span class="topic-tag badge-blue">concept</span></div>
+                </div>
+                <div class="topic" onclick="sendPrompt('Teach me: How to approach any system design problem — step-by-step framework, requirements gathering, capacity estimation, with examples')">
+                    <span class="topic-dot dot-blue"></span>
+                    <div><div class="topic-text">Design interview framework</div><span class="topic-tag badge-blue">must-know</span></div>
+                </div>
+                <div class="topic" onclick="sendPrompt('Teach me: SOLID principles applied to system design — real coding examples showing good vs bad design decisions')">
+                    <span class="topic-dot dot-blue"></span>
+                    <div><div class="topic-text">SOLID principles (applied)</div><span class="topic-tag badge-blue">LLD</span></div>
+                </div>
+                <div class="topic" onclick="sendPrompt('Teach me: UML diagrams for system design — class diagrams, sequence diagrams, use case diagrams with real examples')">
+                    <span class="topic-dot dot-blue"></span>
+                    <div><div class="topic-text">UML diagrams basics</div><span class="topic-tag badge-blue">LLD</span></div>
+                </div>
+            </div>
+            
+            <div class="sep"></div>
+            
+            <div class="section-label">First LLD problems (with code)</div>
+            <div class="level-body body-pt">
+                <div class="topic" onclick="sendPrompt('Teach me: LLD of a Parking Lot system — requirements, class diagram, classes with code (Java/Python), design decisions explained')">
+                    <span class="topic-dot dot-blue"></span>
+                    <div><div class="topic-text">LLD: Parking Lot</div><span class="topic-tag badge-blue">coding</span></div>
+                </div>
+                <div class="topic" onclick="sendPrompt('Teach me: LLD of a Library Management System — entities, relationships, class design with full code and interview tips')">
+                    <span class="topic-dot dot-blue"></span>
+                    <div><div class="topic-text">LLD: Library Management</div><span class="topic-tag badge-blue">coding</span></div>
+                </div>
+                <div class="topic" onclick="sendPrompt('Teach me: LLD of a Vending Machine — states, state machine design pattern, full class design with code')">
+                    <span class="topic-dot dot-blue"></span>
+                    <div><div class="topic-text">LLD: Vending Machine</div><span class="topic-tag badge-blue">coding</span></div>
+                </div>
+                <div class="topic" onclick="sendPrompt('Teach me: LLD of an ATM machine — class design, state transitions, security design with full code and explanation')">
+                    <span class="topic-dot dot-blue"></span>
+                    <div><div class="topic-text">LLD: ATM Machine</div><span class="topic-tag badge-blue">coding</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="level-card" id="l2">
+        <div class="level-header" onclick="tog('l2')">
+            <span class="level-badge badge-green">Level 2</span>
+            <div class="level-title-wrap">
+                <div class="level-title">Core System Design — patterns & building blocks</div>
+                <div class="level-sub">Design patterns, HLD concepts & intermediate LLD problems</div>
+            </div>
+            <span class="chevron open" id="ch2">▾</span>
+        </div>
+        <div class="divider"></div>
+        <div id="b2">
+            <div class="section-label">LLD — design patterns (with code)</div>
+            <div class="level-body body-pt">
+                <div class="topic" onclick="sendPrompt('Teach me: Creational design patterns — Singleton, Factory, Abstract Factory, Builder, Prototype — with real-world use cases and code')">
+                    <span class="topic-dot dot-green"></span>
+                    <div><div class="topic-text">Creational patterns (5 types)</div><span class="topic-tag badge-green">LLD</span></div>
+                </div>
+                <div class="topic" onclick="sendPrompt('Teach me: Structural design patterns — Adapter, Decorator, Facade, Proxy, Composite, Bridge — with real-world examples and code')">
+                    <span class="topic-dot dot-green"></span>
+                    <div><div class="topic-text">Structural patterns (6 types)</div><span class="topic-tag badge-green">LLD</span></div>
+                </div>
+                <div class="topic" onclick="sendPrompt('Teach me: Behavioural design patterns — Observer, Strategy, Command, Iterator, State, Template Method — with real examples and code')">
+                    <span class="topic-dot dot-green"></span>
+                    <div><div class="topic-text">Behavioural patterns (6 types)</div><span class="topic-tag badge-green">LLD</span></div>
+                </div>
+                <div class="topic" onclick="sendPrompt('Teach me: LLD of a Chess game — pieces, board, moves, game rules, design patterns used, full class diagram and code')">
+                    <span class="topic-dot dot-green"></span>
+                    <div><div class="topic-text">LLD: Chess Game</div><span class="topic-tag badge-green">coding</span></div>
+                </div>
+                <div class="topic" onclick="sendPrompt('Teach me: LLD of a Hotel Booking system (like OYO) — entities, room types, booking flow, class design with full code')">
+                    <span class="topic-dot dot-green"></span>
+                    <div><div class="topic-text">LLD: Hotel Booking</div><span class="topic-tag badge-green">coding</span></div>
+                </div>
+                <div class="topic" onclick="sendPrompt('Teach me: LLD of a Food Delivery app (like Zomato/Swiggy) — restaurants, orders, delivery agents, class design with code')">
+                    <span class="topic-dot dot-green"></span>
+                    <div><div class="topic-text">LLD: Food Delivery</div><span class="topic-tag badge-green">coding</span></div>
+                </div>
+            </div>
+            
+            <div class="sep"></div>
+            
+            <div class="section-label">HLD — building blocks everyone must know</div>
+            <div class="level-body body-pt">
+                <div class="topic" onclick="sendPrompt('Teach me: Scalability in system design — vertical vs horizontal scaling, load balancers, stateless design with real examples')">
+                    <span class="topic-dot dot-green"></span>
+                    <div><div class="topic-text">Scalability & load balancing</div><span class="topic-tag badge-green">HLD</span></div>
+                </div>
+                <div class="topic" onclick="sendPrompt('Teach me: Caching in system design — cache strategies (LRU, LFU), CDN, Redis, cache invalidation, write-through vs write-back with examples')">
+                    <span class="topic-dot dot-green"></span>
+                    <div><div class="topic-text">Caching strategies</div><span class="topic-tag badge-green">HLD</span></div>
+                </div>
+                <div class="topic" onclick="sendPrompt('Teach me: Databases in system design — SQL vs NoSQL choice, sharding, replication, indexing decisions with real system examples')">
+                    <span class="topic-dot dot-green"></span>
+                    <div><div class="topic-text">Database design choices</div><span class="topic-tag badge-green">HLD</span></div>
+                </div>
+                <div class="topic" onclick="sendPrompt('Teach me: APIs in system design — REST vs GraphQL vs gRPC, API gateway, rate limiting, versioning with examples')">
+                    <span class="topic-dot dot-green"></span>
+                    <div><div class="topic-text">API design (REST/GraphQL/gRPC)</div><span class="topic-tag badge-green">HLD</span></div>
+                </div>
+                <div class="topic" onclick="sendPrompt('Teach me: Message queues in system design — Kafka vs RabbitMQ, pub-sub pattern, async processing, use cases with examples')">
+                    <span class="topic-dot dot-green"></span>
+                    <div><div class="topic-text">Message queues & Kafka</div><span class="topic-tag badge-green">HLD</span></div>
+                </div>
+                <div class="topic" onclick="sendPrompt('Teach me: Content Delivery Networks (CDN) in system design — how CDN works, edge servers, cache invalidation, when to use with examples')">
+                    <span class="topic-dot dot-green"></span>
+                    <div><div class="topic-text">CDN & edge networks</div><span class="topic-tag badge-green">HLD</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="level-card" id="l3">
+        <div class="level-header" onclick="tog('l3')">
+            <span class="level-badge badge-amber">Level 3</span>
+            <div class="level-title-wrap">
+                <div class="level-title">Interview Level — real systems from scratch</div>
+                <div class="level-sub">Advanced HLD, hard LLD problems & FAANG-style system design</div>
+            </div>
+            <span class="chevron open" id="ch3">▾</span>
+        </div>
+        <div class="divider"></div>
+        <div id="b3">
+            <div class="section-label">Advanced LLD (FAANG asked)</div>
+            <div class="level-body body-pt">
+                <div class="topic" onclick="sendPrompt('Teach me: LLD of Splitwise — expense splitting, group management, settlement algorithm, full class design with code')">
+                    <span class="topic-dot dot-amber"></span>
+                    <div><div class="topic-text">LLD: Splitwise</div><span class="topic-tag badge-amber">coding</span></div>
+                </div>
+                <div class="topic" onclick="sendPrompt('Teach me: LLD of an Elevator system — multiple lifts, scheduling algorithm, states, full class diagram and code')">
+                    <span class="topic-dot dot-amber"></span>
+                    <div><div class="topic-text">LLD: Elevator system</div><span class="topic-tag badge-amber">coding</span></div>
+                </div>
+                <div class="topic" onclick="sendPrompt('Teach me: LLD of Amazon/Flipkart e-commerce — cart, inventory, orders, payments, notifications — full design with code')">
+                    <span class="topic-dot dot-amber"></span>
+                    <div><div class="topic-text">LLD: E-commerce platform</div><span class="topic-tag badge-amber">coding</span></div>
+                </div>
+                <div class="topic" onclick="sendPrompt('Teach me: LLD of a Ride-sharing app (like Uber/Ola) — driver matching, trip lifecycle, pricing, full class design with code')">
+                    <span class="topic-dot dot-amber"></span>
+                    <div><div class="topic-text">LLD: Ride-sharing (Uber)</div><span class="topic-tag badge-amber">coding</span></div>
+                </div>
+                <div class="topic" onclick="sendPrompt('Teach me: LLD of a Notification system — multi-channel (email/SMS/push), priority queues, retry logic, templates — full code design')">
+                    <span class="topic-dot dot-amber"></span>
+                    <div><div class="topic-text">LLD: Notification system</div><span class="topic-tag badge-amber">coding</span></div>
+                </div>
+                <div class="topic" onclick="sendPrompt('Teach me: LLD of a Rate Limiter — token bucket, leaky bucket, sliding window algorithms — implement from scratch with code')">
+                    <span class="topic-dot dot-amber"></span>
+                    <div><div class="topic-text">LLD: Rate Limiter</div><span class="topic-tag badge-amber">coding</span></div>
+                </div>
+            </div>
+            
+            <div class="sep"></div>
+            
+            <div class="section-label">Advanced HLD (real systems)</div>
+            <div class="level-body body-pt">
+                <div class="topic" onclick="sendPrompt('Teach me: HLD of a URL Shortener (like bit.ly) — full design: encoding, DB schema, caching, scaling to millions of requests')">
+                    <span class="topic-dot dot-amber"></span>
+                    <div><div class="topic-text">HLD: URL Shortener</div><span class="topic-tag badge-amber">HLD</span></div>
+                </div>
+                <div class="topic" onclick="sendPrompt('Teach me: HLD of WhatsApp/chat system — message delivery, online presence, group chats, media storage, scaling design')">
+                    <span class="topic-dot dot-amber"></span>
+                    <div><div class="topic-text">HLD: Chat system (WhatsApp)</div><span class="topic-tag badge-amber">HLD</span></div>
+                </div>
+                <div class="topic" onclick="sendPrompt('Teach me: HLD of Twitter/X — tweet storage, feed generation (push vs pull), trending topics, timeline scaling design')">
+                    <span class="topic-dot dot-amber"></span>
+                    <div><div class="topic-text">HLD: Twitter / social feed</div><span class="topic-tag badge-amber">HLD</span></div>
+                </div>
+                <div class="topic" onclick="sendPrompt('Teach me: HLD of Netflix/YouTube — video upload pipeline, transcoding, CDN delivery, recommendation system, scaling')">
+                    <span class="topic-dot dot-amber"></span>
+                    <div><div class="topic-text">HLD: Video streaming (Netflix)</div><span class="topic-tag badge-amber">HLD</span></div>
+                </div>
+                <div class="topic" onclick="sendPrompt('Teach me: HLD of Google Search — web crawling, indexing, ranking, query processing, autocomplete at massive scale')">
+                    <span class="topic-dot dot-amber"></span>
+                    <div><div class="topic-text">HLD: Search engine (Google)</div><span class="topic-tag badge-amber">HLD</span></div>
+                </div>
+                <div class="topic" onclick="sendPrompt('Teach me: Microservices vs Monolith — when to split, service discovery, API gateway, distributed tracing, real trade-offs')">
+                    <span class="topic-dot dot-amber"></span>
+                    <div><div class="topic-text">Microservices vs Monolith</div><span class="topic-tag badge-amber">HLD</span></div>
+                </div>
+            </div>
+            
+            <div class="sep"></div>
+            
+            <div class="section-label">Interview essentials</div>
+            <div class="level-body body-pt">
+                <div class="topic" onclick="sendPrompt('Teach me: Consistent hashing in system design — how it works, virtual nodes, use in Cassandra/DynamoDB/Redis with examples')">
+                    <span class="topic-dot dot-amber"></span>
+                    <div><div class="topic-text">Consistent hashing</div><span class="topic-tag badge-amber">internals</span></div>
+                </div>
+                <div class="topic" onclick="sendPrompt('Teach me: CAP theorem, BASE vs ACID in system design — real trade-offs with examples from real systems like Cassandra, DynamoDB, MySQL')">
+                    <span class="topic-dot dot-amber"></span>
+                    <div><div class="topic-text">CAP theorem trade-offs</div><span class="topic-tag badge-amber">internals</span></div>
+                </div>
+                <div class="topic" onclick="sendPrompt('Top 20 System Design interview questions and answers — LLD + HLD — with frameworks, common mistakes and what interviewers look for')">
+                    <span class="topic-dot dot-amber"></span>
+                    <div><div class="topic-text">Top System Design Q&A</div><span class="topic-tag badge-amber">interview</span></div>
+                </div>
+                <div class="topic" onclick="sendPrompt('Teach me: How to estimate capacity in system design interviews — QPS, storage, bandwidth, latency calculations with real examples')">
+                    <span class="topic-dot dot-amber"></span>
+                    <div><div class="topic-text">Capacity estimation (numbers)</div><span class="topic-tag badge-amber">interview</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function tog(id){
+        const body = document.getElementById('b' + id.slice(1));
+        const ch = document.getElementById('ch' + id.slice(1));
+        const isHidden = body.style.display === 'none';
+        
+        body.style.display = isHidden ? 'block' : 'none';
+        ch.classList.toggle('open', isHidden);
+    }
+
+    function sendPrompt(promptText) {
+        console.log("Triggered Prompt: ", promptText);
+        // Add your specific logic here if needed
+    }
+</script>
+
+</body>
+</html>
