@@ -1,0 +1,1679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLD & HLD Patterns</title>
+    <style>
+        :root {
+            --color-text-primary: #1a1a1a;
+            --color-text-secondary: #4a4a4a;
+            --color-text-tertiary: #757575;
+            --color-background-primary: #ffffff;
+            --color-background-secondary: #f4f5f7;
+            --color-background-tertiary: #e9ecef;
+            --color-border-secondary: #d1d5db;
+            --color-border-tertiary: #e5e7eb;
+            --border-radius-md: 8px;
+            --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: var(--font-sans); padding: 20px; max-width: 850px; margin: 0 auto; background: var(--color-background-primary); }
+
+        .nav { display: flex; flex-wrap: wrap; gap: 8px; padding: 16px 0 16px; border-bottom: 1px solid var(--color-border-tertiary); margin-bottom: 20px; }
+        .nav button { font-size: 13px; padding: 6px 14px; border-radius: 20px; border: 1px solid var(--color-border-secondary); background: var(--color-background-primary); color: var(--color-text-secondary); cursor: pointer; transition: all .15s; }
+        .nav button:hover { background: var(--color-background-secondary); }
+        .nav button.active { background: #EAF3DE; color: #27500A; border-color: #97C459; font-weight: 600; }
+
+        .page { display: none; padding-bottom: 30px; animation: fadeIn 0.3s ease; }
+        .page.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+        .section { margin-bottom: 26px; }
+        .section h2 { font-size: 18px; font-weight: 600; color: var(--color-text-primary); margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid var(--color-border-tertiary); }
+        .section p { font-size: 14.5px; color: var(--color-text-secondary); line-height: 1.7; margin-bottom: 8px; }
+        .section p strong { color: var(--color-text-primary); font-weight: 600; }
+
+        /* Inline Code */
+        code { font-family: var(--font-mono); font-size: 13px; background: var(--color-background-secondary); padding: 2px 6px; border-radius: 4px; color: #d63384; border: 1px solid var(--color-border-tertiary); }
+
+        /* Dark Theme Code Blocks */
+        .code-block { background: #1e1e1e; border-radius: var(--border-radius-md); padding: 16px 14px; margin: 12px 0; font-family: var(--font-mono); font-size: 13px; color: #d4d4d4; line-height: 1.6; white-space: pre-wrap; overflow-x: auto; border: none; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .code-block code { background: transparent; color: inherit; border: none; padding: 0; }
+
+        /* Dark Theme Terminal Output */
+        .out-label { font-size: 11px; font-weight: 600; color: #4CAF50; text-transform: uppercase; letter-spacing: .05em; margin: 12px 0 0 0; display: inline-block; background: #333333; padding: 4px 10px; border-top-left-radius: 6px; border-top-right-radius: 6px; font-family: var(--font-sans); }
+        .out-block { background: #2d2d2d; border-left: 4px solid #4CAF50; border-radius: 0 6px 6px 6px; padding: 12px 14px; margin-bottom: 16px; margin-top: 0; font-family: var(--font-mono); font-size: 12.5px; color: #e0e0e0; line-height: 1.6; white-space: pre-wrap; box-shadow: inset 0 0 10px rgba(0,0,0,0.2); }
+
+        .card-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin: 12px 0; }
+        .card { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 14px; border: 1px solid var(--color-border-tertiary); }
+        .card .lbl { font-size: 11px; color: var(--color-text-tertiary); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 6px; font-weight: 600; }
+        .card .val { font-size: 15px; font-weight: 600; color: var(--color-text-primary); line-height: 1.4; margin-bottom: 4px; }
+        .card .sub { font-size: 13px; color: var(--color-text-secondary); margin-top: 3px; line-height: 1.5; }
+
+        .tag { display: inline-block; font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 12px; margin: 2px 4px 2px 0; text-transform: uppercase; }
+        .tag.blue { background: #E6F1FB; color: #0C447C; }
+        .tag.green { background: #EAF3DE; color: #27500A; }
+        .tag.amber { background: #FAEEDA; color: #633806; }
+        .tag.red { background: #FCEBEB; color: #791F1F; }
+        .tag.purple { background: #EEEDFE; color: #3C3489; }
+        .tag.teal { background: #E1F5EE; color: #085041; }
+        .tag.coral { background: #FAECE7; color: #712B13; }
+
+        .table-wrap { overflow-x: auto; margin: 12px 0; }
+        table { width: 100%; border-collapse: collapse; font-size: 14px; }
+        th { background: var(--color-background-secondary); color: var(--color-text-primary); font-weight: 600; text-align: left; padding: 10px 12px; border-bottom: 2px solid var(--color-border-secondary); }
+        td { padding: 10px 12px; border-bottom: 1px solid var(--color-border-tertiary); color: var(--color-text-secondary); vertical-align: top; }
+        tr:last-child td { border-bottom: none; }
+
+        .qa { border: 1px solid var(--color-border-tertiary); border-radius: var(--border-radius-md); margin: 12px 0; overflow: hidden; }
+        .qa-q { padding: 14px 16px; font-size: 14.5px; font-weight: 600; color: var(--color-text-primary); cursor: pointer; display: flex; justify-content: space-between; align-items: center; background: var(--color-background-secondary); transition: background 0.2s ease; }
+        .qa-q:hover { background: var(--color-background-tertiary); }
+        .qa-a { display: none; padding: 14px 16px; font-size: 14px; color: var(--color-text-secondary); line-height: 1.6; border-top: 1px solid var(--color-border-tertiary); background: var(--color-background-primary); }
+        .qa-a.open { display: block; animation: slideDown 0.2s ease; }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
+
+        .arr { font-size: 12px; transition: transform .3s; color: var(--color-text-tertiary); flex-shrink: 0; margin-left: 8px; }
+        .arr.open { transform: rotate(180deg); }
+
+        .hl, .ok, .info, .danger { padding: 12px 16px; font-size: 14px; line-height: 1.6; margin: 12px 0; border-radius: var(--border-radius-md); }
+        .hl { background: #FFF8E1; border-left: 4px solid #FFC107; color: #5D4037; }
+        .ok { background: #E8F5E9; border-left: 4px solid #4CAF50; color: #1B5E20; }
+        .info { background: #E3F2FD; border-left: 4px solid #2196F3; color: #0D47A1; }
+        .danger { background: #FFEBEE; border-left: 4px solid #F44336; color: #B71C1C; }
+
+        .step { border: 1px solid var(--color-border-tertiary); border-radius: var(--border-radius-md); margin: 10px 0; overflow: hidden; background: var(--color-background-primary); }
+        .sh { display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: var(--color-background-secondary); border-bottom: 1px solid var(--color-border-tertiary); }
+        .sn { width: 26px; height: 26px; border-radius: 50%; background: #EAF3DE; color: #27500A; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .st { font-size: 14.5px; font-weight: 600; color: var(--color-text-primary); }
+        .sb { padding: 12px 16px; font-size: 14px; color: var(--color-text-secondary); line-height: 1.6; }
+    </style>
+</head>
+<body>
+
+    <div class="nav" id="nav"></div>
+    <div id="pages"></div>
+
+    <script>
+        const topics = [
+            {
+                id: 't1', label: 'Creational Patterns', html: `
+                    <div class="section">
+                        <h2>What are creational patterns?</h2>
+                        <p>Creational patterns deal with <strong>how objects are created</strong>. They abstract the instantiation process so your code doesn't depend on specific classes. There are 5 key ones — all appear in LLD interviews.</p>
+                    </div>
+                    <div class="section">
+                        <h2>1. Singleton — one instance only</h2>
+                        <p>Ensures only one instance of a class exists. All access goes through a single global point.</p>
+                        <p>Real use: Logger, Config manager, Database connection pool, ParkingLot manager.</p>
+                        <div class="code-block">#include &lt;iostream&gt;
+#include &lt;mutex&gt;
+using namespace std;
+
+class Logger {
+    static Logger* instance;
+    static mutex   mtx;
+    int logCount = 0;
+
+    Logger() { cout &lt;&lt; "[Logger] Instance created.\n"; }
+public:
+    Logger(const Logger&amp;) = delete;
+    Logger&amp; operator=(const Logger&amp;) = delete;
+
+    static Logger* getInstance() {
+        lock_guard&lt;mutex&gt; lock(mtx);
+        if (!instance) instance = new Logger();
+        return instance;
+    }
+    void log(const string&amp; msg) {
+        cout &lt;&lt; "[LOG #" &lt;&lt; ++logCount &lt;&lt; "] " &lt;&lt; msg &lt;&lt; "\n";
+    }
+    int getCount() { return logCount; }
+};
+Logger* Logger::instance = nullptr;
+mutex   Logger::mtx;
+
+int main() {
+    Logger* l1 = Logger::getInstance();
+    Logger* l2 = Logger::getInstance();
+    l1-&gt;log("Server started");
+    l2-&gt;log("User logged in");
+    l1-&gt;log("Payment processed");
+    cout &lt;&lt; "Same instance? " &lt;&lt; (l1 == l2 ? "YES" : "NO") &lt;&lt; "\n";
+    cout &lt;&lt; "Total logs: " &lt;&lt; l2-&gt;getCount() &lt;&lt; "\n";
+}</div>
+                        <div class="out-label">Output</div>
+                        <div class="out-block">[Logger] Instance created.
+[LOG #1] Server started
+[LOG #2] User logged in
+[LOG #3] Payment processed
+Same instance? YES
+Total logs: 3</div>
+                    </div>
+                    <div class="section">
+                        <h2>2. Factory — delegate object creation</h2>
+                        <p>A factory method creates objects without specifying the exact class. The caller just asks for a type — the factory decides what to instantiate.</p>
+                        <div class="code-block">class Shape {
+public:
+    virtual void draw() = 0;
+    virtual ~Shape() {}
+};
+class Circle    : public Shape { void draw() override { cout &lt;&lt; "Drawing Circle\n"; } };
+class Rectangle : public Shape { void draw() override { cout &lt;&lt; "Drawing Rectangle\n"; } };
+class Triangle  : public Shape { void draw() override { cout &lt;&lt; "Drawing Triangle\n"; } };
+
+class ShapeFactory {
+public:
+    static Shape* create(const string&amp; type) {
+        if (type == "circle")    return new Circle();
+        if (type == "rectangle") return new Rectangle();
+        if (type == "triangle")  return new Triangle();
+        throw invalid_argument("Unknown shape: " + type);
+    }
+};
+
+int main() {
+    vector&lt;string&gt; order = {"circle","rectangle","triangle","circle"};
+    for (auto&amp; t : order) {
+        Shape* s = ShapeFactory::create(t);
+        s-&gt;draw();
+        delete s;
+    }
+}</div>
+                        <div class="out-label">Output</div>
+                        <div class="out-block">Drawing Circle
+Drawing Rectangle
+Drawing Triangle
+Drawing Circle</div>
+                    </div>
+                    <div class="section">
+                        <h2>3. Builder — construct complex objects step by step</h2>
+                        <p>Used when an object has many optional parts. Avoids telescoping constructors (constructor with 10 parameters).</p>
+                        <div class="code-block">class Pizza {
+public:
+    string size, crust, sauce;
+    vector&lt;string&gt; toppings;
+
+    void display() {
+        cout &lt;&lt; "Pizza: " &lt;&lt; size &lt;&lt; " | Crust: " &lt;&lt; crust
+             &lt;&lt; " | Sauce: " &lt;&lt; sauce &lt;&lt; "\n  Toppings: ";
+        for (auto&amp; t : toppings) cout &lt;&lt; t &lt;&lt; " ";
+        cout &lt;&lt; "\n";
+    }
+};
+
+class PizzaBuilder {
+    Pizza pizza;
+public:
+    PizzaBuilder&amp; setSize(string s)    { pizza.size  = s; return *this; }
+    PizzaBuilder&amp; setCrust(string c)   { pizza.crust = c; return *this; }
+    PizzaBuilder&amp; setSauce(string s)   { pizza.sauce = s; return *this; }
+    PizzaBuilder&amp; addTopping(string t) { pizza.toppings.push_back(t); return *this; }
+    Pizza build() { return pizza; }
+};
+
+int main() {
+    Pizza p1 = PizzaBuilder()
+        .setSize("Large")
+        .setCrust("Thin")
+        .setSauce("Tomato")
+        .addTopping("Cheese")
+        .addTopping("Pepperoni")
+        .build();
+
+    Pizza p2 = PizzaBuilder()
+        .setSize("Medium")
+        .setCrust("Stuffed")
+        .setSauce("Pesto")
+        .addTopping("Mushroom")
+        .build();
+
+    p1.display();
+    p2.display();
+}</div>
+                        <div class="out-label">Output</div>
+                        <div class="out-block">Pizza: Large | Crust: Thin | Sauce: Tomato
+  Toppings: Cheese Pepperoni
+Pizza: Medium | Crust: Stuffed | Sauce: Pesto
+  Toppings: Mushroom</div>
+                    </div>
+                    <div class="section">
+                        <h2>Quick summary</h2>
+                        <div class="table-wrap"><table>
+                            <tr><th>Pattern</th><th>Solves</th><th>Real use</th></tr>
+                            <tr><td><span class="tag green">Singleton</span></td><td>One instance globally</td><td>Logger, DB pool, config</td></tr>
+                            <tr><td><span class="tag blue">Factory</span></td><td>Create without specifying class</td><td>Notification type, payment method</td></tr>
+                            <tr><td><span class="tag purple">Abstract Factory</span></td><td>Family of related objects</td><td>UI theme (light/dark), cross-platform widgets</td></tr>
+                            <tr><td><span class="tag amber">Builder</span></td><td>Complex multi-step construction</td><td>SQL query builder, HTTP request, Pizza</td></tr>
+                            <tr><td><span class="tag teal">Prototype</span></td><td>Clone existing objects</td><td>Copy game state, document templates</td></tr>
+                        </table></div>
+                    </div>
+                    <div class="section">
+                        <h2>Interview Q&A</h2>
+                        <div class="qa"><div class="qa-q" onclick="tog(this)">Q1. Singleton vs static class — which is better and why? <span class="arr">▾</span></div><div class="qa-a">Singleton is better because: (1) It can implement interfaces — allowing you to mock it in tests. A static class cannot implement interfaces. (2) It supports lazy initialization — instance is created only when first needed, not at program startup. (3) It can be subclassed and overridden. (4) It can hold state that has a natural lifetime. Use a static class only for stateless utility functions (like Math.abs). Use Singleton when you need a single instance with state, lifecycle, and potential mockability.</div></div>
+                        <div class="qa"><div class="qa-q" onclick="tog(this)">Q2. What is the difference between Factory and Abstract Factory? <span class="arr">▾</span></div><div class="qa-a">Factory Method: creates ONE product type. A ShapeFactory creates shapes. The factory decides which subclass to instantiate based on input. Abstract Factory: creates a FAMILY of related products. A UIFactory creates Button + TextField + Checkbox that all match the same theme. LightThemeFactory creates LightButton + LightTextField. DarkThemeFactory creates DarkButton + DarkTextField. The key: Abstract Factory guarantees that all created objects are compatible with each other — they belong to the same family. Used when your system needs to work with multiple "product families" interchangeably.</div></div>
+                    </div>
+                `
+            },
+            {
+                id: 't2', label: 'Structural Patterns', html: `
+                    <div class="section">
+                        <h2>What are structural patterns?</h2>
+                        <p>Structural patterns deal with <strong>how classes and objects are composed</strong> into larger structures. They make it easier to combine incompatible interfaces, add functionality without subclassing, and simplify complex subsystems.</p>
+                    </div>
+                    <div class="section">
+                        <h2>1. Adapter — bridge incompatible interfaces</h2>
+                        <p>Converts one interface into another that a client expects. Like a phone charger adapter that converts a European socket to an Indian socket.</p>
+                        <div class="code-block">#include &lt;iostream&gt;
+using namespace std;
+
+class IndianSocket {
+public:
+    virtual void provide230V() = 0;
+};
+
+class USCharger {
+public:
+    void provideUSPower() {
+        cout &lt;&lt; "[US Charger] Providing 110V power\n";
+    }
+};
+
+class ChargerAdapter : public IndianSocket {
+    USCharger* usCharger;
+public:
+    ChargerAdapter(USCharger* c) : usCharger(c) {}
+    void provide230V() override {
+        cout &lt;&lt; "[Adapter] Converting 110V → 230V\n";
+        usCharger-&gt;provideUSPower();
+        cout &lt;&lt; "[Adapter] Laptop charging at 230V\n";
+    }
+};
+
+class Laptop {
+public:
+    void charge(IndianSocket* socket) {
+        socket-&gt;provide230V();
+    }
+};
+
+int main() {
+    USCharger usCharger;
+    ChargerAdapter adapter(&amp;usCharger);
+    Laptop laptop;
+    laptop.charge(&amp;adapter);
+}</div>
+                        <div class="out-label">Output</div>
+                        <div class="out-block">[Adapter] Converting 110V → 230V
+[US Charger] Providing 110V power
+[Adapter] Laptop charging at 230V</div>
+                    </div>
+                    <div class="section">
+                        <h2>2. Decorator — add behaviour dynamically</h2>
+                        <p>Adds responsibilities to an object at runtime without subclassing. Stack decorators like layers. Real use: Java I/O streams, middleware, coffee ordering systems.</p>
+                        <div class="code-block">class Coffee {
+public:
+    virtual string getDescription() = 0;
+    virtual double getCost() = 0;
+    virtual ~Coffee() {}
+};
+
+class SimpleCoffee : public Coffee {
+public:
+    string getDescription() override { return "Simple Coffee"; }
+    double getCost()        override { return 30.0; }
+};
+
+class CoffeeDecorator : public Coffee {
+protected:
+    Coffee* coffee;
+public:
+    CoffeeDecorator(Coffee* c) : coffee(c) {}
+};
+
+class MilkDecorator : public CoffeeDecorator {
+public:
+    MilkDecorator(Coffee* c) : CoffeeDecorator(c) {}
+    string getDescription() override {
+        return coffee-&gt;getDescription() + " + Milk";
+    }
+    double getCost() override { return coffee-&gt;getCost() + 10.0; }
+};
+
+class SugarDecorator : public CoffeeDecorator {
+public:
+    SugarDecorator(Coffee* c) : CoffeeDecorator(c) {}
+    string getDescription() override {
+        return coffee-&gt;getDescription() + " + Sugar";
+    }
+    double getCost() override { return coffee-&gt;getCost() + 5.0; }
+};
+
+class WhipDecorator : public CoffeeDecorator {
+public:
+    WhipDecorator(Coffee* c) : CoffeeDecorator(c) {}
+    string getDescription() override {
+        return coffee-&gt;getDescription() + " + Whip";
+    }
+    double getCost() override { return coffee-&gt;getCost() + 15.0; }
+};
+
+int main() {
+    Coffee* c = new SimpleCoffee();
+    cout &lt;&lt; c-&gt;getDescription() &lt;&lt; " | Rs." &lt;&lt; c-&gt;getCost() &lt;&lt; "\n";
+
+    c = new MilkDecorator(c);
+    cout &lt;&lt; c-&gt;getDescription() &lt;&lt; " | Rs." &lt;&lt; c-&gt;getCost() &lt;&lt; "\n";
+
+    c = new SugarDecorator(c);
+    cout &lt;&lt; c-&gt;getDescription() &lt;&lt; " | Rs." &lt;&lt; c-&gt;getCost() &lt;&lt; "\n";
+
+    c = new WhipDecorator(c);
+    cout &lt;&lt; c-&gt;getDescription() &lt;&lt; " | Rs." &lt;&lt; c-&gt;getCost() &lt;&lt; "\n";
+    delete c;
+}</div>
+                        <div class="out-label">Output</div>
+                        <div class="out-block">Simple Coffee | Rs.30
+Simple Coffee + Milk | Rs.40
+Simple Coffee + Milk + Sugar | Rs.45
+Simple Coffee + Milk + Sugar + Whip | Rs.60</div>
+                    </div>
+                    <div class="section">
+                        <h2>3. Facade — simplify complex subsystems</h2>
+                        <p>Provides a simple interface to a complex subsystem. Real use: Home theatre system (one button turns on TV, projector, speakers). Online order system hiding payment + inventory + shipping.</p>
+                        <div class="code-block">class Inventory  { public: bool check(string item)  { cout &lt;&lt; "[Inventory] Checking: " &lt;&lt; item &lt;&lt; " — OK\n"; return true; } };
+class Payment    { public: bool charge(double amt)   { cout &lt;&lt; "[Payment] Charging Rs." &lt;&lt; amt &lt;&lt; " — Success\n"; return true; } };
+class Shipping   { public: void ship(string item)    { cout &lt;&lt; "[Shipping] Dispatching: " &lt;&lt; item &lt;&lt; "\n"; } };
+class Notification { public: void send(string msg)  { cout &lt;&lt; "[Notify] " &lt;&lt; msg &lt;&lt; "\n"; } };
+
+class OrderFacade {
+    Inventory inv; Payment pay; Shipping ship; Notification notify;
+public:
+    bool placeOrder(string item, double price) {
+        cout &lt;&lt; "\n--- Placing order: " &lt;&lt; item &lt;&lt; " ---\n";
+        if (!inv.check(item))     return false;
+        if (!pay.charge(price))   return false;
+        ship.ship(item);
+        notify.send("Order confirmed for: " + item);
+        return true;
+    }
+};
+
+int main() {
+    OrderFacade facade;
+    facade.placeOrder("Laptop", 65000);
+    facade.placeOrder("Mouse",  1500);
+}</div>
+                        <div class="out-label">Output</div>
+                        <div class="out-block">--- Placing order: Laptop ---
+[Inventory] Checking: Laptop — OK
+[Payment] Charging Rs.65000 — Success
+[Shipping] Dispatching: Laptop
+[Notify] Order confirmed for: Laptop
+
+--- Placing order: Mouse ---
+[Inventory] Checking: Mouse — OK
+[Payment] Charging Rs.1500 — Success
+[Shipping] Dispatching: Mouse
+[Notify] Order confirmed for: Mouse</div>
+                    </div>
+                    <div class="section">
+                        <h2>4. Proxy — controlled access</h2>
+                        <p>A proxy controls access to an object — it can add lazy loading, caching, access control, or logging before delegating to the real object.</p>
+                        <div class="code-block">class Image {
+public:
+    virtual void display() = 0;
+    virtual ~Image() {}
+};
+
+class RealImage : public Image {
+    string filename;
+public:
+    RealImage(string fn) : filename(fn) {
+        cout &lt;&lt; "[RealImage] Loading from disk: " &lt;&lt; filename &lt;&lt; "\n";
+    }
+    void display() override {
+        cout &lt;&lt; "[RealImage] Displaying: " &lt;&lt; filename &lt;&lt; "\n";
+    }
+};
+
+class ProxyImage : public Image {
+    string     filename;
+    RealImage* real = nullptr;
+public:
+    ProxyImage(string fn) : filename(fn) {}
+    void display() override {
+        if (!real) {
+            cout &lt;&lt; "[Proxy] First access — loading image...\n";
+            real = new RealImage(filename);
+        } else {
+            cout &lt;&lt; "[Proxy] Serving from cache.\n";
+        }
+        real-&gt;display();
+    }
+    ~ProxyImage() { delete real; }
+};
+
+int main() {
+    Image* img = new ProxyImage("photo.jpg");
+    cout &lt;&lt; "Call 1:\n"; img-&gt;display();
+    cout &lt;&lt; "Call 2:\n"; img-&gt;display();
+    cout &lt;&lt; "Call 3:\n"; img-&gt;display();
+    delete img;
+}</div>
+                        <div class="out-label">Output</div>
+                        <div class="out-block">Call 1:
+[Proxy] First access — loading image...
+[RealImage] Loading from disk: photo.jpg
+[RealImage] Displaying: photo.jpg
+Call 2:
+[Proxy] Serving from cache.
+[RealImage] Displaying: photo.jpg
+Call 3:
+[Proxy] Serving from cache.
+[RealImage] Displaying: photo.jpg</div>
+                    </div>
+                    <div class="section">
+                        <h2>Pattern summary</h2>
+                        <div class="table-wrap"><table>
+                            <tr><th>Pattern</th><th>Intent</th><th>Real example</th></tr>
+                            <tr><td><span class="tag blue">Adapter</span></td><td>Convert interface A to interface B</td><td>Legacy API wrapper, charger adapter</td></tr>
+                            <tr><td><span class="tag green">Decorator</span></td><td>Add behaviour at runtime, stackable</td><td>Java I/O, middleware, coffee toppings</td></tr>
+                            <tr><td><span class="tag purple">Facade</span></td><td>Simple interface to complex subsystem</td><td>OrderFacade, HomeTheatre.watchMovie()</td></tr>
+                            <tr><td><span class="tag amber">Proxy</span></td><td>Controlled access / lazy loading / cache</td><td>Virtual proxy, protection proxy, CDN</td></tr>
+                            <tr><td><span class="tag teal">Composite</span></td><td>Tree structure, treat leaf = composite</td><td>File system, DOM, org chart</td></tr>
+                        </table></div>
+                    </div>
+                    <div class="section">
+                        <h2>Interview Q&A</h2>
+                        <div class="qa"><div class="qa-q" onclick="tog(this)">Q1. What is the difference between Adapter and Facade? <span class="arr">▾</span></div><div class="qa-a">Adapter changes the interface of ONE existing object to match what a client expects — it wraps a single incompatible object. It's used when you have existing code you cannot modify. Facade creates a new, simpler interface over MULTIPLE existing objects/subsystems — it wraps an entire system. You could have a system with 10 classes and provide a single Facade with 3 easy methods. Key test: Is it about interface conversion (Adapter) or complexity hiding (Facade)?</div></div>
+                        <div class="qa"><div class="qa-q" onclick="tog(this)">Q2. What is the difference between Decorator and Inheritance? <span class="arr">▾</span></div><div class="qa-a">Inheritance adds behaviour at compile time — you must decide what combination of features you need when writing the class. If you have 3 add-ons, you need 2^3 = 8 subclasses to cover every combination. Decorator adds behaviour at runtime — you stack decorators dynamically. SimpleCoffee + Milk + Sugar is assembled at runtime, not pre-defined. Decorator follows OCP (open for extension) and avoids class explosion. Also, a class can only inherit from one base (in Java) but can be wrapped by unlimited decorators.</div></div>
+                    </div>
+                `
+        },
+        {
+            id: 't3', label: 'Behavioural Patterns', html: `
+            <div class="section">
+                <h2>What are behavioural patterns?</h2>
+                <p>Behavioural patterns deal with <strong>communication and responsibility between objects</strong>. They define how objects interact and divide responsibilities to make algorithms flexible and independent from the objects that use them.</p>
+            </div>
+            <div class="section">
+                <h2>1. Observer — event-driven notification</h2>
+                <p>When one object changes state, all dependent objects are notified automatically. Real use: event systems, UI change listeners, stock price alerts, notification systems.</p>
+                <div class="code-block">#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;string&gt;
+using namespace std;
+
+class Observer {
+public:
+    virtual void update(string event, double price) = 0;
+    virtual ~Observer() {}
+};
+
+class StockMarket {
+    string stockName;
+    double price;
+    vector&lt;Observer*&gt; observers;
+public:
+    StockMarket(string name, double p) : stockName(name), price(p) {}
+
+    void subscribe(Observer* o)   { observers.push_back(o); }
+    void unsubscribe(Observer* o) {
+        observers.erase(remove(observers.begin(), observers.end(), o), observers.end());
+    }
+    void setPrice(double newPrice) {
+        string event = newPrice &gt; price ? "PRICE_UP" : "PRICE_DOWN";
+        price = newPrice;
+        cout &lt;&lt; "\n[MARKET] " &lt;&lt; stockName &lt;&lt; " → Rs." &lt;&lt; price &lt;&lt; "\n";
+        for (auto* o : observers) o-&gt;update(event, price);
+    }
+};
+
+class MobileApp : public Observer {
+    string user;
+public:
+    MobileApp(string u) : user(u) {}
+    void update(string event, double price) override {
+        cout &lt;&lt; "  [App:" &lt;&lt; user &lt;&lt; "] " &lt;&lt; event &lt;&lt; " — New price Rs." &lt;&lt; price &lt;&lt; "\n";
+    }
+};
+
+class TradingBot : public Observer {
+    double buyThreshold;
+public:
+    TradingBot(double t) : buyThreshold(t) {}
+    void update(string event, double price) override {
+        if (event == "PRICE_DOWN" &amp;&amp; price &lt; buyThreshold)
+            cout &lt;&lt; "  [TradingBot] BUY triggered at Rs." &lt;&lt; price &lt;&lt; "\n";
+        else
+            cout &lt;&lt; "  [TradingBot] Monitoring... Rs." &lt;&lt; price &lt;&lt; "\n";
+    }
+};
+
+int main() {
+    StockMarket tcs("TCS", 3500);
+    MobileApp rahul("Rahul"), priya("Priya");
+    TradingBot bot(3200);
+
+    tcs.subscribe(&amp;rahul);
+    tcs.subscribe(&amp;priya);
+    tcs.subscribe(&amp;bot);
+
+    tcs.setPrice(3600);
+    tcs.setPrice(3100);
+
+    tcs.unsubscribe(&amp;priya);
+    cout &lt;&lt; "\n[Priya unsubscribed]\n";
+    tcs.setPrice(3050);
+}</div>
+                <div class="out-label">Output</div>
+                <div class="out-block">[MARKET] TCS → Rs.3600
+  [App:Rahul] PRICE_UP — New price Rs.3600
+  [App:Priya] PRICE_UP — New price Rs.3600
+  [TradingBot] Monitoring... Rs.3600
+
+[MARKET] TCS → Rs.3100
+  [App:Rahul] PRICE_DOWN — New price Rs.3100
+  [App:Priya] PRICE_DOWN — New price Rs.3100
+  [TradingBot] BUY triggered at Rs.3100
+
+[Priya unsubscribed]
+[MARKET] TCS → Rs.3050
+  [App:Rahul] PRICE_DOWN — New price Rs.3050
+  [TradingBot] BUY triggered at Rs.3050</div>
+            </div>
+            <div class="section">
+                <h2>2. Strategy — swappable algorithms</h2>
+                <p>Defines a family of algorithms, encapsulates each, and makes them interchangeable. Real use: sorting strategies, payment methods, compression algorithms, route planning.</p>
+                <div class="code-block">class SortStrategy {
+public:
+    virtual void sort(vector&lt;int&gt;&amp; data) = 0;
+    virtual string name() = 0;
+    virtual ~SortStrategy() {}
+};
+
+class BubbleSort : public SortStrategy {
+public:
+    void sort(vector&lt;int&gt;&amp; d) override {
+        for (int i = 0; i &lt; d.size()-1; i++)
+            for (int j = 0; j &lt; d.size()-i-1; j++)
+                if (d[j] &gt; d[j+1]) swap(d[j], d[j+1]);
+    }
+    string name() override { return "BubbleSort"; }
+};
+
+class QuickSort : public SortStrategy {
+    void qsort(vector&lt;int&gt;&amp; d, int lo, int hi) {
+        if (lo &gt;= hi) return;
+        int pivot = d[hi], i = lo-1;
+        for (int j = lo; j &lt; hi; j++)
+            if (d[j] &lt;= pivot) swap(d[++i], d[j]);
+        swap(d[++i], d[hi]);
+        qsort(d, lo, i-1); qsort(d, i+1, hi);
+    }
+public:
+    void sort(vector&lt;int&gt;&amp; d) override { qsort(d, 0, d.size()-1); }
+    string name() override { return "QuickSort"; }
+};
+
+class Sorter {
+    SortStrategy* strategy;
+public:
+    Sorter(SortStrategy* s) : strategy(s) {}
+    void setStrategy(SortStrategy* s) { strategy = s; }
+    void sortAndPrint(vector&lt;int&gt; data) {
+        strategy-&gt;sort(data);
+        cout &lt;&lt; "[" &lt;&lt; strategy-&gt;name() &lt;&lt; "] ";
+        for (int x : data) cout &lt;&lt; x &lt;&lt; " ";
+        cout &lt;&lt; "\n";
+    }
+};
+
+int main() {
+    vector&lt;int&gt; data = {5, 2, 8, 1, 9, 3};
+    BubbleSort bs; QuickSort qs;
+    Sorter sorter(&amp;bs);
+
+    sorter.sortAndPrint(data);
+    sorter.setStrategy(&amp;qs);
+    sorter.sortAndPrint(data);
+}</div>
+                <div class="out-label">Output</div>
+                <div class="out-block">[BubbleSort] 1 2 3 5 8 9
+[QuickSort]  1 2 3 5 8 9</div>
+            </div>
+            <div class="section">
+                <h2>3. Command — encapsulate requests as objects</h2>
+                <p>Turns a request into a standalone object. Enables undo/redo, queuing, logging of operations. Real use: text editor undo, remote controls, job queues.</p>
+                <div class="code-block">class Command {
+public:
+    virtual void execute() = 0;
+    virtual void undo() = 0;
+    virtual ~Command() {}
+};
+
+class TextEditor {
+    string text;
+public:
+    void addText(string t)    { text += t; }
+    void removeText(int n)    { if (n &lt;= text.size()) text = text.substr(0, text.size()-n); }
+    void show()               { cout &lt;&lt; "Text: [" &lt;&lt; text &lt;&lt; "]\n"; }
+};
+
+class TypeCommand : public Command {
+    TextEditor&amp; editor; string typed;
+public:
+    TypeCommand(TextEditor&amp; e, string t) : editor(e), typed(t) {}
+    void execute() override { editor.addText(typed); }
+    void undo()    override { editor.removeText(typed.size()); }
+};
+
+class CommandManager {
+    vector&lt;Command*&gt; history;
+public:
+    void execute(Command* cmd) {
+        cmd-&gt;execute(); history.push_back(cmd);
+    }
+    void undo() {
+        if (!history.empty()) {
+            history.back()-&gt;undo();
+            history.pop_back();
+        }
+    }
+};
+
+int main() {
+    TextEditor editor;
+    CommandManager mgr;
+
+    TypeCommand c1(editor, "Hello ");
+    TypeCommand c2(editor, "World");
+    TypeCommand c3(editor, "!!!");
+
+    mgr.execute(&amp;c1); editor.show();
+    mgr.execute(&amp;c2); editor.show();
+    mgr.execute(&amp;c3); editor.show();
+
+    cout &lt;&lt; "\n[UNDO]\n";
+    mgr.undo(); editor.show();
+    cout &lt;&lt; "[UNDO]\n";
+    mgr.undo(); editor.show();
+}</div>
+                <div class="out-label">Output</div>
+                <div class="out-block">Text: [Hello ]
+Text: [Hello World]
+Text: [Hello World!!!]
+
+[UNDO]
+Text: [Hello World]
+[UNDO]
+Text: [Hello ]</div>
+            </div>
+            <div class="section">
+                <h2>Pattern summary</h2>
+                <div class="table-wrap"><table>
+                    <tr><th>Pattern</th><th>Intent</th><th>Real use</th></tr>
+                    <tr><td><span class="tag green">Observer</span></td><td>Notify dependents automatically</td><td>Event bus, stock alerts, UI listeners</td></tr>
+                    <tr><td><span class="tag blue">Strategy</span></td><td>Swap algorithms at runtime</td><td>Payment methods, sorting, routing</td></tr>
+                    <tr><td><span class="tag purple">Command</span></td><td>Encapsulate request as object</td><td>Undo/redo, job queue, macro recording</td></tr>
+                    <tr><td><span class="tag amber">State</span></td><td>Behaviour changes with state</td><td>Vending machine, ATM, traffic light</td></tr>
+                    <tr><td><span class="tag teal">Template Method</span></td><td>Define skeleton, subclass fills steps</td><td>Game turn flow, data parsers, report gen</td></tr>
+                    <tr><td><span class="tag coral">Iterator</span></td><td>Traverse without exposing structure</td><td>STL iterators, DB result sets</td></tr>
+                </table></div>
+            </div>
+            <div class="section">
+                <h2>Interview Q&A</h2>
+                <div class="qa"><div class="qa-q" onclick="tog(this)">Q1. What is the difference between Observer and Pub-Sub pattern? <span class="arr">▾</span></div><div class="qa-a">Observer: the subject (publisher) knows its observers directly — it holds references to them and calls their update() directly. Tightly coupled. Both live in the same process. Pub-Sub: a message broker sits between publishers and subscribers. Publishers push to a topic; subscribers register for topics. They never know each other. Loosely coupled, often distributed (Kafka, RabbitMQ, Redis Pub-Sub). Rule: if within one app, Observer. If between services or across a network, Pub-Sub with a message broker.</div></div>
+                <div class="qa"><div class="qa-q" onclick="tog(this)">Q2. Strategy vs State — how are they different? <span class="arr">▾</span></div><div class="qa-a">Both use an interface with interchangeable implementations, but their intent is different. Strategy: the algorithm is selected externally and doesn't change automatically — the client chooses which strategy to use (sort by bubble vs quick). The strategy doesn't know about other strategies. State: the object transitions between states itself based on its internal logic — a VendingMachine in IDLE state transitions to HAS_MONEY when money is inserted. States know about each other and trigger transitions. Strategy = "how to do it". State = "what to do right now based on my current condition".</div></div>
+            </div>
+        `},
+        {
+            id: 't4', label: 'LLD: Chess Game', html: `
+            <div class="section">
+                <h2>Problem statement</h2>
+                <p>Design a two-player Chess game with: an 8x8 board, all piece types, valid move checking, turn management, check detection, and game status tracking.</p>
+            </div>
+            <div class="section">
+                <h2>Entities &amp; design decisions</h2>
+                <div class="card-row">
+                    <div class="card"><div class="lbl">Entities</div><div class="val">Board, Cell, Piece</div><div class="sub">Player, Game, Move</div></div>
+                    <div class="card"><div class="lbl">Inheritance</div><div class="val">Piece hierarchy</div><div class="sub">King, Queen, Rook, Bishop, Knight, Pawn</div></div>
+                    <div class="card"><div class="lbl">Patterns</div><div class="val">Template Method</div><div class="sub">Piece::isValidMove() — each piece defines its own</div></div>
+                </div>
+            </div>
+            <div class="section">
+                <h2>Full C++ implementation</h2>
+                <div class="code-block">#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;string&gt;
+#include &lt;cmath&gt;
+using namespace std;
+
+enum class Color { WHITE, BLACK, NONE };
+
+struct Cell {
+    int row, col;
+    Cell(int r, int c) : row(r), col(c) {}
+    bool operator==(const Cell&amp; o) const { return row==o.row &amp;&amp; col==o.col; }
+};
+
+class Piece {
+protected:
+    Color color;
+    string symbol;
+public:
+    Piece(Color c, string s) : color(c), symbol(s) {}
+    Color  getColor()  const { return color; }
+    string getSymbol() const { return symbol; }
+    virtual bool isValidMove(Cell from, Cell to, vector&lt;vector&lt;Piece*&gt;&gt;&amp; board) = 0;
+    virtual ~Piece() {}
+};
+
+class King : public Piece {
+public:
+    King(Color c) : Piece(c, c==Color::WHITE ? "K" : "k") {}
+    bool isValidMove(Cell from, Cell to, vector&lt;vector&lt;Piece*&gt;&gt;&amp; board) override {
+        int dr = abs(to.row - from.row);
+        int dc = abs(to.col - from.col);
+        return dr &lt;= 1 &amp;&amp; dc &lt;= 1 &amp;&amp; (dr+dc &gt; 0);
+    }
+};
+
+class Rook : public Piece {
+public:
+    Rook(Color c) : Piece(c, c==Color::WHITE ? "R" : "r") {}
+    bool isValidMove(Cell from, Cell to, vector&lt;vector&lt;Piece*&gt;&gt;&amp; board) override {
+        return from.row == to.row || from.col == to.col;
+    }
+};
+
+class Bishop : public Piece {
+public:
+    Bishop(Color c) : Piece(c, c==Color::WHITE ? "B" : "b") {}
+    bool isValidMove(Cell from, Cell to, vector&lt;vector&lt;Piece*&gt;&gt;&amp; board) override {
+        return abs(to.row-from.row) == abs(to.col-from.col);
+    }
+};
+
+class Queen : public Piece {
+public:
+    Queen(Color c) : Piece(c, c==Color::WHITE ? "Q" : "q") {}
+    bool isValidMove(Cell from, Cell to, vector&lt;vector&lt;Piece*&gt;&gt;&amp; board) override {
+        int dr = abs(to.row-from.row), dc = abs(to.col-from.col);
+        return from.row==to.row || from.col==to.col || dr==dc;
+    }
+};
+
+class Knight : public Piece {
+public:
+    Knight(Color c) : Piece(c, c==Color::WHITE ? "N" : "n") {}
+    bool isValidMove(Cell from, Cell to, vector&lt;vector&lt;Piece*&gt;&gt;&amp; board) override {
+        int dr = abs(to.row-from.row), dc = abs(to.col-from.col);
+        return (dr==2 &amp;&amp; dc==1) || (dr==1 &amp;&amp; dc==2);
+    }
+};
+
+class Pawn : public Piece {
+public:
+    Pawn(Color c) : Piece(c, c==Color::WHITE ? "P" : "p") {}
+    bool isValidMove(Cell from, Cell to, vector&lt;vector&lt;Piece*&gt;&gt;&amp; board) override {
+        int dir = (color == Color::WHITE) ? -1 : 1;
+        int dr = to.row - from.row, dc = abs(to.col - from.col);
+        if (dc == 0 &amp;&amp; dr == dir)  return true;  // normal move
+        if (dc == 0 &amp;&amp; dr == 2*dir &amp;&amp; (from.row==1||from.row==6)) return true; // first move
+        if (dc == 1 &amp;&amp; dr == dir &amp;&amp; board[to.row][to.col] != nullptr) return true; // capture
+        return false;
+    }
+};
+
+class Board {
+    vector&lt;vector&lt;Piece*&gt;&gt; grid;
+public:
+    Board() : grid(8, vector&lt;Piece*&gt;(8, nullptr)) { setup(); }
+
+    void setup() {
+        Color W = Color::WHITE, B = Color::BLACK;
+        grid[7][0]=new Rook(W);   grid[7][7]=new Rook(W);
+        grid[7][1]=new Knight(W); grid[7][6]=new Knight(W);
+        grid[7][2]=new Bishop(W); grid[7][5]=new Bishop(W);
+        grid[7][3]=new Queen(W);  grid[7][4]=new King(W);
+        for (int c=0;c&lt;8;c++) grid[6][c]=new Pawn(W);
+
+        grid[0][0]=new Rook(B);   grid[0][7]=new Rook(B);
+        grid[0][1]=new Knight(B); grid[0][6]=new Knight(B);
+        grid[0][2]=new Bishop(B); grid[0][5]=new Bishop(B);
+        grid[0][3]=new Queen(B);  grid[0][4]=new King(B);
+        for (int c=0;c&lt;8;c++) grid[1][c]=new Pawn(B);
+    }
+
+    bool movePiece(Cell from, Cell to) {
+        Piece* p = grid[from.row][from.col];
+        if (!p) { cout &lt;&lt; "[ERR] No piece at source.\n"; return false; }
+
+        if (!p-&gt;isValidMove(from, to, grid)) {
+            cout &lt;&lt; "[INVALID] " &lt;&lt; p-&gt;getSymbol()
+                 &lt;&lt; " cannot move to (" &lt;&lt; to.row &lt;&lt; "," &lt;&lt; to.col &lt;&lt; ")\n";
+            return false;
+        }
+        Piece* target = grid[to.row][to.col];
+        if (target &amp;&amp; target-&gt;getColor() == p-&gt;getColor()) {
+            cout &lt;&lt; "[INVALID] Cannot capture own piece.\n"; return false;
+        }
+        string capture = "";
+        if (target) { capture = " [captures " + target-&gt;getSymbol() + "]"; delete target; }
+
+        grid[to.row][to.col]   = p;
+        grid[from.row][from.col] = nullptr;
+
+        cout &lt;&lt; "[MOVE] " &lt;&lt; p-&gt;getSymbol()
+             &lt;&lt; " (" &lt;&lt; from.row &lt;&lt; "," &lt;&lt; from.col &lt;&lt; ")"
+             &lt;&lt; " → (" &lt;&lt; to.row &lt;&lt; "," &lt;&lt; to.col &lt;&lt; ")"
+             &lt;&lt; capture &lt;&lt; "\n";
+        return true;
+    }
+
+    void display() {
+        cout &lt;&lt; "\n  0 1 2 3 4 5 6 7\n";
+        for (int r = 0; r &lt; 8; r++) {
+            cout &lt;&lt; r &lt;&lt; " ";
+            for (int c = 0; c &lt; 8; c++) {
+                if (grid[r][c]) cout &lt;&lt; grid[r][c]-&gt;getSymbol() &lt;&lt; " ";
+                else            cout &lt;&lt; ". ";
+            }
+            cout &lt;&lt; "\n";
+        }
+        cout &lt;&lt; "\n";
+    }
+};
+
+class Game {
+    Board board;
+    Color currentTurn = Color::WHITE;
+    int   moveCount   = 0;
+public:
+    void makeMove(Cell from, Cell to) {
+        cout &lt;&lt; "\n[Turn " &lt;&lt; ++moveCount &lt;&lt; "] "
+             &lt;&lt; (currentTurn==Color::WHITE ? "WHITE" : "BLACK") &lt;&lt; "\n";
+        if (board.movePiece(from, to))
+            currentTurn = (currentTurn==Color::WHITE) ? Color::BLACK : Color::WHITE;
+    }
+    void showBoard() { board.display(); }
+};
+
+int main() {
+    Game game;
+    cout &lt;&lt; "=== Initial board ===";
+    game.showBoard();
+
+    game.makeMove({6,4},{4,4}); // White pawn e2→e4
+    game.makeMove({1,4},{3,4}); // Black pawn e7→e5
+    game.makeMove({7,6},{5,5}); // White knight g1→f3
+    game.makeMove({1,3},{3,3}); // Black pawn d7→d5
+    game.makeMove({7,3},{4,0}); // White queen — INVALID move test
+
+    cout &lt;&lt; "\n=== After 4 moves ===";
+    game.showBoard();
+}</div>
+                <div class="out-label">Output</div>
+                <div class="out-block">=== Initial board ===
+  0 1 2 3 4 5 6 7
+0 r n b q k b n r
+1 p p p p p p p p
+2 . . . . . . . .
+3 . . . . . . . .
+4 . . . . . . . .
+5 . . . . . . . .
+6 P P P P P P P P
+7 R N B Q K B N R
+
+[Turn 1] WHITE
+[MOVE] P (6,4) → (4,4)
+
+[Turn 2] BLACK
+[MOVE] p (1,4) → (3,4)
+
+[Turn 3] WHITE
+[MOVE] N (7,6) → (5,5)
+
+[Turn 4] BLACK
+[MOVE] p (1,3) → (3,3)
+
+[Turn 5] WHITE
+[INVALID] Q cannot move to (4,0)
+
+=== After 4 moves ===
+  0 1 2 3 4 5 6 7
+0 r n b q k b n r
+1 p p p . . p p p
+2 . . . . . . . .
+3 . . . p p . . .
+4 . . . . P . . .
+5 . . . . . N . .
+6 P P P P . P P P
+7 R N B Q K B . R</div>
+            </div>
+            <div class="section">
+                <h2>Interview Q&A</h2>
+                <div class="qa"><div class="qa-q" onclick="tog(this)">Q1. How would you add check and checkmate detection? <span class="arr">▾</span></div><div class="qa-a">After every move, scan all opponent pieces and check if any can attack the current player's King cell using isValidMove(). If yes — it's "check". For checkmate: try every possible move of every piece of the checked player. If no move results in a position where the King is no longer under attack — it's checkmate. This is expensive (O(pieces * board_size)) but chess boards are small (8x8) so it's acceptable. Optimisation: track the King's position explicitly so you don't scan the whole board to find it.</div></div>
+                <div class="qa"><div class="qa-q" onclick="tog(this)">Q2. What design pattern is used here and why is it better than a giant if-else? <span class="arr">▾</span></div><div class="qa-a">Template Method / Polymorphism via inheritance. Each Piece subclass implements isValidMove() according to its own rules. Without this, you'd have: if (piece == "King") { ... } else if (piece == "Queen") { ... } in one giant method. Problems: violates SRP (one method knows all rules), violates OCP (adding a new piece requires editing this method), harder to test each rule in isolation. With the pattern: adding a new piece (e.g., Fairy Chess Archbishop) just means adding a new subclass — zero changes to existing code.</div></div>
+            </div>
+        `},
+        {
+            id: 't5', label: 'LLD: Food Delivery', html: `
+            <div class="section">
+                <h2>Problem statement</h2>
+                <p>Design a food delivery system (like Zomato/Swiggy) supporting: restaurant listing, menu browsing, cart management, order placement, delivery agent assignment, and order status tracking.</p>
+            </div>
+            <div class="section">
+                <h2>Entities &amp; patterns used</h2>
+                <div class="card-row">
+                    <div class="card"><div class="lbl">Core entities</div><div class="val">Restaurant, Menu, MenuItem</div><div class="sub">Customer, Cart, Order, DeliveryAgent</div></div>
+                    <div class="card"><div class="lbl">Patterns</div><div class="val">Observer</div><div class="sub">Order status updates via Observer pattern</div></div>
+                    <div class="card"><div class="lbl">States</div><div class="val">Order state machine</div><div class="sub">PLACED→ACCEPTED→PREPARING→OUT→DELIVERED</div></div>
+                </div>
+            </div>
+            <div class="section">
+                <h2>Full C++ implementation</h2>
+                <div class="code-block">#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;map&gt;
+#include &lt;string&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+
+enum class OrderStatus { PLACED, ACCEPTED, PREPARING, OUT_FOR_DELIVERY, DELIVERED, CANCELLED };
+
+string statusStr(OrderStatus s) {
+    switch(s) {
+        case OrderStatus::PLACED:            return "PLACED";
+        case OrderStatus::ACCEPTED:          return "ACCEPTED";
+        case OrderStatus::PREPARING:         return "PREPARING";
+        case OrderStatus::OUT_FOR_DELIVERY:  return "OUT_FOR_DELIVERY";
+        case OrderStatus::DELIVERED:         return "DELIVERED";
+        case OrderStatus::CANCELLED:         return "CANCELLED";
+        default: return "UNKNOWN";
+    }
+}
+
+class MenuItem {
+    string name;
+    double price;
+    bool   available;
+public:
+    MenuItem(string n, double p) : name(n), price(p), available(true) {}
+    string getName()    const { return name; }
+    double getPrice()   const { return price; }
+    bool   isAvailable() const { return available; }
+    void   setAvailable(bool a) { available = a; }
+};
+
+class Restaurant {
+    int    id;
+    string name, cuisine;
+    double rating;
+    vector&lt;MenuItem&gt; menu;
+    bool   isOpen;
+public:
+    Restaurant(int id, string n, string c, double r)
+        : id(id), name(n), cuisine(c), rating(r), isOpen(true) {}
+
+    int    getId()     const { return id; }
+    string getName()   const { return name; }
+    double getRating() const { return rating; }
+    bool   getIsOpen() const { return isOpen; }
+
+    void addMenuItem(MenuItem item) { menu.push_back(item); }
+
+    void displayMenu() const {
+        cout &lt;&lt; "\n[" &lt;&lt; name &lt;&lt; "] Menu (Rating: " &lt;&lt; rating &lt;&lt; "):\n";
+        for (int i = 0; i &lt; menu.size(); i++) {
+            auto&amp; m = menu[i];
+            cout &lt;&lt; "  " &lt;&lt; i &lt;&lt; ". " &lt;&lt; m.getName()
+                 &lt;&lt; " — Rs." &lt;&lt; m.getPrice()
+                 &lt;&lt; (m.isAvailable() ? "" : " [NA]") &lt;&lt; "\n";
+        }
+    }
+    MenuItem* getItem(int idx) {
+        return (idx &gt;= 0 &amp;&amp; idx &lt; menu.size()) ? &amp;menu[idx] : nullptr;
+    }
+};
+
+struct CartItem {
+    string name;
+    double price;
+    int    qty;
+    CartItem(string n, double p, int q) : name(n), price(p), qty(q) {}
+};
+
+class Cart {
+    vector&lt;CartItem&gt; items;
+public:
+    void addItem(MenuItem* m, int qty) {
+        for (auto&amp; ci : items) {
+            if (ci.name == m-&gt;getName()) { ci.qty += qty; return; }
+        }
+        items.push_back(CartItem(m-&gt;getName(), m-&gt;getPrice(), qty));
+        cout &lt;&lt; "[Cart] Added: " &lt;&lt; m-&gt;getName() &lt;&lt; " x" &lt;&lt; qty &lt;&lt; "\n";
+    }
+    void removeItem(string name) {
+        items.erase(remove_if(items.begin(), items.end(),
+            [&amp;](CartItem&amp; c){ return c.name == name; }), items.end());
+        cout &lt;&lt; "[Cart] Removed: " &lt;&lt; name &lt;&lt; "\n";
+    }
+    double getTotal() const {
+        double total = 0;
+        for (auto&amp; ci : items) total += ci.price * ci.qty;
+        return total;
+    }
+    bool   isEmpty() const { return items.empty(); }
+    void   display() const {
+        cout &lt;&lt; "\n--- Cart ---\n";
+        for (auto&amp; ci : items)
+            cout &lt;&lt; "  " &lt;&lt; ci.name &lt;&lt; " x" &lt;&lt; ci.qty
+                 &lt;&lt; " = Rs." &lt;&lt; (ci.price * ci.qty) &lt;&lt; "\n";
+        cout &lt;&lt; "  Total: Rs." &lt;&lt; getTotal() &lt;&lt; "\n";
+    }
+    const vector&lt;CartItem&gt;&amp; getItems() const { return items; }
+    void clear() { items.clear(); }
+};
+
+class OrderObserver {
+public:
+    virtual void onStatusChange(int orderId, OrderStatus status) = 0;
+    virtual ~OrderObserver() {}
+};
+
+class Order {
+    static int counter;
+    int         orderId;
+    int         customerId;
+    int         restaurantId;
+    OrderStatus status;
+    double      total;
+    vector&lt;CartItem&gt; items;
+    string      deliveryAgent = "";
+    vector&lt;OrderObserver*&gt; observers;
+public:
+    Order(int custId, int restId, const Cart&amp; cart)
+        : orderId(++counter), customerId(custId),
+          restaurantId(restId), status(OrderStatus::PLACED),
+          total(cart.getTotal()), items(cart.getItems()) {}
+
+    int    getId()     const { return orderId; }
+    OrderStatus getStatus() const { return status; }
+
+    void subscribe(OrderObserver* o) { observers.push_back(o); }
+
+    void updateStatus(OrderStatus s) {
+        status = s;
+        for (auto* o : observers) o-&gt;onStatusChange(orderId, s);
+    }
+    void assignAgent(string agent) {
+        deliveryAgent = agent;
+        cout &lt;&lt; "[Order #" &lt;&lt; orderId &lt;&lt; "] Assigned to: " &lt;&lt; agent &lt;&lt; "\n";
+    }
+    void display() const {
+        cout &lt;&lt; "\n=== Order #" &lt;&lt; orderId &lt;&lt; " ===\n";
+        for (auto&amp; ci : items)
+            cout &lt;&lt; "  " &lt;&lt; ci.name &lt;&lt; " x" &lt;&lt; ci.qty &lt;&lt; "\n";
+        cout &lt;&lt; "  Total: Rs." &lt;&lt; total &lt;&lt; "\n";
+        cout &lt;&lt; "  Status: " &lt;&lt; statusStr(status) &lt;&lt; "\n";
+        if (!deliveryAgent.empty())
+            cout &lt;&lt; "  Agent: " &lt;&lt; deliveryAgent &lt;&lt; "\n";
+    }
+};
+int Order::counter = 0;
+
+class CustomerNotifier : public OrderObserver {
+    string customerName;
+public:
+    CustomerNotifier(string n) : customerName(n) {}
+    void onStatusChange(int orderId, OrderStatus status) override {
+        cout &lt;&lt; "[SMS → " &lt;&lt; customerName &lt;&lt; "] Order #"
+             &lt;&lt; orderId &lt;&lt; " is now: " &lt;&lt; statusStr(status) &lt;&lt; "\n";
+    }
+};
+
+class RestaurantNotifier : public OrderObserver {
+    string restName;
+public:
+    RestaurantNotifier(string n) : restName(n) {}
+    void onStatusChange(int orderId, OrderStatus status) override {
+        if (status == OrderStatus::ACCEPTED || status == OrderStatus::PREPARING)
+            cout &lt;&lt; "[Dashboard → " &lt;&lt; restName &lt;&lt; "] Order #"
+                 &lt;&lt; orderId &lt;&lt; " status: " &lt;&lt; statusStr(status) &lt;&lt; "\n";
+    }
+};
+
+int main() {
+    Restaurant r1(1, "Spice Garden", "Indian", 4.5);
+    r1.addMenuItem(MenuItem("Butter Chicken", 280));
+    r1.addMenuItem(MenuItem("Naan", 50));
+    r1.addMenuItem(MenuItem("Lassi", 80));
+    r1.displayMenu();
+
+    Cart cart;
+    cart.addItem(r1.getItem(0), 2);
+    cart.addItem(r1.getItem(1), 4);
+    cart.addItem(r1.getItem(2), 2);
+    cart.display();
+
+    Order order(101, r1.getId(), cart);
+    cart.clear();
+
+    CustomerNotifier custNotif("Rahul");
+    RestaurantNotifier restNotif("Spice Garden");
+    order.subscribe(&amp;custNotif);
+    order.subscribe(&amp;restNotif);
+
+    order.display();
+
+    cout &lt;&lt; "\n--- Order lifecycle ---\n";
+    order.updateStatus(OrderStatus::ACCEPTED);
+    order.updateStatus(OrderStatus::PREPARING);
+    order.assignAgent("Ramesh (Agent #42)");
+    order.updateStatus(OrderStatus::OUT_FOR_DELIVERY);
+    order.updateStatus(OrderStatus::DELIVERED);
+
+    order.display();
+}</div>
+                <div class="out-label">Output</div>
+                <div class="out-block">[Spice Garden] Menu (Rating: 4.5):
+  0. Butter Chicken — Rs.280
+  1. Naan — Rs.50
+  2. Lassi — Rs.80
+
+[Cart] Added: Butter Chicken x2
+[Cart] Added: Naan x4
+[Cart] Added: Lassi x2
+
+--- Cart ---
+  Butter Chicken x2 = Rs.560
+  Naan x4 = Rs.200
+  Lassi x2 = Rs.160
+  Total: Rs.920
+
+=== Order #1 ===
+  Butter Chicken x2
+  Naan x4
+  Lassi x2
+  Total: Rs.920
+  Status: PLACED
+
+--- Order lifecycle ---
+[SMS → Rahul] Order #1 is now: ACCEPTED
+[Dashboard → Spice Garden] Order #1 status: ACCEPTED
+[SMS → Rahul] Order #1 is now: PREPARING
+[Dashboard → Spice Garden] Order #1 status: PREPARING
+[Order #1] Assigned to: Ramesh (Agent #42)
+[SMS → Rahul] Order #1 is now: OUT_FOR_DELIVERY
+[SMS → Rahul] Order #1 is now: DELIVERED
+
+=== Order #1 ===
+  Butter Chicken x2
+  Naan x4
+  Lassi x2
+  Total: Rs.920
+  Status: DELIVERED
+  Agent: Ramesh (Agent #42)</div>
+            </div>
+            <div class="section">
+                <h2>Interview Q&A</h2>
+                <div class="qa"><div class="qa-q" onclick="tog(this)">Q1. How would you assign the nearest delivery agent? <span class="arr">▾</span></div><div class="qa-a">Add location to DeliveryAgent (lat/lon) and Restaurant/Customer. Use Haversine formula to calculate distance between agent and restaurant. On order placement: filter agents by status == AVAILABLE, sort by distance to restaurant, assign the nearest one. In a real system (HLD): use geospatial indexing (Redis GEO or PostGIS) for efficient nearest-neighbour queries — these use geohashing to avoid scanning all agents globally. Also factor in: agent rating, current order count, and estimated time to reach restaurant.</div></div>
+                <div class="qa"><div class="qa-q" onclick="tog(this)">Q2. How would you handle the case where a restaurant rejects an order? <span class="arr">▾</span></div><div class="qa-a">Add a RESTAURANT_CANCELLED status to the OrderStatus enum. When rejected: update status, notify customer via Observer, initiate refund (trigger PaymentService.refund(orderId)), optionally suggest alternative restaurants. Design decision: should you auto-assign to another restaurant? Usually no — the customer ordered from a specific restaurant. The Observer pattern makes this clean: add a RefundObserver and an AlternativeSuggestionObserver that react to RESTAURANT_CANCELLED events without changing the Order class.</div></div>
+            </div>
+        `},
+        {
+            id: 't6', label: 'HLD: Scalability', html: `
+            <div class="section">
+                <h2>What is scalability?</h2>
+                <p>Scalability is the ability of a system to handle growing load — more users, more data, more requests — without degrading performance. It's the first HLD concept interviewers probe.</p>
+                <div class="hl">If your system works for 100 users but falls over with 10 million — it doesn't scale. Every HLD answer must explain how the system handles 10x, 100x growth.</div>
+            </div>
+            <div class="section">
+                <h2>Vertical vs horizontal scaling</h2>
+                <div class="card-row">
+                    <div class="card"><div class="lbl">Vertical (scale up)</div><div class="val">Bigger single machine</div><div class="sub">More RAM, faster CPU, better SSD. Simple but has a hard ceiling — biggest machine costs millions and still fails.</div></div>
+                    <div class="card"><div class="lbl">Horizontal (scale out)</div><div class="val">More machines</div><div class="sub">Add commodity servers. No theoretical limit. Used by Google, Netflix, Amazon. Requires stateless design.</div></div>
+                </div>
+                <div class="ok">Rule: Start vertical (simpler). Move horizontal when you hit limits. Design stateless services from day one to make horizontal scaling easy.</div>
+            </div>
+            <div class="section">
+                <h2>Load balancer</h2>
+                <p>A load balancer distributes incoming requests across multiple server instances so no single server is overwhelmed.</p>
+                <div class="code-block">// Simulating load balancer strategies in C++
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+using namespace std;
+
+struct Server {
+    string name;
+    int    activeConnections;
+    bool   isHealthy;
+    Server(string n) : name(n), activeConnections(0), isHealthy(true) {}
+};
+
+class LoadBalancer {
+    vector&lt;Server&gt; servers;
+    int roundRobinIdx = 0;
+public:
+    void addServer(Server s) { servers.push_back(s); }
+
+    // Strategy 1: Round Robin
+    Server* getRoundRobin() {
+        int start = roundRobinIdx;
+        do {
+            Server&amp; s = servers[roundRobinIdx];
+            roundRobinIdx = (roundRobinIdx + 1) % servers.size();
+            if (s.isHealthy) return &amp;s;
+        } while (roundRobinIdx != start);
+        return nullptr;
+    }
+
+    // Strategy 2: Least Connections
+    Server* getLeastConnections() {
+        Server* best = nullptr;
+        for (auto&amp; s : servers) {
+            if (!s.isHealthy) continue;
+            if (!best || s.activeConnections &lt; best-&gt;activeConnections)
+                best = &amp;s;
+        }
+        return best;
+    }
+
+    void handleRequest(string strategy) {
+        Server* s = (strategy == "rr") ? getRoundRobin() : getLeastConnections();
+        if (s) {
+            s-&gt;activeConnections++;
+            cout &lt;&lt; "[" &lt;&lt; strategy &lt;&lt; "] → " &lt;&lt; s-&gt;name
+                 &lt;&lt; " (conns: " &lt;&lt; s-&gt;activeConnections &lt;&lt; ")\n";
+        } else {
+            cout &lt;&lt; "[ERR] No healthy servers!\n";
+        }
+    }
+    void markDown(string name) {
+        for (auto&amp; s : servers)
+            if (s.name == name) { s.isHealthy = false; cout &lt;&lt; "[DOWN] " &lt;&lt; name &lt;&lt; "\n"; }
+    }
+};
+
+int main() {
+    LoadBalancer lb;
+    lb.addServer(Server("Server-A"));
+    lb.addServer(Server("Server-B"));
+    lb.addServer(Server("Server-C"));
+
+    cout &lt;&lt; "--- Round Robin ---\n";
+    for (int i = 0; i &lt; 6; i++) lb.handleRequest("rr");
+
+    lb.markDown("Server-B");
+    cout &lt;&lt; "\n--- Round Robin after Server-B down ---\n";
+    for (int i = 0; i &lt; 4; i++) lb.handleRequest("rr");
+
+    cout &lt;&lt; "\n--- Least Connections ---\n";
+    LoadBalancer lb2;
+    lb2.addServer(Server("S1")); lb2.addServer(Server("S2")); lb2.addServer(Server("S3"));
+    for (int i = 0; i &lt; 5; i++) lb2.handleRequest("lc");
+}</div>
+                <div class="out-label">Output</div>
+                <div class="out-block">--- Round Robin ---
+[rr] → Server-A (conns: 1)
+[rr] → Server-B (conns: 1)
+[rr] → Server-C (conns: 1)
+[rr] → Server-A (conns: 2)
+[rr] → Server-B (conns: 2)
+[rr] → Server-C (conns: 2)
+
+[DOWN] Server-B
+--- Round Robin after Server-B down ---
+[rr] → Server-A (conns: 3)
+[rr] → Server-C (conns: 3)
+[rr] → Server-A (conns: 4)
+[rr] → Server-C (conns: 4)
+
+--- Least Connections ---
+[lc] → S1 (conns: 1)
+[lc] → S2 (conns: 1)
+[lc] → S3 (conns: 1)
+[lc] → S1 (conns: 2)
+[lc] → S2 (conns: 2)</div>
+            </div>
+            <div class="section">
+                <h2>Stateless design — key to horizontal scaling</h2>
+                <p>For horizontal scaling to work, servers must be stateless — any server can handle any request. Session state must live in a shared store (Redis), not in server memory.</p>
+                <div class="table-wrap"><table>
+                    <tr><th>Stateful (bad)</th><th>Stateless (good)</th></tr>
+                    <tr><td>Session stored in Server A's RAM</td><td>Session stored in Redis (shared)</td></tr>
+                    <tr><td>User must always hit Server A</td><td>Any server can serve the user</td></tr>
+                    <tr><td>If Server A dies, session lost</td><td>Session survives server failure</td></tr>
+                    <tr><td>Cannot add servers freely</td><td>Add/remove servers transparently</td></tr>
+                </table></div>
+            </div>
+            <div class="section">
+                <h2>Interview Q&A</h2>
+                <div class="qa"><div class="qa-q" onclick="tog(this)">Q1. What is the difference between load balancing and reverse proxy? <span class="arr">▾</span></div><div class="qa-a">A reverse proxy sits in front of servers and handles requests on their behalf — it can do SSL termination, compression, caching, and routing to ONE backend. A load balancer distributes traffic across MULTIPLE backend instances. In practice, tools like Nginx and HAProxy serve as both — they act as reverse proxies AND distribute load across a pool of servers. Conceptually: reverse proxy = front-end intermediary. Load balancer = traffic distributor. Most production systems use both, often combined in one layer (Nginx → multiple app servers).</div></div>
+                <div class="qa"><div class="qa-q" onclick="tog(this)">Q2. How does a load balancer detect that a server is unhealthy? <span class="arr">▾</span></div><div class="qa-a">Health checks — the load balancer periodically sends a request to each server's health endpoint (e.g., GET /health). If the server returns 200 OK within a timeout, it's healthy. If it fails N consecutive times, the load balancer marks it down and stops sending traffic. Types: (1) Passive — detects failures from actual request failures. (2) Active — sends periodic heartbeat probes. Production load balancers (AWS ALB, Nginx, HAProxy) use active health checks with configurable intervals, thresholds, and timeout values. When the server recovers, it's gradually re-added (circuit breaker pattern).</div></div>
+            </div>
+        `},
+        {
+            id: 't7', label: 'HLD: Caching', html: `
+            <div class="section">
+                <h2>Why caching?</h2>
+                <p>A database query might take 50–200ms. A cache hit takes under 1ms. For a system handling 100,000 requests/second, caching is what makes the difference between "fast" and "down".</p>
+                <div class="hl">80/20 rule: 80% of requests are for 20% of the data. Cache that 20% and you eliminate most database load.</div>
+            </div>
+            <div class="section">
+                <h2>Cache strategies</h2>
+                <div class="table-wrap"><table>
+                    <tr><th>Strategy</th><th>How it works</th><th>Best for</th></tr>
+                    <tr><td><span class="tag blue">Cache-aside</span></td><td>App checks cache first. On miss: read from DB, write to cache. App manages cache explicitly.</td><td>Read-heavy, cache data independently</td></tr>
+                    <tr><td><span class="tag green">Write-through</span></td><td>Every write goes to cache AND DB simultaneously. Always consistent.</td><td>Write + read, consistency critical</td></tr>
+                    <tr><td><span class="tag amber">Write-back</span></td><td>Write to cache only. Write to DB asynchronously later. Fastest writes but risk data loss on crash.</td><td>Write-heavy, tolerate slight inconsistency</td></tr>
+                    <tr><td><span class="tag purple">Read-through</span></td><td>Cache sits in front of DB. On miss: cache itself loads from DB. App only talks to cache.</td><td>Simplified app code, consistent pattern</td></tr>
+                </table></div>
+            </div>
+            <div class="section">
+                <h2>LRU Cache — implement from scratch</h2>
+                <p>LRU (Least Recently Used) evicts the item not accessed for the longest time. Classic interview question. Uses hashmap + doubly linked list for O(1) get and put.</p>
+                <div class="code-block">#include &lt;iostream&gt;
+#include &lt;unordered_map&gt;
+#include &lt;list&gt;
+using namespace std;
+
+class LRUCache {
+    int capacity;
+    list&lt;pair&lt;int,int&gt;&gt; lru; // {key, value} — front = most recent
+    unordered_map&lt;int, list&lt;pair&lt;int,int&gt;&gt;::iterator&gt; mp;
+public:
+    LRUCache(int cap) : capacity(cap) {
+        cout &lt;&lt; "[Cache] Initialized with capacity: " &lt;&lt; cap &lt;&lt; "\n";
+    }
+
+    int get(int key) {
+        if (!mp.count(key)) {
+            cout &lt;&lt; "[MISS] key=" &lt;&lt; key &lt;&lt; "\n";
+            return -1;
+        }
+        // Move to front (most recently used)
+        lru.splice(lru.begin(), lru, mp[key]);
+        cout &lt;&lt; "[HIT]  key=" &lt;&lt; key &lt;&lt; " → val=" &lt;&lt; mp[key]-&gt;second &lt;&lt; "\n";
+        return mp[key]-&gt;second;
+    }
+
+    void put(int key, int value) {
+        if (mp.count(key)) {
+            mp[key]-&gt;second = value;
+            lru.splice(lru.begin(), lru, mp[key]);
+            cout &lt;&lt; "[UPDATE] key=" &lt;&lt; key &lt;&lt; " val=" &lt;&lt; value &lt;&lt; "\n";
+            return;
+        }
+        if (lru.size() == capacity) {
+            int evicted = lru.back().first;
+            mp.erase(evicted);
+            lru.pop_back();
+            cout &lt;&lt; "[EVICT] key=" &lt;&lt; evicted &lt;&lt; "\n";
+        }
+        lru.push_front({key, value});
+        mp[key] = lru.begin();
+        cout &lt;&lt; "[PUT]   key=" &lt;&lt; key &lt;&lt; " val=" &lt;&lt; value &lt;&lt; "\n";
+    }
+
+    void display() {
+        cout &lt;&lt; "[Cache state, LRU→MRU]: ";
+        for (auto it = lru.rbegin(); it != lru.rend(); it++)
+            cout &lt;&lt; it-&gt;first &lt;&lt; ":" &lt;&lt; it-&gt;second &lt;&lt; " ";
+        cout &lt;&lt; "\n";
+    }
+};
+
+int main() {
+    LRUCache cache(3);
+    cache.put(1, 100);
+    cache.put(2, 200);
+    cache.put(3, 300);
+    cache.display();
+
+    cache.get(1);       // hit, 1 becomes MRU
+    cache.put(4, 400);  // evicts 2 (LRU)
+    cache.display();
+
+    cache.get(2);       // miss
+    cache.get(3);       // hit
+    cache.put(5, 500);  // evicts 4 (LRU)
+    cache.display();
+}</div>
+                <div class="out-label">Output</div>
+                <div class="out-block">[Cache] Initialized with capacity: 3
+[PUT]   key=1 val=100
+[PUT]   key=2 val=200
+[PUT]   key=3 val=300
+[Cache state, LRU→MRU]: 1:100 2:200 3:300
+
+[HIT]  key=1 → val=100
+[EVICT] key=2
+[PUT]   key=4 val=400
+[Cache state, LRU→MRU]: 3:300 1:100 4:400
+
+[MISS] key=2
+[HIT]  key=3 → val=300
+[EVICT] key=1
+[PUT]   key=5 val=500
+[Cache state, LRU→MRU]: 4:400 3:300 5:500</div>
+            </div>
+            <div class="section">
+                <h2>Cache invalidation — the hard problem</h2>
+                <div class="danger">Phil Karlton: "There are only two hard things in Computer Science: cache invalidation and naming things."</div>
+                <div class="card-row">
+                    <div class="card"><div class="lbl">TTL (Time-to-live)</div><div class="val">Expire after N seconds</div><div class="sub">Simple. May serve stale data until expiry. Good for content that changes infrequently.</div></div>
+                    <div class="card"><div class="lbl">Event-based</div><div class="val">Invalidate on DB write</div><div class="sub">When DB record changes, explicitly delete the cache key. Always fresh but adds coupling.</div></div>
+                    <div class="card"><div class="lbl">Write-through</div><div class="val">Update cache on every write</div><div class="sub">Cache always matches DB. Extra write latency. Best consistency.</div></div>
+                </div>
+            </div>
+            <div class="section">
+                <h2>Interview Q&A</h2>
+                <div class="qa"><div class="qa-q" onclick="tog(this)">Q1. What is a cache stampede and how do you prevent it? <span class="arr">▾</span></div><div class="qa-a">Cache stampede (thundering herd): a popular cache key expires. Simultaneously, hundreds of requests miss the cache and all rush to the database at once. The DB gets hammered. Prevention: (1) Mutex locking — only one request fetches from DB, the rest wait. (2) Cache warming — pre-populate the cache before expiry using background jobs. (3) Probabilistic early expiry — randomly expire the cache slightly before TTL for a small % of requests, so the cache is refreshed without a full stampede. (4) Stale-while-revalidate — serve the stale value immediately, refresh in the background.</div></div>
+                <div class="qa"><div class="qa-q" onclick="tog(this)">Q2. LRU vs LFU — which eviction policy should you choose? <span class="arr">▾</span></div><div class="qa-a">LRU (Least Recently Used): evicts items not accessed for the longest time. Good when recency predicts future access — e.g., user sessions, news feed. Weakness: a one-time scan of all items pollutes the cache. LFU (Least Frequently Used): evicts items accessed the least number of times. Good when frequency predicts importance — e.g., popular products, trending searches. Weakness: newly added items start with frequency 1 and may be evicted before getting a chance. In practice: Redis uses a modified LRU by default; most CDNs use LRU; databases use LFU-variants. For mixed access patterns, LRU is the safe default.</div></div>
+            </div>
+        `},
+        {
+            id: 't8', label: 'HLD: Message Queues', html: `
+            <div class="section">
+                <h2>Why message queues?</h2>
+                <p>In a synchronous system, every service waits for every other service. If the email service is slow, your entire checkout slows down. Message queues decouple services — the sender puts a message and moves on. The receiver processes when ready.</p>
+                <div class="ok">Real example: When you place an order on Zomato, the response comes back immediately. But sending your confirmation email, updating inventory, notifying the restaurant, and assigning a delivery agent all happen asynchronously via queues — in parallel, after the response.</div>
+            </div>
+            <div class="section">
+                <h2>Core concepts</h2>
+                <div class="card-row">
+                    <div class="card"><div class="lbl">Producer</div><div class="val">Sends messages</div><div class="sub">Order service, payment service, user service</div></div>
+                    <div class="card"><div class="lbl">Queue / Topic</div><div class="val">Stores messages</div><div class="sub">Durable, ordered, persistent buffer between producer and consumer</div></div>
+                    <div class="card"><div class="lbl">Consumer</div><div class="val">Processes messages</div><div class="sub">Email service, notification service, analytics service</div></div>
+                    <div class="card"><div class="lbl">Broker</div><div class="val">Manages routing</div><div class="sub">Kafka, RabbitMQ, AWS SQS, Redis Streams</div></div>
+                </div>
+            </div>
+            <div class="section">
+                <h2>Message queue simulation in C++</h2>
+                <div class="code-block">#include &lt;iostream&gt;
+#include &lt;queue&gt;
+#include &lt;vector&gt;
+#include &lt;string&gt;
+#include &lt;functional&gt;
+using namespace std;
+
+struct Message {
+    int    id;
+    string topic;
+    string payload;
+    Message(int i, string t, string p) : id(i), topic(t), payload(p) {}
+};
+
+class MessageQueue {
+    queue&lt;Message&gt; q;
+    int msgCounter = 0;
+    string name;
+public:
+    MessageQueue(string n) : name(n) {}
+
+    void publish(string topic, string payload) {
+        q.push(Message(++msgCounter, topic, payload));
+        cout &lt;&lt; "[Queue:" &lt;&lt; name &lt;&lt; "] Published #" &lt;&lt; msgCounter
+             &lt;&lt; " topic=" &lt;&lt; topic &lt;&lt; " | " &lt;&lt; payload &lt;&lt; "\n";
+    }
+    bool consume(function&lt;void(Message&amp;)&gt; handler) {
+        if (q.empty()) return false;
+        Message msg = q.front(); q.pop();
+        cout &lt;&lt; "[Queue:" &lt;&lt; name &lt;&lt; "] Consuming #" &lt;&lt; msg.id &lt;&lt; "\n";
+        handler(msg);
+        return true;
+    }
+    int size() const { return q.size(); }
+    bool empty() const { return q.empty(); }
+};
+
+class OrderService {
+    MessageQueue&amp; queue;
+public:
+    OrderService(MessageQueue&amp; q) : queue(q) {}
+    void placeOrder(int userId, string item, double price) {
+        cout &lt;&lt; "\n[OrderService] Order placed: " &lt;&lt; item &lt;&lt; " by user " &lt;&lt; userId &lt;&lt; "\n";
+        string payload = "{userId:" + to_string(userId) +
+                         ",item:\"" + item +
+                         "\",price:" + to_string((int)price) + "}";
+        queue.publish("order.placed", payload);
+        cout &lt;&lt; "[OrderService] Returned 200 OK to client immediately.\n";
+    }
+};
+
+class EmailService {
+public:
+    void handle(Message&amp; msg) {
+        cout &lt;&lt; "  [EmailService] Sending confirmation email → " &lt;&lt; msg.payload &lt;&lt; "\n";
+    }
+};
+class InventoryService {
+public:
+    void handle(Message&amp; msg) {
+        cout &lt;&lt; "  [InventoryService] Deducting stock → " &lt;&lt; msg.payload &lt;&lt; "\n";
+    }
+};
+class AnalyticsService {
+public:
+    void handle(Message&amp; msg) {
+        cout &lt;&lt; "  [Analytics] Recording event → " &lt;&lt; msg.payload &lt;&lt; "\n";
+    }
+};
+
+int main() {
+    MessageQueue orderQueue("orders");
+    OrderService  orders(orderQueue);
+    EmailService  emailSvc;
+    InventoryService invSvc;
+    AnalyticsService analyticsSvc;
+
+    orders.placeOrder(1, "Laptop", 65000);
+    orders.placeOrder(2, "Mouse",  1500);
+    orders.placeOrder(3, "Keyboard", 3000);
+
+    cout &lt;&lt; "\n--- Consumers processing " &lt;&lt; orderQueue.size() &lt;&lt; " messages ---\n";
+
+    while (!orderQueue.empty()) {
+        orderQueue.consume([&amp;](Message&amp; msg) {
+            emailSvc.handle(msg);
+            invSvc.handle(msg);
+            analyticsSvc.handle(msg);
+        });
+    }
+    cout &lt;&lt; "\n[Queue empty — all messages processed]\n";
+}</div>
+                <div class="out-label">Output</div>
+                <div class="out-block">[OrderService] Order placed: Laptop by user 1
+[Queue:orders] Published #1 topic=order.placed | {userId:1,item:"Laptop",price:65000}
+[OrderService] Returned 200 OK to client immediately.
+
+[OrderService] Order placed: Mouse by user 2
+[Queue:orders] Published #2 topic=order.placed | {userId:2,item:"Mouse",price:1500}
+[OrderService] Returned 200 OK to client immediately.
+
+[OrderService] Order placed: Keyboard by user 3
+[Queue:orders] Published #3 topic=order.placed | {userId:3,item:"Keyboard",price:3000}
+[OrderService] Returned 200 OK to client immediately.
+
+--- Consumers processing 3 messages ---
+[Queue:orders] Consuming #1
+  [EmailService] Sending confirmation email → {userId:1,item:"Laptop",price:65000}
+  [InventoryService] Deducting stock → {userId:1,item:"Laptop",price:65000}
+  [Analytics] Recording event → {userId:1,item:"Laptop",price:65000}
+[Queue:orders] Consuming #2
+  [EmailService] Sending confirmation email → {userId:2,item:"Mouse",price:1500}
+  [InventoryService] Deducting stock → {userId:2,item:"Mouse",price:1500}
+  [Analytics] Recording event → {userId:2,item:"Mouse",price:1500}
+[Queue:orders] Consuming #3
+  [EmailService] Sending confirmation email → {userId:3,item:"Keyboard",price:3000}
+  [InventoryService] Deducting stock → {userId:3,item:"Keyboard",price:3000}
+  [Analytics] Recording event → {userId:3,item:"Keyboard",price:3000}
+
+[Queue empty — all messages processed]</div>
+            </div>
+            <div class="section">
+                <h2>Kafka vs RabbitMQ</h2>
+                <div class="table-wrap"><table>
+                    <tr><th></th><th>Kafka</th><th>RabbitMQ</th></tr>
+                    <tr><td>Model</td><td>Distributed log — messages retained</td><td>Queue — messages consumed and gone</td></tr>
+                    <tr><td>Throughput</td><td>Millions of msgs/sec</td><td>Thousands of msgs/sec</td></tr>
+                    <tr><td>Consumer</td><td>Pull-based, consumer tracks offset</td><td>Push-based, broker tracks state</td></tr>
+                    <tr><td>Replay</td><td>Yes — replay from any offset</td><td>No — consumed = deleted</td></tr>
+                    <tr><td>Use case</td><td>Event streaming, audit log, analytics</td><td>Task queues, RPC, work distribution</td></tr>
+                    <tr><td>Used by</td><td>LinkedIn, Netflix, Uber, Grab</td><td>Instagram, Reddit, smaller apps</td></tr>
+                </table></div>
+            </div>
+            <div class="section">
+                <h2>Interview Q&A</h2>
+                <div class="qa"><div class="qa-q" onclick="tog(this)">Q1. What happens if a consumer fails mid-processing? <span class="arr">▾</span></div><div class="qa-a">With acknowledgements (ACK): the message stays in the queue until the consumer sends an ACK after successful processing. If the consumer crashes before ACKing, the broker re-queues the message for another consumer. This gives at-least-once delivery. Risk: the same message might be processed twice (if consumer processed but crashed before ACKing). Solution: make consumers idempotent — processing the same message twice produces the same result. Example: use a processed_message_ids table in DB to skip already-handled messages.</div></div>
+                <div class="qa"><div class="qa-q" onclick="tog(this)">Q2. What is the difference between a queue and a topic (pub-sub)? <span class="arr">▾</span></div><div class="qa-a">Queue: one message is delivered to exactly ONE consumer. Work is distributed — if 3 consumers are listening, each message goes to one of them. Used for load-balanced task processing (3 workers processing orders). Topic (pub-sub): one message is delivered to ALL subscribers. Every service that subscribed gets a copy. Used for event notification (order.placed event → email service, inventory service, analytics service all get it). Kafka uses topics with consumer groups: within a consumer group, each message goes to one consumer (queue behaviour); across groups, all groups get all messages (pub-sub behaviour).</div></div>
+            </div>
+        `}
+];
+
+const nav=document.getElementById('nav');
+const pages=document.getElementById('pages');
+topics.forEach((t,i)=>{
+    const btn=document.createElement('button');
+    btn.textContent=t.label;
+    btn.className=i===0?'active':'';
+    btn.onclick=()=>{
+        document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
+        btn.classList.add('active');
+        document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+        document.getElementById(t.id).classList.add('active');
+    };
+    nav.appendChild(btn);
+    const page=document.createElement('div');
+    page.className='page'+(i===0?' active':'');
+    page.id=t.id;
+    page.innerHTML=t.html;
+    pages.appendChild(page);
+});
+
+function tog(el){
+    const ans=el.nextElementSibling;
+    const arr=el.querySelector('.arr');
+    const isOpen=ans.classList.contains('open');
+
+    // Close any currently open QAs within this specific page tab
+    const currentPage = el.closest('.page');
+    currentPage.querySelectorAll('.qa-a.open').forEach(openA => {
+        openA.classList.remove('open');
+        openA.previousElementSibling.querySelector('.arr').classList.remove('open');
+    });
+
+    if(!isOpen) {
+        ans.classList.add('open');
+        arr.classList.add('open');
+    }
+}
+</script>
+</body>
+</html>
