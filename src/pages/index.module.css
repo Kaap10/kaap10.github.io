@@ -1,20 +1,22 @@
 .home {
   min-height: calc(100vh - var(--ifm-navbar-height, 60px));
-  background: linear-gradient(180deg, #edf1f4 0%, #e8edf1 100%);
+  background:
+    radial-gradient(circle at 12% 0%, rgba(255, 92, 53, 0.09), transparent 28%),
+    linear-gradient(180deg, #141518 0%, #101114 100%);
 }
 
 .hero {
   position: relative;
   overflow: hidden;
-  padding: 7rem 1.25rem 4.25rem;
+  padding: 7rem 1.25rem 4rem;
 }
 
 .heroBackdrop {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at 12% 15%, rgba(88, 133, 184, 0.2), transparent 46%),
-    radial-gradient(circle at 85% 15%, rgba(114, 134, 160, 0.16), transparent 44%);
+    radial-gradient(circle at 12% 15%, rgba(255, 92, 53, 0.14), transparent 44%),
+    radial-gradient(circle at 85% 18%, rgba(255, 255, 255, 0.05), transparent 42%);
   pointer-events: none;
 }
 
@@ -23,11 +25,11 @@
   z-index: 1;
   max-width: 980px;
   margin: 0 auto;
-  border: 1px solid #d3dbe3;
-  background: rgba(255, 255, 255, 0.86);
-  border-radius: 22px;
-  box-shadow: 0 22px 55px rgba(45, 61, 79, 0.1);
-  padding: 3rem;
+  border: 1px solid #2c323b;
+  background: rgba(27, 29, 34, 0.92);
+  border-radius: 28px;
+  box-shadow: 0 28px 60px rgba(0, 0, 0, 0.34);
+  padding: 3.25rem;
 }
 
 .kicker {
@@ -36,7 +38,7 @@
   letter-spacing: 0.14em;
   font-size: 0.74rem;
   font-weight: 700;
-  color: #50647d;
+  color: #ff8a67;
 }
 
 .title {
@@ -44,13 +46,13 @@
   max-width: 760px;
   font-size: clamp(2rem, 3vw + 1.2rem, 3.6rem);
   line-height: 1.1;
-  color: #1c2733;
+  color: #f2efe8;
 }
 
 .lead {
   margin: 1.2rem 0 0;
   max-width: 710px;
-  color: #3f4f5f;
+  color: #adb5bf;
   font-size: 1.03rem;
   line-height: 1.8;
 }
@@ -76,9 +78,9 @@
 }
 
 .primaryCta {
-  background: #214a80;
-  color: #f6f8fb;
-  box-shadow: 0 10px 22px rgba(33, 74, 128, 0.28);
+  background: #ff5c35;
+  color: #fff7f3;
+  box-shadow: 0 12px 24px rgba(255, 92, 53, 0.22);
 }
 
 .primaryCta:hover {
@@ -88,14 +90,14 @@
 }
 
 .secondaryCta {
-  background: #f5f8fb;
-  border-color: #cfd9e4;
-  color: #294464;
+  background: #232730;
+  border-color: #343943;
+  color: #e7edf4;
 }
 
 .secondaryCta:hover {
-  background: #ecf2f8;
-  color: #193555;
+  background: #2a2f38;
+  color: #fff3ef;
   text-decoration: none;
 }
 
@@ -107,13 +109,13 @@
 
 .gridHeader h2 {
   margin: 0;
-  color: #1a2633;
+  color: #f2efe8;
   font-size: clamp(1.6rem, 1.6vw + 1rem, 2.1rem);
 }
 
 .gridHeader p {
   margin: 0.6rem 0 0;
-  color: #465767;
+  color: #9fa7b1;
 }
 
 .grid {
@@ -127,9 +129,9 @@
   display: flex;
   flex-direction: column;
   min-height: 220px;
-  border: 1px solid #d3dbe3;
-  border-radius: 16px;
-  background: linear-gradient(180deg, #ffffff 0%, #f7f9fb 100%);
+  border: 1px solid #2c323b;
+  border-radius: 18px;
+  background: linear-gradient(180deg, #1b1d22 0%, #17191e 100%);
   text-decoration: none;
   padding: 1.25rem;
   transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
@@ -138,27 +140,27 @@
 .card h3 {
   margin: 0;
   font-size: 1.24rem;
-  color: #1f2d3a;
+  color: #f0ede7;
 }
 
 .card p {
   margin: 0.8rem 0 0;
-  color: #4b5a69;
+  color: #a7b0ba;
   line-height: 1.7;
 }
 
 .cardAction {
   margin-top: auto;
   padding-top: 1rem;
-  color: #244b7f;
+  color: #ff8a67;
   font-weight: 600;
   font-size: 0.92rem;
 }
 
 .card:hover {
   transform: translateY(-4px);
-  border-color: #a8bdd6;
-  box-shadow: 0 16px 30px rgba(46, 66, 91, 0.12);
+  border-color: rgba(255, 92, 53, 0.38);
+  box-shadow: 0 16px 30px rgba(0, 0, 0, 0.34);
   text-decoration: none;
 }
 
@@ -204,76 +206,78 @@
 }
 
 [data-theme='dark'] .home {
-  background: linear-gradient(180deg, #15191c 0%, #101214 100%);
+  background:
+    radial-gradient(circle at 12% 0%, rgba(255, 92, 53, 0.09), transparent 28%),
+    linear-gradient(180deg, #141518 0%, #101114 100%);
 }
 
 [data-theme='dark'] .heroBackdrop {
   background:
-    radial-gradient(circle at 12% 15%, rgba(85, 126, 170, 0.22), transparent 46%),
-    radial-gradient(circle at 85% 15%, rgba(72, 85, 101, 0.24), transparent 44%);
+    radial-gradient(circle at 12% 15%, rgba(255, 92, 53, 0.14), transparent 44%),
+    radial-gradient(circle at 85% 18%, rgba(255, 255, 255, 0.05), transparent 42%);
 }
 
 [data-theme='dark'] .heroContent {
-  border-color: #2c343c;
-  background: rgba(24, 29, 34, 0.88);
-  box-shadow: 0 24px 58px rgba(0, 0, 0, 0.45);
+  border-color: #2c323b;
+  background: rgba(27, 29, 34, 0.92);
+  box-shadow: 0 28px 60px rgba(0, 0, 0, 0.34);
 }
 
 [data-theme='dark'] .kicker {
-  color: #93a7bb;
+  color: #ff8a67;
 }
 
 [data-theme='dark'] .title {
-  color: #f2f5f8;
+  color: #f2efe8;
 }
 
 [data-theme='dark'] .lead {
-  color: #b5c1ce;
+  color: #adb5bf;
 }
 
 [data-theme='dark'] .primaryCta {
-  background: #7fa8dd;
-  color: #111a23;
-  box-shadow: 0 10px 22px rgba(16, 24, 34, 0.38);
+  background: #ff5c35;
+  color: #fff7f3;
+  box-shadow: 0 12px 24px rgba(255, 92, 53, 0.22);
 }
 
 [data-theme='dark'] .secondaryCta {
-  background: #1a1f24;
-  border-color: #2f3943;
-  color: #c7d8ea;
-}
-
-[data-theme='dark'] .secondaryCta:hover {
-  background: #252d35;
-  color: #dce9f7;
-}
-
-[data-theme='dark'] .gridHeader h2 {
-  color: #edf2f8;
-}
-
-[data-theme='dark'] .gridHeader p {
-  color: #afbcc9;
-}
-
-[data-theme='dark'] .card {
-  border-color: #2b343d;
-  background: linear-gradient(180deg, #1a1f24 0%, #151a1f 100%);
-}
-
-[data-theme='dark'] .card h3 {
+  background: #232730;
+  border-color: #343943;
   color: #e7edf4;
 }
 
+[data-theme='dark'] .secondaryCta:hover {
+  background: #2a2f38;
+  color: #fff3ef;
+}
+
+[data-theme='dark'] .gridHeader h2 {
+  color: #f2efe8;
+}
+
+[data-theme='dark'] .gridHeader p {
+  color: #9fa7b1;
+}
+
+[data-theme='dark'] .card {
+  border-color: #2c323b;
+  background: linear-gradient(180deg, #1b1d22 0%, #17191e 100%);
+}
+
+[data-theme='dark'] .card h3 {
+  color: #f0ede7;
+}
+
 [data-theme='dark'] .card p {
-  color: #b0bdc9;
+  color: #a7b0ba;
 }
 
 [data-theme='dark'] .cardAction {
-  color: #9fc1e8;
+  color: #ff8a67;
 }
 
 [data-theme='dark'] .card:hover {
-  border-color: #4b6179;
-  box-shadow: 0 18px 34px rgba(0, 0, 0, 0.34);
+  border-color: rgba(255, 92, 53, 0.38);
+  box-shadow: 0 16px 30px rgba(0, 0, 0, 0.34);
 }

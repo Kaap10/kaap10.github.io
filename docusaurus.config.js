@@ -86,7 +86,7 @@ const config = {
     ({
       image: 'img/docusaurus-social-card.jpg',
       colorMode: {
-        defaultMode: 'light',
+        defaultMode: 'dark',
         respectPrefersColorScheme: false,
         disableSwitch: false,
       },
