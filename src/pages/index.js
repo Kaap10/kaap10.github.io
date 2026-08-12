@@ -54,17 +54,32 @@ const projects = [
 
 const stack = [
   'Python',
-  'TypeScript',
-  'React',
-  'Node.js',
+  'C++',
+  'JavaScript',
+  'SQL',
+  'React.js',
+  'Next.js',
+  'Tailwind CSS',
+  'Redux',
   'FastAPI',
+  'Flask',
+  'Node.js',
+  'Express.js',
+  'REST APIs',
   'PyTorch',
-  'TensorFlow',
+  'Scikit-Learn',
+  'LLMs',
   'RAG',
-  'Socket.IO',
-  'Supabase',
-  'Docker',
+  'ChromaDB',
+  'Ollama',
+  'Deep Learning',
+  'MongoDB',
+  'PostgreSQL',
+  'Firebase',
   'SQLite',
+  'Docker',
+  'Linux',
+  'GitHub Actions',
 ];
 
 const notes = [
@@ -85,7 +100,7 @@ function HeroPanel() {
         <span />
       </div>
       <div className={styles.profileLine}>
-        <img src="/img/profile.png" alt="" />
+        <img src="/img/vg.png" alt="" />
         <div>
           <strong>Vardhman Gupta</strong>
           <small>available for SWE / AI roles</small>

@@ -177,7 +177,7 @@
   border: 1px solid rgba(217, 255, 132, 0.45);
   border-radius: 10px;
   object-fit: cover;
-  object-position: top;
+  object-position: center;
 }
 
 .profileLine strong,
