@@ -3,8 +3,8 @@ import {themes as prismThemes} from 'prism-react-renderer';
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'VG / Wiki',
-  tagline: 'Notes on engineering & systems',
+  title: 'Vardhman Gupta',
+  tagline: 'AI/ML, full-stack systems, and technical notes',
   favicon: 'img/favicon.ico',
 
   future: {
@@ -93,7 +93,7 @@ const config = {
       navbar: {
         hideOnScroll: false,
         items: [
-          { to: '/', label: 'VG', position: 'left' },
+          { to: '/', label: 'Vardhman Gupta', position: 'left' },
           { to: '/notes/intro', label: 'Notes', position: 'left' },
           { to: '/notes/About Me', label: 'About', position: 'left' },
           { href: 'https://github.com/kaap10', label: 'GitHub', position: 'right' },
@@ -111,7 +111,7 @@ const config = {
       },
       footer: {
         style: 'light',
-        copyright: 'kaap10 — built with Docusaurus',
+        copyright: 'kaap10 - built with Docusaurus',
       },
       prism: {
         theme: prismThemes.github,
