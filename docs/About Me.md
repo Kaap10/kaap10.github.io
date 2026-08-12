@@ -19,51 +19,47 @@ Final-year **B.Tech - AI & ML** student at GLBAJAJ, Greater Noida — CGPA 8.2.
 
 I build end-to-end AI and full-stack systems with a focus on real-world impact, clean architecture, and measurable performance gains — from real-time collaborative tools to AI-powered security platforms.
 
-- Improved cloud deployment efficiency by **35%** at Dazu Services as a Full Stack Intern
-- **LeetCode Peak Rating: 1,975** · **Global Rank 238** in Weekly Contest 475
-- **Runner-Up at Thales AcadX 2025** for innovation in cybersecurity
-- **Finalist** at Hackfest (GFG-GLBITM) & HackWithDelhi — shortlisted from 300+ teams
-- **Top Performer** — PhysicsWallah Campus Ambassador Program
+- **LeetCode Knight:** Achieved a peak rating of 1988 – consistent DSA problem solver.
+- **Global Rank 144:** Secured in LeetCode Weekly Contest 444 among top-tier programmers.
+- **Runner-Up @ Thales AcadX 2025:** Recognized for an innovative solution in AI & Cybersecurity domain.
+- **Runner-Up @ IIT Delhi SquareHacks Hackathon:** Competed among 500+ teams nationwide.
+- **Finalist @ SAP Hackfest:** Shortlisted among top teams for SAP's national-level innovation challenge.
+- **Top Performer:** Recognized in the PhysicsWallah CAP Program for leadership and outreach.
+
 
 > *Open to full-time opportunities in Software Engineering, AI/ML, and Full Stack Development*
 
 ---
 
-## Experience
-
-| Role | Organization | Period |
-|------|-------------|--------|
-| Full Stack Developer Intern | Dazu Services *(Remote)* | Aug 2025 – Oct 2025 |
-
-Built and scaled features for Insta Tool and Lead Gen using React.js, TypeScript, Redux, Node.js, LoopBack.js, and Supabase within a microservices architecture. Integrated REST APIs through CI/CD pipelines using Postman and GitHub Actions in an Agile Scrum environment.
-
----
-
-## Tech Stack
-
-**AI / ML**
-![Python](https://img.shields.io/badge/Python-3776AB?style=flat&logo=python&logoColor=white)
-![PyTorch](https://img.shields.io/badge/PyTorch-EE4C2C?style=flat&logo=pytorch&logoColor=white)
-![Scikit-Learn](https://img.shields.io/badge/Scikit--Learn-F7931E?style=flat&logo=scikit-learn&logoColor=white)
-![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=flat&logo=fastapi&logoColor=white)
-
-**Full Stack**
-![React](https://img.shields.io/badge/React-61DAFB?style=flat&logo=react&logoColor=black)
-![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat&logo=typescript&logoColor=white)
-![Node.js](https://img.shields.io/badge/Node.js-339933?style=flat&logo=node.js&logoColor=white)
-![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=flat&logo=mongodb&logoColor=white)
-![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=flat&logo=mysql&logoColor=white)
-
-**DevOps & Tools**
-![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat&logo=docker&logoColor=white)
-![Azure](https://img.shields.io/badge/Azure-0078D4?style=flat&logo=microsoft-azure&logoColor=white)
-![Git](https://img.shields.io/badge/Git-F05032?style=flat&logo=git&logoColor=white)
-![Linux](https://img.shields.io/badge/Linux-FCC624?style=flat&logo=linux&logoColor=black)
-![Figma](https://img.shields.io/badge/Figma-F24E1E?style=flat&logo=figma&logoColor=white)
-
----
-
 ## Featured Projects
+
+### Guru-G — Resource-efficient Offline AI Tutor
+> Python · Llama.cpp · Flask/FastAPI · React Native · SQLite · 2026
+
+- Built a resource-efficient offline AI system to deliver quality education in internet-deprived rural areas.
+- Developed a local LLM-based engine to summarize textbooks and generate practice questions without network connectivity.
+- Optimized for low-memory devices with multilingual support, enabling learning in regional languages.
+- Integrated an AI tutor, flashcards, and interactive whiteboard for continuous, self-paced learning.
+
+---
+
+### AuraNow — CPU-Optimized RAG Pipeline for UGC
+> Python · Sentence Transformers · UMAP · HDBSCAN · RAPTOR · SQLite · RAG · 2026
+
+- Built a CPU-optimized RAG preprocessing pipeline that semantically clustered and summarized 100K+ comments using Sentence Transformers, UMAP, HDBSCAN, and RAPTOR.
+- Implemented hierarchical context generation and frequency-aware retrieval, improving retrieval relevance and reducing redundant context.
+- Designed a scalable data processing workflow for large-scale user-generated content without GPU dependencies.
+
+---
+
+### AegisAI — AI-Powered Security Platform
+> Python · TensorFlow · FastAPI · Elasticsearch · SIEM · 2025
+
+- Developed an AI-powered security engine for detecting identity attacks, brute-force, and lateral movement.
+- Built behaviour-based anomaly detection using ML models trained on 20,000+ security events.
+- Integrated with SIEM and Elasticsearch for real-time alerting with less than 1 second detection latency.
+
+---
 
 ### Code with Buddy — Real-time Collaborative Coding Platform
 > React.js · Node.js · Express.js · Socket.IO · CodeMirror · 2024
@@ -92,7 +88,39 @@ Built and scaled features for Insta Tool and Lead Gen using React.js, TypeScript
 
 ---
 
-## GitHub Stats
+## Experience
+
+| Role | Organization | Period |
+|------|-------------|--------|
+| Full Stack Developer Intern | Dazu Services *(Remote)* | Aug 2025 – Oct 2025 |
+
+Built and scaled features for Insta Tool and Lead Gen using React.js, TypeScript, Redux, Node.js, LoopBack.js, and Supabase within a microservices architecture. Integrated REST APIs through CI/CD pipelines using Postman and GitHub Actions in an Agile Scrum environment.
+
+
+## Positions of Responsibility
+
+- Campus Ambassador, PhysicsWallah (PW) 2024 – 2025
+- AIML Lead, GDSC GLBITM 2024 – 2025
+- Gaming Committee Member, Shrinik Club, GLBITM 2024 – 2025
+- Gaming Avenue Team Member, Abhyudaya Club, GLBITM 2023 – 2024
+
+
+## Tech Stack
+
+**AI / ML**
+![Python](https://img.shields.io/badge/Python-3776AB?style=flat&logo=python&logoColor=white)
+![PyTorch](https://img.shields.io/badge/PyTorch-EE4C2C?style=flat&logo=pytorch&logoColor=white)
+![Scikit-Learn](https://img.shields.io/badge/Scikit--Learn-F7931E?style=flat&logo=scikit-learn&logoColor=white)
+![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=flat&logo=fastapi&logoColor=white)
+
+**Full Stack**
+![React](https://img.shields.io/badge/React-61DAFB?style=flat&logo=react&logoColor=black)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat&logo=typescript&logoColor=white)
+![Node.js](https://img.shields.io/badge/Node.js-339933?style=flat&logo=node.js&logoColor=white)
+![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=flat&logo=mongodb&logoColor=white)
+![Figma](https://img.shields.io/badge/Figma-F24E1E?style=flat&logo=figma&logoColor=white)
+
+---
 
 <div align="center">
 
