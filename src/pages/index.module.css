@@ -26,7 +26,7 @@
 
 .subtitle {
   font-size: 1.25rem;
-  color: var(--vg-text-soft);
+  color: var(--vg-accent);
   margin-bottom: 2rem;
   font-family: 'JetBrains Mono', monospace;
 }
@@ -99,9 +99,9 @@
 
 .tags span {
   font-size: 0.85rem;
-  background-color: var(--vg-surface);
-  border: 1px solid var(--vg-border);
-  color: var(--vg-text-soft);
+  background-color: var(--vg-accent-soft);
+  border: 1px solid var(--vg-accent);
+  color: var(--vg-accent);
   padding: 0.3rem 0.6rem;
   border-radius: 6px;
   font-family: 'JetBrains Mono', monospace;
@@ -120,7 +120,7 @@
 }
 
 .list strong {
-  color: var(--vg-text);
+  color: var(--vg-accent);
   font-weight: 600;
 }
 

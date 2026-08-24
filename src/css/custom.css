@@ -8,8 +8,8 @@
   --vg-text: #e8eaed;
   --vg-text-soft: #9aa0a6;
   --vg-border: rgba(255, 255, 255, 0.12);
-  --vg-accent: #8ab4f8;
-  --vg-accent-soft: rgba(138, 180, 248, 0.16);
+  --vg-accent: #ef4444;
+  --vg-accent-soft: rgba(239, 68, 68, 0.16);
 
   --ifm-background-color: var(--vg-bg);
   --ifm-background-surface-color: var(--vg-bg-elevated);
@@ -19,12 +19,12 @@
   --ifm-heading-color: #ffffff;
   --ifm-link-color: var(--vg-accent);
   --ifm-color-primary: var(--vg-accent);
-  --ifm-color-primary-dark: #669df6;
-  --ifm-color-primary-darker: #5492f5;
-  --ifm-color-primary-darkest: #317bf3;
-  --ifm-color-primary-light: #aecbfb;
-  --ifm-color-primary-lighter: #c0d7fc;
-  --ifm-color-primary-lightest: #e5effd;
+  --ifm-color-primary-dark: #dc2626;
+  --ifm-color-primary-darker: #b91c1c;
+  --ifm-color-primary-darkest: #991b1b;
+  --ifm-color-primary-light: #f87171;
+  --ifm-color-primary-lighter: #fca5a5;
+  --ifm-color-primary-lightest: #fecaca;
   --ifm-navbar-background-color: rgba(12, 13, 16, 0.85);
   --ifm-navbar-shadow: none;
   --ifm-border-color: var(--vg-border);
@@ -40,8 +40,8 @@
   --vg-text: #e8eaed;
   --vg-text-soft: #9aa0a6;
   --vg-border: rgba(255, 255, 255, 0.12);
-  --vg-accent: #8ab4f8;
-  --vg-accent-soft: rgba(138, 180, 248, 0.16);
+  --vg-accent: #ef4444;
+  --vg-accent-soft: rgba(239, 68, 68, 0.16);
 
   --ifm-background-color: var(--vg-bg);
   --ifm-background-surface-color: var(--vg-bg-elevated);
@@ -49,12 +49,12 @@
   --ifm-heading-color: #ffffff;
   --ifm-link-color: var(--vg-accent);
   --ifm-color-primary: var(--vg-accent);
-  --ifm-color-primary-dark: #669df6;
-  --ifm-color-primary-darker: #5492f5;
-  --ifm-color-primary-darkest: #317bf3;
-  --ifm-color-primary-light: #aecbfb;
-  --ifm-color-primary-lighter: #c0d7fc;
-  --ifm-color-primary-lightest: #e5effd;
+  --ifm-color-primary-dark: #dc2626;
+  --ifm-color-primary-darker: #b91c1c;
+  --ifm-color-primary-darkest: #991b1b;
+  --ifm-color-primary-light: #f87171;
+  --ifm-color-primary-lighter: #fca5a5;
+  --ifm-color-primary-lightest: #fecaca;
   --ifm-navbar-background-color: rgba(12, 13, 16, 0.85);
   --ifm-navbar-shadow: none;
   --ifm-border-color: var(--vg-border);

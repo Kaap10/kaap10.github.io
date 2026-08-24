@@ -6,7 +6,7 @@ sidebar_position: 1
 
 A collection of knowledge across DSA, System Design, Development, AIML, and Core Concepts.
 
-## 📚 Browse by Category
+## Browse by Category
 
 - **DSA** - Algorithms, patterns, and problem solving
 - **System Design** - High-level & Low-level design patterns

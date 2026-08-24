@@ -18,8 +18,6 @@ function Home() {
             <div className={styles.links}>
               <a href="/Vardhman_Gupta%20(Resume).pdf" target="_blank" rel="noopener noreferrer">Resume</a>
               <Link to="/notes/intro">Notes</Link>
-              <a href="https://github.com/kaap10" target="_blank" rel="noopener noreferrer">GitHub</a>
-              <a href="https://linkedin.com/in/vardhman-gupta" target="_blank" rel="noopener noreferrer">LinkedIn</a>
             </div>
           </header>
 
