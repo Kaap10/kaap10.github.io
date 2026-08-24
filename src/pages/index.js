@@ -3,271 +3,66 @@ import Link from '@docusaurus/Link';
 import Layout from '@theme/Layout';
 import styles from './index.module.css';
 
-const surfaces = [
-  {
-    title: 'Engineer',
-    summary: 'AI/ML and full-stack systems with clean architecture and measurable product impact.',
-    detail: 'FastAPI, React, TypeScript, Python, RAG, realtime apps',
-  },
-  {
-    title: 'Builder',
-    summary: 'Projects shaped around real constraints: offline access, CPU budgets, latency, and reliability.',
-    detail: 'Guru-G, AuraNow, AegisAI, Code with Buddy',
-  },
-  {
-    title: 'Learner',
-    summary: 'A living wiki for DSA, system design, core CS, AIML, and development notes.',
-    detail: 'Structured notes for revision, interviews, and long-term recall',
-  },
-];
-
-const signals = [
-  ['LeetCode', '1988 peak rating'],
-  ['Contest', 'Global rank 144'],
-  ['Hackathons', 'IIT Delhi + Thales runner-up'],
-  ['Degree', 'B.Tech AIML, 2026'],
-];
-
-const projects = [
-  {
-    title: 'Guru-G',
-    label: 'Offline AI Tutor',
-    copy:
-      'Local LLM learning system for internet-deprived regions with textbook summaries, practice questions, flashcards, and multilingual support.',
-    stack: ['Python', 'Llama.cpp', 'FastAPI', 'React Native', 'SQLite'],
-  },
-  {
-    title: 'AuraNow',
-    label: 'CPU RAG Pipeline',
-    copy:
-      'Semantic clustering and hierarchical context generation for 100K+ comments using CPU-friendly retrieval preprocessing.',
-    stack: ['Sentence Transformers', 'UMAP', 'HDBSCAN', 'RAPTOR', 'SQLite'],
-  },
-  {
-    title: 'AegisAI',
-    label: 'AI Security Engine',
-    copy:
-      'Behavior-based anomaly detection for identity attacks, brute force, and lateral movement with fast SIEM-oriented alerting.',
-    stack: ['TensorFlow', 'FastAPI', 'Elasticsearch', 'SIEM'],
-  },
-];
-
-const stack = [
-  'Python',
-  'C++',
-  'JavaScript',
-  'SQL',
-  'React.js',
-  'Next.js',
-  'Tailwind CSS',
-  'Redux',
-  'FastAPI',
-  'Flask',
-  'Node.js',
-  'Express.js',
-  'REST APIs',
-  'PyTorch',
-  'Scikit-Learn',
-  'LLMs',
-  'RAG',
-  'ChromaDB',
-  'Ollama',
-  'Deep Learning',
-  'MongoDB',
-  'PostgreSQL',
-  'Firebase',
-  'SQLite',
-  'Docker',
-  'Linux',
-  'GitHub Actions',
-];
-
-const notes = [
-  ['DSA', '/notes/DSA/intro'],
-  ['System Design', '/notes/System Design/System_Design'],
-  ['AI / ML', '/notes/AIML/Python/intro'],
-  ['Development', '/notes/Development/intro'],
-  ['Core CS', '/notes/Core Subjects/intro'],
-  ['Coursework', '/notes/B.Tech Subjects/intro'],
-];
-
-function HeroPanel() {
+function Home() {
   return (
-    <aside className={styles.heroPanel} aria-label="Portfolio preview">
-      <div className={styles.windowBar}>
-        <span />
-        <span />
-        <span />
-      </div>
-      <div className={styles.profileLine}>
-        <img src="/img/vg.png" alt="" />
-        <div>
-          <strong>Vardhman Gupta</strong>
-          <small>available for SWE / AI roles</small>
-        </div>
-      </div>
-      <pre className={styles.codeBlock}>
-        <code>{`const vardhman = {
-  focus: ['AI/ML', 'Full Stack', 'Systems'],
-  ships: ['offline tutors', 'RAG pipelines', 'security AI'],
-  studies: ['DSA', 'system design', 'core CS'],
-  status: 'open_to_opportunities'
-};`}</code>
-      </pre>
-      <div className={styles.panelFooter}>
-        <span>build: passing</span>
-        <span>notes: live</span>
-      </div>
-    </aside>
-  );
-}
-
-function Hero() {
-  return (
-    <section className={styles.hero}>
-      <div className={styles.heroCopy}>
-        <p className={styles.kicker}>Portfolio / Technical Wiki</p>
-        <h1>Build systems, document the thinking, repeat.</h1>
-        <p className={styles.lead}>
-          I am Vardhman Gupta, an AI/ML engineer and full-stack developer building practical
-          products across local LLMs, RAG pipelines, realtime collaboration, and security AI.
-        </p>
-        <div className={styles.actionRow}>
-          <Link className={styles.primaryAction} to="/notes/About Me">
-            Start Here
-          </Link>
-          <a className={styles.secondaryAction} href="/Vardhman_Gupta%20(Resume).pdf">
-            Resume
-          </a>
-          <Link className={styles.ghostAction} to="/notes/intro">
-            Notes
-          </Link>
-        </div>
-      </div>
-      <HeroPanel />
-    </section>
-  );
-}
-
-function SignalBar() {
-  return (
-    <section className={styles.signalBar} aria-label="Quick highlights">
-      {signals.map(([label, value]) => (
-        <div key={label}>
-          <span>{label}</span>
-          <strong>{value}</strong>
-        </div>
-      ))}
-    </section>
-  );
-}
-
-function Surfaces() {
-  return (
-    <section className={styles.section}>
-      <div className={styles.sectionHeader}>
-        <p className={styles.kicker}>One profile, three surfaces</p>
-        <h2>Readable by recruiters, engineers, and future me.</h2>
-      </div>
-      <div className={styles.surfaceGrid}>
-        {surfaces.map((surface) => (
-          <article key={surface.title} className={styles.surfaceCard}>
-            <h3>{surface.title}</h3>
-            <p>{surface.summary}</p>
-            <span>{surface.detail}</span>
-          </article>
-        ))}
-      </div>
-    </section>
-  );
-}
-
-function Projects() {
-  return (
-    <section className={styles.section}>
-      <div className={styles.sectionHeader}>
-        <p className={styles.kicker}>Selected builds</p>
-        <h2>Project work with real constraints.</h2>
-      </div>
-      <div className={styles.projectStack}>
-        {projects.map((project, index) => (
-          <article className={styles.projectRow} key={project.title}>
-            <div className={styles.projectIndex}>0{index + 1}</div>
-            <div>
-              <p>{project.label}</p>
-              <h3>{project.title}</h3>
+    <Layout title="Portfolio" description="Portfolio of Vardhman Gupta">
+      <main className={styles.mainContainer}>
+        <div className={styles.content}>
+          <header className={styles.header}>
+            <h1 className={styles.title}>Vardhman Gupta</h1>
+            <p className={styles.subtitle}>Engineer / Builder / Learner</p>
+            <p className={styles.bio}>
+              AI/ML engineer and full-stack developer building practical products across local LLMs, 
+              RAG pipelines, realtime collaboration, and security AI.
+            </p>
+            <div className={styles.links}>
+              <a href="/Vardhman_Gupta%20(Resume).pdf" target="_blank" rel="noopener noreferrer">Resume</a>
+              <Link to="/notes/intro">Notes</Link>
+              <a href="https://github.com/kaap10" target="_blank" rel="noopener noreferrer">GitHub</a>
+              <a href="https://linkedin.com/in/vardhman-gupta" target="_blank" rel="noopener noreferrer">LinkedIn</a>
             </div>
-            <p className={styles.projectCopy}>{project.copy}</p>
-            <div className={styles.stackList}>
-              {project.stack.map((item) => (
-                <span key={item}>{item}</span>
-              ))}
+          </header>
+
+          <section className={styles.section}>
+            <h2>Projects</h2>
+            <div className={styles.projectList}>
+              <div className={styles.project}>
+                <h3>Guru-G</h3>
+                <p>Offline AI Tutor. Local LLM learning system for internet-deprived regions with textbook summaries, practice questions, flashcards, and multilingual support.</p>
+                <div className={styles.tags}><span>Python</span><span>Llama.cpp</span><span>FastAPI</span><span>React Native</span></div>
+              </div>
+              <div className={styles.project}>
+                <h3>AuraNow</h3>
+                <p>CPU RAG Pipeline. Semantic clustering and hierarchical context generation for 100K+ comments using CPU-friendly retrieval preprocessing.</p>
+                <div className={styles.tags}><span>Sentence Transformers</span><span>UMAP</span><span>HDBSCAN</span></div>
+              </div>
+              <div className={styles.project}>
+                <h3>AegisAI</h3>
+                <p>AI Security Engine. Behavior-based anomaly detection for identity attacks, brute force, and lateral movement with fast SIEM-oriented alerting.</p>
+                <div className={styles.tags}><span>TensorFlow</span><span>FastAPI</span><span>Elasticsearch</span></div>
+              </div>
             </div>
-          </article>
-        ))}
-      </div>
-    </section>
-  );
-}
+          </section>
 
-function StackAndNotes() {
-  return (
-    <section className={styles.splitSection}>
-      <div className={styles.stackPanel}>
-        <p className={styles.kicker}>Tech stack</p>
-        <h2>Modern tools, practical defaults.</h2>
-        <div className={styles.techCloud}>
-          {stack.map((item) => (
-            <span key={item}>{item}</span>
-          ))}
+          <section className={styles.section}>
+            <h2>Experience & Signals</h2>
+            <ul className={styles.list}>
+              <li><strong>LeetCode</strong>: 1988 peak rating, Global rank 144 in contests.</li>
+              <li><strong>Hackathons</strong>: IIT Delhi + Thales runner-up.</li>
+              <li><strong>Education</strong>: B.Tech AIML, 2026.</li>
+            </ul>
+          </section>
+
+          <section className={styles.section}>
+            <h2>Technologies</h2>
+            <p className={styles.techText}>
+              Python, C++, JavaScript, SQL, React.js, Next.js, FastAPI, Node.js, PyTorch, LLMs, RAG, Docker.
+            </p>
+          </section>
         </div>
-      </div>
-      <div className={styles.notesPanel}>
-        <p className={styles.kicker}>Docs</p>
-        <h2>Learning archive</h2>
-        <div className={styles.noteLinks}>
-          {notes.map(([label, to]) => (
-            <Link key={label} to={to}>
-              {label}
-            </Link>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function Contact() {
-  return (
-    <section className={styles.contact}>
-      <div>
-        <p className={styles.kicker}>Now</p>
-        <h2>Open to Software Engineering, AI/ML, and Full Stack roles.</h2>
-      </div>
-      <div className={styles.contactLinks}>
-        <a href="mailto:vardhmangupta2004@gmail.com">Email</a>
-        <a href="https://github.com/kaap10">GitHub</a>
-        <a href="https://linkedin.com/in/vardhman-gupta">LinkedIn</a>
-        <a href="https://leetcode.com/Kap10/">LeetCode</a>
-      </div>
-    </section>
-  );
-}
-
-export default function Home() {
-  return (
-    <Layout
-      title="Vardhman Gupta"
-      description="Vardhman Gupta's portfolio and technical wiki for AI/ML, full-stack engineering, systems, and notes."
-    >
-      <main className={styles.home}>
-        <Hero />
-        <SignalBar />
-        <Surfaces />
-        <Projects />
-        <StackAndNotes />
-        <Contact />
       </main>
     </Layout>
   );
 }
+
+export default Home;

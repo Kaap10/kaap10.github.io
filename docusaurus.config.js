@@ -9,8 +9,6 @@ const config = {
 
   future: {
     v4: true,
-    // Rspack dev + CSS HMR can panic on Windows (cssExtractHmr module graph).
-    // Keep Webpack for dev/build; other faster.* flags still follow v4 defaults.
     faster: {
       rspackBundler: false,
       rspackPersistentCache: false,
@@ -63,6 +61,8 @@ const config = {
     },
   },
 
+
+
   presets: [
     [
       'classic',
@@ -90,21 +90,22 @@ const config = {
         respectPrefersColorScheme: false,
         disableSwitch: false,
       },
+      algolia: {
+        appId: 'UDQRCP1VN5',
+        apiKey: '7ddec2e0a469b9f55b21e649b0f676ee',
+        indexName: 'my_wiki_index',
+        contextualSearch: true,
+      },
       navbar: {
+        title: 'Vardhman Gupta',
         hideOnScroll: false,
         items: [
-          { to: '/', label: 'Vardhman Gupta', position: 'left' },
           { to: '/notes/intro', label: 'Notes', position: 'left' },
-          { to: '/notes/About Me', label: 'About', position: 'left' },
+          { type: 'search', position: 'right' },
           { href: 'https://github.com/kaap10', label: 'GitHub', position: 'right' },
           {
             href: 'https://linkedin.com/in/vardhman-gupta',
             label: 'LinkedIn',
-            position: 'right',
-          },
-          {
-            href: 'https://leetcode.com/Kap10/',
-            label: 'LeetCode',
             position: 'right',
           },
         ],
