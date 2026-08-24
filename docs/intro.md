@@ -2,7 +2,7 @@
 sidebar_position: 1
 ---
 
-# Welcome to My Notes
+# Welcome to My Blogs
 
 A collection of knowledge across DSA, System Design, Development, AIML, and Core Concepts.
 

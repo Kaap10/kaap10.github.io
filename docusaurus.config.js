@@ -4,7 +4,7 @@ import {themes as prismThemes} from 'prism-react-renderer';
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: 'Vardhman Gupta',
-  tagline: 'AI/ML, full-stack systems, and technical notes',
+  tagline: 'AI/ML, full-stack systems, and technical blogs',
   favicon: 'img/favicon.ico',
 
   future: {
@@ -70,7 +70,7 @@ const config = {
       ({
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
-          routeBasePath: '/notes',
+          routeBasePath: '/blogs',
           editUrl: 'https://github.com/kaap10/kaap10.github.io/tree/main/',
         },
         blog: false,
@@ -90,6 +90,12 @@ const config = {
         respectPrefersColorScheme: false,
         disableSwitch: false,
       },
+      docs: {
+        sidebar: {
+          hideable: true,
+          autoCollapseCategories: true,
+        },
+      },
       algolia: {
         appId: 'UDQRCP1VN5',
         apiKey: '7ddec2e0a469b9f55b21e649b0f676ee',
@@ -100,7 +106,7 @@ const config = {
         title: 'Vardhman Gupta',
         hideOnScroll: false,
         items: [
-          { to: '/notes/intro', label: 'Notes', position: 'left' },
+          { to: '/blogs/intro', label: 'Blogs', position: 'left' },
           { type: 'search', position: 'right' },
           {
             href: 'https://github.com/kaap10',
@@ -116,10 +122,7 @@ const config = {
           },
         ],
       },
-      footer: {
-        style: 'light',
-        copyright: 'kaap10 - built with Docusaurus',
-      },
+
       prism: {
         theme: prismThemes.github,
         darkTheme: prismThemes.dracula,

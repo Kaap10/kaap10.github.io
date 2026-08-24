@@ -11,4 +11,4 @@ A starting point for DSA fundamentals, problem-solving patterns, and reference m
 - Dynamic Programming
 - Searching and Sorting
 
-Explore the DSA category for more notes.
+Explore the DSA category for more blogs.

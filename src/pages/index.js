@@ -17,7 +17,7 @@ function Home() {
             </p>
             <div className={styles.links}>
               <a href="/Vardhman_Gupta%20(Resume).pdf" target="_blank" rel="noopener noreferrer">Resume</a>
-              <Link to="/notes/intro">Notes</Link>
+              <Link to="/blogs/intro">Blogs</Link>
             </div>
           </header>
 
