@@ -1,0 +1,1 @@
+"use strict";(globalThis.webpackChunkmy_wiki=globalThis.webpackChunkmy_wiki||[]).push([[957],{936(a){a.exports=JSON.parse('{"name":"docusaurus-theme-search-algolia","id":"default"}')}}]);
