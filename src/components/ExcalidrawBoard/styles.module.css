@@ -1,11 +1,13 @@
 .boardContainer {
   position: relative;
   width: 100%;
-  height: calc(100vh - var(--ifm-navbar-height, 60px));
+  height: 100vh;
+  padding-top: 76px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   background-color: var(--vg-bg, #1e1e1e);
+  box-sizing: border-box;
 }
 
 .boardWrapper {
@@ -40,4 +42,3 @@
     transform: rotate(360deg);
   }
 }
-

@@ -48,7 +48,7 @@
   --ifm-border-color: var(--vg-border);
   --ifm-line-height-base: 1.7;
   --ifm-code-font-size: 0.85rem;
-  --ifm-navbar-height: 60px;
+  --ifm-navbar-height: 80px;
 
   /* Layout & Measure */
   --vg-content-max-width: 820px;
@@ -144,36 +144,62 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* ==========================================================================
-   Header & Navbar
+   Header & Navbar: Floating Cylindrical Island (Default: Home & Board)
    ========================================================================== */
 
 .navbar {
-  border-bottom: 1px solid var(--vg-border);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  background-color: var(--ifm-navbar-background-color);
-  padding: 0 1.5rem;
-  height: var(--ifm-navbar-height);
-  transition: border-color var(--vg-transition-fast);
+  position: fixed !important;
+  top: 14px;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  width: calc(100% - 2.5rem) !important;
+  max-width: 960px !important;
+  height: 52px !important;
+  min-height: 52px !important;
+  padding: 0 1rem 0 1.25rem !important;
+  border-radius: 9999px !important;
+  border: 1px solid var(--vg-border) !important;
+  background-color: var(--vg-navbar-bg, rgba(30, 30, 30, 0.78)) !important;
+  backdrop-filter: blur(20px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+  box-shadow: 
+    0 16px 36px -10px rgba(0, 0, 0, 0.5),
+    0 4px 16px -2px rgba(0, 0, 0, 0.25),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.08) !important;
+  transition: border-color var(--vg-transition-fast), background-color var(--vg-transition-fast), box-shadow var(--vg-transition-fast) !important;
+  z-index: 1000 !important;
 }
 
-.navbar [class*='colorModeToggle'] {
-  display: none !important;
+[data-theme='light'] .navbar {
+  --vg-navbar-bg: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(24, 24, 27, 0.1) !important;
+  box-shadow: 
+    0 16px 36px -10px rgba(0, 0, 0, 0.08),
+    0 4px 16px -2px rgba(0, 0, 0, 0.04),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.9) !important;
 }
 
 .navbar__inner {
-  max-width: var(--vg-page-max-width);
-  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   width: 100%;
+  height: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 .navbar__brand {
   font-family: var(--ifm-font-family-base);
   font-weight: 600;
-  font-size: 0.94rem;
+  font-size: 0.92rem;
   letter-spacing: -0.02em;
   color: var(--vg-text);
-  margin-right: 2rem;
+  margin-right: 1.25rem;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
   transition: opacity var(--vg-transition-fast);
 }
 
@@ -182,22 +208,34 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--vg-text);
 }
 
+.navbar__items {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.navbar__items--right {
+  gap: 0.35rem;
+}
+
 .navbar__link {
   font-family: var(--ifm-font-family-base);
-  font-size: 0.88rem;
-  font-weight: 450;
+  font-size: 0.85rem;
+  font-weight: 500;
   color: var(--vg-text-muted);
-  padding: 0.35rem 0.75rem;
-  border-radius: var(--vg-radius-sm);
+  padding: 0.32rem 0.8rem;
+  border-radius: 9999px;
   transition: color var(--vg-transition-fast), background-color var(--vg-transition-fast);
 }
 
 .navbar__link:hover {
   color: var(--vg-text);
+  background-color: var(--vg-surface);
 }
 
 .navbar__link--active {
   color: var(--vg-text) !important;
+  background-color: var(--vg-surface-strong);
   font-weight: 600;
 }
 
@@ -208,39 +246,99 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .navbar__item:hover svg {
-  opacity: 0.75;
+  opacity: 0.8;
   transform: translateY(-1px);
 }
 
-/* Floating Theme Switcher Button */
-.vg-theme-toggle {
-  position: fixed;
-  top: 0.8rem;
-  right: 1.25rem;
-  z-index: 1040;
-  display: inline-flex;
+/* Integrated Navbar Color Mode Toggle (Theme Switcher) */
+.navbar [class*='colorModeToggle'] {
+  display: inline-flex !important;
   align-items: center;
   justify-content: center;
-  width: 2.1rem;
-  height: 2.1rem;
-  border: 1px solid var(--vg-border);
-  border-radius: 8px;
-  background: var(--vg-bg-elevated);
-  color: var(--vg-text-muted);
+  margin-left: 0.25rem;
+}
+
+.navbar [class*='colorModeToggle'] button {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  width: 32px !important;
+  height: 32px !important;
+  padding: 0 !important;
+  border-radius: 50% !important;
+  border: 1px solid transparent !important;
+  background: transparent !important;
+  color: var(--vg-text-muted) !important;
   cursor: pointer;
-  transition: transform var(--vg-transition-fast), border-color var(--vg-transition-fast), color var(--vg-transition-fast);
+  transition: all var(--vg-transition-fast) !important;
 }
 
-.vg-theme-toggle:hover {
+.navbar [class*='colorModeToggle'] button:hover {
+  color: var(--vg-text) !important;
+  background: var(--vg-surface) !important;
+  border-color: var(--vg-border) !important;
   transform: translateY(-1px);
-  color: var(--vg-accent);
-  border-color: var(--vg-accent-border);
 }
 
-.vg-theme-toggle svg {
-  width: 0.95rem;
-  height: 0.95rem;
-  fill: currentColor;
+.navbar [class*='colorModeToggle'] svg {
+  width: 18px !important;
+  height: 18px !important;
+  fill: currentColor !important;
+}
+
+@media (max-width: 996px) {
+  .navbar {
+    top: 8px;
+    width: calc(100% - 1rem) !important;
+    padding: 0 0.85rem !important;
+    height: 50px !important;
+    min-height: 50px !important;
+  }
+}
+
+/* ==========================================================================
+   Classic Full-Width Navbar for /blogs (Documentation Pages)
+   ========================================================================== */
+
+html.plugin-docs {
+  --ifm-navbar-height: 60px;
+}
+
+html.plugin-docs .navbar {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  transform: none !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  height: 60px !important;
+  min-height: 60px !important;
+  padding: 0 1.5rem !important;
+  border-radius: 0 !important;
+  border: none !important;
+  border-bottom: 1px solid var(--vg-border) !important;
+  background-color: var(--ifm-navbar-background-color, rgba(30, 30, 30, 0.85)) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  box-shadow: none !important;
+  z-index: 1000 !important;
+}
+
+html.plugin-docs[data-theme='light'] .navbar {
+  background-color: rgba(250, 250, 249, 0.85) !important;
+  border-bottom: 1px solid var(--vg-border) !important;
+  box-shadow: none !important;
+}
+
+html.plugin-docs .navbar__inner {
+  max-width: var(--vg-page-max-width, 1320px) !important;
+  margin: 0 auto !important;
+  width: 100% !important;
+}
+
+html.plugin-docs .navbar__link {
+  border-radius: var(--vg-radius-sm);
+  padding: 0.35rem 0.75rem;
 }
 
 /* ==========================================================================
@@ -252,14 +350,30 @@ h1, h2, h3, h4, h5, h6 {
   min-height: calc(100vh - var(--ifm-navbar-height));
 }
 
-/* Technical Minimalist Sidebar */
+/* Technical Minimalist Sidebar for Blogs */
 @media (min-width: 997px) {
-  .theme-doc-sidebar-container {
+  html.plugin-docs .theme-doc-sidebar-container {
+    position: sticky !important;
     background: var(--vg-bg-elevated) !important;
     border-right: 1px solid var(--vg-border) !important;
+    top: var(--ifm-navbar-height) !important;
+    height: calc(100vh - var(--ifm-navbar-height)) !important;
+    max-height: calc(100vh - var(--ifm-navbar-height)) !important;
   }
 
-  .theme-doc-toc-desktop {
+  html.plugin-docs [class*='sidebar_'] {
+    padding-top: 0 !important;
+  }
+
+  html.plugin-docs .sidebarViewport {
+    position: relative !important;
+    top: 0 !important;
+    height: 100% !important;
+    max-height: 100% !important;
+    overflow-y: auto !important;
+  }
+
+  html.plugin-docs .theme-doc-toc-desktop {
     position: sticky !important;
     top: var(--ifm-navbar-height) !important;
     height: calc(100vh - var(--ifm-navbar-height)) !important;
@@ -269,7 +383,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .theme-doc-sidebar-menu {
-  padding: 1.25rem 0.75rem !important;
+  padding: 0.75rem 0.6rem 1.5rem !important;
 }
 
 .menu__list {
@@ -279,10 +393,11 @@ h1, h2, h3, h4, h5, h6 {
 .menu__link {
   border-radius: var(--vg-radius-sm);
   color: var(--vg-text-muted);
-  font-size: 0.85rem;
+  font-size: 0.86rem;
   font-weight: 450;
-  padding: 0.35rem 0.6rem;
+  padding: 0.4rem 0.75rem;
   line-height: 1.45;
+  margin-bottom: 2px;
   transition: color var(--vg-transition-fast), background-color var(--vg-transition-fast);
 }
 
@@ -292,12 +407,17 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .menu__link--active:not(.menu__link--sublist) {
-  background: var(--vg-accent-subtle);
-  color: var(--vg-accent);
-  font-weight: 550;
+  background: var(--vg-accent-subtle) !important;
+  color: var(--vg-accent) !important;
+  font-weight: 600;
   border-left: 2px solid var(--vg-accent);
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
+}
+
+.menu__list-item-collapsible .menu__link {
+  font-weight: 600;
+  color: var(--vg-text);
 }
 
 .menu__caret {
@@ -507,12 +627,17 @@ h1, h2, h3, h4, h5, h6 {
 .DocSearch-Button {
   background: var(--vg-surface) !important;
   border: 1px solid var(--vg-border) !important;
-  border-radius: var(--vg-radius-sm) !important;
+  border-radius: 9999px !important;
   color: var(--vg-text-muted) !important;
-  height: 32px !important;
+  height: 30px !important;
   padding: 0 10px !important;
-  margin: 0 0.5rem 0 0 !important;
-  transition: border-color var(--vg-transition-fast), color var(--vg-transition-fast) !important;
+  margin: 0 0.35rem 0 0 !important;
+  transition: border-color var(--vg-transition-fast), color var(--vg-transition-fast), background var(--vg-transition-fast) !important;
+}
+
+html.plugin-docs .DocSearch-Button {
+  border-radius: var(--vg-radius-sm) !important;
+  height: 32px !important;
 }
 
 .DocSearch-Button:hover {
