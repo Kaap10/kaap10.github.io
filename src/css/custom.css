@@ -547,3 +547,21 @@ h1, h2, h3, h4, h5, h6 {
     scroll-behavior: auto !important;
   }
 }
+
+/* ==========================================================================
+   Custom Navbar Social Icons
+   ========================================================================== */
+
+.vg-navbar-icon {
+  display: inline-block;
+  vertical-align: middle;
+  object-fit: contain;
+  border-radius: 4px;
+  transition: opacity var(--vg-transition-fast), transform var(--vg-transition-fast);
+}
+
+.vg-navbar-icon:hover {
+  transform: translateY(-1px);
+}
+
+

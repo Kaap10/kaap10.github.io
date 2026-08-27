@@ -87,6 +87,28 @@ const config = {
     ],
   ],
 
+  plugins: [
+    function excalidrawWebpackOverridePlugin() {
+      return {
+        name: 'excalidraw-webpack-override',
+        configureWebpack() {
+          return {
+            module: {
+              rules: [
+                {
+                  test: /\.m?js$/,
+                  resolve: {
+                    fullySpecified: false,
+                  },
+                },
+              ],
+            },
+          };
+        },
+      };
+    },
+  ],
+
 
 
   themeConfig:
@@ -119,6 +141,7 @@ const config = {
         hideOnScroll: false,
         items: [
           { to: '/blogs/intro', label: 'Blogs', position: 'left' },
+          { to: '/board', label: 'Board', position: 'left' },
           { type: 'search', position: 'right' },
           {
             href: 'https://github.com/kaap10',
@@ -135,9 +158,14 @@ const config = {
           {
             href: 'https://leetcode.com/u/kap10/',
             position: 'right',
-            html: '<i class="fa-brands fa-leetcode" style="font-size: 19px; line-height: 1; display: inline-flex; align-items: center;"></i>',
             html: '<img src="/img/leetcode.png" width="19" height="19" alt="LeetCode" style="display: inline-block; vertical-align: middle; object-fit: contain;" />',
             'aria-label': 'LeetCode profile',
+          },
+          {
+            href: 'https://medium.com/@kap10',
+            position: 'right',
+            html: '<img src="/img/medium.png" width="19" height="19" alt="Medium" style="display: inline-block; vertical-align: middle; object-fit: contain; border-radius: 4px;" />',
+            'aria-label': 'Medium profile',
           },
         ],
       },

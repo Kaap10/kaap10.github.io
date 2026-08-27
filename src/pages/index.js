@@ -203,10 +203,10 @@ export default function Home() {
                 </div>
               </Link>
 
-              <Link to="/blogs/Development/Python%20Full%20Stack/intro" className={styles.writingItem}>
+              <Link to="/blogs/Development/Python%20Full%20Stack/Flask" className={styles.writingItem}>
                 <div>
                   <h4 className={styles.writingTitle}>
-                    Python Full Stack & APIs
+                    Flask & Backend Architecture
                   </h4>
                   <p className={styles.writingSummary}>
                     Backend architectures, Flask, FastAPI, database integrations, and deployment notes.
