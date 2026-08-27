@@ -1,0 +1,1 @@
+"use strict";(globalThis.webpackChunkmy_wiki=globalThis.webpackChunkmy_wiki||[]).push([[1832,9451],{1832(a,e,h){h.r(e),h.d(e,{decodePngMetadata:()=>t.ph,encodePngMetadata:()=>t.oh,getTEXtChunk:()=>t.nh});var t=h(7121);h(7079),h(2130)}}]);
