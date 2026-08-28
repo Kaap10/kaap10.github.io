@@ -15,6 +15,11 @@ const config = {
     },
   },
 
+  customFields: {
+    supabaseUrl: process.env.SUPABASE_URL || 'https://coqywwpqisjdlsrgdaum.supabase.co',
+    supabaseAnonKey: process.env.SUPABASE_ANON_KEY || 'sb_publishable__nu57a-zuULjY3byY17iYQ_FISJxG2X',
+  },
+
   headTags: [
     {
       tagName: 'link',
@@ -139,6 +144,7 @@ const config = {
         items: [
           { to: '/blogs/intro', label: 'Blogs', position: 'left' },
           { to: '/board', label: 'Board', position: 'left' },
+          { to: '/tracker', label: 'Tracker', position: 'left' },
           { type: 'search', position: 'right' },
           {
             href: 'https://github.com/kaap10',
