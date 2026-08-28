@@ -53,56 +53,42 @@ function TrackerContent() {
     closeConfirmModal,
   } = useTracker();
 
-  if (authLoading) {
-    return (
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          minHeight: 'calc(100vh - 120px)',
-          gap: '1rem',
-          color: 'var(--vg-text-muted)',
-          fontSize: '0.9rem',
-        }}
-      >
-        <div
-          style={{
-            width: '32px',
-            height: '32px',
-            border: '2px solid var(--vg-border)',
-            borderTopColor: 'var(--vg-accent)',
-            borderRadius: '50%',
-            animation: 'spin 0.8s linear infinite',
-          }}
-        />
-        <span>Loading Productivity OS...</span>
-        <style>{`
-          @keyframes spin {
-            to { transform: rotate(360deg); }
-          }
-        `}</style>
-      </div>
-    );
-  }
-
-  if (!user) {
+  if (!user && !authLoading) {
     return <AuthView />;
   }
 
   return (
     <TrackerLayout>
-      {activeTab === 'dashboard' && <DashboardView />}
-      {activeTab === 'tasks' && <TasksView />}
-      {activeTab === 'goals' && <GoalsView />}
-      {activeTab === 'focus' && <FocusView />}
-      {activeTab === 'habits' && <HabitsView />}
-      {activeTab === 'calendar' && <CalendarView />}
-      {activeTab === 'resources' && <ResourcesView />}
-      {activeTab === 'progress' && <ProgressView />}
-      {activeTab === 'reviews' && <ReviewsView />}
-      {activeTab === 'stats' && <StatsView />}
+      <div style={{ display: activeTab === 'dashboard' ? 'block' : 'none' }}>
+        <DashboardView />
+      </div>
+      <div style={{ display: activeTab === 'tasks' ? 'block' : 'none' }}>
+        <TasksView />
+      </div>
+      <div style={{ display: activeTab === 'goals' ? 'block' : 'none' }}>
+        <GoalsView />
+      </div>
+      <div style={{ display: activeTab === 'focus' ? 'block' : 'none' }}>
+        <FocusView />
+      </div>
+      <div style={{ display: activeTab === 'habits' ? 'block' : 'none' }}>
+        <HabitsView />
+      </div>
+      <div style={{ display: activeTab === 'calendar' ? 'block' : 'none' }}>
+        <CalendarView />
+      </div>
+      <div style={{ display: activeTab === 'resources' ? 'block' : 'none' }}>
+        <ResourcesView />
+      </div>
+      <div style={{ display: activeTab === 'progress' ? 'block' : 'none' }}>
+        <ProgressView />
+      </div>
+      <div style={{ display: activeTab === 'reviews' ? 'block' : 'none' }}>
+        <ReviewsView />
+      </div>
+      <div style={{ display: activeTab === 'stats' ? 'block' : 'none' }}>
+        <StatsView />
+      </div>
 
       {/* Global Modals */}
       <TaskModal

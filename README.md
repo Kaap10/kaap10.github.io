@@ -1,79 +1,109 @@
-# Vardhman Gupta — Personal Portfolio & Technical Blog
+# Vardhman Gupta
 
-[![Live Site](https://img.shields.io/badge/Live-kaap10.github.io-FF4D4F?style=flat&logo=github)](https://kaap10.github.io/)
+Personal portfolio, technical blog, interactive whiteboard, and productivity OS.
 
-A personal portfolio and technical knowledge base built with [Docusaurus v3](https://docusaurus.io/). Features a clean editorial design, an interactive whiteboard, and curated technical blogs.
+Live: [https://kaap10.github.io/](https://kaap10.github.io/)
 
-## 🌐 Live Site
+---
 
-**https://kaap10.github.io/**
+## Features
 
-## ✨ Features
+- **Portfolio** (`/`) — Technical projects, skills, experience, and publications.
+- **Blogs** (`/blogs`) — In-depth engineering articles and technical notes.
+- **Board** (`/board`) — Interactive canvas powered by Excalidraw with local persistence.
+- **Tracker** (`/tracker`) — Personal productivity OS with Supabase cloud persistence:
+  - Task management with recurring cycles and milestone linkage
+  - Strategic goals and milestone roadmap hierarchy
+  - Deep work focus timer (Pomodoro and Stopwatch)
+  - Daily habit tracking with streak consistency engine
+  - Productivity calendar aggregating tasks, milestones, and sessions
+  - Knowledge vault with reading status and persistent notes
+  - 52-week activity heatmap and Recharts velocity charts
+  - Weekly and monthly retrospectives
+  - Command palette (`Cmd+K` / `Ctrl+K`) global search
 
-- **Home Page** — Editorial portfolio with projects, technical toolkit, and blog links
-- **Blogs** (`/blogs`) — Technical documentation and notes (Flask, backend architecture)
-- **Board** (`/board`) — Interactive whiteboard powered by [Excalidraw](https://excalidraw.com/), with localStorage persistence
-- **Floating Navbar** — Cylindrical pill-style nav on home/board; classic full-width header on blogs
-- **Dark/Light Theme** — Custom dark-first design system with Geist + JetBrains Mono typography
-- **Algolia Search** — Full-text search across all blog content
+---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
-- [Docusaurus v3.10.1](https://docusaurus.io/)
-- React 19
-- Excalidraw (board feature)
-- Algolia DocSearch
-- GitHub Pages (deployment via GitHub Actions)
+- **Framework**: Docusaurus v3
+- **Frontend**: React 19, CSS Modules
+- **Charts & Visualizations**: Recharts
+- **Icons**: Lucide React
+- **Whiteboard**: Excalidraw
+- **Backend & Database**: Supabase (PostgreSQL, Row Level Security, Auth)
+- **Deployment**: GitHub Pages via GitHub Actions
 
-## 🚀 Development
+---
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js >= 20.0
+- npm
+
+### Installation
 
 ```bash
-# Install dependencies
-npm install
+# Clone the repository
+git clone https://github.com/Kaap10/kaap10.github.io.git
+cd kaap10.github.io
 
-# Start dev server
-npm run start -- --no-open
+# Install dependencies
+npm install --legacy-peer-deps
+
+# Start local development server
+npm run start
 
 # Build for production
 npm run build
 
-# Serve production build locally
+# Preview production build locally
 npm run serve
 ```
 
-## 📁 Project Structure
+---
 
-```
-my-wiki/
-├── docs/                         # Blog content (Docusaurus docs)
-│   └── Development/
-│       └── Python Full Stack/
-│           └── Flask.md          # Flask & Backend Architecture
-├── src/
-│   ├── components/
-│   │   └── ExcalidrawBoard/      # Interactive whiteboard component
-│   ├── css/
-│   │   └── custom.css            # Global design system & theme
-│   ├── pages/
-│   │   ├── index.js              # Home page
-│   │   ├── index.module.css      # Home page styles
-│   │   └── board.js              # Whiteboard page
-│   └── theme/
-│       └── Root.js               # Docusaurus root wrapper
-├── static/
-│   ├── img/                      # Favicons, social icons
-│   └── Vardhman_Gupta (Resume).pdf
-├── docusaurus.config.js
-├── sidebars.js
-└── package.json
-```
+## Database Setup
 
-## 🚢 Deployment
+To enable cloud persistence for the Tracker:
 
-Automatically deployed to GitHub Pages via GitHub Actions on every push to `main`.
-
-See [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml).
+1. Create a project on [Supabase](https://supabase.com/).
+2. Run the SQL schema files located in `supabase/`:
+   - `supabase/schema.sql` (initial schema and V2 migrations)
+3. Connect credentials through the UI or environment variables.
 
 ---
 
-Built by [Vardhman Gupta](https://kaap10.github.io/) · [GitHub](https://github.com/kaap10) · [LinkedIn](https://linkedin.com/in/vardhman-gupta)
+## Directory Structure
+
+```
+.
+├── docs/                     # Technical documentation and blog posts
+├── src/
+│   ├── components/
+│   │   ├── ExcalidrawBoard/  # Interactive canvas component
+│   │   └── Tracker/          # Tracker V2 application
+│   │       ├── components/   # Views, modals, charts, and common UI
+│   │       ├── context/      # Auth and tracker state providers
+│   │       ├── services/     # Supabase client and heuristics
+│   │       └── styles/       # Modular CSS system
+│   ├── css/                  # Global styles and design tokens
+│   └── pages/                # Route entry pages (/, /board, /tracker)
+├── supabase/                 # PostgreSQL schemas and migrations
+├── static/                   # Static assets, resume, images
+└── docusaurus.config.js      # Docusaurus site configuration
+```
+
+---
+
+## Deployment
+
+Pushes to the `main` branch automatically build and deploy the static bundle to GitHub Pages via GitHub Actions (`.github/workflows/deploy.yml`).
+
+---
+
+## Author
+
+- **Vardhman Gupta** — [Website](https://kaap10.github.io/) · [GitHub](https://github.com/kaap10) · [LinkedIn](https://linkedin.com/in/vardhman-gupta)

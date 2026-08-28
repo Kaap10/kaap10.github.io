@@ -75,7 +75,7 @@ export default function HabitsView() {
           icon={IconHabit}
           title="No daily habits established"
           description="Create your first habit (e.g. Daily LeetCode, Research Paper Reading, Workout, Writing)."
-          actionLabel="+ Add First Habit"
+          actionLabel="Add First Habit"
           onAction={() => {
             setEditingHabit(null);
             setHabitModalOpen(true);

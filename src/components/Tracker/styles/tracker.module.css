@@ -1,7 +1,7 @@
 /* ==============================================================================
    Tracker V2 — Complete Productivity OS Modular Stylesheet
-   Theme: Linear / Raycast / Quater Minimalist Engineering Command Center
-   Aesthetic: Fast, calm, subtle transitions (150-300ms), no bloated effects.
+   Theme: Linear / Raycast Minimalist Engineering Command Center
+   No animations, no transition lag, instant response.
    ============================================================================== */
 
 .trackerContainer {
@@ -86,7 +86,6 @@
   cursor: pointer;
   width: 100%;
   text-align: left;
-  transition: background-color 150ms ease, color 150ms ease, transform 150ms ease;
 }
 
 .navItem:hover {
@@ -155,7 +154,6 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  transition: background 150ms ease, color 150ms ease, border-color 150ms ease;
 }
 
 .iconBtn:hover {
@@ -165,7 +163,7 @@
 }
 
 /* ==============================================================================
-   Main Workspace View Container & Section Transitions
+   Main Workspace View Container
    ============================================================================== */
 
 .mainContent {
@@ -182,18 +180,6 @@
   flex-direction: column;
   gap: 1.5rem;
   width: 100%;
-  animation: pageFadeIn 180ms ease forwards;
-}
-
-@keyframes pageFadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(4px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 
 .viewHeader {
@@ -239,12 +225,10 @@
   display: flex;
   flex-direction: column;
   position: relative;
-  transition: border-color 200ms ease, transform 200ms ease, box-shadow 200ms ease;
 }
 
 .metricCard:hover {
   border-color: var(--vg-border-hover);
-  transform: translateY(-1px);
 }
 
 .metricHeader {
@@ -272,7 +256,6 @@
   color: var(--vg-text);
   line-height: 1.1;
   letter-spacing: -0.03em;
-  transition: color 200ms ease;
 }
 
 /* Generic Card */
@@ -284,7 +267,10 @@
   display: flex;
   flex-direction: column;
   position: relative;
-  transition: border-color 200ms ease;
+}
+
+.card:hover {
+  border-color: var(--vg-border-hover);
 }
 
 .cardTitle {
@@ -305,16 +291,14 @@
   display: inline-flex;
   align-items: center;
   gap: 0.25rem;
-  transition: opacity 150ms ease;
 }
 
 .linkBtn:hover {
-  opacity: 0.8;
   text-decoration: underline;
 }
 
 /* ==============================================================================
-   Progress Bar with Smooth Cubic-Bezier Transition
+   Progress Bar
    ============================================================================== */
 
 .progressBarWrapper {
@@ -330,7 +314,6 @@
   height: 100%;
   background: var(--vg-accent);
   border-radius: 9999px;
-  transition: width 300ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* ==============================================================================
@@ -353,7 +336,6 @@
   padding: 0.35rem 0.8rem;
   border-radius: var(--vg-radius-sm);
   cursor: pointer;
-  transition: background 150ms ease, color 150ms ease, border-color 150ms ease;
 }
 
 .filterTab:hover {
@@ -370,7 +352,7 @@
 }
 
 /* ==============================================================================
-   Tasks & Items List with Smooth Toggle Animations
+   Tasks & Items List
    ============================================================================== */
 
 .taskItem {
@@ -381,7 +363,6 @@
   display: flex;
   align-items: flex-start;
   gap: 0.85rem;
-  transition: border-color 150ms ease, opacity 200ms ease, background-color 150ms ease;
 }
 
 .taskItem:hover {
@@ -401,7 +382,6 @@
   color: #ffffff;
   flex-shrink: 0;
   margin-top: 2px;
-  transition: background 150ms ease, border-color 150ms ease, transform 150ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
   padding: 0;
 }
 
@@ -412,7 +392,6 @@
 .checkboxChecked {
   background: var(--vg-accent) !important;
   border-color: var(--vg-accent) !important;
-  transform: scale(1.05);
 }
 
 /* Priority & Category Tags */
@@ -422,7 +401,6 @@
   padding: 0.12rem 0.45rem;
   border-radius: 3px;
   text-transform: uppercase;
-  transition: all 150ms ease;
 }
 
 .priority_high {
@@ -457,12 +435,10 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  transition: border-color 200ms ease, transform 200ms ease;
 }
 
 .resourceCard:hover {
   border-color: var(--vg-border-hover);
-  transform: translateY(-1px);
 }
 
 /* ==============================================================================
@@ -481,17 +457,10 @@
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
-  transition: transform 150ms ease, background-color 150ms ease, box-shadow 150ms ease;
 }
 
 .btnPrimary:hover {
   background-color: var(--vg-accent-hover);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 14px rgba(255, 77, 79, 0.35);
-}
-
-.btnPrimary:active {
-  transform: translateY(0);
 }
 
 .btnSecondary {
@@ -506,7 +475,6 @@
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
-  transition: background 150ms ease, border-color 150ms ease;
 }
 
 .btnSecondary:hover {
@@ -523,7 +491,6 @@
   padding: 0.45rem 0.9rem;
   border-radius: var(--vg-radius-sm);
   cursor: pointer;
-  transition: all 150ms ease;
 }
 
 .btnDanger:hover {
@@ -542,7 +509,6 @@
   width: 100%;
   font-family: inherit;
   box-sizing: border-box;
-  transition: border-color 150ms ease, background-color 150ms ease;
 }
 
 .input:focus {
@@ -563,7 +529,6 @@
   resize: vertical;
   font-family: inherit;
   box-sizing: border-box;
-  transition: border-color 150ms ease;
 }
 
 .textarea:focus {
@@ -588,7 +553,7 @@
 }
 
 /* ==============================================================================
-   Modals with Calm Scale/Fade-In Animation
+   Modals
    ============================================================================== */
 
 .modalOverlay {
@@ -598,18 +563,11 @@
   right: 0;
   bottom: 0;
   background: rgba(0, 0, 0, 0.75);
-  backdrop-filter: blur(6px);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1000;
   padding: 1rem;
-  animation: modalFadeIn 180ms ease forwards;
-}
-
-@keyframes modalFadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
 }
 
 .modalContent {
@@ -626,18 +584,6 @@
   max-height: 90vh;
   overflow-y: auto;
   box-sizing: border-box;
-  animation: modalScaleIn 200ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-@keyframes modalScaleIn {
-  from {
-    opacity: 0;
-    transform: scale(0.97) translateY(4px);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
 }
 
 .modalHeader {
@@ -678,41 +624,22 @@
 }
 
 /* ==============================================================================
-   Loading Skeleton with Subtle Shimmer
+   Loading Skeleton
    ============================================================================== */
 
 .skeleton {
-  background: linear-gradient(
-    90deg,
-    var(--vg-surface) 25%,
-    var(--vg-surface-strong) 50%,
-    var(--vg-surface) 75%
-  );
-  background-size: 200% 100%;
-  animation: shimmer 1.5s infinite;
-}
-
-@keyframes shimmer {
-  0% {
-    background-position: 200% 0;
-  }
-  100% {
-    background-position: -200% 0;
-  }
+  background: var(--vg-surface-strong);
+  border-radius: var(--vg-radius-sm);
 }
 
 /* Search Palette Items */
-.searchItem {
-  transition: background-color 150ms ease, border-color 150ms ease;
-}
-
 .searchItem:hover {
   background-color: var(--vg-surface-strong) !important;
   border-color: var(--vg-border-hover) !important;
 }
 
 /* ==============================================================================
-   Mobile Bottom Navigation (STRICTLY HIDDEN ON DESKTOP)
+   Mobile Bottom Navigation
    ============================================================================== */
 
 .mobileNav,
@@ -736,7 +663,6 @@
     border-top: 1px solid var(--vg-border);
     padding: 0.5rem 0.75rem;
     z-index: 900;
-    backdrop-filter: blur(12px);
     justify-content: space-around;
   }
 
@@ -761,19 +687,5 @@
 
   .mainContent {
     padding: 1.5rem 1rem 5.5rem;
-  }
-}
-
-/* ==============================================================================
-   Prefers-Reduced-Motion Compliance
-   ============================================================================== */
-
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
   }
 }

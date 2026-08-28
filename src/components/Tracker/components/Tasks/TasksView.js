@@ -215,7 +215,7 @@ export default function TasksView() {
               ? 'Get started by creating your first engineering task.'
               : 'Try clearing your filters or search query.'
           }
-          actionLabel="+ Add New Task"
+          actionLabel="Add New Task"
           onAction={() => {
             setEditingTask(null);
             setTaskModalOpen(true);

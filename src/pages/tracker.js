@@ -6,7 +6,7 @@ import TrackerApp from '@site/src/components/Tracker/TrackerApp';
 export default function TrackerPage() {
   return (
     <Layout
-      title="Personal Productivity Tracker"
+      title="Personal Productivity OS"
       description="Private productivity dashboard with tasks, milestones, resources, and progress analytics."
       noFooter
     >
@@ -14,28 +14,13 @@ export default function TrackerPage() {
         fallback={
           <div
             style={{
+              minHeight: '100vh',
+              background: 'var(--vg-bg, #0a0a0a)',
               display: 'flex',
-              flexDirection: 'column',
               alignItems: 'center',
               justifyContent: 'center',
-              minHeight: 'calc(100vh - 120px)',
-              gap: '1rem',
-              color: 'var(--vg-text-muted)',
-              fontSize: '0.9rem',
             }}
-          >
-            <div
-              style={{
-                width: '32px',
-                height: '32px',
-                border: '2px solid var(--vg-border)',
-                borderTopColor: 'var(--vg-accent)',
-                borderRadius: '50%',
-                animation: 'spin 0.8s linear infinite',
-              }}
-            />
-            <span>Initializing Tracker...</span>
-          </div>
+          />
         }
       >
         {() => <TrackerApp />}
@@ -43,4 +28,3 @@ export default function TrackerPage() {
     </Layout>
   );
 }
-

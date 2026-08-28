@@ -159,7 +159,7 @@ export default function ResourcesView() {
           icon={IconResources}
           title="No resources found"
           description="Save links, documentation, research papers, and technical books."
-          actionLabel="+ Add New Resource"
+          actionLabel="Add New Resource"
           onAction={() => {
             setEditingResource(null);
             setResourceModalOpen(true);

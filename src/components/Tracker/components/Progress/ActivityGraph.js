@@ -133,8 +133,6 @@ export default function ActivityGraph() {
                       background: getCellColor(day.totalScore),
                       border: isHovered ? '1px solid var(--vg-text)' : '1px solid transparent',
                       cursor: 'pointer',
-                      transition: 'transform 0.1s ease',
-                      transform: isHovered ? 'scale(1.25)' : 'none',
                     }}
                   />
                 );

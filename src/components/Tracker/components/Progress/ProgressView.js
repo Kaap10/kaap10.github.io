@@ -208,8 +208,8 @@ export default function ProgressView() {
                 <XAxis dataKey="day" stroke="var(--vg-text-muted)" fontSize={12} tickLine={false} axisLine={{ stroke: 'var(--vg-border)' }} />
                 <YAxis stroke="var(--vg-text-muted)" fontSize={12} allowDecimals={false} tickLine={false} axisLine={{ stroke: 'var(--vg-border)' }} />
                 <Tooltip content={<CustomTooltip />} />
-                <Bar dataKey="Planned" fill="rgba(255, 255, 255, 0.15)" radius={[3, 3, 0, 0]} maxBarSize={20} />
-                <Bar dataKey="Completed" fill="var(--vg-accent)" radius={[3, 3, 0, 0]} maxBarSize={20} />
+                <Bar dataKey="Planned" fill="rgba(255, 255, 255, 0.15)" radius={[3, 3, 0, 0]} maxBarSize={20} isAnimationActive={false} />
+                <Bar dataKey="Completed" fill="var(--vg-accent)" radius={[3, 3, 0, 0]} maxBarSize={20} isAnimationActive={false} />
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -246,7 +246,7 @@ export default function ProgressView() {
                 <XAxis dataKey="day" stroke="var(--vg-text-muted)" fontSize={12} tickLine={false} axisLine={{ stroke: 'var(--vg-border)' }} />
                 <YAxis stroke="var(--vg-text-muted)" fontSize={12} tickLine={false} axisLine={{ stroke: 'var(--vg-border)' }} />
                 <Tooltip content={<CustomTooltip unit="hrs" />} />
-                <Area type="monotone" dataKey="Hours" stroke="#fa8c16" strokeWidth={2} fillOpacity={1} fill="url(#focusGradient)" />
+                <Area type="monotone" dataKey="Hours" stroke="#fa8c16" strokeWidth={2} fillOpacity={1} fill="url(#focusGradient)" isAnimationActive={false} />
               </AreaChart>
             </ResponsiveContainer>
           </div>

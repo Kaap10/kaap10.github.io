@@ -25,7 +25,8 @@
     "prism-react-renderer": "^2.3.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "recharts": "^3.10.1"
+    "recharts": "^3.10.1",
+    "search-insights": "^2.17.3"
   },
   "devDependencies": {
     "@docusaurus/module-type-aliases": "3.10.1",
@@ -44,6 +45,6 @@
     ]
   },
   "engines": {
-    "node": ">=20.0"
+    "node": ">=22.0.0"
   }
 }

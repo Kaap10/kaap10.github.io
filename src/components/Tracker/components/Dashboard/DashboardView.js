@@ -35,7 +35,7 @@ export default function DashboardView() {
     setActiveTab,
   } = useTracker();
 
-  if (loading) {
+  if (loading && tasks.length === 0 && habits.length === 0 && goals.length === 0) {
     return <DashboardSkeleton />;
   }
 
@@ -177,7 +177,7 @@ export default function DashboardView() {
               icon={IconTasks}
               title="No tasks scheduled for today"
               description="Plan your day by adding tasks or setting due dates to today."
-              actionLabel="+ Add Today's Task"
+              actionLabel="Add Today's Task"
               onAction={() => {
                 setEditingTask(null);
                 setTaskModalOpen(true);
@@ -263,7 +263,7 @@ export default function DashboardView() {
                 icon={IconFlame}
                 title="No habits defined yet"
                 description="Form daily routines (DSA, Reading, Workouts, Deep Work)."
-                actionLabel="+ Create Habit"
+                actionLabel="Create Habit"
                 onAction={() => setActiveTab('habits')}
               />
             ) : (
@@ -329,7 +329,7 @@ export default function DashboardView() {
                 icon={IconGoals}
                 title="No active milestones"
                 description="Set short-term & long-term engineering horizons."
-                actionLabel="+ Set Goal"
+                actionLabel="Set Goal"
                 onAction={() => setActiveTab('goals')}
               />
             ) : (

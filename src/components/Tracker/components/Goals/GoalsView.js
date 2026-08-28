@@ -113,7 +113,7 @@ export default function GoalsView() {
           icon={IconGoals}
           title="No goals found"
           description="Create your first strategic engineering milestone or roadmap."
-          actionLabel="+ Create First Goal"
+          actionLabel="Create First Goal"
           onAction={() => {
             setEditingGoal(null);
             setGoalModalOpen(true);
