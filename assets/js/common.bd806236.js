@@ -1,5 +1,5 @@
-/*! For license information please see common.863e572b.js.LICENSE.txt */
-"use strict";(globalThis.webpackChunkkaap10_portfolio=globalThis.webpackChunkkaap10_portfolio||[]).push([[2076],{8453(e,t,r){r.d(t,{R:()=>s,x:()=>o});var n=r(6540);let i={},a=n.createContext(i);function s(e){let t=n.useContext(a);return n.useMemo(function(){return"function"==typeof e?e(t):{...t,...e}},[t,e])}function o(e){let t;return t=e.disableParentContext?"function"==typeof e.components?e.components(i):e.components||i:s(e.components),n.createElement(a.Provider,{value:t},e.children)}},5937(e,t,r){r.d(t,{A:()=>a});var n=r(2453),i=r(4886);let a=(e,t)=>n.A.lang.round(i.A.parse(e)[t])},4918(e,t,r){r.d(t,{o:()=>n});var n=(0,r(6827).K)(()=>`
+/*! For license information please see common.bd806236.js.LICENSE.txt */
+"use strict";(globalThis.webpackChunkkaap10_portfolio=globalThis.webpackChunkkaap10_portfolio||[]).push([[2076],{8453(e,t,r){r.d(t,{R:()=>s,x:()=>o});var n=r(6540);let i={},a=n.createContext(i);function s(e){let t=n.useContext(a);return n.useMemo(function(){return"function"==typeof e?e(t):{...t,...e}},[t,e])}function o(e){let t;return t=e.disableParentContext?"function"==typeof e.components?e.components(i):e.components||i:s(e.components),n.createElement(a.Provider,{value:t},e.children)}},4918(e,t,r){r.d(t,{o:()=>n});var n=(0,r(6827).K)(()=>`
   /* Font Awesome icon styling - consolidated */
   .label-icon {
     display: inline-block;
