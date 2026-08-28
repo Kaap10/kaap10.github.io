@@ -173,40 +173,10 @@ export default function Home() {
             </div>
 
             <div className={styles.writingList}>
-              <Link to="/blogs/DSA/intro" className={styles.writingItem}>
-                <div>
-                  <h4 className={styles.writingTitle}>
-                    Data Structures & Algorithms
-                  </h4>
-                  <p className={styles.writingSummary}>
-                    Pattern recognition, time complexity trade-offs, and competitive problem solving.
-                  </p>
-                </div>
-                <div className={styles.writingMeta}>
-                  <span>DSA</span>
-                  <span className={styles.writingArrow}>→</span>
-                </div>
-              </Link>
-
-              <Link to="/blogs/System%20Design/System_Design" className={styles.writingItem}>
-                <div>
-                  <h4 className={styles.writingTitle}>
-                    System Design & Architecture
-                  </h4>
-                  <p className={styles.writingSummary}>
-                    High-level and low-level architectural patterns for scalable distributed systems.
-                  </p>
-                </div>
-                <div className={styles.writingMeta}>
-                  <span>System Design</span>
-                  <span className={styles.writingArrow}>→</span>
-                </div>
-              </Link>
-
               <Link to="/blogs/Development/Python%20Full%20Stack/Flask" className={styles.writingItem}>
                 <div>
                   <h4 className={styles.writingTitle}>
-                    Flask & Backend Architecture
+                    Flask &amp; Backend Architecture
                   </h4>
                   <p className={styles.writingSummary}>
                     Backend architectures, Flask, FastAPI, database integrations, and deployment notes.
@@ -214,36 +184,6 @@ export default function Home() {
                 </div>
                 <div className={styles.writingMeta}>
                   <span>Development</span>
-                  <span className={styles.writingArrow}>→</span>
-                </div>
-              </Link>
-
-              <Link to="/blogs/AIML/Python/intro" className={styles.writingItem}>
-                <div>
-                  <h4 className={styles.writingTitle}>
-                    Artificial Intelligence & Machine Learning
-                  </h4>
-                  <p className={styles.writingSummary}>
-                    Applied machine learning, deep neural nets, LLM inference, and data processing.
-                  </p>
-                </div>
-                <div className={styles.writingMeta}>
-                  <span>AI / ML</span>
-                  <span className={styles.writingArrow}>→</span>
-                </div>
-              </Link>
-
-              <Link to="/blogs/Core%20Subjects/intro" className={styles.writingItem}>
-                <div>
-                  <h4 className={styles.writingTitle}>
-                    Core Computer Science Subjects
-                  </h4>
-                  <p className={styles.writingSummary}>
-                    Operating systems, database management systems (DBMS), OOPs, and networking fundamentals.
-                  </p>
-                </div>
-                <div className={styles.writingMeta}>
-                  <span>Core CS</span>
                   <span className={styles.writingArrow}>→</span>
                 </div>
               </Link>

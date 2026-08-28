@@ -233,53 +233,6 @@
 }
 
 /* ==========================================================================
-   Signals (Metric Strip)
-   ========================================================================== */
-
-.signalsGrid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 0;
-  border: 1px solid var(--vg-border);
-  border-radius: var(--vg-radius-lg);
-  background: var(--vg-bg-elevated);
-  overflow: hidden;
-}
-
-.signalCard {
-  display: flex;
-  flex-direction: column;
-  padding: 1.75rem 1.5rem;
-  position: relative;
-}
-
-.signalCard:not(:last-child) {
-  border-right: 1px solid var(--vg-border);
-}
-
-.signalValue {
-  font-family: var(--ifm-font-family-base);
-  font-size: 2rem;
-  font-weight: 700;
-  line-height: 1.1;
-  letter-spacing: -0.035em;
-  color: var(--ifm-heading-color);
-  margin-bottom: 0.5rem;
-}
-
-.signalAccent {
-  color: var(--vg-accent);
-}
-
-.signalLabel {
-  font-family: var(--ifm-font-family-base);
-  font-size: 0.82rem;
-  font-weight: 500;
-  color: var(--vg-text-muted);
-  line-height: 1.4;
-}
-
-/* ==========================================================================
    Technical Toolkit
    ========================================================================== */
 
@@ -449,19 +402,6 @@
     font-size: 3.25rem;
   }
 
-  .signalsGrid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .signalCard:nth-child(2) {
-    border-right: none;
-  }
-
-  .signalCard:nth-child(1),
-  .signalCard:nth-child(2) {
-    border-bottom: 1px solid var(--vg-border);
-  }
-
   .toolkitGrid {
     grid-template-columns: 1fr;
     gap: 1.5rem;
@@ -500,14 +440,5 @@
 
   .projectIndex {
     display: none;
-  }
-
-  .signalsGrid {
-    grid-template-columns: 1fr;
-  }
-
-  .signalCard:not(:last-child) {
-    border-right: none;
-    border-bottom: 1px solid var(--vg-border);
   }
 }
