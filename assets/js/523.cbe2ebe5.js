@@ -1,1 +1,0 @@
-"use strict";(globalThis.webpackChunkmy_wiki=globalThis.webpackChunkmy_wiki||[]).push([[523],{523(a,i,k){k.r(i),k.d(i,{default:()=>b.c,en:()=>b.a,kaa:()=>b.b});var b=k(574);k(2130)}}]);

@@ -1,1 +1,0 @@
-"use strict";(globalThis.webpackChunkmy_wiki=globalThis.webpackChunkmy_wiki||[]).push([[8913],{8913(i,k,h){h.r(k)}}]);

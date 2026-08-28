@@ -1,1 +1,0 @@
-"use strict";(globalThis.webpackChunkmy_wiki=globalThis.webpackChunkmy_wiki||[]).push([[1964],{1964(e,i,c){c.d(i,{createArchitectureServices:()=>a.S});var a=c(7891);c(369)}}]);
