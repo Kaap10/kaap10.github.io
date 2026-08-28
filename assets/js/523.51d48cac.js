@@ -1,1 +1,0 @@
-"use strict";(globalThis.webpackChunkkaap10_portfolio=globalThis.webpackChunkkaap10_portfolio||[]).push([[523],{523(a,o,k){k.r(o),k.d(o,{default:()=>l.c,en:()=>l.a,kaa:()=>l.b});var l=k(574);k(2130)}}]);

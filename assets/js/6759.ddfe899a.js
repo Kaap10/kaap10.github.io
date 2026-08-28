@@ -1,1 +1,0 @@
-"use strict";(globalThis.webpackChunkkaap10_portfolio=globalThis.webpackChunkkaap10_portfolio||[]).push([[6759],{6759(a,e,o){o.d(e,{createWardleyServices:()=>l.J});var l=o(656);o(369)}}]);
