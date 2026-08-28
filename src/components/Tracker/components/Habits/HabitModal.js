@@ -43,7 +43,7 @@ export default function HabitModal({ isOpen, onClose, initialData = null }) {
         frequency,
       };
 
-      if (initialData) {
+      if (initialData && initialData.id) {
         await updateHabit(initialData.id, payload);
       } else {
         await createHabit(payload);

@@ -3,12 +3,13 @@ import { useTracker } from '../../context/TrackerContext';
 import { IconClose, IconMilestone, IconAlertCircle } from '../Common/Icons';
 import styles from '../../styles/tracker.module.css';
 
-export default function MilestoneModal({ isOpen, onClose, initialData = null, goalId = null }) {
-  const { createMilestone, updateMilestone, goals } = useTracker();
+export default function MilestoneModal({ isOpen, onClose, initialData = null, goalId = null, parentMilestoneId = null }) {
+  const { createMilestone, updateMilestone, goals, milestones } = useTracker();
 
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [targetGoalId, setTargetGoalId] = useState('');
+  const [parentId, setParentId] = useState('');
   const [targetDate, setTargetDate] = useState('');
   const [status, setStatus] = useState('active');
   const [loading, setLoading] = useState(false);
@@ -20,16 +21,26 @@ export default function MilestoneModal({ isOpen, onClose, initialData = null, go
       setTitle(initialData.title || '');
       setDescription(initialData.description || '');
       setTargetGoalId(initialData.goal_id || goalId || '');
+      setParentId(initialData.parent_id || parentMilestoneId || '');
       setTargetDate(initialData.target_date || '');
       setStatus(initialData.status || 'active');
     } else {
       setTitle('');
       setDescription('');
       setTargetGoalId(goalId || (goals[0]?.id || ''));
+      setParentId(parentMilestoneId || '');
       setTargetDate('');
       setStatus('active');
     }
-  }, [initialData, isOpen, goalId, goals]);
+  }, [initialData, isOpen, goalId, parentMilestoneId, goals]);
+
+  // Candidates for parent milestone (root milestones within same goal, excluding self)
+  const candidateParentMilestones = milestones.filter(
+    (m) =>
+      m.goal_id === targetGoalId &&
+      (!initialData?.id || m.id !== initialData.id) &&
+      !m.parent_id
+  );
 
   if (!isOpen) return null;
 
@@ -51,11 +62,12 @@ export default function MilestoneModal({ isOpen, onClose, initialData = null, go
         title: title.trim(),
         description: description.trim() || null,
         goal_id: targetGoalId,
+        parent_id: parentId || null,
         target_date: targetDate || null,
         status,
       };
 
-      if (initialData) {
+      if (initialData && initialData.id) {
         await updateMilestone(initialData.id, payload);
       } else {
         await createMilestone(payload);
@@ -77,7 +89,13 @@ export default function MilestoneModal({ isOpen, onClose, initialData = null, go
             <span style={{ color: 'var(--vg-accent)' }}>
               <IconMilestone size={18} />
             </span>
-            <h3 className={styles.modalTitle}>{initialData ? 'Edit Milestone' : 'Add Milestone'}</h3>
+            <h3 className={styles.modalTitle}>
+              {initialData && initialData.id
+                ? 'Edit Milestone'
+                : parentId
+                ? 'Add Sub-milestone'
+                : 'Add Milestone'}
+            </h3>
           </div>
           <button type="button" className={styles.iconBtn} onClick={onClose}>
             <IconClose size={16} />
@@ -104,20 +122,41 @@ export default function MilestoneModal({ isOpen, onClose, initialData = null, go
         )}
 
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-          <div className={styles.formGroup}>
-            <label className={styles.formLabel}>Parent Goal *</label>
-            <select
-              value={targetGoalId}
-              onChange={(e) => setTargetGoalId(e.target.value)}
-              className={styles.select}
-              required
-            >
-              {goals.map((g) => (
-                <option key={g.id} value={g.id}>
-                  {g.title} ({g.type === 'short_term' ? 'Short-term' : 'Long-term'})
-                </option>
-              ))}
-            </select>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+            <div className={styles.formGroup}>
+              <label className={styles.formLabel}>Parent Goal *</label>
+              <select
+                value={targetGoalId}
+                onChange={(e) => {
+                  setTargetGoalId(e.target.value);
+                  setParentId('');
+                }}
+                className={styles.select}
+                required
+              >
+                {goals.map((g) => (
+                  <option key={g.id} value={g.id}>
+                    {g.title} ({g.type === 'short_term' ? 'Short-term' : 'Long-term'})
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className={styles.formGroup}>
+              <label className={styles.formLabel}>Parent Milestone (Optional)</label>
+              <select
+                value={parentId}
+                onChange={(e) => setParentId(e.target.value)}
+                className={styles.select}
+              >
+                <option value="">None (Top-level Milestone)</option>
+                {candidateParentMilestones.map((m) => (
+                  <option key={m.id} value={m.id}>
+                    {m.title}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
 
           <div className={styles.formGroup}>
@@ -159,7 +198,7 @@ export default function MilestoneModal({ isOpen, onClose, initialData = null, go
               <label className={styles.formLabel}>Status</label>
               <select value={status} onChange={(e) => setStatus(e.target.value)} className={styles.select}>
                 <option value="active">Active (In Progress)</option>
-                <option value="completed">Completed ✓</option>
+                <option value="completed">Completed</option>
               </select>
             </div>
           </div>
@@ -169,7 +208,7 @@ export default function MilestoneModal({ isOpen, onClose, initialData = null, go
               Cancel
             </button>
             <button type="submit" className={styles.btnPrimary} disabled={loading}>
-              {loading ? 'Saving...' : initialData ? 'Save Changes' : 'Create Milestone'}
+              {loading ? 'Saving...' : initialData && initialData.id ? 'Save Changes' : 'Create Milestone'}
             </button>
           </div>
         </form>
@@ -177,4 +216,3 @@ export default function MilestoneModal({ isOpen, onClose, initialData = null, go
     </div>
   );
 }
-

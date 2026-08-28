@@ -22,6 +22,7 @@ export default function DashboardView() {
     tasks,
     goals,
     habits,
+    milestones,
     habitLogs,
     habitStreaks,
     todayTasks,
@@ -34,6 +35,20 @@ export default function DashboardView() {
     setTaskModalOpen,
     setActiveTab,
   } = useTracker();
+
+  const computeGoalProgress = (goal) => {
+    const goalMilestones = milestones.filter((m) => m.goal_id === goal.id);
+    const goalTasks = tasks.filter((t) => t.goal_id === goal.id);
+    const totalUnits = goalMilestones.length + goalTasks.length;
+
+    if (totalUnits === 0) {
+      return Number(goal.progress) || 0;
+    }
+
+    const completedMilestones = goalMilestones.filter((m) => m.status === 'completed').length;
+    const completedTasks = goalTasks.filter((t) => t.status === 'completed').length;
+    return Math.round(((completedMilestones + completedTasks) / totalUnits) * 100);
+  };
 
   if (loading && tasks.length === 0 && habits.length === 0 && goals.length === 0) {
     return <DashboardSkeleton />;
@@ -148,7 +163,7 @@ export default function DashboardView() {
           </div>
           <div style={{ fontSize: '0.8rem', color: 'var(--vg-text-muted)', marginTop: '0.65rem' }}>
             {activeHabits.length > 0 && activeHabitIdsCompleted.size === activeHabits.length
-              ? '🔥 All habits logged for today!'
+              ? 'All habits logged for today.'
               : `${activeHabits.length - activeHabitIdsCompleted.size} habits remaining today`}
           </div>
         </div>
@@ -334,21 +349,30 @@ export default function DashboardView() {
               />
             ) : (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
-                {activeGoals.map((g) => (
-                  <div key={g.id}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.35rem' }}>
-                      <span style={{ fontSize: '0.86rem', fontWeight: 500, color: 'var(--vg-text)' }}>
-                        {g.title}
-                      </span>
-                      <span style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--vg-accent)' }}>
-                        {g.progress}%
-                      </span>
+                {activeGoals.map((g) => {
+                  const autoProg = computeGoalProgress(g);
+                  return (
+                    <div key={g.id}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.35rem' }}>
+                        <span style={{ fontSize: '0.86rem', fontWeight: 500, color: 'var(--vg-text)' }}>
+                          {g.title}
+                        </span>
+                        <span style={{ fontSize: '0.8rem', fontWeight: 600, color: autoProg === 100 ? '#52c41a' : 'var(--vg-accent)' }}>
+                          {autoProg}%
+                        </span>
+                      </div>
+                      <div className={styles.progressBarWrapper}>
+                        <div
+                          className={styles.progressBarFill}
+                          style={{
+                            width: `${autoProg}%`,
+                            background: autoProg === 100 ? '#52c41a' : 'var(--vg-accent)',
+                          }}
+                        />
+                      </div>
                     </div>
-                    <div className={styles.progressBarWrapper}>
-                      <div className={styles.progressBarFill} style={{ width: `${g.progress}%` }} />
-                    </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             )}
           </div>

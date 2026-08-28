@@ -62,7 +62,7 @@ export default function ResourceModal({ isOpen, onClose, initialData = null }) {
         favorite,
       };
 
-      if (initialData) {
+      if (initialData && initialData.id) {
         await updateResource(initialData.id, payload);
       } else {
         await createResource(payload);

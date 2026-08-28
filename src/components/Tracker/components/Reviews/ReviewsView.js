@@ -299,7 +299,7 @@ export default function ReviewsView() {
         {reviewType === 'weekly' ? (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
             <div className={styles.formGroup}>
-              <label className={styles.formLabel}>🏆 Biggest Achievement of the Week</label>
+              <label className={styles.formLabel}>Biggest Achievement of the Week</label>
               <input
                 type="text"
                 placeholder="What was the standout victory or milestone accomplished?"
@@ -311,7 +311,7 @@ export default function ReviewsView() {
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem' }}>
               <div className={styles.formGroup}>
-                <label className={styles.formLabel}>✓ What Went Well</label>
+                <label className={styles.formLabel}>What Went Well</label>
                 <textarea
                   placeholder="Key accomplishments, focused deep work, smooth execution..."
                   value={whatWentWell}
@@ -322,7 +322,7 @@ export default function ReviewsView() {
               </div>
 
               <div className={styles.formGroup}>
-                <label className={styles.formLabel}>⚠ What Did Not Go Well</label>
+                <label className={styles.formLabel}>What Did Not Go Well</label>
                 <textarea
                   placeholder="Blockers, distractions, missed estimates, energy dips..."
                   value={whatDidNotGoWell}
@@ -335,7 +335,7 @@ export default function ReviewsView() {
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem' }}>
               <div className={styles.formGroup}>
-                <label className={styles.formLabel}>⚙ Concrete Adjustments to Improve Next Week</label>
+                <label className={styles.formLabel}>Concrete Adjustments to Improve Next Week</label>
                 <textarea
                   placeholder="System tweaks, schedule protection, earlier starts..."
                   value={whatToImprove}
@@ -346,7 +346,7 @@ export default function ReviewsView() {
               </div>
 
               <div className={styles.formGroup}>
-                <label className={styles.formLabel}>🎯 Top 3 Priorities for Next Week</label>
+                <label className={styles.formLabel}>Top 3 Priorities for Next Week</label>
                 <textarea
                   placeholder="1. Ship feature X&#10;2. Finish chapter Y&#10;3. Solve 10 DSA questions"
                   value={topPriorities}
@@ -360,7 +360,7 @@ export default function ReviewsView() {
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
             <div className={styles.formGroup}>
-              <label className={styles.formLabel}>🏆 Biggest Monthly Achievement</label>
+              <label className={styles.formLabel}>Biggest Monthly Achievement</label>
               <input
                 type="text"
                 placeholder="Major project completion, roadmap clearance, skill unlocked..."
@@ -372,7 +372,7 @@ export default function ReviewsView() {
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem' }}>
               <div className={styles.formGroup}>
-                <label className={styles.formLabel}>📈 What Improved This Month</label>
+                <label className={styles.formLabel}>What Improved This Month</label>
                 <textarea
                   placeholder="Skills sharpened, systems built, habits solidified..."
                   value={whatImproved}
@@ -383,7 +383,7 @@ export default function ReviewsView() {
               </div>
 
               <div className={styles.formGroup}>
-                <label className={styles.formLabel}>⚡ Biggest Challenge & Friction Point</label>
+                <label className={styles.formLabel}>Biggest Challenge & Friction Point</label>
                 <textarea
                   placeholder="Where did momentum slow down? What caused friction?..."
                   value={biggestChallenge}
@@ -395,7 +395,7 @@ export default function ReviewsView() {
             </div>
 
             <div className={styles.formGroup}>
-              <label className={styles.formLabel}>🎯 Next Month's Core Engineering Priorities</label>
+              <label className={styles.formLabel}>Next Month's Core Engineering Priorities</label>
               <textarea
                 placeholder="Key goals, milestone deliverables, and focus areas for next month..."
                 value={nextMonthPriorities}

@@ -55,7 +55,7 @@ export default function GoalModal({ isOpen, onClose, initialData = null }) {
         progress: Math.min(100, Math.max(0, Number(progress) || 0)),
       };
 
-      if (initialData) {
+      if (initialData && initialData.id) {
         await updateGoal(initialData.id, payload);
       } else {
         await createGoal(payload);

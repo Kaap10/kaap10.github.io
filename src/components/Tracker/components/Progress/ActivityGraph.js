@@ -146,12 +146,12 @@ export default function ActivityGraph() {
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '0.5rem', fontSize: '0.78rem', color: 'var(--vg-text-muted)', minHeight: '24px' }}>
         <div>
           {hoveredDay ? (
-            <span style={{ color: 'var(--vg-text)', fontWeight: 500 }}>
-              📅 {hoveredDay.date}:{' '}
+            <div style={{ fontSize: '0.78rem', color: 'var(--vg-text)' }}>
+              <strong>{hoveredDay.date}:</strong>{' '}
               <strong style={{ color: 'var(--vg-accent)' }}>{hoveredDay.tasksCompleted}</strong> tasks completed,{' '}
               <strong style={{ color: '#fa8c16' }}>{Math.round((hoveredDay.focusSeconds || 0) / 60)}m</strong> focus,{' '}
               <strong style={{ color: '#52c41a' }}>{hoveredDay.habitsCompleted}</strong> habits logged (Score: {hoveredDay.totalScore})
-            </span>
+            </div>
           ) : (
             <span>Hover over any cell to inspect productivity velocity</span>
           )}

@@ -104,7 +104,7 @@ export default function ResourceNotesModal({ isOpen, onClose, resource = null })
               <select value={status} onChange={(e) => setStatus(e.target.value)} className={styles.select}>
                 <option value="unread">Unread / To Explore</option>
                 <option value="in_progress">Currently Reading</option>
-                <option value="completed">Completed ✓</option>
+                <option value="completed">Completed</option>
               </select>
             </div>
 

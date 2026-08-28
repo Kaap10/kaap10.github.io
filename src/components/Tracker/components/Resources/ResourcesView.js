@@ -97,7 +97,7 @@ export default function ResourcesView() {
           <div className={styles.filterTabs}>
             {[
               { id: 'all', label: `All (${resources.length})` },
-              { id: 'favorites', label: '★ Starred' },
+              { id: 'favorites', label: 'Starred' },
               { id: 'reading', label: 'Currently Reading' },
               { id: 'completed', label: 'Finished' },
             ].map((t) => (
@@ -258,7 +258,7 @@ export default function ResourcesView() {
                         fontWeight: 600,
                       }}
                     >
-                      {res.status === 'completed' ? 'Finished ✓' : res.status === 'in_progress' ? 'Reading' : 'Unread'}
+                      {res.status === 'completed' ? 'Finished' : res.status === 'in_progress' ? 'Reading' : 'Unread'}
                     </span>
 
                     <button
@@ -271,7 +271,7 @@ export default function ResourcesView() {
                       style={{ fontSize: '0.72rem', padding: '0.2rem 0.5rem', display: 'flex', alignItems: 'center', gap: '0.25rem' }}
                     >
                       <IconNote size={12} />
-                      <span>{res.notes ? 'Notes ✓' : '+ Note'}</span>
+                      <span>{res.notes ? 'Notes' : '+ Note'}</span>
                     </button>
                   </div>
 

@@ -38,6 +38,7 @@ function TrackerContent() {
     setMilestoneModalOpen,
     editingMilestone,
     selectedGoalForMilestone,
+    parentMilestoneId,
     habitModalOpen,
     setHabitModalOpen,
     editingHabit,
@@ -108,6 +109,7 @@ function TrackerContent() {
         onClose={() => setMilestoneModalOpen(false)}
         initialData={editingMilestone}
         goalId={selectedGoalForMilestone}
+        parentMilestoneId={parentMilestoneId}
       />
 
       <HabitModal

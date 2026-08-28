@@ -11,6 +11,11 @@ import {
   IconClock,
   IconRepeat,
   IconMilestone,
+  IconGoals,
+  IconChevronDown,
+  IconChevronUp,
+  IconCornerDownRight,
+  IconListPlus,
 } from '../Common/Icons';
 import styles from '../../styles/tracker.module.css';
 
@@ -22,6 +27,7 @@ export default function TasksView() {
     goals,
     milestones,
     toggleTaskStatus,
+    toggleSubtask,
     deleteTask,
     setEditingTask,
     setTaskModalOpen,
@@ -33,8 +39,13 @@ export default function TasksView() {
   const [selectedGoal, setSelectedGoal] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState('due_date'); // due_date, priority, created_at, status
+  const [expandedTasks, setExpandedTasks] = useState({});
 
   const todayStr = new Date().toISOString().split('T')[0];
+
+  const toggleExpand = (taskId) => {
+    setExpandedTasks((prev) => ({ ...prev, [taskId]: !prev[taskId] }));
+  };
 
   const filteredTasks = useMemo(() => {
     return tasks.filter((task) => {
@@ -104,9 +115,9 @@ export default function TasksView() {
       {/* Header */}
       <div className={styles.viewHeader}>
         <div>
-          <h1 className={styles.viewTitle}>Task Matrix</h1>
+          <h1 className={styles.viewTitle}>Engineering Tasks</h1>
           <p className={styles.viewSubtitle}>
-            Manage, schedule, and track engineering tasks, recurring cycles, and milestone deliverables.
+            Manage, organize, and execute technical action items and subtasks with precision.
           </p>
         </div>
 
@@ -123,56 +134,62 @@ export default function TasksView() {
         </button>
       </div>
 
-      {/* Filter Tabs & Search Bar */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '0.75rem', flexWrap: 'wrap' }}>
-          {/* Quick Filters */}
-          <div className={styles.filterTabs}>
-            {[
-              { id: 'all', label: `All (${tasks.length})` },
-              { id: 'today', label: 'Today' },
-              { id: 'upcoming', label: 'Upcoming' },
-              { id: 'overdue', label: 'Overdue' },
-              { id: 'completed', label: 'Completed' },
-              { id: 'high', label: 'High Priority' },
-            ].map((f) => (
-              <button
-                key={f.id}
-                type="button"
-                className={`${styles.filterTab} ${activeFilter === f.id ? styles.filterTabActive : ''}`}
-                onClick={() => setActiveFilter(f.id)}
-              >
-                {f.label}
-              </button>
-            ))}
-          </div>
+      {/* Filter Tabs */}
+      <div className={styles.filterTabs}>
+        {[
+          { id: 'all', label: `All (${tasks.length})` },
+          { id: 'today', label: 'Today' },
+          { id: 'upcoming', label: 'Upcoming' },
+          { id: 'overdue', label: 'Overdue' },
+          { id: 'high', label: 'High Priority' },
+          { id: 'completed', label: 'Completed' },
+        ].map((tab) => (
+          <button
+            key={tab.id}
+            type="button"
+            className={`${styles.filterTab} ${activeFilter === tab.id ? styles.filterTabActive : ''}`}
+            onClick={() => setActiveFilter(tab.id)}
+          >
+            {tab.label}
+          </button>
+        ))}
+      </div>
 
-          {/* Search Input */}
-          <div style={{ position: 'relative', width: '240px' }}>
-            <input
-              type="text"
-              placeholder="Search tasks..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className={styles.input}
-              style={{ paddingLeft: '2rem', height: '34px', fontSize: '0.82rem' }}
-            />
-            <span style={{ position: 'absolute', left: '0.65rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--vg-text-muted)', display: 'flex' }}>
-              <IconSearch size={14} />
-            </span>
-          </div>
+      {/* Search & Select Bars */}
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          flexWrap: 'wrap',
+          gap: '0.75rem',
+        }}
+      >
+        {/* Search */}
+        <div style={{ position: 'relative', flex: '1 1 240px', maxWidth: '380px' }}>
+          <span style={{ position: 'absolute', left: '0.75rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--vg-text-muted)', display: 'flex' }}>
+            <IconSearch size={15} />
+          </span>
+          <input
+            type="text"
+            placeholder="Search tasks..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className={styles.input}
+            style={{ paddingLeft: '2.2rem' }}
+          />
         </div>
 
-        {/* Dropdowns for Category, Goal, and Sort */}
-        <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', alignItems: 'center' }}>
+        {/* Dropdowns */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
           <select
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
             className={styles.select}
-            style={{ width: 'auto', height: '34px', fontSize: '0.82rem', padding: '0.2rem 0.6rem' }}
+            style={{ width: 'auto' }}
           >
-            {CATEGORIES.map((cat) => (
-              <option key={cat} value={cat}>{cat}</option>
+            {CATEGORIES.map((c) => (
+              <option key={c} value={c}>{c}</option>
             ))}
           </select>
 
@@ -180,7 +197,7 @@ export default function TasksView() {
             value={selectedGoal}
             onChange={(e) => setSelectedGoal(e.target.value)}
             className={styles.select}
-            style={{ width: 'auto', height: '34px', fontSize: '0.82rem', padding: '0.2rem 0.6rem' }}
+            style={{ width: 'auto' }}
           >
             <option value="all">All Goals</option>
             {goals.map((g) => (
@@ -188,13 +205,13 @@ export default function TasksView() {
             ))}
           </select>
 
-          <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.8rem', color: 'var(--vg-text-muted)' }}>
-            <span>Sort by:</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', fontSize: '0.8rem', color: 'var(--vg-text-muted)' }}>
+            <span>Sort:</span>
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
               className={styles.select}
-              style={{ width: 'auto', height: '34px', fontSize: '0.82rem', padding: '0.2rem 0.6rem' }}
+              style={{ width: 'auto', padding: '0.35rem 0.6rem' }}
             >
               <option value="due_date">Due Date</option>
               <option value="priority">Priority</option>
@@ -228,156 +245,244 @@ export default function TasksView() {
             const isOverdue = !isCompleted && task.due_date && task.due_date < todayStr;
             const goalObj = goals.find((g) => g.id === task.goal_id);
             const milestoneObj = milestones.find((m) => m.id === task.milestone_id);
+            const subtasks = Array.isArray(task.subtasks) ? task.subtasks : [];
+            const completedSubtasks = subtasks.filter((s) => s.completed);
+            const isExpanded = !!expandedTasks[task.id];
 
             return (
               <div
                 key={task.id}
-                className={styles.taskItem}
-                style={{ opacity: isCompleted ? 0.6 : 1 }}
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  background: 'var(--vg-bg-elevated)',
+                  border: '1px solid var(--vg-border)',
+                  borderRadius: 'var(--vg-radius-sm)',
+                  padding: '0.85rem 1rem',
+                  gap: '0.5rem',
+                  opacity: isCompleted ? 0.6 : 1,
+                }}
               >
-                {/* Complete Checkbox */}
-                <button
-                  type="button"
-                  className={`${styles.checkbox} ${isCompleted ? styles.checkboxChecked : ''}`}
-                  onClick={() => toggleTaskStatus(task.id)}
-                  title={isCompleted ? 'Mark as Incomplete' : 'Mark as Completed'}
-                >
-                  {isCompleted && <IconCheck size={12} />}
-                </button>
+                {/* Main Task Row */}
+                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.85rem' }}>
+                  {/* Complete Checkbox */}
+                  <button
+                    type="button"
+                    className={`${styles.checkbox} ${isCompleted ? styles.checkboxChecked : ''}`}
+                    onClick={() => toggleTaskStatus(task.id)}
+                    title={isCompleted ? 'Mark as Incomplete' : 'Mark as Completed'}
+                  >
+                    {isCompleted && <IconCheck size={12} />}
+                  </button>
 
-                {/* Content */}
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
-                    <span
-                      style={{
-                        fontSize: '0.92rem',
-                        fontWeight: 500,
-                        color: isCompleted ? 'var(--vg-text-muted)' : 'var(--vg-text)',
-                        textDecoration: isCompleted ? 'line-through' : 'none',
-                      }}
-                    >
-                      {task.title}
-                    </span>
-
-                    {task.status === 'in_progress' && (
-                      <span style={{ fontSize: '0.7rem', padding: '0.15rem 0.4rem', borderRadius: '4px', background: 'rgba(24, 144, 255, 0.15)', color: '#1890ff', fontWeight: 600 }}>
-                        In Progress
-                      </span>
-                    )}
-
-                    {task.recurrence && task.recurrence !== 'none' && (
+                  {/* Content */}
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
                       <span
                         style={{
-                          fontSize: '0.7rem',
-                          padding: '0.15rem 0.45rem',
-                          borderRadius: '4px',
-                          background: 'rgba(114, 46, 209, 0.12)',
-                          color: '#9254de',
-                          display: 'inline-flex',
-                          alignItems: 'center',
-                          gap: '0.2rem',
+                          fontSize: '0.92rem',
                           fontWeight: 500,
+                          color: isCompleted ? 'var(--vg-text-muted)' : 'var(--vg-text)',
+                          textDecoration: isCompleted ? 'line-through' : 'none',
                         }}
                       >
-                        <IconRepeat size={11} /> {task.recurrence}
+                        {task.title}
                       </span>
+
+                      {task.status === 'in_progress' && (
+                        <span style={{ fontSize: '0.7rem', padding: '0.15rem 0.4rem', borderRadius: '4px', background: 'rgba(24, 144, 255, 0.15)', color: '#1890ff', fontWeight: 600 }}>
+                          In Progress
+                        </span>
+                      )}
+
+                      {task.recurrence && task.recurrence !== 'none' && (
+                        <span
+                          style={{
+                            fontSize: '0.7rem',
+                            padding: '0.15rem 0.45rem',
+                            borderRadius: '4px',
+                            background: 'rgba(114, 46, 209, 0.12)',
+                            color: '#9254de',
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '0.2rem',
+                            fontWeight: 500,
+                          }}
+                        >
+                          <IconRepeat size={11} /> {task.recurrence}
+                        </span>
+                      )}
+                    </div>
+
+                    {task.description && (
+                      <div style={{ fontSize: '0.8rem', color: 'var(--vg-text-muted)', marginTop: '0.2rem', lineHeight: '1.4' }}>
+                        {task.description}
+                      </div>
                     )}
+
+                    {/* Metadata Tags */}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginTop: '0.4rem', flexWrap: 'wrap' }}>
+                      <span className={`${styles.priorityTag} ${styles[`priority_${task.priority}`]}`}>
+                        {task.priority}
+                      </span>
+
+                      <span className={styles.categoryTag}>{task.category}</span>
+
+                      {task.due_date && (
+                        <span
+                          style={{
+                            fontSize: '0.75rem',
+                            color: isOverdue ? 'var(--vg-accent)' : 'var(--vg-text-muted)',
+                            fontWeight: isOverdue ? 600 : 400,
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '0.25rem',
+                          }}
+                        >
+                          <IconClock size={12} />
+                          {task.due_date === todayStr ? 'Due Today' : `Due: ${task.due_date}`}
+                          {task.due_time ? ` @ ${task.due_time}` : ''}
+                        </span>
+                      )}
+
+                      {task.estimated_duration && (
+                        <span style={{ fontSize: '0.75rem', color: 'var(--vg-text-muted)', display: 'flex', alignItems: 'center', gap: '0.2rem' }}>
+                          <IconClock size={11} /> {task.estimated_duration}m
+                        </span>
+                      )}
+
+                      {goalObj && (
+                        <span
+                          style={{
+                            fontSize: '0.72rem',
+                            padding: '0.1rem 0.4rem',
+                            borderRadius: '3px',
+                            background: 'var(--vg-surface-strong)',
+                            color: 'var(--vg-text)',
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '0.25rem',
+                          }}
+                        >
+                          <IconGoals size={11} /> {goalObj.title}
+                        </span>
+                      )}
+
+                      {milestoneObj && (
+                        <span
+                          style={{
+                            fontSize: '0.72rem',
+                            padding: '0.1rem 0.4rem',
+                            borderRadius: '3px',
+                            background: 'var(--vg-surface-strong)',
+                            color: 'var(--vg-accent)',
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '0.2rem',
+                          }}
+                        >
+                          <IconMilestone size={11} /> {milestoneObj.title}
+                        </span>
+                      )}
+
+                      {/* Subtasks Counter Badge */}
+                      {subtasks.length > 0 && (
+                        <button
+                          type="button"
+                          onClick={() => toggleExpand(task.id)}
+                          style={{
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '0.25rem',
+                            fontSize: '0.72rem',
+                            padding: '0.12rem 0.45rem',
+                            borderRadius: '4px',
+                            background: 'var(--vg-surface)',
+                            border: '1px solid var(--vg-border)',
+                            color: completedSubtasks.length === subtasks.length ? '#52c41a' : 'var(--vg-text)',
+                            cursor: 'pointer',
+                          }}
+                        >
+                          <IconListPlus size={11} />
+                          {completedSubtasks.length}/{subtasks.length} Subtasks
+                          {isExpanded ? <IconChevronUp size={11} /> : <IconChevronDown size={11} />}
+                        </button>
+                      )}
+                    </div>
                   </div>
 
-                  {task.description && (
-                    <div style={{ fontSize: '0.8rem', color: 'var(--vg-text-muted)', marginTop: '0.2rem', lineHeight: '1.4' }}>
-                      {task.description}
-                    </div>
-                  )}
+                  {/* Actions */}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                    <button
+                      type="button"
+                      className={styles.iconBtn}
+                      onClick={() => {
+                        setEditingTask(task);
+                        setTaskModalOpen(true);
+                      }}
+                      title="Edit Task & Subtasks"
+                    >
+                      <IconEdit size={15} />
+                    </button>
 
-                  {/* Metadata Tags */}
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginTop: '0.4rem', flexWrap: 'wrap' }}>
-                    <span className={`${styles.priorityTag} ${styles[`priority_${task.priority}`]}`}>
-                      {task.priority}
-                    </span>
+                    <button
+                      type="button"
+                      className={styles.iconBtn}
+                      onClick={() => handleDelete(task)}
+                      title="Delete Task"
+                      style={{ color: 'var(--vg-accent)' }}
+                    >
+                      <IconTrash size={15} />
+                    </button>
+                  </div>
+                </div>
 
-                    <span className={styles.categoryTag}>{task.category}</span>
-
-                    {task.due_date && (
-                      <span
+                {/* Inline Subtasks Checklist (Expanded) */}
+                {isExpanded && subtasks.length > 0 && (
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: '0.3rem',
+                      marginLeft: '2rem',
+                      marginTop: '0.25rem',
+                      paddingLeft: '0.5rem',
+                      borderLeft: '2px solid var(--vg-border)',
+                    }}
+                  >
+                    {subtasks.map((st) => (
+                      <div
+                        key={st.id}
                         style={{
-                          fontSize: '0.75rem',
-                          color: isOverdue ? 'var(--vg-accent)' : 'var(--vg-text-muted)',
-                          fontWeight: isOverdue ? 600 : 400,
                           display: 'flex',
                           alignItems: 'center',
-                          gap: '0.25rem',
+                          gap: '0.45rem',
+                          padding: '0.25rem 0.45rem',
+                          borderRadius: 'var(--vg-radius-sm)',
+                          background: st.completed ? 'transparent' : 'var(--vg-surface)',
                         }}
                       >
-                        <IconClock size={12} />
-                        {task.due_date === todayStr ? 'Due Today' : `Due: ${task.due_date}`}
-                        {task.due_time ? ` @ ${task.due_time}` : ''}
-                      </span>
-                    )}
-
-                    {task.estimated_duration && (
-                      <span style={{ fontSize: '0.75rem', color: 'var(--vg-text-muted)' }}>
-                        ⏱ {task.estimated_duration}m
-                      </span>
-                    )}
-
-                    {goalObj && (
-                      <span
-                        style={{
-                          fontSize: '0.72rem',
-                          padding: '0.1rem 0.4rem',
-                          borderRadius: '3px',
-                          background: 'var(--vg-surface-strong)',
-                          color: 'var(--vg-text)',
-                        }}
-                      >
-                        🎯 {goalObj.title}
-                      </span>
-                    )}
-
-                    {milestoneObj && (
-                      <span
-                        style={{
-                          fontSize: '0.72rem',
-                          padding: '0.1rem 0.4rem',
-                          borderRadius: '3px',
-                          background: 'var(--vg-surface-strong)',
-                          color: 'var(--vg-accent)',
-                          display: 'inline-flex',
-                          alignItems: 'center',
-                          gap: '0.2rem',
-                        }}
-                      >
-                        <IconMilestone size={11} /> {milestoneObj.title}
-                      </span>
-                    )}
+                        <button
+                          type="button"
+                          className={`${styles.checkbox} ${st.completed ? styles.checkboxChecked : ''}`}
+                          onClick={() => toggleSubtask(task.id, st.id)}
+                          style={{ width: '15px', height: '15px', margin: 0 }}
+                        >
+                          {st.completed && <IconCheck size={10} />}
+                        </button>
+                        <span
+                          style={{
+                            fontSize: '0.8rem',
+                            color: st.completed ? 'var(--vg-text-muted)' : 'var(--vg-text)',
+                            textDecoration: st.completed ? 'line-through' : 'none',
+                          }}
+                        >
+                          {st.title}
+                        </span>
+                      </div>
+                    ))}
                   </div>
-                </div>
-
-                {/* Actions */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-                  <button
-                    type="button"
-                    className={styles.iconBtn}
-                    onClick={() => {
-                      setEditingTask(task);
-                      setTaskModalOpen(true);
-                    }}
-                    title="Edit Task"
-                  >
-                    <IconEdit size={15} />
-                  </button>
-
-                  <button
-                    type="button"
-                    className={styles.iconBtn}
-                    onClick={() => handleDelete(task)}
-                    title="Delete Task"
-                    style={{ color: 'var(--vg-accent)' }}
-                  >
-                    <IconTrash size={15} />
-                  </button>
-                </div>
+                )}
               </div>
             );
           })}

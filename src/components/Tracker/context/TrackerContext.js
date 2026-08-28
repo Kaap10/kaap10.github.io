@@ -58,6 +58,7 @@ export function TrackerProvider({ children }) {
   const [milestoneModalOpen, setMilestoneModalOpen] = useState(false);
   const [editingMilestone, setEditingMilestone] = useState(null);
   const [selectedGoalForMilestone, setSelectedGoalForMilestone] = useState(null);
+  const [parentMilestoneId, setParentMilestoneId] = useState(null);
 
   const [habitModalOpen, setHabitModalOpen] = useState(false);
   const [editingHabit, setEditingHabit] = useState(null);
@@ -190,6 +191,8 @@ export function TrackerProvider({ children }) {
     const supabase = getSupabase();
     if (!supabase || !user) throw new Error('Not authenticated or Supabase not initialized.');
 
+    const sanitizeUUID = (val) => (!val || val === 'undefined' || val === '' ? null : val);
+
     const payload = {
       title: taskData.title?.trim(),
       description: taskData.description?.trim() || null,
@@ -201,12 +204,25 @@ export function TrackerProvider({ children }) {
       due_time: taskData.due_time?.trim() || null,
       estimated_duration: Number(taskData.estimated_duration) || null,
       recurrence: taskData.recurrence || 'none',
-      goal_id: taskData.goal_id ? taskData.goal_id : null,
-      milestone_id: taskData.milestone_id ? taskData.milestone_id : null,
+      goal_id: sanitizeUUID(taskData.goal_id),
+      milestone_id: sanitizeUUID(taskData.milestone_id),
+      subtasks: Array.isArray(taskData.subtasks) ? taskData.subtasks : [],
       completed_at: taskData.status === 'completed' ? new Date().toISOString() : null,
     };
 
-    const { data, error: err } = await supabase.from('tasks').insert([payload]).select().single();
+    let { data, error: err } = await supabase.from('tasks').insert([payload]).select().single();
+    if (err && (err.message?.includes('subtasks') || err.code === 'PGRST204')) {
+      const fallbackPayload = { ...payload };
+      delete fallbackPayload.subtasks;
+      const retry = await supabase.from('tasks').insert([fallbackPayload]).select().single();
+      if (!retry.error) {
+        data = { ...retry.data, subtasks: payload.subtasks };
+        err = null;
+      } else {
+        err = retry.error;
+      }
+    }
+
     if (err) {
       console.error('Error inserting task:', err);
       throw err;
@@ -219,6 +235,9 @@ export function TrackerProvider({ children }) {
   const updateTask = async (id, updates) => {
     const supabase = getSupabase();
     if (!supabase) throw new Error('Supabase not initialized.');
+    if (!id || id === 'undefined') throw new Error('Valid task ID is required for update.');
+
+    const sanitizeUUID = (val) => (!val || val === 'undefined' || val === '' ? null : val);
 
     const payload = { ...updates };
     if (payload.title) payload.title = payload.title.trim();
@@ -226,8 +245,9 @@ export function TrackerProvider({ children }) {
     if ('due_date' in payload) payload.due_date = payload.due_date ? payload.due_date : null;
     if ('due_time' in payload) payload.due_time = payload.due_time?.trim() || null;
     if ('estimated_duration' in payload) payload.estimated_duration = Number(payload.estimated_duration) || null;
-    if ('goal_id' in payload) payload.goal_id = payload.goal_id ? payload.goal_id : null;
-    if ('milestone_id' in payload) payload.milestone_id = payload.milestone_id ? payload.milestone_id : null;
+    if ('goal_id' in payload) payload.goal_id = sanitizeUUID(payload.goal_id);
+    if ('milestone_id' in payload) payload.milestone_id = sanitizeUUID(payload.milestone_id);
+    if ('subtasks' in payload) payload.subtasks = Array.isArray(payload.subtasks) ? payload.subtasks : [];
 
     if (updates.status === 'completed' && !updates.completed_at) {
       payload.completed_at = new Date().toISOString();
@@ -235,12 +255,24 @@ export function TrackerProvider({ children }) {
       payload.completed_at = null;
     }
 
-    const { data, error: err } = await supabase
+    let { data, error: err } = await supabase
       .from('tasks')
       .update(payload)
       .eq('id', id)
       .select()
       .single();
+
+    if (err && (err.message?.includes('subtasks') || err.code === 'PGRST204')) {
+      const fallbackPayload = { ...payload };
+      delete fallbackPayload.subtasks;
+      const retry = await supabase.from('tasks').update(fallbackPayload).eq('id', id).select().single();
+      if (!retry.error) {
+        data = { ...retry.data, subtasks: payload.subtasks };
+        err = null;
+      } else {
+        err = retry.error;
+      }
+    }
 
     if (err) {
       console.error('Error updating task:', err);
@@ -249,6 +281,33 @@ export function TrackerProvider({ children }) {
 
     setTasks((prev) => prev.map((t) => (t.id === id ? data : t)));
     return data;
+  };
+
+  const toggleSubtask = async (taskId, subtaskId) => {
+    const task = tasks.find((t) => t.id === taskId);
+    if (!task) return;
+
+    const currentSubtasks = Array.isArray(task.subtasks) ? task.subtasks : [];
+    const updatedSubtasks = currentSubtasks.map((st) =>
+      st.id === subtaskId ? { ...st, completed: !st.completed } : st
+    );
+
+    // Optimistic UI update
+    setTasks((prev) =>
+      prev.map((t) => (t.id === taskId ? { ...t, subtasks: updatedSubtasks } : t))
+    );
+
+    const supabase = getSupabase();
+    if (!supabase) return;
+
+    try {
+      await supabase
+        .from('tasks')
+        .update({ subtasks: updatedSubtasks })
+        .eq('id', taskId);
+    } catch (err) {
+      console.warn('Could not persist subtasks to Supabase:', err);
+    }
   };
 
   const toggleTaskStatus = async (id) => {
@@ -335,6 +394,7 @@ export function TrackerProvider({ children }) {
   const updateGoal = async (id, updates) => {
     const supabase = getSupabase();
     if (!supabase) throw new Error('Supabase not initialized.');
+    if (!id || id === 'undefined') throw new Error('Valid goal ID is required for update.');
 
     const payload = { ...updates };
     if (payload.title) payload.title = payload.title.trim();
@@ -342,6 +402,10 @@ export function TrackerProvider({ children }) {
     if ('target_date' in payload) payload.target_date = payload.target_date ? payload.target_date : null;
     if ('progress' in payload) payload.progress = Math.min(100, Math.max(0, Number(payload.progress) || 0));
 
+    // 1. Instant 0ms Optimistic UI Update
+    setGoals((prev) => prev.map((g) => (g.id === id ? { ...g, ...payload } : g)));
+
+    // 2. Background sync to Supabase
     const { data, error: err } = await supabase
       .from('goals')
       .update(payload)
@@ -351,10 +415,13 @@ export function TrackerProvider({ children }) {
 
     if (err) {
       console.error('Error updating goal:', err);
+      fetchData();
       throw err;
     }
 
-    setGoals((prev) => prev.map((g) => (g.id === id ? data : g)));
+    if (data) {
+      setGoals((prev) => prev.map((g) => (g.id === id ? data : g)));
+    }
     return data;
   };
 
@@ -377,17 +444,32 @@ export function TrackerProvider({ children }) {
     const supabase = getSupabase();
     if (!supabase || !user) throw new Error('Not authenticated or Supabase not initialized.');
 
+    const sanitizeUUID = (val) => (!val || val === 'undefined' || val === '' ? null : val);
+
     const payload = {
       title: milestoneData.title?.trim(),
       description: milestoneData.description?.trim() || null,
-      goal_id: milestoneData.goal_id,
+      goal_id: sanitizeUUID(milestoneData.goal_id),
+      parent_id: sanitizeUUID(milestoneData.parent_id),
       user_id: user.id,
       target_date: milestoneData.target_date ? milestoneData.target_date : null,
       status: milestoneData.status || 'active',
       order_index: Number(milestoneData.order_index) || 0,
     };
 
-    const { data, error: err } = await supabase.from('milestones').insert([payload]).select().single();
+    let { data, error: err } = await supabase.from('milestones').insert([payload]).select().single();
+    if (err && (err.message?.includes('parent_id') || err.code === 'PGRST204')) {
+      const fallbackPayload = { ...payload };
+      delete fallbackPayload.parent_id;
+      const retry = await supabase.from('milestones').insert([fallbackPayload]).select().single();
+      if (!retry.error) {
+        data = { ...retry.data, parent_id: payload.parent_id };
+        err = null;
+      } else {
+        err = retry.error;
+      }
+    }
+
     if (err) {
       console.error('Error creating milestone:', err);
       throw err;
@@ -400,18 +482,35 @@ export function TrackerProvider({ children }) {
   const updateMilestone = async (id, updates) => {
     const supabase = getSupabase();
     if (!supabase) throw new Error('Supabase not initialized.');
+    if (!id || id === 'undefined') throw new Error('Valid milestone ID is required for update.');
+
+    const sanitizeUUID = (val) => (!val || val === 'undefined' || val === '' ? null : val);
 
     const payload = { ...updates };
     if (payload.title) payload.title = payload.title.trim();
     if ('description' in payload) payload.description = payload.description?.trim() || null;
     if ('target_date' in payload) payload.target_date = payload.target_date ? payload.target_date : null;
+    if ('goal_id' in payload) payload.goal_id = sanitizeUUID(payload.goal_id);
+    if ('parent_id' in payload) payload.parent_id = sanitizeUUID(payload.parent_id);
 
-    const { data, error: err } = await supabase
+    let { data, error: err } = await supabase
       .from('milestones')
       .update(payload)
       .eq('id', id)
       .select()
       .single();
+
+    if (err && (err.message?.includes('parent_id') || err.code === 'PGRST204')) {
+      const fallbackPayload = { ...payload };
+      delete fallbackPayload.parent_id;
+      const retry = await supabase.from('milestones').update(fallbackPayload).eq('id', id).select().single();
+      if (!retry.error) {
+        data = { ...retry.data, parent_id: payload.parent_id };
+        err = null;
+      } else {
+        err = retry.error;
+      }
+    }
 
     if (err) throw err;
 
@@ -444,10 +543,12 @@ export function TrackerProvider({ children }) {
     const supabase = getSupabase();
     if (!supabase || !user) throw new Error('Not authenticated or Supabase not initialized.');
 
+    const sanitizeUUID = (val) => (!val || val === 'undefined' || val === '' ? null : val);
+
     const payload = {
       user_id: user.id,
-      task_id: sessionData.task_id || null,
-      goal_id: sessionData.goal_id || null,
+      task_id: sanitizeUUID(sessionData.task_id),
+      goal_id: sanitizeUUID(sessionData.goal_id),
       duration: Math.max(0, Math.floor(Number(sessionData.duration) || 0)), // in seconds
       started_at: sessionData.started_at || new Date().toISOString(),
       completed_at: sessionData.completed_at || new Date().toISOString(),
@@ -983,6 +1084,8 @@ export function TrackerProvider({ children }) {
         setEditingMilestone,
         selectedGoalForMilestone,
         setSelectedGoalForMilestone,
+        parentMilestoneId,
+        setParentMilestoneId,
 
         habitModalOpen,
         setHabitModalOpen,
@@ -1010,6 +1113,7 @@ export function TrackerProvider({ children }) {
         createTask,
         updateTask,
         toggleTaskStatus,
+        toggleSubtask,
         deleteTask,
 
         createGoal,

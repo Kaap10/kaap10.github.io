@@ -25,10 +25,11 @@ CREATE TABLE IF NOT EXISTS public.goals (
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
--- 3. Milestones Table (Nested under Goals)
+-- 3. Milestones Table (Nested under Goals with Sub-milestone hierarchy)
 CREATE TABLE IF NOT EXISTS public.milestones (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   goal_id UUID NOT NULL REFERENCES public.goals(id) ON DELETE CASCADE,
+  parent_id UUID REFERENCES public.milestones(id) ON DELETE CASCADE,
   user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
   title TEXT NOT NULL,
   description TEXT,
@@ -38,12 +39,13 @@ CREATE TABLE IF NOT EXISTS public.milestones (
   created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
--- 4. Tasks Table
+-- 4. Tasks Table (With sub-tasks and checklist support)
 CREATE TABLE IF NOT EXISTS public.tasks (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
   goal_id UUID REFERENCES public.goals(id) ON DELETE SET NULL,
   milestone_id UUID REFERENCES public.milestones(id) ON DELETE SET NULL,
+  parent_task_id UUID REFERENCES public.tasks(id) ON DELETE CASCADE,
   title TEXT NOT NULL,
   description TEXT,
   status TEXT NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'in_progress', 'completed')),
@@ -53,9 +55,15 @@ CREATE TABLE IF NOT EXISTS public.tasks (
   due_time TEXT,
   estimated_duration INTEGER,
   recurrence TEXT NOT NULL DEFAULT 'none' CHECK (recurrence IN ('none', 'daily', 'weekly', 'monthly')),
+  subtasks JSONB DEFAULT '[]'::jsonb,
   completed_at TIMESTAMP WITH TIME ZONE,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
+
+-- Safe Incremental Migrations (for existing DBs)
+ALTER TABLE public.milestones ADD COLUMN IF NOT EXISTS parent_id UUID REFERENCES public.milestones(id) ON DELETE CASCADE;
+ALTER TABLE public.tasks ADD COLUMN IF NOT EXISTS parent_task_id UUID REFERENCES public.tasks(id) ON DELETE CASCADE;
+ALTER TABLE public.tasks ADD COLUMN IF NOT EXISTS subtasks JSONB DEFAULT '[]'::jsonb;
 
 -- 5. Focus Sessions Table
 CREATE TABLE IF NOT EXISTS public.focus_sessions (

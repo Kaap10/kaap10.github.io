@@ -33,6 +33,10 @@ import {
   X,
   ChevronLeft,
   ChevronRight,
+  ChevronDown,
+  ChevronUp,
+  CornerDownRight,
+  ListPlus,
   Settings,
   Video,
   FileCode,
@@ -179,6 +183,22 @@ export function IconChevronLeft({ size = 16, className = '' }) {
 
 export function IconChevronRight({ size = 16, className = '' }) {
   return <ChevronRight size={size} className={className} />;
+}
+
+export function IconChevronDown({ size = 16, className = '' }) {
+  return <ChevronDown size={size} className={className} />;
+}
+
+export function IconChevronUp({ size = 16, className = '' }) {
+  return <ChevronUp size={size} className={className} />;
+}
+
+export function IconCornerDownRight({ size = 14, className = '' }) {
+  return <CornerDownRight size={size} className={className} />;
+}
+
+export function IconListPlus({ size = 16, className = '' }) {
+  return <ListPlus size={size} className={className} />;
 }
 
 export function IconSettings({ size = 16, className = '' }) {

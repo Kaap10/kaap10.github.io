@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useTracker } from '../../context/TrackerContext';
-import { IconClose, IconTasks, IconAlertCircle } from '../Common/Icons';
+import { IconClose, IconTasks, IconAlertCircle, IconPlus, IconTrash, IconCheck } from '../Common/Icons';
 import styles from '../../styles/tracker.module.css';
 
 const CATEGORIES = ['DSA', 'AI/ML', 'Development', 'Learning', 'Personal', 'Other'];
@@ -35,6 +35,8 @@ export default function TaskModal({ isOpen, onClose, initialData = null }) {
   const [recurrence, setRecurrence] = useState('none');
   const [goalId, setGoalId] = useState('');
   const [milestoneId, setMilestoneId] = useState('');
+  const [subtasks, setSubtasks] = useState([]);
+  const [newSubtaskTitle, setNewSubtaskTitle] = useState('');
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
 
@@ -52,6 +54,7 @@ export default function TaskModal({ isOpen, onClose, initialData = null }) {
       setRecurrence(initialData.recurrence || 'none');
       setGoalId(initialData.goal_id || '');
       setMilestoneId(initialData.milestone_id || '');
+      setSubtasks(Array.isArray(initialData.subtasks) ? initialData.subtasks : []);
     } else {
       setTitle('');
       setDescription('');
@@ -64,13 +67,37 @@ export default function TaskModal({ isOpen, onClose, initialData = null }) {
       setRecurrence('none');
       setGoalId('');
       setMilestoneId('');
+      setSubtasks([]);
     }
+    setNewSubtaskTitle('');
   }, [initialData, isOpen]);
 
   // Filter milestones matching selected goal
   const availableMilestones = milestones.filter((m) => !goalId || m.goal_id === goalId);
 
   if (!isOpen) return null;
+
+  const handleAddSubtask = (e) => {
+    e.preventDefault();
+    if (!newSubtaskTitle.trim()) return;
+    const newSub = {
+      id: `st_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
+      title: newSubtaskTitle.trim(),
+      completed: false,
+    };
+    setSubtasks((prev) => [...prev, newSub]);
+    setNewSubtaskTitle('');
+  };
+
+  const handleToggleSubtaskLocal = (id) => {
+    setSubtasks((prev) =>
+      prev.map((s) => (s.id === id ? { ...s, completed: !s.completed } : s))
+    );
+  };
+
+  const handleDeleteSubtaskLocal = (id) => {
+    setSubtasks((prev) => prev.filter((s) => s.id !== id));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -94,9 +121,10 @@ export default function TaskModal({ isOpen, onClose, initialData = null }) {
         recurrence,
         goal_id: goalId || null,
         milestone_id: milestoneId || null,
+        subtasks,
       };
 
-      if (initialData) {
+      if (initialData && initialData.id) {
         await updateTask(initialData.id, payload);
       } else {
         await createTask(payload);
@@ -118,7 +146,7 @@ export default function TaskModal({ isOpen, onClose, initialData = null }) {
             <span style={{ color: 'var(--vg-accent)' }}>
               <IconTasks size={18} />
             </span>
-            <h3 className={styles.modalTitle}>{initialData ? 'Edit Task' : 'Create Task'}</h3>
+            <h3 className={styles.modalTitle}>{initialData && initialData.id ? 'Edit Task' : 'Create Task'}</h3>
           </div>
           <button type="button" className={styles.iconBtn} onClick={onClose}>
             <IconClose size={16} />
@@ -167,6 +195,84 @@ export default function TaskModal({ isOpen, onClose, initialData = null }) {
               className={styles.textarea}
               rows={2}
             />
+          </div>
+
+          {/* Subtasks Checklist Section */}
+          <div className={styles.formGroup}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.25rem' }}>
+              <label className={styles.formLabel}>Subtasks & Action Items ({subtasks.filter(s => s.completed).length}/{subtasks.length})</label>
+            </div>
+            
+            {subtasks.length > 0 && (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem', marginBottom: '0.5rem' }}>
+                {subtasks.map((st) => (
+                  <div
+                    key={st.id}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '0.5rem',
+                      padding: '0.35rem 0.6rem',
+                      background: 'var(--vg-surface)',
+                      borderRadius: 'var(--vg-radius-sm)',
+                      border: '1px solid var(--vg-border)',
+                    }}
+                  >
+                    <button
+                      type="button"
+                      onClick={() => handleToggleSubtaskLocal(st.id)}
+                      className={`${styles.checkbox} ${st.completed ? styles.checkboxChecked : ''}`}
+                      style={{ width: '16px', height: '16px', margin: 0 }}
+                    >
+                      {st.completed && <IconCheck size={11} />}
+                    </button>
+                    <span
+                      style={{
+                        fontSize: '0.82rem',
+                        flexGrow: 1,
+                        color: st.completed ? 'var(--vg-text-muted)' : 'var(--vg-text)',
+                        textDecoration: st.completed ? 'line-through' : 'none',
+                      }}
+                    >
+                      {st.title}
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => handleDeleteSubtaskLocal(st.id)}
+                      className={styles.iconBtn}
+                      style={{ padding: '0.15rem' }}
+                    >
+                      <IconTrash size={13} />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            <div style={{ display: 'flex', gap: '0.45rem' }}>
+              <input
+                type="text"
+                placeholder="Add a concrete subtask..."
+                value={newSubtaskTitle}
+                onChange={(e) => setNewSubtaskTitle(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault();
+                    handleAddSubtask(e);
+                  }
+                }}
+                className={styles.input}
+                style={{ fontSize: '0.82rem', padding: '0.4rem 0.65rem' }}
+              />
+              <button
+                type="button"
+                onClick={handleAddSubtask}
+                className={styles.btnSecondary}
+                style={{ fontSize: '0.78rem', padding: '0.4rem 0.75rem', whiteSpace: 'nowrap' }}
+              >
+                <IconPlus size={13} /> Add Subtask
+              </button>
+            </div>
           </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '0.75rem' }}>
@@ -274,7 +380,7 @@ export default function TaskModal({ isOpen, onClose, initialData = null }) {
                 <option value="">No Specific Milestone</option>
                 {availableMilestones.map((m) => (
                   <option key={m.id} value={m.id}>
-                    {m.title} {m.status === 'completed' ? '✓' : ''}
+                    {m.title} {m.status === 'completed' ? '(Completed)' : ''}
                   </option>
                 ))}
               </select>
@@ -286,7 +392,7 @@ export default function TaskModal({ isOpen, onClose, initialData = null }) {
               Cancel
             </button>
             <button type="submit" className={styles.btnPrimary} disabled={loading}>
-              {loading ? 'Saving...' : initialData ? 'Save Changes' : 'Create Task'}
+              {loading ? 'Saving...' : initialData && initialData.id ? 'Save Changes' : 'Create Task'}
             </button>
           </div>
         </form>
