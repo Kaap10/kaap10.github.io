@@ -368,9 +368,10 @@ export default function FocusView() {
                 style={{
                   padding: '0.75rem 1.5rem',
                   fontSize: '0.92rem',
-                  background: '#52c41a',
-                  borderColor: '#52c41a',
+                  background: 'var(--vg-success, #52c41a)',
+                  borderColor: 'var(--vg-success, #52c41a)',
                 }}
+
               >
                 <IconCheck size={16} />
                 <span>{saving ? 'Saving...' : 'Save Log'}</span>

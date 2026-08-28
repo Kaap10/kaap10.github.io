@@ -1,6 +1,7 @@
 -- ==============================================================================
--- Tracker Complete Database Schema (PostgreSQL for Supabase - V1 & V2)
+-- Tracker Complete Database Schema (PostgreSQL for Supabase - V2.1)
 -- Security: Row Level Security (RLS) enabled on all private tables
+-- Safe to run multiple times (IF NOT EXISTS + OR REPLACE + DROP IF EXISTS)
 -- ==============================================================================
 
 -- 1. Profiles Table
@@ -53,14 +54,14 @@ CREATE TABLE IF NOT EXISTS public.tasks (
   category TEXT NOT NULL DEFAULT 'Development',
   due_date DATE,
   due_time TEXT,
-  estimated_duration INTEGER,
+  estimated_duration INTEGER CHECK (estimated_duration IS NULL OR estimated_duration > 0),
   recurrence TEXT NOT NULL DEFAULT 'none' CHECK (recurrence IN ('none', 'daily', 'weekly', 'monthly')),
   subtasks JSONB DEFAULT '[]'::jsonb,
   completed_at TIMESTAMP WITH TIME ZONE,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
--- Safe Incremental Migrations (for existing DBs)
+-- Safe Incremental Migrations (for existing DBs that predate this schema version)
 ALTER TABLE public.milestones ADD COLUMN IF NOT EXISTS parent_id UUID REFERENCES public.milestones(id) ON DELETE CASCADE;
 ALTER TABLE public.tasks ADD COLUMN IF NOT EXISTS parent_task_id UUID REFERENCES public.tasks(id) ON DELETE CASCADE;
 ALTER TABLE public.tasks ADD COLUMN IF NOT EXISTS subtasks JSONB DEFAULT '[]'::jsonb;
@@ -166,43 +167,99 @@ ALTER TABLE public.resources ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.weekly_reviews ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.monthly_reviews ENABLE ROW LEVEL SECURITY;
 
--- RLS Policies
-CREATE POLICY "Users can manage their own profile" ON public.profiles FOR ALL USING (auth.uid() = id) WITH CHECK (auth.uid() = id);
-CREATE POLICY "Users can manage their own goals" ON public.goals FOR ALL USING (auth.uid() = user_id) WITH CHECK (auth.uid() = user_id);
-CREATE POLICY "Users can manage their own milestones" ON public.milestones FOR ALL USING (auth.uid() = user_id) WITH CHECK (auth.uid() = user_id);
-CREATE POLICY "Users can manage their own tasks" ON public.tasks FOR ALL USING (auth.uid() = user_id) WITH CHECK (auth.uid() = user_id);
-CREATE POLICY "Users can manage their own focus sessions" ON public.focus_sessions FOR ALL USING (auth.uid() = user_id) WITH CHECK (auth.uid() = user_id);
-CREATE POLICY "Users can manage their own habits" ON public.habits FOR ALL USING (auth.uid() = user_id) WITH CHECK (auth.uid() = user_id);
-CREATE POLICY "Users can manage their own habit logs" ON public.habit_logs FOR ALL USING (auth.uid() = user_id) WITH CHECK (auth.uid() = user_id);
-CREATE POLICY "Users can manage their own resources" ON public.resources FOR ALL USING (auth.uid() = user_id) WITH CHECK (auth.uid() = user_id);
-CREATE POLICY "Users can manage their own weekly reviews" ON public.weekly_reviews FOR ALL USING (auth.uid() = user_id) WITH CHECK (auth.uid() = user_id);
-CREATE POLICY "Users can manage their own monthly reviews" ON public.monthly_reviews FOR ALL USING (auth.uid() = user_id) WITH CHECK (auth.uid() = user_id);
+-- ==============================================================================
+-- RLS Policies — DROP IF EXISTS then CREATE for safe idempotent re-runs
+-- ==============================================================================
 
--- Triggers
+DROP POLICY IF EXISTS "Users can manage their own profile" ON public.profiles;
+CREATE POLICY "Users can manage their own profile"
+  ON public.profiles FOR ALL TO authenticated
+  USING (auth.uid() = id) WITH CHECK (auth.uid() = id);
+
+DROP POLICY IF EXISTS "Users can manage their own goals" ON public.goals;
+CREATE POLICY "Users can manage their own goals"
+  ON public.goals FOR ALL TO authenticated
+  USING (auth.uid() = user_id) WITH CHECK (auth.uid() = user_id);
+
+DROP POLICY IF EXISTS "Users can manage their own milestones" ON public.milestones;
+CREATE POLICY "Users can manage their own milestones"
+  ON public.milestones FOR ALL TO authenticated
+  USING (auth.uid() = user_id) WITH CHECK (auth.uid() = user_id);
+
+DROP POLICY IF EXISTS "Users can manage their own tasks" ON public.tasks;
+CREATE POLICY "Users can manage their own tasks"
+  ON public.tasks FOR ALL TO authenticated
+  USING (auth.uid() = user_id) WITH CHECK (auth.uid() = user_id);
+
+DROP POLICY IF EXISTS "Users can manage their own focus sessions" ON public.focus_sessions;
+CREATE POLICY "Users can manage their own focus sessions"
+  ON public.focus_sessions FOR ALL TO authenticated
+  USING (auth.uid() = user_id) WITH CHECK (auth.uid() = user_id);
+
+DROP POLICY IF EXISTS "Users can manage their own habits" ON public.habits;
+CREATE POLICY "Users can manage their own habits"
+  ON public.habits FOR ALL TO authenticated
+  USING (auth.uid() = user_id) WITH CHECK (auth.uid() = user_id);
+
+DROP POLICY IF EXISTS "Users can manage their own habit logs" ON public.habit_logs;
+CREATE POLICY "Users can manage their own habit logs"
+  ON public.habit_logs FOR ALL TO authenticated
+  USING (auth.uid() = user_id) WITH CHECK (auth.uid() = user_id);
+
+DROP POLICY IF EXISTS "Users can manage their own resources" ON public.resources;
+CREATE POLICY "Users can manage their own resources"
+  ON public.resources FOR ALL TO authenticated
+  USING (auth.uid() = user_id) WITH CHECK (auth.uid() = user_id);
+
+DROP POLICY IF EXISTS "Users can manage their own weekly reviews" ON public.weekly_reviews;
+CREATE POLICY "Users can manage their own weekly reviews"
+  ON public.weekly_reviews FOR ALL TO authenticated
+  USING (auth.uid() = user_id) WITH CHECK (auth.uid() = user_id);
+
+DROP POLICY IF EXISTS "Users can manage their own monthly reviews" ON public.monthly_reviews;
+CREATE POLICY "Users can manage their own monthly reviews"
+  ON public.monthly_reviews FOR ALL TO authenticated
+  USING (auth.uid() = user_id) WITH CHECK (auth.uid() = user_id);
+
+-- ==============================================================================
+-- Profile Trigger (auto-create profile on user sign-up)
+-- SET search_path = public prevents search_path injection attacks
+-- ON CONFLICT DO NOTHING handles duplicate triggers gracefully
+-- ==============================================================================
 CREATE OR REPLACE FUNCTION public.handle_new_user()
-RETURNS TRIGGER AS $$
+RETURNS TRIGGER
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public
+AS $$
 BEGIN
   INSERT INTO public.profiles (id, email, full_name)
-  VALUES (new.id, new.email, new.raw_user_meta_data->>'full_name');
+  VALUES (new.id, new.email, new.raw_user_meta_data->>'full_name')
+  ON CONFLICT (id) DO NOTHING;
   RETURN new;
 END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
+$$;
 
 DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
 CREATE TRIGGER on_auth_user_created
   AFTER INSERT ON auth.users
   FOR EACH ROW EXECUTE PROCEDURE public.handle_new_user();
 
+-- ==============================================================================
 -- Performance Indexes
+-- ==============================================================================
 CREATE INDEX IF NOT EXISTS idx_tasks_user_id ON public.tasks(user_id);
 CREATE INDEX IF NOT EXISTS idx_tasks_due_date ON public.tasks(due_date);
 CREATE INDEX IF NOT EXISTS idx_tasks_milestone_id ON public.tasks(milestone_id);
 CREATE INDEX IF NOT EXISTS idx_milestones_goal_id ON public.milestones(goal_id);
+CREATE INDEX IF NOT EXISTS idx_milestones_parent_id ON public.milestones(parent_id);
 CREATE INDEX IF NOT EXISTS idx_focus_sessions_user_id ON public.focus_sessions(user_id);
 CREATE INDEX IF NOT EXISTS idx_habits_user_id ON public.habits(user_id);
 CREATE INDEX IF NOT EXISTS idx_habit_logs_user_id_date ON public.habit_logs(user_id, completed_date);
 
+-- ==============================================================================
 -- Schema Privileges for Supabase Roles (authenticated & anon)
+-- ==============================================================================
 GRANT USAGE ON SCHEMA public TO anon, authenticated;
 GRANT ALL ON ALL TABLES IN SCHEMA public TO anon, authenticated;
 GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO anon, authenticated;

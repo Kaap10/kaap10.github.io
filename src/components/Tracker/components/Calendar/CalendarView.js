@@ -25,10 +25,13 @@ export default function CalendarView() {
     setTaskModalOpen,
   } = useTracker();
 
+  // Local date helper — avoids off-by-one errors in timezones ahead of UTC (e.g. IST UTC+5:30)
+  const localDateStr = (d) => {
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  };
+
   const [currentDate, setCurrentDate] = useState(new Date());
-  const [selectedDateStr, setSelectedDateStr] = useState(
-    new Date().toISOString().split('T')[0]
-  );
+  const [selectedDateStr, setSelectedDateStr] = useState(() => localDateStr(new Date()));
   const [viewMode, setViewMode] = useState('month'); // 'month' | 'week' | 'day'
 
   // Month navigation helpers
@@ -48,7 +51,7 @@ export default function CalendarView() {
       const d = new Date(currentDate);
       d.setDate(d.getDate() - 1);
       setCurrentDate(d);
-      setSelectedDateStr(d.toISOString().split('T')[0]);
+      setSelectedDateStr(localDateStr(d));
     }
   };
 
@@ -63,15 +66,16 @@ export default function CalendarView() {
       const d = new Date(currentDate);
       d.setDate(d.getDate() + 1);
       setCurrentDate(d);
-      setSelectedDateStr(d.toISOString().split('T')[0]);
+      setSelectedDateStr(localDateStr(d));
     }
   };
 
   const handleToday = () => {
     const now = new Date();
     setCurrentDate(now);
-    setSelectedDateStr(now.toISOString().split('T')[0]);
+    setSelectedDateStr(localDateStr(now));
   };
+
 
   // Calendar Days Calculation for Month View
   const calendarDays = useMemo(() => {
@@ -81,12 +85,12 @@ export default function CalendarView() {
 
     const days = [];
 
-    // Previous month padding
+    // Previous month padding — use local date parts to avoid UTC off-by-one
     for (let i = firstDayIndex - 1; i >= 0; i--) {
       const d = daysInPrevMonth - i;
       const prevDate = new Date(year, month - 1, d);
       days.push({
-        dateStr: prevDate.toISOString().split('T')[0],
+        dateStr: localDateStr(prevDate),
         dayNum: d,
         isCurrentMonth: false,
       });
@@ -96,7 +100,7 @@ export default function CalendarView() {
     for (let i = 1; i <= daysInMonth; i++) {
       const curDate = new Date(year, month, i);
       days.push({
-        dateStr: curDate.toISOString().split('T')[0],
+        dateStr: localDateStr(curDate),
         dayNum: i,
         isCurrentMonth: true,
       });
@@ -107,7 +111,7 @@ export default function CalendarView() {
     for (let i = 1; i <= remaining; i++) {
       const nextDate = new Date(year, month + 1, i);
       days.push({
-        dateStr: nextDate.toISOString().split('T')[0],
+        dateStr: localDateStr(nextDate),
         dayNum: i,
         isCurrentMonth: false,
       });
@@ -115,6 +119,7 @@ export default function CalendarView() {
 
     return days;
   }, [year, month]);
+
 
   // Aggregate items mapped by date
   const eventsByDate = useMemo(() => {
@@ -192,7 +197,8 @@ export default function CalendarView() {
   }, [tasks, goals, milestones, focusSessions, habitLogs, habits]);
 
   const selectedDateEvents = eventsByDate[selectedDateStr] || [];
-  const todayStr = new Date().toISOString().split('T')[0];
+  const todayStr = localDateStr(new Date());
+
 
   return (
     <div className={styles.viewContainer}>

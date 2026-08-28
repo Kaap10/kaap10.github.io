@@ -30,11 +30,13 @@ export default function HabitsView() {
   for (let i = 6; i >= 0; i--) {
     const d = new Date(now);
     d.setDate(d.getDate() - i);
-    const dateStr = d.toISOString().split('T')[0];
+    // Use local date parts to avoid UTC off-by-one in timezones ahead of UTC (e.g. IST)
+    const dateStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
     const dayName = d.toLocaleDateString('en-US', { weekday: 'short' });
     const dayNum = d.getDate();
     last7Days.push({ dateStr, dayName, dayNum, isToday: i === 0 });
   }
+
 
   const handleDelete = (habit) => {
     openConfirmModal(
@@ -145,7 +147,7 @@ export default function HabitsView() {
                   </div>
 
                   {/* Center: 7-Day Check-in Matrix */}
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', overflowX: 'auto', minWidth: 0 }}>
                     {last7Days.map((day) => {
                       const isCompleted = logsForHabit.has(day.dateStr);
                       return (

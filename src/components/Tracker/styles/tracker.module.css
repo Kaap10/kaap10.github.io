@@ -661,9 +661,11 @@
     right: 0;
     background: var(--vg-bg-elevated);
     border-top: 1px solid var(--vg-border);
-    padding: 0.5rem 0.75rem;
+    padding: 0.4rem 0.5rem;
     z-index: 900;
-    justify-content: space-around;
+    overflow-x: auto;
+    gap: 0.25rem;
+    -webkit-overflow-scrolling: touch;
   }
 
   .mobileNavItem {
@@ -677,9 +679,12 @@
     font-size: 0.68rem;
     font-weight: 500;
     cursor: pointer;
-    padding: 0.25rem;
+    padding: 0.3rem 0.6rem;
     border-radius: var(--vg-radius-sm);
+    flex-shrink: 0;
+    white-space: nowrap;
   }
+
 
   .mobileNavItemActive {
     color: var(--vg-accent);

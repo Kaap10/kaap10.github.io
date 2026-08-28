@@ -13,7 +13,9 @@ import {
   IconAlertCircle,
   IconSparkles,
   IconRepeat,
+  IconChevronRight,
 } from '../Common/Icons';
+
 import styles from '../../styles/tracker.module.css';
 
 export default function DashboardView() {
@@ -54,7 +56,9 @@ export default function DashboardView() {
     return <DashboardSkeleton />;
   }
 
-  const todayStr = new Date().toISOString().split('T')[0];
+  const d = new Date();
+  const todayStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+
 
   // Today's task completion progress
   const completedToday = todayTasks.filter((t) => t.status === 'completed').length;
@@ -182,9 +186,12 @@ export default function DashboardView() {
               type="button"
               className={styles.linkBtn}
               onClick={() => setActiveTab('tasks')}
+              style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}
             >
-              View All Tasks →
+              <span>View All Tasks</span>
+              <IconChevronRight size={14} />
             </button>
+
           </div>
 
           {todayTasks.length === 0 ? (
@@ -268,8 +275,10 @@ export default function DashboardView() {
                 type="button"
                 className={styles.linkBtn}
                 onClick={() => setActiveTab('habits')}
+                style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}
               >
-                Manage Habits →
+                <span>Manage Habits</span>
+                <IconChevronRight size={14} />
               </button>
             </div>
 
@@ -334,9 +343,12 @@ export default function DashboardView() {
                 type="button"
                 className={styles.linkBtn}
                 onClick={() => setActiveTab('goals')}
+                style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}
               >
-                View Roadmaps →
+                <span>View Roadmaps</span>
+                <IconChevronRight size={14} />
               </button>
+
             </div>
 
             {activeGoals.length === 0 ? (

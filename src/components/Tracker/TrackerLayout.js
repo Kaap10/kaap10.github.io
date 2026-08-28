@@ -84,7 +84,7 @@ export default function TrackerLayout({ children }) {
                 <span>Search...</span>
               </div>
               <kbd style={{ fontSize: '0.68rem', padding: '0.1rem 0.35rem', background: 'var(--vg-surface)', borderRadius: '3px', border: '1px solid var(--vg-border)' }}>
-                ⌘K
+                {typeof navigator !== 'undefined' && /Mac/i.test(navigator.platform) ? '⌘K' : 'Ctrl+K'}
               </kbd>
             </button>
           </div>
@@ -181,7 +181,7 @@ export default function TrackerLayout({ children }) {
 
       {/* Mobile Bottom Navigation */}
       <nav className={styles.mobileNav}>
-        {navItems.slice(0, 5).map((item) => {
+        {navItems.map((item) => {
           const Icon = item.icon;
           const isActive = activeTab === item.id;
           return (
@@ -197,6 +197,7 @@ export default function TrackerLayout({ children }) {
           );
         })}
       </nav>
+
     </div>
   );
 }

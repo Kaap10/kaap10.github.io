@@ -29,12 +29,37 @@ export default function GlobalSearchModal({ isOpen, onClose }) {
   } = useTracker();
 
   const [query, setQuery] = useState('');
+  const [selectedIndex, setSelectedIndex] = useState(0);
+
 
   useEffect(() => {
     if (isOpen) {
       setQuery('');
+      setSelectedIndex(0);
     }
   }, [isOpen]);
+
+  useEffect(() => {
+    setSelectedIndex(0);
+  }, [query]);
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      setSelectedIndex((prev) => (results.length > 0 ? (prev + 1) % results.length : 0));
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      setSelectedIndex((prev) => (results.length > 0 ? (prev - 1 + results.length) % results.length : 0));
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      if (results[selectedIndex]) {
+        results[selectedIndex].onSelect();
+      }
+    } else if (e.key === 'Escape') {
+      onClose();
+    }
+  };
+
 
   const results = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -196,6 +221,7 @@ export default function GlobalSearchModal({ isOpen, onClose }) {
             placeholder="Search tasks, goals, milestones, resources, notes..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
+            onKeyDown={handleKeyDown}
             style={{
               flex: 1,
               background: 'transparent',
@@ -224,10 +250,12 @@ export default function GlobalSearchModal({ isOpen, onClose }) {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
               {results.map((res, idx) => {
                 const IconComponent = res.icon;
+                const isSelected = idx === selectedIndex;
                 return (
                   <div
                     key={idx}
                     onClick={res.onSelect}
+                    onMouseEnter={() => setSelectedIndex(idx)}
                     style={{
                       display: 'flex',
                       alignItems: 'center',
@@ -235,11 +263,12 @@ export default function GlobalSearchModal({ isOpen, onClose }) {
                       padding: '0.65rem 0.85rem',
                       borderRadius: 'var(--vg-radius-sm)',
                       cursor: 'pointer',
-                      transition: 'background 0.15s ease',
-                      border: '1px solid transparent',
+                      background: isSelected ? 'var(--vg-surface-strong)' : 'transparent',
+                      border: isSelected ? '1px solid var(--vg-border)' : '1px solid transparent',
                     }}
                     className={styles.searchItem}
                   >
+
                     <div
                       style={{
                         width: '32px',

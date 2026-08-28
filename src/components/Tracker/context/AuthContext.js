@@ -23,13 +23,14 @@ export function AuthProvider({ children }) {
       return;
     }
 
-    setIsConfigured(true);
     const supabase = getSupabase();
     if (!supabase) {
       setIsConfigured(false);
       setLoading(false);
       return;
     }
+
+    setIsConfigured(true);
 
     try {
       const { data, error } = await supabase.auth.getSession();
@@ -43,23 +44,34 @@ export function AuthProvider({ children }) {
     } finally {
       setLoading(false);
     }
-
-    // Subscribe to auth state changes
-    const { data: authListener } = supabase.auth.onAuthStateChange(
-      (_event, currentSession) => {
-        setSession(currentSession);
-        setUser(currentSession?.user || null);
-        setLoading(false);
-      }
-    );
-
-    return () => {
-      authListener?.subscription?.unsubscribe();
-    };
   }, []);
 
   useEffect(() => {
     checkConfigAndInit();
+
+    // Subscribe to auth state changes — non-async wrapper so React properly uses cleanup
+    const supabase = getSupabase();
+    if (!supabase) return;
+
+    const { data: authListener } = supabase.auth.onAuthStateChange(
+      (_event, currentSession) => {
+        setSession(currentSession);
+        setUser((prev) => {
+          const next = currentSession?.user || null;
+          if (!prev && !next) return null;
+          if (prev && next && prev.id === next.id && prev.email === next.email) {
+            return prev;
+          }
+          return next;
+        });
+        setLoading(false);
+      }
+    );
+
+
+    return () => {
+      authListener?.subscription?.unsubscribe();
+    };
   }, [checkConfigAndInit]);
 
   const signIn = async (email, password) => {
@@ -91,9 +103,7 @@ export function AuthProvider({ children }) {
       email,
       password,
       options: {
-        data: {
-          full_name: fullName,
-        },
+        data: { full_name: fullName },
       },
     });
 
@@ -102,8 +112,13 @@ export function AuthProvider({ children }) {
       throw error;
     }
 
-    setSession(data.session);
-    setUser(data.user);
+    // If email confirmation is disabled, session is present → auto-login.
+    // If email confirmation is enabled, session is null → user must confirm first.
+    if (data.session) {
+      setSession(data.session);
+      setUser(data.user);
+    }
+
     return data;
   };
 
@@ -121,8 +136,15 @@ export function AuthProvider({ children }) {
     const supabase = getSupabase();
     if (!supabase) throw new Error('Supabase is not configured.');
 
+    // Build redirect URL respecting base path (GitHub Pages, Docusaurus, etc.)
+    let redirectTo;
+    if (typeof window !== 'undefined') {
+      const base = window.location.origin + (window.location.pathname.split('/tracker')[0] || '');
+      redirectTo = `${base}/tracker`;
+    }
+
     const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: typeof window !== 'undefined' ? `${window.location.origin}/tracker` : undefined,
+      redirectTo,
     });
 
     if (error) {

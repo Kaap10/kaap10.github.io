@@ -42,20 +42,25 @@ export default function ReviewsView() {
   const [saveSuccess, setSaveSuccess] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
 
+  // Local date helper — avoids off-by-one in timezones ahead of UTC (e.g. IST UTC+5:30)
+  const toLocalDateStr = (d) =>
+    `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+
   // Calculate Monday of the current week
   const weekStartDateStr = useMemo(() => {
     const d = new Date(currentDate);
     const day = d.getDay();
     const diff = d.getDate() - day + (day === 0 ? -6 : 1); // adjust when day is sunday
     d.setDate(diff);
-    return d.toISOString().split('T')[0];
+    return toLocalDateStr(d);
   }, [currentDate]);
 
   // Calculate first day of current month
   const monthStartDateStr = useMemo(() => {
     const d = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
-    return d.toISOString().split('T')[0];
+    return toLocalDateStr(d);
   }, [currentDate]);
+
 
   // Auto-calculated Quantitative Metrics for Week
   const weekMetrics = useMemo(() => {

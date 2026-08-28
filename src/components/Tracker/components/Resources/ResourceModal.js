@@ -46,21 +46,27 @@ export default function ResourceModal({ isOpen, onClose, initialData = null }) {
       setErrorMsg('Title is required.');
       return;
     }
-    if (!url.trim()) {
+    let cleanUrl = url.trim();
+    if (!cleanUrl) {
       setErrorMsg('Resource URL is required.');
       return;
     }
+    if (!/^https?:\/\//i.test(cleanUrl) && !cleanUrl.startsWith('/')) {
+      cleanUrl = 'https://' + cleanUrl;
+    }
 
     setLoading(true);
+
     try {
       const payload = {
         title: title.trim(),
-        url: url.trim(),
+        url: cleanUrl,
         type,
         category,
         description: description.trim() || null,
         favorite,
       };
+
 
       if (initialData && initialData.id) {
         await updateResource(initialData.id, payload);

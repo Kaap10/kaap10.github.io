@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
-import { IconLock, IconUser, IconSettings, IconAlertCircle, IconCheck } from '../Common/Icons';
+import { IconLock, IconUser, IconSettings, IconAlertCircle, IconCheck, IconChevronLeft } from '../Common/Icons';
 import ConfigModal from './ConfigModal';
 import styles from '../../styles/tracker.module.css';
 
 export default function AuthView() {
+
   const { isConfigured, signIn, signUp, resetPassword, authError, setAuthError } = useAuth();
   const [mode, setMode] = useState('login'); // 'login' | 'register' | 'forgot'
   
@@ -25,12 +26,17 @@ export default function AuthView() {
       if (mode === 'login') {
         await signIn(email.trim(), password);
       } else if (mode === 'register') {
-        await signUp(email.trim(), password, fullName.trim());
-        setSuccessMsg('Account created! If email confirmation is enabled, check your inbox.');
+        const result = await signUp(email.trim(), password, fullName.trim());
+        // If session is null, email confirmation is required
+        if (!result?.session) {
+          setSuccessMsg('Account created! Please check your inbox and confirm your email to log in.');
+        }
+        // If session exists, AuthContext auto-logs in and redirects — no message needed
       } else if (mode === 'forgot') {
         await resetPassword(email.trim());
         setSuccessMsg('Password reset link sent to your email.');
       }
+
     } catch (err) {
       // Error handled by AuthContext
     } finally {
@@ -151,10 +157,16 @@ export default function AuthView() {
                 cursor: 'pointer',
                 background: 'var(--vg-bg-elevated)',
                 color: 'var(--vg-text)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '0.35rem',
               }}
             >
-              ← Back to Sign In
+              <IconChevronLeft size={14} />
+              <span>Back to Sign In</span>
             </button>
+
           )}
         </div>
 

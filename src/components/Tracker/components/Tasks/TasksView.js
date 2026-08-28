@@ -41,7 +41,9 @@ export default function TasksView() {
   const [sortBy, setSortBy] = useState('due_date'); // due_date, priority, created_at, status
   const [expandedTasks, setExpandedTasks] = useState({});
 
-  const todayStr = new Date().toISOString().split('T')[0];
+  const _td = new Date();
+  const todayStr = `${_td.getFullYear()}-${String(_td.getMonth() + 1).padStart(2, '0')}-${String(_td.getDate()).padStart(2, '0')}`;
+
 
   const toggleExpand = (taskId) => {
     setExpandedTasks((prev) => ({ ...prev, [taskId]: !prev[taskId] }));

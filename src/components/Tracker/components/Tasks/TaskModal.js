@@ -61,7 +61,11 @@ export default function TaskModal({ isOpen, onClose, initialData = null }) {
       setStatus('pending');
       setPriority('medium');
       setCategory('Development');
-      setDueDate(new Date().toISOString().split('T')[0]);
+      // Use local date to avoid off-by-one issue in timezones ahead of UTC (e.g. IST UTC+5:30)
+      const localToday = new Date();
+      const localDateStr = `${localToday.getFullYear()}-${String(localToday.getMonth() + 1).padStart(2, '0')}-${String(localToday.getDate()).padStart(2, '0')}`;
+      setDueDate(localDateStr);
+
       setDueTime('');
       setEstimatedDuration('');
       setRecurrence('none');
@@ -275,7 +279,7 @@ export default function TaskModal({ isOpen, onClose, initialData = null }) {
             </div>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '0.75rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: '0.75rem' }}>
             <div className={styles.formGroup}>
               <label className={styles.formLabel}>Status</label>
               <select value={status} onChange={(e) => setStatus(e.target.value)} className={styles.select}>
@@ -304,7 +308,8 @@ export default function TaskModal({ isOpen, onClose, initialData = null }) {
             </div>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '0.75rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: '0.75rem' }}>
+
             <div className={styles.formGroup}>
               <label className={styles.formLabel}>Due Date</label>
               <input

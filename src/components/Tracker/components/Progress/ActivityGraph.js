@@ -27,7 +27,8 @@ export default function ActivityGraph() {
     const cur = new Date(start);
 
     while (cur <= end) {
-      const dateStr = cur.toISOString().split('T')[0];
+      const dateStr = `${cur.getFullYear()}-${String(cur.getMonth() + 1).padStart(2, '0')}-${String(cur.getDate()).padStart(2, '0')}`;
+
       const entry = activityMap[dateStr] || {
         date: dateStr,
         tasksCompleted: 0,
@@ -96,7 +97,8 @@ export default function ActivityGraph() {
             key={idx}
             style={{
               position: 'absolute',
-              left: `${m.index * 15}px`,
+              left: `${m.index * 14}px`,
+
             }}
           >
             {m.name}

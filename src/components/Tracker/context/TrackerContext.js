@@ -1,11 +1,18 @@
-import React, { createContext, useContext, useState, useEffect, useCallback, useMemo } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { useAuth } from './AuthContext';
 import { getSupabase } from '../services/supabaseClient';
 import { generateInsights } from '../services/insightsEngine';
 
+
 const TrackerContext = createContext(null);
 
+export const formatLocalDate = (d) => {
+  const date = d instanceof Date ? d : new Date(d);
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+};
+
 export function TrackerProvider({ children }) {
+
   const { user } = useAuth();
 
   // Core Data Collections
@@ -98,11 +105,15 @@ export function TrackerProvider({ children }) {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
+  // Track active user ID to only wipe state on actual account switch
+  const activeUserId = user?.id || null;
+  const prevUserIdRef = useRef(activeUserId);
+
   // ============================================================================
-  // Fetch All Tracker Data from Supabase
+  // Fetch All Tracker Data from Supabase (Strictly Scoped by User ID)
   // ============================================================================
-  const fetchData = useCallback(async () => {
-    if (!user) {
+  const fetchData = useCallback(async (isSilent = false) => {
+    if (!user || !user.id) {
       setTasks([]);
       setGoals([]);
       setMilestones([]);
@@ -122,7 +133,9 @@ export function TrackerProvider({ children }) {
       return;
     }
 
-    setLoading(true);
+    if (!isSilent) {
+      setLoading(true);
+    }
     setError(null);
 
     try {
@@ -137,15 +150,15 @@ export function TrackerProvider({ children }) {
         weeklyReviewsRes,
         monthlyReviewsRes,
       ] = await Promise.all([
-        supabase.from('tasks').select('*').order('created_at', { ascending: false }),
-        supabase.from('goals').select('*').order('created_at', { ascending: false }),
-        supabase.from('milestones').select('*').order('order_index', { ascending: true }),
-        supabase.from('focus_sessions').select('*').order('created_at', { ascending: false }),
-        supabase.from('habits').select('*').order('created_at', { ascending: true }),
-        supabase.from('habit_logs').select('*').order('completed_date', { ascending: false }),
-        supabase.from('resources').select('*').order('created_at', { ascending: false }),
-        supabase.from('weekly_reviews').select('*').order('week_start_date', { ascending: false }),
-        supabase.from('monthly_reviews').select('*').order('month_start_date', { ascending: false }),
+        supabase.from('tasks').select('*').eq('user_id', user.id).order('created_at', { ascending: false }),
+        supabase.from('goals').select('*').eq('user_id', user.id).order('created_at', { ascending: false }),
+        supabase.from('milestones').select('*').eq('user_id', user.id).order('order_index', { ascending: true }),
+        supabase.from('focus_sessions').select('*').eq('user_id', user.id).order('created_at', { ascending: false }),
+        supabase.from('habits').select('*').eq('user_id', user.id).order('created_at', { ascending: true }),
+        supabase.from('habit_logs').select('*').eq('user_id', user.id).order('completed_date', { ascending: false }),
+        supabase.from('resources').select('*').eq('user_id', user.id).order('created_at', { ascending: false }),
+        supabase.from('weekly_reviews').select('*').eq('user_id', user.id).order('week_start_date', { ascending: false }),
+        supabase.from('monthly_reviews').select('*').eq('user_id', user.id).order('month_start_date', { ascending: false }),
       ]);
 
       // Check table existence errors gracefully
@@ -178,11 +191,29 @@ export function TrackerProvider({ children }) {
     } finally {
       setLoading(false);
     }
-  }, [user]);
+  }, [user?.id]);
 
   useEffect(() => {
-    fetchData();
-  }, [fetchData]);
+    // Only wipe data if the user account actually changed (login/logout/switch account)
+    if (prevUserIdRef.current !== activeUserId) {
+      prevUserIdRef.current = activeUserId;
+      setTasks([]);
+      setGoals([]);
+      setMilestones([]);
+      setFocusSessions([]);
+      setHabits([]);
+      setHabitLogs([]);
+      setResources([]);
+      setWeeklyReviews([]);
+      setMonthlyReviews([]);
+      fetchData(false);
+    } else {
+      // Same user re-focusing or background revalidation: silent refresh without flashing skeleton
+      fetchData(true);
+    }
+  }, [activeUserId, fetchData]);
+
+
 
   // ============================================================================
   // Task Operations (Advanced V2 with Recurrence & Milestones)
@@ -316,10 +347,12 @@ export function TrackerProvider({ children }) {
 
     if (task.status !== 'completed' && task.recurrence && task.recurrence !== 'none') {
       // Recurring task completed: mark current completed and generate next cycle date
-      const now = new Date();
       let nextDate = new Date();
-      if (task.due_date) {
-        nextDate = new Date(task.due_date);
+      if (task.due_date && typeof task.due_date === 'string') {
+        const parts = task.due_date.split('-').map(Number);
+        if (parts.length === 3) {
+          nextDate = new Date(parts[0], parts[1] - 1, parts[2]);
+        }
       }
       if (task.recurrence === 'daily') {
         nextDate.setDate(nextDate.getDate() + 1);
@@ -329,7 +362,8 @@ export function TrackerProvider({ children }) {
         nextDate.setMonth(nextDate.getMonth() + 1);
       }
 
-      const nextDateStr = nextDate.toISOString().split('T')[0];
+      const nextDateStr = formatLocalDate(nextDate);
+
 
       // Mark current occurrence as completed
       await updateTask(id, { status: 'completed' });
@@ -532,9 +566,26 @@ export function TrackerProvider({ children }) {
     const { error: err } = await supabase.from('milestones').delete().eq('id', id);
     if (err) throw err;
 
-    setMilestones((prev) => prev.filter((m) => m.id !== id));
+    // Remove the deleted milestone AND all its sub-milestones from local state
+    // (mirrors ON DELETE CASCADE on parent_id in the database)
+    setMilestones((prev) => {
+      const idsToRemove = new Set([id]);
+      // Collect all child milestone IDs recursively
+      let changed = true;
+      while (changed) {
+        changed = false;
+        prev.forEach((m) => {
+          if (m.parent_id && idsToRemove.has(m.parent_id) && !idsToRemove.has(m.id)) {
+            idsToRemove.add(m.id);
+            changed = true;
+          }
+        });
+      }
+      return prev.filter((m) => !idsToRemove.has(m.id));
+    });
     setTasks((prev) => prev.map((t) => (t.milestone_id === id ? { ...t, milestone_id: null } : t)));
   };
+
 
   // ============================================================================
   // Focus Session Operations
@@ -733,32 +784,29 @@ export function TrackerProvider({ children }) {
       updated_at: new Date().toISOString(),
     };
 
-    const existing = weeklyReviews.find((r) => r.week_start_date === reviewData.week_start_date);
-    let resultData;
+    // Use upsert to handle concurrent saves without duplicate key errors
+    const { data, error: err } = await supabase
+      .from('weekly_reviews')
+      .upsert(payload, { onConflict: 'user_id,week_start_date' })
+      .select()
+      .single();
 
-    if (existing) {
-      const { data, error: err } = await supabase
-        .from('weekly_reviews')
-        .update(payload)
-        .eq('id', existing.id)
-        .select()
-        .single();
-      if (err) throw err;
-      resultData = data;
-      setWeeklyReviews((prev) => prev.map((r) => (r.id === existing.id ? data : r)));
-    } else {
-      const { data, error: err } = await supabase
-        .from('weekly_reviews')
-        .insert([payload])
-        .select()
-        .single();
-      if (err) throw err;
-      resultData = data;
-      setWeeklyReviews((prev) => [data, ...prev]);
-    }
+    if (err) throw err;
 
-    return resultData;
+    setWeeklyReviews((prev) => {
+      const idx = prev.findIndex((r) => r.week_start_date === data.week_start_date && r.user_id === data.user_id);
+      if (idx >= 0) {
+        const updated = [...prev];
+        updated[idx] = data;
+        return updated;
+      }
+      return [data, ...prev];
+    });
+
+    return data;
   };
+
+
 
   const saveMonthlyReview = async (reviewData) => {
     const supabase = getSupabase();
@@ -780,37 +828,38 @@ export function TrackerProvider({ children }) {
       updated_at: new Date().toISOString(),
     };
 
-    const existing = monthlyReviews.find((r) => r.month_start_date === reviewData.month_start_date);
-    let resultData;
+    // Use upsert to handle concurrent saves without duplicate key errors
+    const { data, error: err } = await supabase
+      .from('monthly_reviews')
+      .upsert(payload, { onConflict: 'user_id,month_start_date' })
+      .select()
+      .single();
 
-    if (existing) {
-      const { data, error: err } = await supabase
-        .from('monthly_reviews')
-        .update(payload)
-        .eq('id', existing.id)
-        .select()
-        .single();
-      if (err) throw err;
-      resultData = data;
-      setMonthlyReviews((prev) => prev.map((r) => (r.id === existing.id ? data : r)));
-    } else {
-      const { data, error: err } = await supabase
-        .from('monthly_reviews')
-        .insert([payload])
-        .select()
-        .single();
-      if (err) throw err;
-      resultData = data;
-      setMonthlyReviews((prev) => [data, ...prev]);
-    }
+    if (err) throw err;
 
-    return resultData;
+    setMonthlyReviews((prev) => {
+      const idx = prev.findIndex((r) => r.month_start_date === data.month_start_date && r.user_id === data.user_id);
+      if (idx >= 0) {
+        const updated = [...prev];
+        updated[idx] = data;
+        return updated;
+      }
+      return [data, ...prev];
+    });
+
+    return data;
   };
+
 
   // ============================================================================
   // Derived Analytics & Productivity Statistics (Real Database Data)
   // ============================================================================
-  const todayStr = useMemo(() => new Date().toISOString().split('T')[0], []);
+  // Use local date string to avoid off-by-one date issues in timezones ahead of UTC (e.g. IST UTC+5:30)
+  const todayStr = useMemo(() => {
+    const d = new Date();
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  }, []);
+
 
   const todayTasks = useMemo(
     () => tasks.filter((t) => t.due_date === todayStr),
@@ -843,7 +892,7 @@ export function TrackerProvider({ children }) {
       // Current streak calculation
       let currentStreak = 0;
       let checkDate = new Date(today);
-      const checkDateStr = checkDate.toISOString().split('T')[0];
+      const checkDateStr = formatLocalDate(checkDate);
 
       // If not completed today, start checking from yesterday
       if (!logSet.has(checkDateStr)) {
@@ -851,7 +900,7 @@ export function TrackerProvider({ children }) {
       }
 
       while (true) {
-        const dStr = checkDate.toISOString().split('T')[0];
+        const dStr = formatLocalDate(checkDate);
         if (logSet.has(dStr)) {
           currentStreak++;
           checkDate.setDate(checkDate.getDate() - 1);
@@ -866,11 +915,12 @@ export function TrackerProvider({ children }) {
       let prevDate = null;
 
       logs.forEach((dStr) => {
-        const d = new Date(dStr);
+        const [y, m, d] = dStr.split('-').map(Number);
+        const curDate = new Date(y, m - 1, d);
         if (!prevDate) {
           tempStreak = 1;
         } else {
-          const diffDays = Math.round((d.getTime() - prevDate.getTime()) / (1000 * 3600 * 24));
+          const diffDays = Math.round((curDate.getTime() - prevDate.getTime()) / (1000 * 3600 * 24));
           if (diffDays === 1) {
             tempStreak++;
           } else if (diffDays > 1) {
@@ -878,7 +928,7 @@ export function TrackerProvider({ children }) {
           }
         }
         if (tempStreak > longestStreak) longestStreak = tempStreak;
-        prevDate = d;
+        prevDate = curDate;
       });
 
       // 30-day completion rate
@@ -886,7 +936,7 @@ export function TrackerProvider({ children }) {
       for (let i = 0; i < 30; i++) {
         const d = new Date(today);
         d.setDate(d.getDate() - i);
-        if (logSet.has(d.toISOString().split('T')[0])) {
+        if (logSet.has(formatLocalDate(d))) {
           last30DaysCompleted++;
         }
       }
@@ -924,7 +974,7 @@ export function TrackerProvider({ children }) {
       const sDate = new Date(s.completed_at || s.created_at);
 
       totalSecs += duration;
-      if (sDate.toISOString().split('T')[0] === todayStr) todaySecs += duration;
+      if (formatLocalDate(sDate) === todayStr) todaySecs += duration;
       if (sDate >= startOfWeek) weekSecs += duration;
       if (sDate >= startOfMonth) monthSecs += duration;
     });
@@ -950,7 +1000,7 @@ export function TrackerProvider({ children }) {
     for (let i = 364; i >= 0; i--) {
       const d = new Date(now);
       d.setDate(d.getDate() - i);
-      const key = d.toISOString().split('T')[0];
+      const key = formatLocalDate(d);
       map[key] = {
         date: key,
         tasksCompleted: 0,
@@ -959,6 +1009,7 @@ export function TrackerProvider({ children }) {
         totalScore: 0,
       };
     }
+
 
     // 1. Task completions
     tasks.forEach((t) => {

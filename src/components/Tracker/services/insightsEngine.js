@@ -12,7 +12,8 @@ export function generateInsights({
 }) {
   const insights = [];
   const now = new Date();
-  const todayStr = now.toISOString().split('T')[0];
+  const todayStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+
 
   // Helper date boundaries
   const oneWeekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
