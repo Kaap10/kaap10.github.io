@@ -2,6 +2,7 @@ import React from 'react';
 import { useTracker } from '../../context/TrackerContext';
 import QuickActions from './QuickActions';
 import EmptyState from '../Common/EmptyState';
+import { DashboardSkeleton } from '../Common/LoadingSkeleton';
 import {
   IconTasks,
   IconGoals,
@@ -17,6 +18,7 @@ import styles from '../../styles/tracker.module.css';
 
 export default function DashboardView() {
   const {
+    loading,
     tasks,
     goals,
     habits,
@@ -32,6 +34,10 @@ export default function DashboardView() {
     setTaskModalOpen,
     setActiveTab,
   } = useTracker();
+
+  if (loading) {
+    return <DashboardSkeleton />;
+  }
 
   const todayStr = new Date().toISOString().split('T')[0];
 

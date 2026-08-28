@@ -2,6 +2,17 @@ import React, { useMemo } from 'react';
 import { useTracker } from '../../context/TrackerContext';
 import ActivityGraph from './ActivityGraph';
 import {
+  BarChart,
+  Bar,
+  AreaChart,
+  Area,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+  CartesianGrid,
+} from 'recharts';
+import {
   IconProgress,
   IconTasks,
   IconFocus,
@@ -10,13 +21,45 @@ import {
 } from '../Common/Icons';
 import styles from '../../styles/tracker.module.css';
 
-export default function ProgressView() {
-  const { tasks, focusSessions, habits, habitLogs, lifetimeStats } = useTracker();
+// Custom Dark Mode Tooltip for Recharts
+function CustomTooltip({ active, payload, label, unit = '' }) {
+  if (active && payload && payload.length) {
+    return (
+      <div
+        style={{
+          background: '#1a1a1a',
+          border: '1px solid rgba(255, 255, 255, 0.15)',
+          borderRadius: '6px',
+          padding: '0.5rem 0.75rem',
+          fontSize: '0.78rem',
+          color: '#ffffff',
+          boxShadow: '0 8px 24px rgba(0, 0, 0, 0.4)',
+        }}
+      >
+        <div style={{ fontWeight: 600, marginBottom: '0.25rem', color: 'rgba(255, 255, 255, 0.8)' }}>
+          {label}
+        </div>
+        {payload.map((entry, index) => (
+          <div key={index} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginTop: '0.15rem' }}>
+            <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: entry.color }} />
+            <span>
+              {entry.name}: <strong>{entry.value} {unit}</strong>
+            </span>
+          </div>
+        ))}
+      </div>
+    );
+  }
+  return null;
+}
 
-  // 1. Last 7 Days Task Velocity Breakdown
-  const last7DaysVelocity = useMemo(() => {
+export default function ProgressView() {
+  const { tasks, focusSessions, lifetimeStats } = useTracker();
+
+  // 1. Last 7 Days Task Velocity (Recharts data)
+  const taskVelocityData = useMemo(() => {
     const now = new Date();
-    const days = [];
+    const list = [];
     const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
     for (let i = 6; i >= 0; i--) {
@@ -24,24 +67,50 @@ export default function ProgressView() {
       d.setDate(d.getDate() - i);
       const dStr = d.toISOString().split('T')[0];
 
-      const planned = tasks.filter((t) => (t.due_date === dStr || t.created_at?.startsWith(dStr))).length;
+      const planned = tasks.filter((t) => t.due_date === dStr || t.created_at?.startsWith(dStr)).length;
       const completed = tasks.filter((t) => t.status === 'completed' && t.completed_at?.startsWith(dStr)).length;
 
-      days.push({
-        dateStr: dStr,
-        dayLabel: dayNames[d.getDay()],
-        planned,
-        completed,
+      list.push({
+        day: dayNames[d.getDay()],
+        date: dStr,
+        Planned: planned,
+        Completed: completed,
       });
     }
 
-    return days;
+    return list;
   }, [tasks]);
 
-  // Max value for scaling SVG chart bars
-  const maxDayTasks = Math.max(1, ...last7DaysVelocity.map((d) => Math.max(d.planned, d.completed)));
+  // 2. Last 7 Days Deep Work Focus Time (Recharts data)
+  const focusTimeData = useMemo(() => {
+    const now = new Date();
+    const list = [];
+    const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
-  // 2. Category Distribution Data
+    for (let i = 6; i >= 0; i--) {
+      const d = new Date(now);
+      d.setDate(d.getDate() - i);
+      const dStr = d.toISOString().split('T')[0];
+
+      const totalSecs = focusSessions
+        .filter((s) => (s.completed_at || s.created_at)?.startsWith(dStr))
+        .reduce((acc, s) => acc + (Number(s.duration) || 0), 0);
+
+      const hours = Number((totalSecs / 3600).toFixed(1));
+      const mins = Math.round(totalSecs / 60);
+
+      list.push({
+        day: dayNames[d.getDay()],
+        date: dStr,
+        Hours: hours,
+        Minutes: mins,
+      });
+    }
+
+    return list;
+  }, [focusSessions]);
+
+  // 3. Category Distribution Data
   const categoryStats = useMemo(() => {
     const counts = {};
     tasks.forEach((t) => {
@@ -123,103 +192,96 @@ export default function ProgressView() {
         <ActivityGraph />
       </div>
 
-      {/* Two-Column Analytics Charts */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '1.5rem' }}>
-        {/* Left: 7-Day Velocity Chart */}
+      {/* Two-Column Recharts Visualizations */}
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
+        {/* Left: Recharts 7-Day Velocity Bar Chart */}
         <div className={styles.card}>
-          <h3 className={styles.cardTitle} style={{ marginBottom: '1rem' }}>
-            7-Day Execution Velocity (Planned vs Completed)
-          </h3>
-
-          <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', height: '180px', paddingTop: '1rem', borderBottom: '1px solid var(--vg-border)' }}>
-            {last7DaysVelocity.map((day) => {
-              const compHeightPct = (day.completed / maxDayTasks) * 100;
-              const planHeightPct = (day.planned / maxDayTasks) * 100;
-
-              return (
-                <div
-                  key={day.dateStr}
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    gap: '0.5rem',
-                    flex: 1,
-                    height: '100%',
-                    justifyContent: 'flex-end',
-                  }}
-                >
-                  <div style={{ display: 'flex', gap: '4px', alignItems: 'flex-end', height: '140px', width: '28px', justifyContent: 'center' }}>
-                    {/* Planned Bar */}
-                    <div
-                      style={{
-                        width: '8px',
-                        height: `${Math.max(4, planHeightPct)}%`,
-                        borderRadius: '2px 2px 0 0',
-                        background: 'var(--vg-surface-strong)',
-                      }}
-                      title={`Planned: ${day.planned}`}
-                    />
-                    {/* Completed Bar */}
-                    <div
-                      style={{
-                        width: '8px',
-                        height: `${Math.max(4, compHeightPct)}%`,
-                        borderRadius: '2px 2px 0 0',
-                        background: 'var(--vg-accent)',
-                      }}
-                      title={`Completed: ${day.completed}`}
-                    />
-                  </div>
-
-                  <span style={{ fontSize: '0.75rem', color: 'var(--vg-text-muted)' }}>
-                    {day.dayLabel}
-                  </span>
-                </div>
-              );
-            })}
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
+            <h3 className={styles.cardTitle}>7-Day Task Completion Velocity</h3>
+            <span style={{ fontSize: '0.75rem', color: 'var(--vg-text-muted)' }}>Planned vs Completed</span>
           </div>
 
-          <div style={{ display: 'flex', justifyContent: 'center', gap: '1.5rem', marginTop: '1rem', fontSize: '0.78rem', color: 'var(--vg-text-muted)' }}>
+          <div style={{ height: '220px', width: '100%' }}>
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={taskVelocityData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255, 255, 255, 0.05)" vertical={false} />
+                <XAxis dataKey="day" stroke="var(--vg-text-muted)" fontSize={12} tickLine={false} axisLine={{ stroke: 'var(--vg-border)' }} />
+                <YAxis stroke="var(--vg-text-muted)" fontSize={12} allowDecimals={false} tickLine={false} axisLine={{ stroke: 'var(--vg-border)' }} />
+                <Tooltip content={<CustomTooltip />} />
+                <Bar dataKey="Planned" fill="rgba(255, 255, 255, 0.15)" radius={[3, 3, 0, 0]} maxBarSize={20} />
+                <Bar dataKey="Completed" fill="var(--vg-accent)" radius={[3, 3, 0, 0]} maxBarSize={20} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+
+          <div style={{ display: 'flex', justifyContent: 'center', gap: '1.5rem', marginTop: '0.75rem', fontSize: '0.78rem', color: 'var(--vg-text-muted)' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-              <div style={{ width: '10px', height: '10px', background: 'var(--vg-surface-strong)', borderRadius: '2px' }} />
-              <span>Planned Tasks</span>
+              <div style={{ width: '8px', height: '8px', background: 'rgba(255, 255, 255, 0.15)', borderRadius: '2px' }} />
+              <span>Planned</span>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-              <div style={{ width: '10px', height: '10px', background: 'var(--vg-accent)', borderRadius: '2px' }} />
-              <span>Completed Tasks</span>
+              <div style={{ width: '8px', height: '8px', background: 'var(--vg-accent)', borderRadius: '2px' }} />
+              <span>Completed</span>
             </div>
           </div>
         </div>
 
-        {/* Right: Work Breakdown by Category */}
+        {/* Right: Recharts 7-Day Focus Time Area Chart */}
         <div className={styles.card}>
-          <h3 className={styles.cardTitle} style={{ marginBottom: '1rem' }}>
-            Work Distribution by Category
-          </h3>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
+            <h3 className={styles.cardTitle}>7-Day Deep Work Focus Time</h3>
+            <span style={{ fontSize: '0.75rem', color: 'var(--vg-text-muted)' }}>Hours per Day</span>
+          </div>
 
-          {categoryStats.length === 0 ? (
-            <div style={{ padding: '2rem', textAlign: 'center', color: 'var(--vg-text-muted)', fontSize: '0.85rem' }}>
-              No categorized task data available yet.
-            </div>
-          ) : (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
-              {categoryStats.map((item) => (
-                <div key={item.category}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.3rem', fontSize: '0.84rem' }}>
-                    <span style={{ fontWeight: 500, color: 'var(--vg-text)' }}>{item.category}</span>
-                    <span style={{ color: 'var(--vg-text-muted)' }}>
-                      {item.count} tasks ({item.pct}%)
-                    </span>
-                  </div>
-                  <div className={styles.progressBarWrapper}>
-                    <div className={styles.progressBarFill} style={{ width: `${item.pct}%` }} />
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
+          <div style={{ height: '220px', width: '100%' }}>
+            <ResponsiveContainer width="100%" height="100%">
+              <AreaChart data={focusTimeData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                <defs>
+                  <linearGradient id="focusGradient" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#fa8c16" stopOpacity={0.4} />
+                    <stop offset="95%" stopColor="#fa8c16" stopOpacity={0.0} />
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255, 255, 255, 0.05)" vertical={false} />
+                <XAxis dataKey="day" stroke="var(--vg-text-muted)" fontSize={12} tickLine={false} axisLine={{ stroke: 'var(--vg-border)' }} />
+                <YAxis stroke="var(--vg-text-muted)" fontSize={12} tickLine={false} axisLine={{ stroke: 'var(--vg-border)' }} />
+                <Tooltip content={<CustomTooltip unit="hrs" />} />
+                <Area type="monotone" dataKey="Hours" stroke="#fa8c16" strokeWidth={2} fillOpacity={1} fill="url(#focusGradient)" />
+              </AreaChart>
+            </ResponsiveContainer>
+          </div>
+
+          <div style={{ display: 'flex', justifyContent: 'center', gap: '0.5rem', marginTop: '0.75rem', fontSize: '0.78rem', color: 'var(--vg-text-muted)' }}>
+            <span>Orange area indicates daily focused execution volume (hours).</span>
+          </div>
         </div>
+      </div>
+
+      {/* Category Breakdown */}
+      <div className={styles.card}>
+        <h3 className={styles.cardTitle} style={{ marginBottom: '1rem' }}>
+          Work Distribution by Category
+        </h3>
+
+        {categoryStats.length === 0 ? (
+          <div style={{ padding: '1.5rem', textAlign: 'center', color: 'var(--vg-text-muted)', fontSize: '0.85rem' }}>
+            No categorized task data available yet.
+          </div>
+        ) : (
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem' }}>
+            {categoryStats.map((item) => (
+              <div key={item.category} style={{ padding: '0.75rem', background: 'var(--vg-surface)', borderRadius: 'var(--vg-radius-sm)', border: '1px solid var(--vg-border)' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.35rem', fontSize: '0.84rem' }}>
+                  <span style={{ fontWeight: 500, color: 'var(--vg-text)' }}>{item.category}</span>
+                  <span style={{ color: 'var(--vg-text-muted)' }}>{item.count} tasks ({item.pct}%)</span>
+                </div>
+                <div className={styles.progressBarWrapper}>
+                  <div className={styles.progressBarFill} style={{ width: `${item.pct}%` }} />
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
