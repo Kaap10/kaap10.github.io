@@ -5,55 +5,103 @@ import {
   IconDashboard,
   IconTasks,
   IconGoals,
+  IconFocus,
+  IconHabit,
+  IconCalendar,
   IconResources,
   IconProgress,
+  IconReview,
+  IconStats,
   IconLogOut,
   IconUser,
+  IconSearch,
 } from './components/Common/Icons';
 import styles from './styles/tracker.module.css';
 
 export default function TrackerLayout({ children }) {
   const { user, signOut } = useAuth();
-  const { activeTab, setActiveTab, error, refreshData } = useTracker();
+  const { activeTab, setActiveTab, error, refreshData, setSearchModalOpen } = useTracker();
 
   const navItems = [
     { id: 'dashboard', label: 'Dashboard', icon: IconDashboard },
     { id: 'tasks', label: 'Tasks', icon: IconTasks },
     { id: 'goals', label: 'Goals', icon: IconGoals },
+    { id: 'focus', label: 'Focus Mode', icon: IconFocus },
+    { id: 'habits', label: 'Habits', icon: IconHabit },
+    { id: 'calendar', label: 'Calendar', icon: IconCalendar },
     { id: 'resources', label: 'Resources', icon: IconResources },
-    { id: 'progress', label: 'Progress', icon: IconProgress },
+    { id: 'progress', label: 'Analytics', icon: IconProgress },
+    { id: 'reviews', label: 'Reviews', icon: IconReview },
+    { id: 'stats', label: 'Statistics', icon: IconStats },
   ];
 
-  const userName = user?.user_metadata?.full_name || 'Vardhman Gupta';
-  const userEmail = user?.email || 'private';
+  const userName = user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'User';
+  const userEmail = user?.email || '';
 
   return (
     <div className={styles.trackerContainer}>
-      {/* Desktop Sidebar */}
+      {/* Desktop Sticky Sidebar */}
       <aside className={styles.sidebar}>
         <div>
+          {/* Workspace Brand / Header */}
           <div className={styles.sidebarHeader}>
-            <div className={styles.brandBadge}>VG</div>
-            <div>
-              <div className={styles.brandTitle}>Tracker</div>
-              <div style={{ fontSize: '0.7rem', color: 'var(--vg-text-subtle)', fontFamily: 'monospace' }}>
-                v1.0 private
-              </div>
+            <div className={styles.brandTitle}>
+              <div
+                style={{
+                  width: '8px',
+                  height: '8px',
+                  borderRadius: '50%',
+                  background: 'var(--vg-accent)',
+                  boxShadow: '0 0 10px var(--vg-accent)',
+                }}
+              />
+              <span>Productivity OS</span>
             </div>
+            <span className={styles.badge}>V2.0</span>
           </div>
 
-          <nav className={styles.navGroup}>
+          {/* Quick Search Trigger */}
+          <div style={{ padding: '0 0.85rem 0.65rem 0.85rem' }}>
+            <button
+              type="button"
+              onClick={() => setSearchModalOpen(true)}
+              style={{
+                width: '100%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                padding: '0.45rem 0.75rem',
+                borderRadius: 'var(--vg-radius-sm)',
+                background: 'var(--vg-surface-strong)',
+                border: '1px solid var(--vg-border)',
+                color: 'var(--vg-text-muted)',
+                fontSize: '0.78rem',
+                cursor: 'pointer',
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem' }}>
+                <IconSearch size={14} />
+                <span>Search...</span>
+              </div>
+              <kbd style={{ fontSize: '0.68rem', padding: '0.1rem 0.35rem', background: 'var(--vg-surface)', borderRadius: '3px', border: '1px solid var(--vg-border)' }}>
+                ⌘K
+              </kbd>
+            </button>
+          </div>
+
+          {/* Navigation Links */}
+          <nav className={styles.navMenu}>
             {navItems.map((item) => {
-              const IconComp = item.icon;
+              const Icon = item.icon;
               const isActive = activeTab === item.id;
               return (
                 <button
                   key={item.id}
                   type="button"
-                  onClick={() => setActiveTab(item.id)}
                   className={`${styles.navItem} ${isActive ? styles.navItemActive : ''}`}
+                  onClick={() => setActiveTab(item.id)}
                 >
-                  <IconComp size={17} />
+                  <Icon size={16} />
                   <span>{item.label}</span>
                 </button>
               );
@@ -64,7 +112,7 @@ export default function TrackerLayout({ children }) {
         {/* User Card & Logout */}
         <div className={styles.sidebarFooter}>
           <div className={styles.userCard}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', minWidth: 0 }}>
               <div
                 style={{
                   width: '28px',
@@ -75,6 +123,7 @@ export default function TrackerLayout({ children }) {
                   alignItems: 'center',
                   justifyContent: 'center',
                   color: 'var(--vg-text-muted)',
+                  flexShrink: 0,
                 }}
               >
                 <IconUser size={14} />
@@ -90,7 +139,7 @@ export default function TrackerLayout({ children }) {
               className={styles.iconBtn}
               onClick={signOut}
               title="Sign Out"
-              style={{ color: 'var(--vg-accent)' }}
+              style={{ color: 'var(--vg-accent)', flexShrink: 0 }}
             >
               <IconLogOut size={15} />
             </button>
@@ -131,18 +180,18 @@ export default function TrackerLayout({ children }) {
       </main>
 
       {/* Mobile Bottom Navigation */}
-      <nav className={styles.mobileBottomNav}>
-        {navItems.map((item) => {
-          const IconComp = item.icon;
+      <nav className={styles.mobileNav}>
+        {navItems.slice(0, 5).map((item) => {
+          const Icon = item.icon;
           const isActive = activeTab === item.id;
           return (
             <button
               key={item.id}
               type="button"
-              onClick={() => setActiveTab(item.id)}
               className={`${styles.mobileNavItem} ${isActive ? styles.mobileNavItemActive : ''}`}
+              onClick={() => setActiveTab(item.id)}
             >
-              <IconComp size={18} />
+              <Icon size={18} />
               <span>{item.label}</span>
             </button>
           );
@@ -151,4 +200,3 @@ export default function TrackerLayout({ children }) {
     </div>
   );
 }
-

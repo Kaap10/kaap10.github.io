@@ -1,100 +1,77 @@
 import React, { useState, useMemo } from 'react';
 import { useTracker } from '../../context/TrackerContext';
+import EmptyState from '../Common/EmptyState';
 import {
+  IconGoals,
   IconPlus,
+  IconMilestone,
+  IconCheck,
   IconEdit,
   IconTrash,
-  IconCalendar,
-  IconGoals,
   IconTasks,
-  IconCheck,
 } from '../Common/Icons';
-import EmptyState from '../Common/EmptyState';
 import styles from '../../styles/tracker.module.css';
 
 export default function GoalsView() {
   const {
     goals,
+    milestones,
     tasks,
-    deleteGoal,
     updateGoal,
-    setGoalModalOpen,
+    deleteGoal,
+    toggleMilestoneStatus,
+    deleteMilestone,
     setEditingGoal,
-    setTaskModalOpen,
+    setGoalModalOpen,
+    setEditingMilestone,
+    setMilestoneModalOpen,
+    setSelectedGoalForMilestone,
     setEditingTask,
-    requestConfirmation,
+    setTaskModalOpen,
+    openConfirmModal,
   } = useTracker();
 
-  const [filterType, setFilterType] = useState('all'); // 'all' | 'short_term' | 'long_term' | 'completed'
-
-  // Map of goal_id -> { totalTasks, completedTasks }
-  const goalTasksStats = useMemo(() => {
-    const map = {};
-    tasks.forEach((t) => {
-      if (t.goal_id) {
-        if (!map[t.goal_id]) {
-          map[t.goal_id] = { total: 0, completed: 0 };
-        }
-        map[t.goal_id].total += 1;
-        if (t.status === 'completed') {
-          map[t.goal_id].completed += 1;
-        }
-      }
-    });
-    return map;
-  }, [tasks]);
+  const [activeTab, setActiveTab] = useState('all'); // all, short_term, long_term, completed
 
   const filteredGoals = useMemo(() => {
     return goals.filter((g) => {
-      if (filterType === 'short_term') return g.type === 'short_term' && g.status === 'active';
-      if (filterType === 'long_term') return g.type === 'long_term' && g.status === 'active';
-      if (filterType === 'completed') return g.status === 'completed';
-      return g.status !== 'archived';
+      if (activeTab === 'short_term') return g.type === 'short_term';
+      if (activeTab === 'long_term') return g.type === 'long_term';
+      if (activeTab === 'completed') return g.status === 'completed' || g.progress >= 100;
+      return true;
     });
-  }, [goals, filterType]);
+  }, [goals, activeTab]);
 
-  const handleDelete = (goal) => {
-    requestConfirmation({
-      title: 'Delete Goal',
-      message: `Are you sure you want to delete "${goal.title}"? Connected tasks will be preserved as independent tasks.`,
-      onConfirm: async () => {
-        await deleteGoal(goal.id);
-      },
-    });
+  const handleAdjustProgress = (goal, delta) => {
+    const newProgress = Math.min(100, Math.max(0, goal.progress + delta));
+    const newStatus = newProgress === 100 ? 'completed' : 'active';
+    updateGoal(goal.id, { progress: newProgress, status: newStatus });
   };
 
-  const handleEdit = (goal) => {
-    setEditingGoal(goal);
-    setGoalModalOpen(true);
+  const handleDeleteGoal = (goal) => {
+    openConfirmModal(
+      'Delete Goal & Milestones?',
+      `Are you sure you want to delete "${goal.title}"? Connected milestones will also be removed.`,
+      () => deleteGoal(goal.id)
+    );
   };
 
-  const handleQuickProgress = async (goal, delta) => {
-    const nextVal = Math.min(100, Math.max(0, goal.progress + delta));
-    const nextStatus = nextVal === 100 ? 'completed' : goal.status === 'completed' ? 'active' : goal.status;
-    await updateGoal(goal.id, { progress: nextVal, status: nextStatus });
-  };
-
-  const handleAddTaskForGoal = (goal) => {
-    setEditingTask({
-      title: '',
-      description: '',
-      priority: 'medium',
-      category: 'Development',
-      due_date: new Date().toISOString().split('T')[0],
-      goal_id: goal.id,
-    });
-    setTaskModalOpen(true);
+  const handleDeleteMilestone = (m) => {
+    openConfirmModal(
+      'Delete Milestone?',
+      `Are you sure you want to remove milestone "${m.title}"?`,
+      () => deleteMilestone(m.id)
+    );
   };
 
   return (
-    <div>
-      {/* Page Header */}
-      <div className={styles.pageHeader}>
-        <div className={styles.headerTitleArea}>
-          <span className={styles.headerKicker}>Milestones &amp; Horizons</span>
-          <h1 className={styles.headerTitle}>Goals</h1>
-          <p className={styles.headerSubtitle}>
-            Track short-term targets and long-term technical achievements.
+    <div className={styles.viewContainer}>
+      {/* Header */}
+      <div className={styles.viewHeader}>
+        <div>
+          <h1 className={styles.viewTitle}>Strategic Goals & Milestones</h1>
+          <p className={styles.viewSubtitle}>
+            Break down ambitious multi-year visions into concrete milestones and actionable tasks.
           </p>
         </div>
 
@@ -111,42 +88,21 @@ export default function GoalsView() {
         </button>
       </div>
 
-      {/* Tabs */}
-      <div
-        style={{
-          display: 'inline-flex',
-          background: 'var(--vg-surface)',
-          padding: '0.25rem',
-          borderRadius: 'var(--vg-radius-sm)',
-          border: '1px solid var(--vg-border)',
-          gap: '0.2rem',
-          marginBottom: '1.5rem',
-        }}
-      >
+      {/* Filter Tabs */}
+      <div className={styles.filterTabs}>
         {[
-          { id: 'all', label: 'All Active' },
+          { id: 'all', label: `All Goals (${goals.length})` },
           { id: 'short_term', label: 'Short-term' },
           { id: 'long_term', label: 'Long-term' },
           { id: 'completed', label: 'Completed' },
-        ].map((tab) => (
+        ].map((t) => (
           <button
-            key={tab.id}
+            key={t.id}
             type="button"
-            onClick={() => setFilterType(tab.id)}
-            style={{
-              padding: '0.35rem 0.85rem',
-              fontSize: '0.8rem',
-              fontWeight: 500,
-              border: 'none',
-              borderRadius: '4px',
-              cursor: 'pointer',
-              background: filterType === tab.id ? 'var(--vg-bg-elevated)' : 'transparent',
-              color: filterType === tab.id ? 'var(--vg-text)' : 'var(--vg-text-muted)',
-              boxShadow: filterType === tab.id ? '0 1px 3px rgba(0,0,0,0.2)' : 'none',
-              transition: 'all 150ms ease',
-            }}
+            className={`${styles.filterTab} ${activeTab === t.id ? styles.filterTabActive : ''}`}
+            onClick={() => setActiveTab(t.id)}
           >
-            {tab.label}
+            {t.label}
           </button>
         ))}
       </div>
@@ -154,74 +110,74 @@ export default function GoalsView() {
       {/* Goals List */}
       {filteredGoals.length === 0 ? (
         <EmptyState
-          icon={<IconGoals size={22} />}
+          icon={IconGoals}
           title="No goals found"
-          description="Create your first goal to guide your daily tasks and measure progress."
-          actionLabel="Create Goal"
+          description="Create your first strategic engineering milestone or roadmap."
+          actionLabel="+ Create First Goal"
           onAction={() => {
             setEditingGoal(null);
             setGoalModalOpen(true);
           }}
         />
       ) : (
-        <div className={styles.goalList}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
           {filteredGoals.map((goal) => {
-            const taskStats = goalTasksStats[goal.id] || { total: 0, completed: 0 };
-            const isCompleted = goal.status === 'completed' || goal.progress === 100;
+            const goalMilestones = milestones.filter((m) => m.goal_id === goal.id);
+            const goalTasks = tasks.filter((t) => t.goal_id === goal.id);
+            const completedGoalTasks = goalTasks.filter((t) => t.status === 'completed');
 
             return (
-              <div key={goal.id} className={styles.goalCard}>
-                <div className={styles.goalHeader}>
-                  <div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.25rem' }}>
+              <div key={goal.id} className={styles.card}>
+                {/* Goal Header & Controls */}
+                <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '1rem' }}>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', flexWrap: 'wrap' }}>
+                      <h3 style={{ fontSize: '1.1rem', fontWeight: 600, color: 'var(--vg-text)' }}>
+                        {goal.title}
+                      </h3>
                       <span
-                        className={styles.badge}
                         style={{
-                          background:
-                            goal.type === 'short_term'
-                              ? 'rgba(255, 77, 79, 0.15)'
-                              : 'rgba(24, 144, 255, 0.15)',
-                          color:
-                            goal.type === 'short_term' ? 'var(--vg-accent)' : '#1890ff',
-                          border: `1px solid ${
-                            goal.type === 'short_term'
-                              ? 'var(--vg-accent-border)'
-                              : 'rgba(24, 144, 255, 0.3)'
-                          }`,
+                          fontSize: '0.7rem',
+                          padding: '0.15rem 0.5rem',
+                          borderRadius: '4px',
+                          background: goal.type === 'short_term' ? 'rgba(82, 196, 26, 0.12)' : 'rgba(24, 144, 255, 0.12)',
+                          color: goal.type === 'short_term' ? '#52c41a' : '#1890ff',
+                          fontWeight: 600,
+                          textTransform: 'uppercase',
                         }}
                       >
                         {goal.type === 'short_term' ? 'Short-term' : 'Long-term'}
                       </span>
-                      {isCompleted && (
-                        <span
-                          className={styles.badge}
-                          style={{
-                            background: 'rgba(82, 196, 26, 0.15)',
-                            color: '#52c41a',
-                            border: '1px solid rgba(82, 196, 26, 0.3)',
-                          }}
-                        >
-                          Completed
+
+                      {goal.status === 'completed' && (
+                        <span style={{ fontSize: '0.7rem', padding: '0.15rem 0.5rem', borderRadius: '4px', background: 'rgba(82, 196, 26, 0.15)', color: '#52c41a', fontWeight: 600 }}>
+                          Completed ✓
                         </span>
                       )}
                     </div>
-                    <h3 className={styles.goalTitle}>{goal.title}</h3>
-                    {goal.description && <p className={styles.goalDesc}>{goal.description}</p>}
+
+                    {goal.description && (
+                      <p style={{ fontSize: '0.85rem', color: 'var(--vg-text-muted)', marginTop: '0.35rem', lineHeight: '1.4' }}>
+                        {goal.description}
+                      </p>
+                    )}
+
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginTop: '0.5rem', fontSize: '0.78rem', color: 'var(--vg-text-muted)' }}>
+                      {goal.target_date && <span>📅 Target: {goal.target_date}</span>}
+                      <span>🎯 {goalMilestones.length} Milestones</span>
+                      <span>✅ {completedGoalTasks.length}/{goalTasks.length} Tasks Done</span>
+                    </div>
                   </div>
 
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                  {/* Actions */}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
                     <button
                       type="button"
                       className={styles.iconBtn}
-                      onClick={() => handleAddTaskForGoal(goal)}
-                      title="Add task for this goal"
-                    >
-                      <IconPlus size={15} />
-                    </button>
-                    <button
-                      type="button"
-                      className={styles.iconBtn}
-                      onClick={() => handleEdit(goal)}
+                      onClick={() => {
+                        setEditingGoal(goal);
+                        setGoalModalOpen(true);
+                      }}
                       title="Edit Goal"
                     >
                       <IconEdit size={15} />
@@ -229,7 +185,7 @@ export default function GoalsView() {
                     <button
                       type="button"
                       className={styles.iconBtn}
-                      onClick={() => handleDelete(goal)}
+                      onClick={() => handleDeleteGoal(goal)}
                       title="Delete Goal"
                       style={{ color: 'var(--vg-accent)' }}
                     >
@@ -238,63 +194,148 @@ export default function GoalsView() {
                   </div>
                 </div>
 
-                {/* Progress Bar & percentage */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginTop: '0.25rem' }}>
-                  <div style={{ flexGrow: 1 }}>
-                    <div className={styles.progressBarTrack}>
-                      <div
-                        className={styles.progressBarFill}
-                        style={{
-                          width: `${goal.progress}%`,
-                          background: isCompleted ? '#52c41a' : 'var(--vg-accent)',
-                        }}
-                      />
+                {/* Progress Bar & Quick Adjusters */}
+                <div style={{ marginTop: '1rem', display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.35rem' }}>
+                      <span style={{ fontSize: '0.8rem', color: 'var(--vg-text-muted)' }}>Completion Progress</span>
+                      <span style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--vg-accent)' }}>
+                        {goal.progress}%
+                      </span>
+                    </div>
+                    <div className={styles.progressBarWrapper}>
+                      <div className={styles.progressBarFill} style={{ width: `${goal.progress}%` }} />
                     </div>
                   </div>
-                  <span style={{ fontSize: '0.86rem', fontWeight: 600, color: 'var(--vg-text)', minWidth: '40px', textAlign: 'right' }}>
-                    {goal.progress}%
-                  </span>
-                </div>
 
-                {/* Footer Meta & Controls */}
-                <div className={styles.goalFooter}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                    {goal.target_date && (
-                      <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}>
-                        <IconCalendar size={13} />
-                        <span>Target: {goal.target_date}</span>
-                      </span>
-                    )}
-
-                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}>
-                      <IconTasks size={13} />
-                      <span>
-                        {taskStats.completed}/{taskStats.total} tasks completed
-                      </span>
-                    </span>
-                  </div>
-
-                  {/* Quick increment / decrement */}
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                  <div style={{ display: 'flex', gap: '0.35rem' }}>
                     <button
                       type="button"
-                      className={styles.iconBtn}
-                      onClick={() => handleQuickProgress(goal, -10)}
-                      title="Decrease 10%"
-                      style={{ fontSize: '0.75rem', padding: '0.2rem 0.4rem' }}
+                      className={styles.btnSecondary}
+                      onClick={() => handleAdjustProgress(goal, -10)}
+                      title="Decrease by 10%"
+                      style={{ padding: '0.25rem 0.5rem', fontSize: '0.75rem' }}
                     >
                       -10%
                     </button>
                     <button
                       type="button"
-                      className={styles.iconBtn}
-                      onClick={() => handleQuickProgress(goal, 10)}
-                      title="Increase 10%"
-                      style={{ fontSize: '0.75rem', padding: '0.2rem 0.4rem' }}
+                      className={styles.btnSecondary}
+                      onClick={() => handleAdjustProgress(goal, 10)}
+                      title="Increase by 10%"
+                      style={{ padding: '0.25rem 0.5rem', fontSize: '0.75rem' }}
                     >
                       +10%
                     </button>
                   </div>
+                </div>
+
+                {/* Milestones Nested Section */}
+                <div style={{ marginTop: '1.25rem', paddingTop: '1rem', borderTop: '1px solid var(--vg-border)' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.75rem' }}>
+                    <span style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--vg-text)', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                      <IconMilestone size={14} style={{ color: 'var(--vg-accent)' }} />
+                      Milestones ({goalMilestones.filter((m) => m.status === 'completed').length}/{goalMilestones.length})
+                    </span>
+
+                    <div style={{ display: 'flex', gap: '0.5rem' }}>
+                      <button
+                        type="button"
+                        className={styles.btnSecondary}
+                        onClick={() => {
+                          setSelectedGoalForMilestone(goal.id);
+                          setEditingMilestone(null);
+                          setMilestoneModalOpen(true);
+                        }}
+                        style={{ fontSize: '0.75rem', padding: '0.25rem 0.55rem' }}
+                      >
+                        <IconPlus size={13} /> Milestone
+                      </button>
+
+                      <button
+                        type="button"
+                        className={styles.btnSecondary}
+                        onClick={() => {
+                          setEditingTask({ goal_id: goal.id });
+                          setTaskModalOpen(true);
+                        }}
+                        style={{ fontSize: '0.75rem', padding: '0.25rem 0.55rem' }}
+                      >
+                        <IconPlus size={13} /> Task
+                      </button>
+                    </div>
+                  </div>
+
+                  {goalMilestones.length === 0 ? (
+                    <div style={{ padding: '0.75rem', borderRadius: 'var(--vg-radius-sm)', background: 'var(--vg-surface)', fontSize: '0.8rem', color: 'var(--vg-text-muted)', textAlign: 'center' }}>
+                      No milestones created yet. Add milestones to track step-by-step progress.
+                    </div>
+                  ) : (
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.45rem' }}>
+                      {goalMilestones.map((m) => {
+                        const isDone = m.status === 'completed';
+                        const milestoneTasks = tasks.filter((t) => t.milestone_id === m.id);
+
+                        return (
+                          <div
+                            key={m.id}
+                            style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'space-between',
+                              padding: '0.55rem 0.75rem',
+                              borderRadius: 'var(--vg-radius-sm)',
+                              background: isDone ? 'rgba(82, 196, 26, 0.06)' : 'var(--vg-surface)',
+                              border: '1px solid var(--vg-border)',
+                            }}
+                          >
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', flex: 1, minWidth: 0 }}>
+                              <button
+                                type="button"
+                                className={`${styles.checkbox} ${isDone ? styles.checkboxChecked : ''}`}
+                                onClick={() => toggleMilestoneStatus(m.id)}
+                              >
+                                {isDone && <IconCheck size={12} />}
+                              </button>
+
+                              <div style={{ minWidth: 0 }}>
+                                <div style={{ fontSize: '0.85rem', fontWeight: 500, color: isDone ? 'var(--vg-text-muted)' : 'var(--vg-text)', textDecoration: isDone ? 'line-through' : 'none' }}>
+                                  {m.title}
+                                </div>
+                                {m.description && (
+                                  <div style={{ fontSize: '0.75rem', color: 'var(--vg-text-muted)' }}>
+                                    {m.description}
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                              {m.target_date && (
+                                <span style={{ fontSize: '0.75rem', color: 'var(--vg-text-muted)' }}>
+                                  📅 {m.target_date}
+                                </span>
+                              )}
+                              {milestoneTasks.length > 0 && (
+                                <span style={{ fontSize: '0.72rem', color: 'var(--vg-text-muted)', display: 'flex', alignItems: 'center', gap: '0.2rem' }}>
+                                  <IconTasks size={11} /> {milestoneTasks.filter((t) => t.status === 'completed').length}/{milestoneTasks.length}
+                                </span>
+                              )}
+                              <button
+                                type="button"
+                                className={styles.iconBtn}
+                                onClick={() => handleDeleteMilestone(m)}
+                                style={{ color: 'var(--vg-accent)', padding: '0.2rem' }}
+                                title="Delete Milestone"
+                              >
+                                <IconTrash size={13} />
+                              </button>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
                 </div>
               </div>
             );
@@ -304,4 +345,3 @@ export default function GoalsView() {
     </div>
   );
 }
-

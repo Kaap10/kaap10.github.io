@@ -6,27 +6,49 @@ import TrackerLayout from './TrackerLayout';
 import DashboardView from './components/Dashboard/DashboardView';
 import TasksView from './components/Tasks/TasksView';
 import GoalsView from './components/Goals/GoalsView';
+import FocusView from './components/Focus/FocusView';
+import HabitsView from './components/Habits/HabitsView';
+import CalendarView from './components/Calendar/CalendarView';
 import ResourcesView from './components/Resources/ResourcesView';
 import ProgressView from './components/Progress/ProgressView';
+import ReviewsView from './components/Reviews/ReviewsView';
+import StatsView from './components/Stats/StatsView';
+
+// Modals
 import TaskModal from './components/Tasks/TaskModal';
 import GoalModal from './components/Goals/GoalModal';
+import MilestoneModal from './components/Goals/MilestoneModal';
+import HabitModal from './components/Habits/HabitModal';
 import ResourceModal from './components/Resources/ResourceModal';
+import ResourceNotesModal from './components/Resources/ResourceNotesModal';
+import GlobalSearchModal from './components/Common/GlobalSearchModal';
 import ConfirmModal from './components/Common/ConfirmModal';
 
 function TrackerContent() {
   const { user, loading: authLoading } = useAuth();
   const {
     activeTab,
-    loading: trackerLoading,
     taskModalOpen,
     setTaskModalOpen,
     editingTask,
     goalModalOpen,
     setGoalModalOpen,
     editingGoal,
+    milestoneModalOpen,
+    setMilestoneModalOpen,
+    editingMilestone,
+    selectedGoalForMilestone,
+    habitModalOpen,
+    setHabitModalOpen,
+    editingHabit,
     resourceModalOpen,
     setResourceModalOpen,
     editingResource,
+    notesModalOpen,
+    setNotesModalOpen,
+    activeResourceForNotes,
+    searchModalOpen,
+    setSearchModalOpen,
     confirmModal,
     closeConfirmModal,
   } = useTracker();
@@ -55,7 +77,7 @@ function TrackerContent() {
             animation: 'spin 0.8s linear infinite',
           }}
         />
-        <span>Loading Tracker...</span>
+        <span>Loading Productivity OS...</span>
         <style>{`
           @keyframes spin {
             to { transform: rotate(360deg); }
@@ -74,8 +96,13 @@ function TrackerContent() {
       {activeTab === 'dashboard' && <DashboardView />}
       {activeTab === 'tasks' && <TasksView />}
       {activeTab === 'goals' && <GoalsView />}
+      {activeTab === 'focus' && <FocusView />}
+      {activeTab === 'habits' && <HabitsView />}
+      {activeTab === 'calendar' && <CalendarView />}
       {activeTab === 'resources' && <ResourcesView />}
       {activeTab === 'progress' && <ProgressView />}
+      {activeTab === 'reviews' && <ReviewsView />}
+      {activeTab === 'stats' && <StatsView />}
 
       {/* Global Modals */}
       <TaskModal
@@ -90,10 +117,34 @@ function TrackerContent() {
         initialData={editingGoal}
       />
 
+      <MilestoneModal
+        isOpen={milestoneModalOpen}
+        onClose={() => setMilestoneModalOpen(false)}
+        initialData={editingMilestone}
+        goalId={selectedGoalForMilestone}
+      />
+
+      <HabitModal
+        isOpen={habitModalOpen}
+        onClose={() => setHabitModalOpen(false)}
+        initialData={editingHabit}
+      />
+
       <ResourceModal
         isOpen={resourceModalOpen}
         onClose={() => setResourceModalOpen(false)}
         initialData={editingResource}
+      />
+
+      <ResourceNotesModal
+        isOpen={notesModalOpen}
+        onClose={() => setNotesModalOpen(false)}
+        resource={activeResourceForNotes}
+      />
+
+      <GlobalSearchModal
+        isOpen={searchModalOpen}
+        onClose={() => setSearchModalOpen(false)}
       />
 
       <ConfirmModal
@@ -116,4 +167,3 @@ export default function TrackerApp() {
     </AuthProvider>
   );
 }
-

@@ -1,90 +1,112 @@
 import React, { useState, useMemo } from 'react';
 import { useTracker } from '../../context/TrackerContext';
+import EmptyState from '../Common/EmptyState';
 import {
+  IconTasks,
   IconPlus,
+  IconSearch,
   IconCheck,
   IconEdit,
   IconTrash,
-  IconSearch,
-  IconFilter,
-  IconCalendar,
-  IconGoals,
-  IconTasks,
+  IconClock,
+  IconRepeat,
+  IconMilestone,
 } from '../Common/Icons';
-import EmptyState from '../Common/EmptyState';
 import styles from '../../styles/tracker.module.css';
 
-const CATEGORIES = ['All', 'Development', 'AI/ML', 'DSA', 'Learning', 'Personal', 'Other'];
+const CATEGORIES = ['All Categories', 'DSA', 'AI/ML', 'Development', 'Learning', 'Personal', 'Other'];
 
 export default function TasksView() {
   const {
     tasks,
     goals,
+    milestones,
     toggleTaskStatus,
     deleteTask,
-    setTaskModalOpen,
     setEditingTask,
-    requestConfirmation,
+    setTaskModalOpen,
+    openConfirmModal,
   } = useTracker();
 
-  const [statusFilter, setStatusFilter] = useState('all'); // 'all' | 'pending' | 'completed' | 'high'
-  const [categoryFilter, setCategoryFilter] = useState('All');
+  const [activeFilter, setActiveFilter] = useState('all'); // all, today, upcoming, overdue, completed, high
+  const [selectedCategory, setSelectedCategory] = useState('All Categories');
+  const [selectedGoal, setSelectedGoal] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
+  const [sortBy, setSortBy] = useState('due_date'); // due_date, priority, created_at, status
+
+  const todayStr = new Date().toISOString().split('T')[0];
 
   const filteredTasks = useMemo(() => {
-    return tasks.filter((t) => {
-      // Status filter
-      if (statusFilter === 'pending' && t.status !== 'pending') return false;
-      if (statusFilter === 'completed' && t.status !== 'completed') return false;
-      if (statusFilter === 'high' && t.priority !== 'high') return false;
+    return tasks.filter((task) => {
+      // 1. Status / Time Filter
+      if (activeFilter === 'today' && task.due_date !== todayStr) return false;
+      if (activeFilter === 'upcoming') {
+        if (task.status === 'completed' || !task.due_date || task.due_date <= todayStr) return false;
+      }
+      if (activeFilter === 'overdue') {
+        if (task.status === 'completed' || !task.due_date || task.due_date >= todayStr) return false;
+      }
+      if (activeFilter === 'completed' && task.status !== 'completed') return false;
+      if (activeFilter === 'high' && task.priority !== 'high') return false;
 
-      // Category filter
-      if (categoryFilter !== 'All' && t.category !== categoryFilter) return false;
+      // 2. Category Filter
+      if (selectedCategory !== 'All Categories' && task.category !== selectedCategory) {
+        return false;
+      }
 
-      // Search filter
+      // 3. Goal Filter
+      if (selectedGoal !== 'all' && task.goal_id !== selectedGoal) {
+        return false;
+      }
+
+      // 4. Search Query
       if (searchQuery.trim()) {
         const q = searchQuery.toLowerCase();
-        const titleMatch = t.title?.toLowerCase().includes(q);
-        const descMatch = t.description?.toLowerCase().includes(q);
-        if (!titleMatch && !descMatch) return false;
+        const matchTitle = task.title?.toLowerCase().includes(q);
+        const matchDesc = task.description?.toLowerCase().includes(q);
+        if (!matchTitle && !matchDesc) return false;
       }
 
       return true;
     });
-  }, [tasks, statusFilter, categoryFilter, searchQuery]);
+  }, [tasks, activeFilter, selectedCategory, selectedGoal, searchQuery, todayStr]);
 
-  const goalsMap = useMemo(() => {
-    const map = {};
-    goals.forEach((g) => {
-      map[g.id] = g.title;
+  // Sorting
+  const sortedTasks = useMemo(() => {
+    return [...filteredTasks].sort((a, b) => {
+      if (sortBy === 'priority') {
+        const weight = { high: 3, medium: 2, low: 1 };
+        return (weight[b.priority] || 0) - (weight[a.priority] || 0);
+      }
+      if (sortBy === 'created_at') {
+        return new Date(b.created_at || 0) - new Date(a.created_at || 0);
+      }
+      if (sortBy === 'status') {
+        return a.status.localeCompare(b.status);
+      }
+      // default: due_date
+      if (!a.due_date) return 1;
+      if (!b.due_date) return -1;
+      return a.due_date.localeCompare(b.due_date);
     });
-    return map;
-  }, [goals]);
+  }, [filteredTasks, sortBy]);
 
   const handleDelete = (task) => {
-    requestConfirmation({
-      title: 'Delete Task',
-      message: `Are you sure you want to delete "${task.title}"?`,
-      onConfirm: async () => {
-        await deleteTask(task.id);
-      },
-    });
-  };
-
-  const handleEdit = (task) => {
-    setEditingTask(task);
-    setTaskModalOpen(true);
+    openConfirmModal(
+      'Delete Task?',
+      `Are you sure you want to permanently delete "${task.title}"?`,
+      () => deleteTask(task.id)
+    );
   };
 
   return (
-    <div>
-      {/* Top Header */}
-      <div className={styles.pageHeader}>
-        <div className={styles.headerTitleArea}>
-          <span className={styles.headerKicker}>Task Management</span>
-          <h1 className={styles.headerTitle}>Tasks &amp; Todos</h1>
-          <p className={styles.headerSubtitle}>
-            Organize daily execution and tie tasks to your larger goals.
+    <div className={styles.viewContainer}>
+      {/* Header */}
+      <div className={styles.viewHeader}>
+        <div>
+          <h1 className={styles.viewTitle}>Task Matrix</h1>
+          <p className={styles.viewSubtitle}>
+            Manage, schedule, and track engineering tasks, recurring cycles, and milestone deliverables.
           </p>
         </div>
 
@@ -101,181 +123,251 @@ export default function TasksView() {
         </button>
       </div>
 
-      {/* Filter / Search Bar */}
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          flexWrap: 'wrap',
-          gap: '1rem',
-          marginBottom: '1.5rem',
-        }}
-      >
-        {/* Status Filter Buttons */}
-        <div
-          style={{
-            display: 'inline-flex',
-            background: 'var(--vg-surface)',
-            padding: '0.25rem',
-            borderRadius: 'var(--vg-radius-sm)',
-            border: '1px solid var(--vg-border)',
-            gap: '0.2rem',
-          }}
-        >
-          {[
-            { id: 'all', label: 'All' },
-            { id: 'pending', label: 'Pending' },
-            { id: 'completed', label: 'Completed' },
-            { id: 'high', label: 'High Priority' },
-          ].map((tab) => (
-            <button
-              key={tab.id}
-              type="button"
-              onClick={() => setStatusFilter(tab.id)}
-              style={{
-                padding: '0.35rem 0.75rem',
-                fontSize: '0.8rem',
-                fontWeight: 500,
-                border: 'none',
-                borderRadius: '4px',
-                cursor: 'pointer',
-                background: statusFilter === tab.id ? 'var(--vg-bg-elevated)' : 'transparent',
-                color: statusFilter === tab.id ? 'var(--vg-text)' : 'var(--vg-text-muted)',
-                boxShadow: statusFilter === tab.id ? '0 1px 3px rgba(0,0,0,0.2)' : 'none',
-                transition: 'all 150ms ease',
-              }}
-            >
-              {tab.label}
-            </button>
-          ))}
-        </div>
-
-        {/* Right side: Category Dropdown & Search */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexGrow: 1, maxWidth: '480px' }}>
-          <div style={{ minWidth: '140px' }}>
-            <select
-              value={categoryFilter}
-              onChange={(e) => setCategoryFilter(e.target.value)}
-              className={styles.select}
-              style={{ padding: '0.45rem 0.75rem', fontSize: '0.82rem' }}
-            >
-              {CATEGORIES.map((cat) => (
-                <option key={cat} value={cat}>
-                  {cat === 'All' ? 'All Categories' : cat}
-                </option>
-              ))}
-            </select>
+      {/* Filter Tabs & Search Bar */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '0.75rem', flexWrap: 'wrap' }}>
+          {/* Quick Filters */}
+          <div className={styles.filterTabs}>
+            {[
+              { id: 'all', label: `All (${tasks.length})` },
+              { id: 'today', label: 'Today' },
+              { id: 'upcoming', label: 'Upcoming' },
+              { id: 'overdue', label: 'Overdue' },
+              { id: 'completed', label: 'Completed' },
+              { id: 'high', label: 'High Priority' },
+            ].map((f) => (
+              <button
+                key={f.id}
+                type="button"
+                className={`${styles.filterTab} ${activeFilter === f.id ? styles.filterTabActive : ''}`}
+                onClick={() => setActiveFilter(f.id)}
+              >
+                {f.label}
+              </button>
+            ))}
           </div>
 
-          <div style={{ position: 'relative', width: '100%' }}>
-            <span
-              style={{
-                position: 'absolute',
-                left: '10px',
-                top: '50%',
-                transform: 'translateY(-50%)',
-                color: 'var(--vg-text-subtle)',
-                display: 'flex',
-              }}
-            >
-              <IconSearch size={14} />
-            </span>
+          {/* Search Input */}
+          <div style={{ position: 'relative', width: '240px' }}>
             <input
               type="text"
               placeholder="Search tasks..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className={styles.input}
-              style={{ paddingLeft: '2rem', fontSize: '0.82rem' }}
+              style={{ paddingLeft: '2rem', height: '34px', fontSize: '0.82rem' }}
             />
+            <span style={{ position: 'absolute', left: '0.65rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--vg-text-muted)', display: 'flex' }}>
+              <IconSearch size={14} />
+            </span>
+          </div>
+        </div>
+
+        {/* Dropdowns for Category, Goal, and Sort */}
+        <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', alignItems: 'center' }}>
+          <select
+            value={selectedCategory}
+            onChange={(e) => setSelectedCategory(e.target.value)}
+            className={styles.select}
+            style={{ width: 'auto', height: '34px', fontSize: '0.82rem', padding: '0.2rem 0.6rem' }}
+          >
+            {CATEGORIES.map((cat) => (
+              <option key={cat} value={cat}>{cat}</option>
+            ))}
+          </select>
+
+          <select
+            value={selectedGoal}
+            onChange={(e) => setSelectedGoal(e.target.value)}
+            className={styles.select}
+            style={{ width: 'auto', height: '34px', fontSize: '0.82rem', padding: '0.2rem 0.6rem' }}
+          >
+            <option value="all">All Goals</option>
+            {goals.map((g) => (
+              <option key={g.id} value={g.id}>{g.title}</option>
+            ))}
+          </select>
+
+          <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.8rem', color: 'var(--vg-text-muted)' }}>
+            <span>Sort by:</span>
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
+              className={styles.select}
+              style={{ width: 'auto', height: '34px', fontSize: '0.82rem', padding: '0.2rem 0.6rem' }}
+            >
+              <option value="due_date">Due Date</option>
+              <option value="priority">Priority</option>
+              <option value="created_at">Created Date</option>
+              <option value="status">Status</option>
+            </select>
           </div>
         </div>
       </div>
 
       {/* Task List */}
-      {filteredTasks.length === 0 ? (
+      {sortedTasks.length === 0 ? (
         <EmptyState
-          icon={<IconTasks size={22} />}
-          title={searchQuery || statusFilter !== 'all' || categoryFilter !== 'All' ? 'No matching tasks' : 'No tasks created yet'}
+          icon={IconTasks}
+          title="No tasks match your criteria"
           description={
-            searchQuery || statusFilter !== 'all' || categoryFilter !== 'All'
-              ? 'Try changing your search query or filters.'
-              : 'Add your first task to start organizing your workflow.'
+            tasks.length === 0
+              ? 'Get started by creating your first engineering task.'
+              : 'Try clearing your filters or search query.'
           }
-          actionLabel="Create Task"
+          actionLabel="+ Add New Task"
           onAction={() => {
             setEditingTask(null);
             setTaskModalOpen(true);
           }}
         />
       ) : (
-        <div className={styles.taskList}>
-          {filteredTasks.map((task) => {
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
+          {sortedTasks.map((task) => {
             const isCompleted = task.status === 'completed';
-            const priorityClass =
-              task.priority === 'high'
-                ? styles.badgeHigh
-                : task.priority === 'low'
-                ? styles.badgeLow
-                : styles.badgeMedium;
+            const isOverdue = !isCompleted && task.due_date && task.due_date < todayStr;
+            const goalObj = goals.find((g) => g.id === task.goal_id);
+            const milestoneObj = milestones.find((m) => m.id === task.milestone_id);
 
             return (
               <div
                 key={task.id}
-                className={`${styles.taskItem} ${isCompleted ? styles.taskCompleted : ''}`}
+                className={styles.taskItem}
+                style={{ opacity: isCompleted ? 0.6 : 1 }}
               >
-                <div className={styles.taskLeft}>
-                  <button
-                    type="button"
-                    className={`${styles.checkbox} ${isCompleted ? styles.checkboxChecked : ''}`}
-                    onClick={() => toggleTaskStatus(task.id)}
-                    title={isCompleted ? 'Mark as pending' : 'Mark as completed'}
-                  >
-                    {isCompleted && <IconCheck size={12} />}
-                  </button>
+                {/* Complete Checkbox */}
+                <button
+                  type="button"
+                  className={`${styles.checkbox} ${isCompleted ? styles.checkboxChecked : ''}`}
+                  onClick={() => toggleTaskStatus(task.id)}
+                  title={isCompleted ? 'Mark as Incomplete' : 'Mark as Completed'}
+                >
+                  {isCompleted && <IconCheck size={12} />}
+                </button>
 
-                  <div className={styles.taskContent}>
-                    <span className={styles.taskTitle}>{task.title}</span>
-                    <div className={styles.taskMeta}>
-                      <span className={`${styles.badge} ${priorityClass}`}>
-                        {task.priority}
+                {/* Content */}
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
+                    <span
+                      style={{
+                        fontSize: '0.92rem',
+                        fontWeight: 500,
+                        color: isCompleted ? 'var(--vg-text-muted)' : 'var(--vg-text)',
+                        textDecoration: isCompleted ? 'line-through' : 'none',
+                      }}
+                    >
+                      {task.title}
+                    </span>
+
+                    {task.status === 'in_progress' && (
+                      <span style={{ fontSize: '0.7rem', padding: '0.15rem 0.4rem', borderRadius: '4px', background: 'rgba(24, 144, 255, 0.15)', color: '#1890ff', fontWeight: 600 }}>
+                        In Progress
                       </span>
-                      <span className={`${styles.badge} ${styles.badgeCategory}`}>
-                        {task.category}
+                    )}
+
+                    {task.recurrence && task.recurrence !== 'none' && (
+                      <span
+                        style={{
+                          fontSize: '0.7rem',
+                          padding: '0.15rem 0.45rem',
+                          borderRadius: '4px',
+                          background: 'rgba(114, 46, 209, 0.12)',
+                          color: '#9254de',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '0.2rem',
+                          fontWeight: 500,
+                        }}
+                      >
+                        <IconRepeat size={11} /> {task.recurrence}
                       </span>
-                      {task.due_date && (
-                        <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}>
-                          <IconCalendar size={12} />
-                          <span>{task.due_date}</span>
-                        </span>
-                      )}
-                      {task.goal_id && goalsMap[task.goal_id] && (
-                        <span
-                          style={{
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            gap: '0.25rem',
-                            color: 'var(--vg-accent)',
-                          }}
-                        >
-                          <IconGoals size={12} />
-                          <span>{goalsMap[task.goal_id]}</span>
-                        </span>
-                      )}
+                    )}
+                  </div>
+
+                  {task.description && (
+                    <div style={{ fontSize: '0.8rem', color: 'var(--vg-text-muted)', marginTop: '0.2rem', lineHeight: '1.4' }}>
+                      {task.description}
                     </div>
+                  )}
+
+                  {/* Metadata Tags */}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginTop: '0.4rem', flexWrap: 'wrap' }}>
+                    <span className={`${styles.priorityTag} ${styles[`priority_${task.priority}`]}`}>
+                      {task.priority}
+                    </span>
+
+                    <span className={styles.categoryTag}>{task.category}</span>
+
+                    {task.due_date && (
+                      <span
+                        style={{
+                          fontSize: '0.75rem',
+                          color: isOverdue ? 'var(--vg-accent)' : 'var(--vg-text-muted)',
+                          fontWeight: isOverdue ? 600 : 400,
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '0.25rem',
+                        }}
+                      >
+                        <IconClock size={12} />
+                        {task.due_date === todayStr ? 'Due Today' : `Due: ${task.due_date}`}
+                        {task.due_time ? ` @ ${task.due_time}` : ''}
+                      </span>
+                    )}
+
+                    {task.estimated_duration && (
+                      <span style={{ fontSize: '0.75rem', color: 'var(--vg-text-muted)' }}>
+                        ⏱ {task.estimated_duration}m
+                      </span>
+                    )}
+
+                    {goalObj && (
+                      <span
+                        style={{
+                          fontSize: '0.72rem',
+                          padding: '0.1rem 0.4rem',
+                          borderRadius: '3px',
+                          background: 'var(--vg-surface-strong)',
+                          color: 'var(--vg-text)',
+                        }}
+                      >
+                        🎯 {goalObj.title}
+                      </span>
+                    )}
+
+                    {milestoneObj && (
+                      <span
+                        style={{
+                          fontSize: '0.72rem',
+                          padding: '0.1rem 0.4rem',
+                          borderRadius: '3px',
+                          background: 'var(--vg-surface-strong)',
+                          color: 'var(--vg-accent)',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '0.2rem',
+                        }}
+                      >
+                        <IconMilestone size={11} /> {milestoneObj.title}
+                      </span>
+                    )}
                   </div>
                 </div>
 
-                <div className={styles.taskActions}>
+                {/* Actions */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
                   <button
                     type="button"
                     className={styles.iconBtn}
-                    onClick={() => handleEdit(task)}
+                    onClick={() => {
+                      setEditingTask(task);
+                      setTaskModalOpen(true);
+                    }}
                     title="Edit Task"
                   >
                     <IconEdit size={15} />
                   </button>
+
                   <button
                     type="button"
                     className={styles.iconBtn}
@@ -294,4 +386,3 @@ export default function TasksView() {
     </div>
   );
 }
-

@@ -1,373 +1,406 @@
-import React, { useMemo } from 'react';
-import { useAuth } from '../../context/AuthContext';
+import React from 'react';
 import { useTracker } from '../../context/TrackerContext';
-import {
-  IconCheck,
-  IconClock,
-  IconGoals,
-  IconTasks,
-  IconCalendar,
-  IconEdit,
-  IconTrash,
-  IconPlus,
-} from '../Common/Icons';
 import QuickActions from './QuickActions';
 import EmptyState from '../Common/EmptyState';
+import {
+  IconTasks,
+  IconGoals,
+  IconCheck,
+  IconClock,
+  IconFlame,
+  IconFocus,
+  IconAlertCircle,
+  IconSparkles,
+  IconRepeat,
+} from '../Common/Icons';
 import styles from '../../styles/tracker.module.css';
 
 export default function DashboardView() {
-  const { user } = useAuth();
   const {
     tasks,
     goals,
+    habits,
+    habitLogs,
+    habitStreaks,
+    todayTasks,
+    overdueTasks,
+    focusStats,
+    insights,
     toggleTaskStatus,
-    deleteTask,
-    setTaskModalOpen,
+    toggleHabitDate,
     setEditingTask,
-    setGoalModalOpen,
-    setEditingGoal,
+    setTaskModalOpen,
     setActiveTab,
-    requestConfirmation,
-    analytics,
   } = useTracker();
 
-  const { today, overall } = analytics;
+  const todayStr = new Date().toISOString().split('T')[0];
 
-  // Formatted current date and greeting
-  const { dateFormatted, greeting } = useMemo(() => {
-    const now = new Date();
-    const hrs = now.getHours();
-    let greet = 'Good evening';
-    if (hrs < 12) greet = 'Good morning';
-    else if (hrs < 17) greet = 'Good afternoon';
+  // Today's task completion progress
+  const completedToday = todayTasks.filter((t) => t.status === 'completed').length;
+  const todayProgressPct = todayTasks.length > 0 ? Math.round((completedToday / todayTasks.length) * 100) : 0;
 
-    const dateStr = now.toLocaleDateString('en-US', {
-      weekday: 'long',
-      month: 'long',
-      day: 'numeric',
-      year: 'numeric',
-    });
+  // Active habits for today
+  const activeHabits = habits.filter((h) => !h.archived);
+  const completedHabitsToday = habitLogs.filter((l) => l.completed_date === todayStr);
+  const activeHabitIdsCompleted = new Set(completedHabitsToday.map((l) => l.habit_id));
 
-    return { dateFormatted: dateStr, greeting: greet };
-  }, []);
-
-  const userName = user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'Vardhman';
-
-  // Active goals (top 3 short-term and top 2 long-term)
-  const activeGoals = useMemo(() => {
-    return goals.filter((g) => g.status === 'active').slice(0, 4);
-  }, [goals]);
-
-  // Today's pending tasks first, then completed
-  const sortedTodayTasks = useMemo(() => {
-    const todayStr = new Date().toISOString().split('T')[0];
-    const todays = tasks.filter((t) => {
-      if (!t.due_date && !t.completed_at) return true;
-      const isDueToday = t.due_date === todayStr;
-      const isCompletedToday = t.completed_at && t.completed_at.startsWith(todayStr);
-      return isDueToday || isCompletedToday;
-    });
-
-    return todays.sort((a, b) => {
-      if (a.status === b.status) return 0;
-      return a.status === 'pending' ? -1 : 1;
-    });
-  }, [tasks]);
-
-  const handleDeleteTask = (task) => {
-    requestConfirmation({
-      title: 'Delete Task',
-      message: `Are you sure you want to delete "${task.title}"?`,
-      onConfirm: async () => {
-        await deleteTask(task.id);
-      },
-    });
-  };
+  // Active goals summary
+  const activeGoals = goals.filter((g) => g.status === 'active').slice(0, 3);
 
   return (
-    <div>
-      {/* Top Header */}
-      <div className={styles.pageHeader}>
-        <div className={styles.headerTitleArea}>
-          <span className={styles.headerKicker}>{dateFormatted}</span>
-          <h1 className={styles.headerTitle}>
-            {greeting}, {userName}
-          </h1>
-          <p className={styles.headerSubtitle}>
-            {today.completed} of {today.total} tasks completed today ({today.percent}% execution rate)
+    <div className={styles.viewContainer}>
+      {/* Header & Quick Action Bar */}
+      <div className={styles.viewHeader}>
+        <div>
+          <h1 className={styles.viewTitle}>Productivity Command Center</h1>
+          <p className={styles.viewSubtitle}>
+            Daily focus, priority execution, habit consistency, and active milestones.
           </p>
         </div>
-
         <QuickActions />
       </div>
 
-      {/* Today's Overview Metric Cards */}
-      <div className={styles.statsGrid}>
-        <div className={styles.statCard}>
-          <div className={styles.statHeader}>
-            <span>Today's Completion</span>
-            <IconCheck size={16} />
+      {/* Overdue Tasks Alert Banner */}
+      {overdueTasks.length > 0 && (
+        <div
+          style={{
+            background: 'rgba(255, 77, 79, 0.1)',
+            border: '1px solid var(--vg-accent-border)',
+            borderRadius: 'var(--vg-radius-md)',
+            padding: '0.85rem 1.25rem',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: '1rem',
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+            <span style={{ color: 'var(--vg-accent)' }}>
+              <IconAlertCircle size={20} />
+            </span>
+            <div>
+              <div style={{ fontSize: '0.88rem', fontWeight: 600, color: 'var(--vg-accent)' }}>
+                {overdueTasks.length} {overdueTasks.length === 1 ? 'Task is Overdue' : 'Tasks are Overdue'}
+              </div>
+              <div style={{ fontSize: '0.78rem', color: 'var(--vg-text-muted)', marginTop: '0.15rem' }}>
+                Pending tasks past their scheduled due dates need attention.
+              </div>
+            </div>
           </div>
-          <div className={styles.statValue}>
-            {today.completed} <span style={{ fontSize: '1.1rem', color: 'var(--vg-text-subtle)' }}>/ {today.total}</span>
+          <button
+            type="button"
+            className={styles.btnSecondary}
+            onClick={() => setActiveTab('tasks')}
+            style={{ fontSize: '0.8rem', padding: '0.35rem 0.75rem' }}
+          >
+            Review Overdue
+          </button>
+        </div>
+      )}
+
+      {/* Top Metric Cards */}
+      <div className={styles.metricsGrid}>
+        {/* Today's Execution */}
+        <div className={styles.metricCard}>
+          <div className={styles.metricHeader}>
+            <span className={styles.metricLabel}>Today's Execution</span>
+            <IconTasks size={18} className={styles.metricIcon} />
           </div>
-          <div className={styles.progressBarTrack}>
-            <div className={styles.progressBarFill} style={{ width: `${today.percent}%` }} />
+          <div className={styles.metricValue}>
+            {completedToday} <span style={{ fontSize: '1rem', color: 'var(--vg-text-muted)' }}>/ {todayTasks.length}</span>
           </div>
-          <span className={styles.statSubtext}>{today.percent}% of today's workload completed</span>
+          <div className={styles.progressBarWrapper} style={{ marginTop: '0.75rem' }}>
+            <div className={styles.progressBarFill} style={{ width: `${todayProgressPct}%` }} />
+          </div>
+          <div style={{ fontSize: '0.75rem', color: 'var(--vg-text-muted)', marginTop: '0.4rem', textAlign: 'right' }}>
+            {todayProgressPct}% completed
+          </div>
         </div>
 
-        <div className={styles.statCard}>
-          <div className={styles.statHeader}>
-            <span>Pending Today</span>
-            <IconClock size={16} />
+        {/* Deep Work Focus */}
+        <div className={styles.metricCard}>
+          <div className={styles.metricHeader}>
+            <span className={styles.metricLabel}>Deep Work (Focus)</span>
+            <IconFocus size={18} className={styles.metricIcon} />
           </div>
-          <div className={styles.statValue} style={{ color: today.pending > 0 ? 'var(--vg-accent)' : 'var(--vg-text)' }}>
-            {today.pending}
+          <div className={styles.metricValue}>
+            {focusStats.todayHours} <span style={{ fontSize: '1rem', color: 'var(--vg-text-muted)' }}>hrs today</span>
           </div>
-          <span className={styles.statSubtext}>Remaining action items</span>
+          <div style={{ fontSize: '0.8rem', color: 'var(--vg-text-muted)', marginTop: '0.65rem' }}>
+            Week total: <strong style={{ color: 'var(--vg-text)' }}>{focusStats.weekHours} hrs</strong> across {focusStats.totalSessions} sessions
+          </div>
         </div>
 
-        <div className={styles.statCard}>
-          <div className={styles.statHeader}>
-            <span>Active Goals</span>
-            <IconGoals size={16} />
+        {/* Daily Habits */}
+        <div className={styles.metricCard}>
+          <div className={styles.metricHeader}>
+            <span className={styles.metricLabel}>Daily Habits</span>
+            <IconFlame size={18} className={styles.metricIcon} />
           </div>
-          <div className={styles.statValue}>{activeGoals.length}</div>
-          <span className={styles.statSubtext}>Milestones currently in progress</span>
-        </div>
-
-        <div className={styles.statCard}>
-          <div className={styles.statHeader}>
-            <span>Total Tasks Done</span>
-            <IconTasks size={16} />
+          <div className={styles.metricValue}>
+            {activeHabitIdsCompleted.size} <span style={{ fontSize: '1rem', color: 'var(--vg-text-muted)' }}>/ {activeHabits.length}</span>
           </div>
-          <div className={styles.statValue}>{overall.completed}</div>
-          <span className={styles.statSubtext}>Across all recorded projects</span>
+          <div style={{ fontSize: '0.8rem', color: 'var(--vg-text-muted)', marginTop: '0.65rem' }}>
+            {activeHabits.length > 0 && activeHabitIdsCompleted.size === activeHabits.length
+              ? '🔥 All habits logged for today!'
+              : `${activeHabits.length - activeHabitIdsCompleted.size} habits remaining today`}
+          </div>
         </div>
       </div>
 
-      {/* 2 Columns: Today's Tasks + Active Goals */}
-      <div className={styles.dashboardColumns}>
+      {/* Main Grid: Today's Priorities & Active Goals / Habits */}
+      <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '1.5rem' }}>
         {/* Left Column: Today's Tasks */}
-        <div className={styles.sectionCard}>
-          <div className={styles.sectionHeader}>
-            <h3 className={styles.sectionTitle}>
-              <IconTasks size={17} />
-              <span>Today's Tasks</span>
-            </h3>
+        <div className={styles.card}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <IconTasks size={18} style={{ color: 'var(--vg-accent)' }} />
+              <h2 className={styles.cardTitle}>Today's Priority Tasks</h2>
+            </div>
             <button
               type="button"
-              className={styles.iconBtn}
-              onClick={() => {
-                setEditingTask(null);
-                setTaskModalOpen(true);
-              }}
-              title="Add Task"
+              className={styles.linkBtn}
+              onClick={() => setActiveTab('tasks')}
             >
-              <IconPlus size={16} />
+              View All Tasks →
             </button>
           </div>
 
-          {sortedTodayTasks.length === 0 ? (
+          {todayTasks.length === 0 ? (
             <EmptyState
-              icon={<IconTasks size={20} />}
-              title="All clear for today"
-              description="No tasks scheduled for today. Add a new task to stay productive."
-              actionLabel="Add Task"
+              icon={IconTasks}
+              title="No tasks scheduled for today"
+              description="Plan your day by adding tasks or setting due dates to today."
+              actionLabel="+ Add Today's Task"
               onAction={() => {
                 setEditingTask(null);
                 setTaskModalOpen(true);
               }}
             />
           ) : (
-            <div className={styles.taskList}>
-              {sortedTodayTasks.slice(0, 7).map((task) => {
-                const isCompleted = task.status === 'completed';
-                const priorityClass =
-                  task.priority === 'high'
-                    ? styles.badgeHigh
-                    : task.priority === 'low'
-                    ? styles.badgeLow
-                    : styles.badgeMedium;
-
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+              {todayTasks.map((t) => {
+                const isCompleted = t.status === 'completed';
                 return (
                   <div
-                    key={task.id}
-                    className={`${styles.taskItem} ${isCompleted ? styles.taskCompleted : ''}`}
+                    key={t.id}
+                    className={styles.taskItem}
+                    style={{ opacity: isCompleted ? 0.6 : 1 }}
                   >
-                    <div className={styles.taskLeft}>
-                      <button
-                        type="button"
-                        className={`${styles.checkbox} ${isCompleted ? styles.checkboxChecked : ''}`}
-                        onClick={() => toggleTaskStatus(task.id)}
-                        title={isCompleted ? 'Mark as pending' : 'Mark as completed'}
-                      >
-                        {isCompleted && <IconCheck size={12} />}
-                      </button>
+                    <button
+                      type="button"
+                      className={`${styles.checkbox} ${isCompleted ? styles.checkboxChecked : ''}`}
+                      onClick={() => toggleTaskStatus(t.id)}
+                    >
+                      {isCompleted && <IconCheck size={12} />}
+                    </button>
 
-                      <div className={styles.taskContent}>
-                        <span className={styles.taskTitle}>{task.title}</span>
-                        <div className={styles.taskMeta}>
-                          <span className={`${styles.badge} ${priorityClass}`}>
-                            {task.priority}
-                          </span>
-                          <span className={`${styles.badge} ${styles.badgeCategory}`}>
-                            {task.category}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className={styles.taskActions}>
-                      <button
-                        type="button"
-                        className={styles.iconBtn}
-                        onClick={() => {
-                          setEditingTask(task);
-                          setTaskModalOpen(true);
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div
+                        style={{
+                          fontSize: '0.9rem',
+                          fontWeight: 500,
+                          color: isCompleted ? 'var(--vg-text-muted)' : 'var(--vg-text)',
+                          textDecoration: isCompleted ? 'line-through' : 'none',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          whiteSpace: 'nowrap',
                         }}
-                        title="Edit"
                       >
-                        <IconEdit size={14} />
-                      </button>
-                      <button
-                        type="button"
-                        className={styles.iconBtn}
-                        onClick={() => handleDeleteTask(task)}
-                        title="Delete"
-                        style={{ color: 'var(--vg-accent)' }}
-                      >
-                        <IconTrash size={14} />
-                      </button>
+                        {t.title}
+                      </div>
+
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginTop: '0.2rem', flexWrap: 'wrap' }}>
+                        <span className={`${styles.priorityTag} ${styles[`priority_${t.priority}`]}`}>
+                          {t.priority}
+                        </span>
+                        <span className={styles.categoryTag}>{t.category}</span>
+                        {t.due_time && (
+                          <span style={{ fontSize: '0.75rem', color: 'var(--vg-text-muted)', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                            <IconClock size={12} /> {t.due_time}
+                          </span>
+                        )}
+                        {t.recurrence && t.recurrence !== 'none' && (
+                          <span style={{ fontSize: '0.72rem', color: 'var(--vg-accent)', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                            <IconRepeat size={12} /> {t.recurrence}
+                          </span>
+                        )}
+                      </div>
                     </div>
                   </div>
                 );
               })}
-
-              {sortedTodayTasks.length > 7 && (
-                <button
-                  type="button"
-                  onClick={() => setActiveTab('tasks')}
-                  style={{
-                    background: 'none',
-                    border: 'none',
-                    padding: '0.5rem',
-                    fontSize: '0.82rem',
-                    color: 'var(--vg-accent)',
-                    cursor: 'pointer',
-                    textAlign: 'center',
-                    fontWeight: 500,
-                  }}
-                >
-                  View all {sortedTodayTasks.length} tasks →
-                </button>
-              )}
             </div>
           )}
         </div>
 
-        {/* Right Column: Active Goals */}
-        <div className={styles.sectionCard}>
-          <div className={styles.sectionHeader}>
-            <h3 className={styles.sectionTitle}>
-              <IconGoals size={17} />
-              <span>Active Goals</span>
-            </h3>
-            <button
-              type="button"
-              className={styles.iconBtn}
-              onClick={() => {
-                setEditingGoal(null);
-                setGoalModalOpen(true);
-              }}
-              title="Add Goal"
-            >
-              <IconPlus size={16} />
-            </button>
+        {/* Right Column: Daily Habits & Active Goals */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+          {/* Daily Habit Checklist */}
+          <div className={styles.card}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <IconFlame size={18} style={{ color: '#fa8c16' }} />
+                <h2 className={styles.cardTitle}>Daily Habits</h2>
+              </div>
+              <button
+                type="button"
+                className={styles.linkBtn}
+                onClick={() => setActiveTab('habits')}
+              >
+                Manage Habits →
+              </button>
+            </div>
+
+            {activeHabits.length === 0 ? (
+              <EmptyState
+                icon={IconFlame}
+                title="No habits defined yet"
+                description="Form daily routines (DSA, Reading, Workouts, Deep Work)."
+                actionLabel="+ Create Habit"
+                onAction={() => setActiveTab('habits')}
+              />
+            ) : (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                {activeHabits.map((h) => {
+                  const isDone = activeHabitIdsCompleted.has(h.id);
+                  const streak = habitStreaks[h.id]?.currentStreak || 0;
+                  return (
+                    <div
+                      key={h.id}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        padding: '0.65rem 0.85rem',
+                        borderRadius: 'var(--vg-radius-sm)',
+                        background: isDone ? 'rgba(82, 196, 26, 0.08)' : 'var(--vg-surface)',
+                        border: '1px solid var(--vg-border)',
+                      }}
+                    >
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+                        <button
+                          type="button"
+                          className={`${styles.checkbox} ${isDone ? styles.checkboxChecked : ''}`}
+                          onClick={() => toggleHabitDate(h.id, todayStr)}
+                        >
+                          {isDone && <IconCheck size={12} />}
+                        </button>
+                        <span style={{ fontSize: '0.88rem', fontWeight: 500, color: 'var(--vg-text)' }}>
+                          {h.name}
+                        </span>
+                      </div>
+
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', fontSize: '0.75rem', color: streak > 0 ? '#fa8c16' : 'var(--vg-text-muted)' }}>
+                        <IconFlame size={13} />
+                        <span>{streak}d streak</span>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
           </div>
 
-          {activeGoals.length === 0 ? (
-            <EmptyState
-              icon={<IconGoals size={20} />}
-              title="No active goals"
-              description="Define short-term and long-term milestones to track your progress."
-              actionLabel="Add Goal"
-              onAction={() => {
-                setEditingGoal(null);
-                setGoalModalOpen(true);
-              }}
-            />
-          ) : (
-            <div className={styles.goalList}>
-              {activeGoals.map((goal) => (
-                <div key={goal.id} className={styles.goalCard}>
-                  <div className={styles.goalHeader}>
-                    <div>
-                      <span
-                        className={styles.badge}
-                        style={{
-                          fontSize: '0.68rem',
-                          background:
-                            goal.type === 'short_term'
-                              ? 'rgba(255, 77, 79, 0.15)'
-                              : 'rgba(24, 144, 255, 0.15)',
-                          color:
-                            goal.type === 'short_term' ? 'var(--vg-accent)' : '#1890ff',
-                          border: `1px solid ${
-                            goal.type === 'short_term'
-                              ? 'var(--vg-accent-border)'
-                              : 'rgba(24, 144, 255, 0.3)'
-                          }`,
-                        }}
-                      >
-                        {goal.type === 'short_term' ? 'Short-term' : 'Long-term'}
-                      </span>
-                      <h4 className={styles.goalTitle} style={{ marginTop: '0.2rem' }}>
-                        {goal.title}
-                      </h4>
-                    </div>
-                    <span style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--vg-text)', fontFamily: 'monospace' }}>
-                      {goal.progress}%
-                    </span>
-                  </div>
-
-                  <div className={styles.progressBarTrack}>
-                    <div className={styles.progressBarFill} style={{ width: `${goal.progress}%` }} />
-                  </div>
-
-                  {goal.target_date && (
-                    <div style={{ fontSize: '0.75rem', color: 'var(--vg-text-subtle)', display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
-                      <IconCalendar size={12} />
-                      <span>Target: {goal.target_date}</span>
-                    </div>
-                  )}
-                </div>
-              ))}
-
-              {goals.length > 4 && (
-                <button
-                  type="button"
-                  onClick={() => setActiveTab('goals')}
-                  style={{
-                    background: 'none',
-                    border: 'none',
-                    padding: '0.5rem',
-                    fontSize: '0.82rem',
-                    color: 'var(--vg-accent)',
-                    cursor: 'pointer',
-                    textAlign: 'center',
-                    fontWeight: 500,
-                  }}
-                >
-                  View all {goals.length} goals →
-                </button>
-              )}
+          {/* Active Goals Snapshot */}
+          <div className={styles.card}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <IconGoals size={18} style={{ color: 'var(--vg-accent)' }} />
+                <h2 className={styles.cardTitle}>Active Milestones</h2>
+              </div>
+              <button
+                type="button"
+                className={styles.linkBtn}
+                onClick={() => setActiveTab('goals')}
+              >
+                View Roadmaps →
+              </button>
             </div>
-          )}
+
+            {activeGoals.length === 0 ? (
+              <EmptyState
+                icon={IconGoals}
+                title="No active milestones"
+                description="Set short-term & long-term engineering horizons."
+                actionLabel="+ Set Goal"
+                onAction={() => setActiveTab('goals')}
+              />
+            ) : (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
+                {activeGoals.map((g) => (
+                  <div key={g.id}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.35rem' }}>
+                      <span style={{ fontSize: '0.86rem', fontWeight: 500, color: 'var(--vg-text)' }}>
+                        {g.title}
+                      </span>
+                      <span style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--vg-accent)' }}>
+                        {g.progress}%
+                      </span>
+                    </div>
+                    <div className={styles.progressBarWrapper}>
+                      <div className={styles.progressBarFill} style={{ width: `${g.progress}%` }} />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Rule-Based Heuristic Insights Section */}
+      <div className={styles.card}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1rem' }}>
+          <span style={{ color: 'var(--vg-accent)' }}>
+            <IconSparkles size={18} />
+          </span>
+          <h2 className={styles.cardTitle}>Productivity Insights & Heuristics</h2>
+          <span style={{ fontSize: '0.72rem', color: 'var(--vg-text-muted)', marginLeft: 'auto' }}>
+            Deterministic rule-based heuristics
+          </span>
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1rem' }}>
+          {insights.map((ins) => (
+            <div
+              key={ins.id}
+              style={{
+                padding: '0.9rem 1rem',
+                borderRadius: 'var(--vg-radius-sm)',
+                background: 'var(--vg-surface)',
+                border: '1px solid var(--vg-border)',
+                display: 'flex',
+                gap: '0.75rem',
+              }}
+            >
+              <div
+                style={{
+                  width: '32px',
+                  height: '32px',
+                  borderRadius: 'var(--vg-radius-sm)',
+                  background: 'var(--vg-surface-strong)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: 'var(--vg-accent)',
+                  flexShrink: 0,
+                }}
+              >
+                <IconSparkles size={15} />
+              </div>
+              <div>
+                <div style={{ fontSize: '0.88rem', fontWeight: 600, color: 'var(--vg-text)' }}>
+                  {ins.title}
+                </div>
+                <div style={{ fontSize: '0.8rem', color: 'var(--vg-text-muted)', marginTop: '0.25rem', lineHeight: '1.4' }}>
+                  {ins.description}
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </div>
   );
 }
-

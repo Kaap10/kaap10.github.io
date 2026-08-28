@@ -3,22 +3,38 @@ import { useTracker } from '../../context/TrackerContext';
 import { IconClose, IconTasks, IconAlertCircle } from '../Common/Icons';
 import styles from '../../styles/tracker.module.css';
 
-const CATEGORIES = ['Development', 'AI/ML', 'DSA', 'Learning', 'Personal', 'Other'];
+const CATEGORIES = ['DSA', 'AI/ML', 'Development', 'Learning', 'Personal', 'Other'];
 const PRIORITIES = [
   { value: 'low', label: 'Low' },
   { value: 'medium', label: 'Medium' },
   { value: 'high', label: 'High' },
 ];
+const STATUSES = [
+  { value: 'pending', label: 'Planned / Pending' },
+  { value: 'in_progress', label: 'In Progress' },
+  { value: 'completed', label: 'Completed' },
+];
+const RECURRENCE_OPTIONS = [
+  { value: 'none', label: 'Does not repeat' },
+  { value: 'daily', label: 'Repeats Daily' },
+  { value: 'weekly', label: 'Repeats Weekly' },
+  { value: 'monthly', label: 'Repeats Monthly' },
+];
 
 export default function TaskModal({ isOpen, onClose, initialData = null }) {
-  const { createTask, updateTask, goals } = useTracker();
+  const { createTask, updateTask, goals, milestones } = useTracker();
 
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const [status, setStatus] = useState('pending');
   const [priority, setPriority] = useState('medium');
   const [category, setCategory] = useState('Development');
   const [dueDate, setDueDate] = useState('');
+  const [dueTime, setDueTime] = useState('');
+  const [estimatedDuration, setEstimatedDuration] = useState('');
+  const [recurrence, setRecurrence] = useState('none');
   const [goalId, setGoalId] = useState('');
+  const [milestoneId, setMilestoneId] = useState('');
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
 
@@ -27,19 +43,32 @@ export default function TaskModal({ isOpen, onClose, initialData = null }) {
     if (initialData) {
       setTitle(initialData.title || '');
       setDescription(initialData.description || '');
+      setStatus(initialData.status || 'pending');
       setPriority(initialData.priority || 'medium');
       setCategory(initialData.category || 'Development');
       setDueDate(initialData.due_date || '');
+      setDueTime(initialData.due_time || '');
+      setEstimatedDuration(initialData.estimated_duration ? String(initialData.estimated_duration) : '');
+      setRecurrence(initialData.recurrence || 'none');
       setGoalId(initialData.goal_id || '');
+      setMilestoneId(initialData.milestone_id || '');
     } else {
       setTitle('');
       setDescription('');
+      setStatus('pending');
       setPriority('medium');
       setCategory('Development');
       setDueDate(new Date().toISOString().split('T')[0]);
+      setDueTime('');
+      setEstimatedDuration('');
+      setRecurrence('none');
       setGoalId('');
+      setMilestoneId('');
     }
   }, [initialData, isOpen]);
+
+  // Filter milestones matching selected goal
+  const availableMilestones = milestones.filter((m) => !goalId || m.goal_id === goalId);
 
   if (!isOpen) return null;
 
@@ -56,10 +85,15 @@ export default function TaskModal({ isOpen, onClose, initialData = null }) {
       const payload = {
         title: title.trim(),
         description: description.trim() || null,
+        status,
         priority,
         category,
         due_date: dueDate || null,
+        due_time: dueTime || null,
+        estimated_duration: estimatedDuration ? Number(estimatedDuration) : null,
+        recurrence,
         goal_id: goalId || null,
+        milestone_id: milestoneId || null,
       };
 
       if (initialData) {
@@ -110,12 +144,12 @@ export default function TaskModal({ isOpen, onClose, initialData = null }) {
           </div>
         )}
 
-        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '0.9rem' }}>
           <div className={styles.formGroup}>
             <label className={styles.formLabel}>Task Title *</label>
             <input
               type="text"
-              placeholder="e.g. Implement RAG retrieval pipeline"
+              placeholder="e.g. Implement Transformer Attention layer"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               className={styles.input}
@@ -127,47 +161,44 @@ export default function TaskModal({ isOpen, onClose, initialData = null }) {
           <div className={styles.formGroup}>
             <label className={styles.formLabel}>Description (Optional)</label>
             <textarea
-              placeholder="Add details, sub-tasks, or notes..."
+              placeholder="Add key objectives, notes, or execution steps..."
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               className={styles.textarea}
-              rows={3}
+              rows={2}
             />
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '0.75rem' }}>
+            <div className={styles.formGroup}>
+              <label className={styles.formLabel}>Status</label>
+              <select value={status} onChange={(e) => setStatus(e.target.value)} className={styles.select}>
+                {STATUSES.map((s) => (
+                  <option key={s.value} value={s.value}>{s.label}</option>
+                ))}
+              </select>
+            </div>
+
             <div className={styles.formGroup}>
               <label className={styles.formLabel}>Priority</label>
-              <select
-                value={priority}
-                onChange={(e) => setPriority(e.target.value)}
-                className={styles.select}
-              >
+              <select value={priority} onChange={(e) => setPriority(e.target.value)} className={styles.select}>
                 {PRIORITIES.map((p) => (
-                  <option key={p.value} value={p.value}>
-                    {p.label}
-                  </option>
+                  <option key={p.value} value={p.value}>{p.label}</option>
                 ))}
               </select>
             </div>
 
             <div className={styles.formGroup}>
               <label className={styles.formLabel}>Category</label>
-              <select
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-                className={styles.select}
-              >
+              <select value={category} onChange={(e) => setCategory(e.target.value)} className={styles.select}>
                 {CATEGORIES.map((cat) => (
-                  <option key={cat} value={cat}>
-                    {cat}
-                  </option>
+                  <option key={cat} value={cat}>{cat}</option>
                 ))}
               </select>
             </div>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '0.75rem' }}>
             <div className={styles.formGroup}>
               <label className={styles.formLabel}>Due Date</label>
               <input
@@ -179,10 +210,47 @@ export default function TaskModal({ isOpen, onClose, initialData = null }) {
             </div>
 
             <div className={styles.formGroup}>
-              <label className={styles.formLabel}>Connect to Goal</label>
+              <label className={styles.formLabel}>Due Time (Opt.)</label>
+              <input
+                type="time"
+                value={dueTime}
+                onChange={(e) => setDueTime(e.target.value)}
+                className={styles.input}
+              />
+            </div>
+
+            <div className={styles.formGroup}>
+              <label className={styles.formLabel}>Est. Min</label>
+              <input
+                type="number"
+                min={5}
+                step={5}
+                placeholder="e.g. 45"
+                value={estimatedDuration}
+                onChange={(e) => setEstimatedDuration(e.target.value)}
+                className={styles.input}
+              />
+            </div>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+            <div className={styles.formGroup}>
+              <label className={styles.formLabel}>Recurrence</label>
+              <select value={recurrence} onChange={(e) => setRecurrence(e.target.value)} className={styles.select}>
+                {RECURRENCE_OPTIONS.map((r) => (
+                  <option key={r.value} value={r.value}>{r.label}</option>
+                ))}
+              </select>
+            </div>
+
+            <div className={styles.formGroup}>
+              <label className={styles.formLabel}>Link Goal</label>
               <select
                 value={goalId}
-                onChange={(e) => setGoalId(e.target.value)}
+                onChange={(e) => {
+                  setGoalId(e.target.value);
+                  setMilestoneId('');
+                }}
                 className={styles.select}
               >
                 <option value="">No Goal (Independent)</option>
@@ -195,7 +263,25 @@ export default function TaskModal({ isOpen, onClose, initialData = null }) {
             </div>
           </div>
 
-          <div className={styles.modalActions}>
+          {goalId && availableMilestones.length > 0 && (
+            <div className={styles.formGroup}>
+              <label className={styles.formLabel}>Link Milestone</label>
+              <select
+                value={milestoneId}
+                onChange={(e) => setMilestoneId(e.target.value)}
+                className={styles.select}
+              >
+                <option value="">No Specific Milestone</option>
+                {availableMilestones.map((m) => (
+                  <option key={m.id} value={m.id}>
+                    {m.title} {m.status === 'completed' ? '✓' : ''}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+
+          <div className={styles.modalActions} style={{ marginTop: '0.5rem' }}>
             <button type="button" className={styles.btnSecondary} onClick={onClose}>
               Cancel
             </button>

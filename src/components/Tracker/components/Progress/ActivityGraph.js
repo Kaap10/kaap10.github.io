@@ -1,139 +1,175 @@
 import React, { useState, useMemo } from 'react';
+import { useTracker } from '../../context/TrackerContext';
 import styles from '../../styles/tracker.module.css';
 
-/**
- * GitHub-style 52-week activity contribution heatmap for the tracker
- */
-export default function ActivityGraph({ activityMap = {} }) {
-  const [hoveredCell, setHoveredCell] = useState(null);
+const MONTH_NAMES = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const DAY_LABELS = ['', 'Mon', '', 'Wed', '', 'Fri', ''];
 
-  // Generate the 52-week array (364/365 days ending today)
-  const calendarData = useMemo(() => {
-    const days = [];
+export default function ActivityGraph() {
+  const { activityMap } = useTracker();
+  const [hoveredDay, setHoveredDay] = useState(null);
+
+  // Generate 52 weeks (364/371 days) starting from aligned Sunday
+  const weeks = useMemo(() => {
     const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    const result = [];
+    
+    // Find the end date: this week's Saturday
+    const end = new Date(today);
+    const dayOfWeek = end.getDay(); // 0 (Sun) to 6 (Sat)
+    end.setDate(end.getDate() + (6 - dayOfWeek));
 
-    // Go back 52 weeks (364 days) + adjust to start on a Monday
-    const startDate = new Date(today);
-    startDate.setDate(today.getDate() - 364);
-    const dayOfWeek = startDate.getDay(); // 0 is Sunday, 1 is Monday
-    const offset = (dayOfWeek + 6) % 7; // shift so week starts on Monday
-    startDate.setDate(startDate.getDate() - offset);
+    // 52 weeks * 7 days = 364 days backwards
+    const start = new Date(end);
+    start.setDate(start.getDate() - (52 * 7 - 1));
 
-    const current = new Date(startDate);
-    while (current <= today) {
-      const dateStr = current.toISOString().split('T')[0];
-      const count = activityMap[dateStr] || 0;
+    let currentWeek = [];
+    const cur = new Date(start);
 
-      let level = 0;
-      if (count >= 8) level = 4;
-      else if (count >= 5) level = 3;
-      else if (count >= 3) level = 2;
-      else if (count >= 1) level = 1;
-
-      days.push({
+    while (cur <= end) {
+      const dateStr = cur.toISOString().split('T')[0];
+      const entry = activityMap[dateStr] || {
         date: dateStr,
-        displayDate: current.toLocaleDateString('en-US', {
-          month: 'short',
-          day: 'numeric',
-          year: 'numeric',
-        }),
-        count,
-        level,
-        dayOfWeek: current.getDay(),
+        tasksCompleted: 0,
+        focusSeconds: 0,
+        habitsCompleted: 0,
+        totalScore: 0,
+      };
+
+      currentWeek.push({
+        date: dateStr,
+        dayNum: cur.getDate(),
+        month: cur.getMonth(),
+        year: cur.getFullYear(),
+        ...entry,
       });
 
-      current.setDate(current.getDate() + 1);
+      if (currentWeek.length === 7) {
+        result.push(currentWeek);
+        currentWeek = [];
+      }
+
+      cur.setDate(cur.getDate() + 1);
     }
 
-    return days;
+    if (currentWeek.length > 0) {
+      result.push(currentWeek);
+    }
+
+    return result;
   }, [activityMap]);
 
-  const totalCompletions = useMemo(() => {
-    return Object.values(activityMap).reduce((acc, curr) => acc + curr, 0);
-  }, [activityMap]);
+  // Determine cell color shade based on activity score
+  const getCellColor = (score) => {
+    if (!score || score === 0) return 'var(--vg-surface-strong)';
+    if (score <= 2) return 'rgba(255, 77, 79, 0.35)'; // light accent
+    if (score <= 5) return 'rgba(255, 77, 79, 0.6)';  // medium accent
+    if (score <= 8) return 'rgba(255, 77, 79, 0.85)'; // strong accent
+    return '#ff4d4f';                                  // max intensity
+  };
+
+  // Month label positions above the columns
+  const monthLabels = useMemo(() => {
+    const labels = [];
+    let lastMonth = -1;
+
+    weeks.forEach((week, weekIndex) => {
+      const firstDay = week[0];
+      if (firstDay && firstDay.month !== lastMonth) {
+        labels.push({
+          index: weekIndex,
+          name: MONTH_NAMES[firstDay.month],
+        });
+        lastMonth = firstDay.month;
+      }
+    });
+
+    return labels;
+  }, [weeks]);
 
   return (
-    <div className={styles.heatmapWrapper}>
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'baseline',
-          justifyContent: 'space-between',
-          marginBottom: '1rem',
-          flexWrap: 'wrap',
-          gap: '0.5rem',
-        }}
-      >
-        <div>
-          <h3 style={{ fontSize: '1.05rem', fontWeight: 600, margin: 0, color: 'var(--vg-text)' }}>
-            Annual Activity Heatmap
-          </h3>
-          <p style={{ fontSize: '0.8rem', color: 'var(--vg-text-muted)', margin: '0.2rem 0 0' }}>
-            {totalCompletions} tasks completed in the past year
-          </p>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+      {/* Month Labels */}
+      <div style={{ display: 'flex', marginLeft: '32px', position: 'relative', height: '18px', fontSize: '0.72rem', color: 'var(--vg-text-muted)' }}>
+        {monthLabels.map((m, idx) => (
+          <span
+            key={idx}
+            style={{
+              position: 'absolute',
+              left: `${m.index * 15}px`,
+            }}
+          >
+            {m.name}
+          </span>
+        ))}
+      </div>
+
+      {/* Main Grid: Days of week labels + 52 Week Columns */}
+      <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
+        {/* Day of week labels (Mon, Wed, Fri) */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '3px', width: '26px', fontSize: '0.68rem', color: 'var(--vg-text-muted)', lineHeight: '11px' }}>
+          {DAY_LABELS.map((d, i) => (
+            <div key={i} style={{ height: '11px', textAlign: 'right' }}>
+              {d}
+            </div>
+          ))}
         </div>
 
-        {/* Hovered cell info tooltip */}
-        <div
-          style={{
-            fontSize: '0.8rem',
-            fontWeight: 500,
-            color: hoveredCell ? 'var(--vg-accent)' : 'var(--vg-text-subtle)',
-            minHeight: '1.2rem',
-          }}
-        >
-          {hoveredCell ? (
-            <span>
-              <strong>{hoveredCell.count}</strong> {hoveredCell.count === 1 ? 'task' : 'tasks'} completed on{' '}
-              {hoveredCell.displayDate}
+        {/* 52 Columns */}
+        <div style={{ display: 'flex', gap: '3px', overflowX: 'auto', paddingBottom: '0.25rem' }}>
+          {weeks.map((week, wIdx) => (
+            <div key={wIdx} style={{ display: 'flex', flexDirection: 'column', gap: '3px' }}>
+              {week.map((day) => {
+                const isHovered = hoveredDay && hoveredDay.date === day.date;
+                return (
+                  <div
+                    key={day.date}
+                    onMouseEnter={() => setHoveredDay(day)}
+                    onMouseLeave={() => setHoveredDay(null)}
+                    style={{
+                      width: '11px',
+                      height: '11px',
+                      borderRadius: '2px',
+                      background: getCellColor(day.totalScore),
+                      border: isHovered ? '1px solid var(--vg-text)' : '1px solid transparent',
+                      cursor: 'pointer',
+                      transition: 'transform 0.1s ease',
+                      transform: isHovered ? 'scale(1.25)' : 'none',
+                    }}
+                  />
+                );
+              })}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Footer: Legend & Tooltip Details */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '0.5rem', fontSize: '0.78rem', color: 'var(--vg-text-muted)', minHeight: '24px' }}>
+        <div>
+          {hoveredDay ? (
+            <span style={{ color: 'var(--vg-text)', fontWeight: 500 }}>
+              📅 {hoveredDay.date}:{' '}
+              <strong style={{ color: 'var(--vg-accent)' }}>{hoveredDay.tasksCompleted}</strong> tasks completed,{' '}
+              <strong style={{ color: '#fa8c16' }}>{Math.round((hoveredDay.focusSeconds || 0) / 60)}m</strong> focus,{' '}
+              <strong style={{ color: '#52c41a' }}>{hoveredDay.habitsCompleted}</strong> habits logged (Score: {hoveredDay.totalScore})
             </span>
           ) : (
-            <span>Hover over any day for details</span>
+            <span>Hover over any cell to inspect productivity velocity</span>
           )}
         </div>
-      </div>
 
-      {/* Grid */}
-      <div style={{ overflowX: 'auto', paddingBottom: '0.5rem' }}>
-        <div className={styles.heatmapGrid}>
-          {calendarData.map((day) => {
-            const levelClass =
-              day.level === 4
-                ? styles.cellLevel4
-                : day.level === 3
-                ? styles.cellLevel3
-                : day.level === 2
-                ? styles.cellLevel2
-                : day.level === 1
-                ? styles.cellLevel1
-                : styles.cellLevel0;
-
-            return (
-              <div
-                key={day.date}
-                className={`${styles.heatmapCell} ${levelClass}`}
-                onMouseEnter={() => setHoveredCell(day)}
-                onMouseLeave={() => setHoveredCell(null)}
-                onClick={() => setHoveredCell(day)}
-                title={`${day.count} tasks on ${day.displayDate}`}
-              />
-            );
-          })}
+        {/* Color scale legend */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.72rem' }}>
+          <span>Less</span>
+          <div style={{ width: '10px', height: '10px', borderRadius: '2px', background: 'var(--vg-surface-strong)' }} />
+          <div style={{ width: '10px', height: '10px', borderRadius: '2px', background: 'rgba(255, 77, 79, 0.35)' }} />
+          <div style={{ width: '10px', height: '10px', borderRadius: '2px', background: 'rgba(255, 77, 79, 0.6)' }} />
+          <div style={{ width: '10px', height: '10px', borderRadius: '2px', background: 'rgba(255, 77, 79, 0.85)' }} />
+          <div style={{ width: '10px', height: '10px', borderRadius: '2px', background: '#ff4d4f' }} />
+          <span>More</span>
         </div>
-      </div>
-
-      {/* Legend */}
-      <div className={styles.heatmapLegend}>
-        <span>Less</span>
-        <div className={`${styles.heatmapCell} ${styles.cellLevel0}`} />
-        <div className={`${styles.heatmapCell} ${styles.cellLevel1}`} />
-        <div className={`${styles.heatmapCell} ${styles.cellLevel2}`} />
-        <div className={`${styles.heatmapCell} ${styles.cellLevel3}`} />
-        <div className={`${styles.heatmapCell} ${styles.cellLevel4}`} />
-        <span>More</span>
       </div>
     </div>
   );
 }
-
