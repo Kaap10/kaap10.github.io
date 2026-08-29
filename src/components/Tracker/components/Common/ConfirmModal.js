@@ -33,6 +33,7 @@ export default function ConfirmModal({ isOpen, title, message, onConfirm, onClos
             className={danger ? styles.btnDanger : styles.btnPrimary}
             onClick={() => {
               if (onConfirm) onConfirm();
+              if (onClose) onClose();
             }}
           >
             {confirmLabel}

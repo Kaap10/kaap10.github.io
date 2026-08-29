@@ -152,11 +152,13 @@ export default function GoalsView() {
                 <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '1rem' }}>
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', flexWrap: 'wrap' }}>
-                      <h3 style={{ fontSize: '1.1rem', fontWeight: 600, color: 'var(--vg-text)' }}>
+                      <h3 style={{ fontSize: '1.1rem', fontWeight: 600, color: 'var(--vg-text)', lineHeight: '1.3', margin: 0 }}>
                         {goal.title}
                       </h3>
                       <span
                         style={{
+                          display: 'inline-flex',
+                          alignItems: 'center',
                           fontSize: '0.7rem',
                           padding: '0.15rem 0.5rem',
                           borderRadius: '4px',
@@ -164,13 +166,14 @@ export default function GoalsView() {
                           color: goal.type === 'short_term' ? '#52c41a' : '#1890ff',
                           fontWeight: 600,
                           textTransform: 'uppercase',
+                          lineHeight: '1',
                         }}
                       >
                         {goal.type === 'short_term' ? 'Short-term' : 'Long-term'}
                       </span>
 
                       {isCompleted && (
-                        <span style={{ fontSize: '0.7rem', padding: '0.15rem 0.5rem', borderRadius: '4px', background: 'rgba(82, 196, 26, 0.15)', color: '#52c41a', fontWeight: 600 }}>
+                        <span style={{ display: 'inline-flex', alignItems: 'center', fontSize: '0.7rem', padding: '0.15rem 0.5rem', borderRadius: '4px', background: 'rgba(82, 196, 26, 0.15)', color: '#52c41a', fontWeight: 600, lineHeight: '1' }}>
                           Completed
                         </span>
                       )}
