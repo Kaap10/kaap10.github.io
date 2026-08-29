@@ -55,6 +55,17 @@ export function TrackerProvider({ children }) {
     }
   }, []);
 
+  // Listen for custom tab switch events (e.g. from GlobalTimerWidget in Root.js)
+  useEffect(() => {
+    const handleSetTab = (e) => {
+      if (e.detail) {
+        setActiveTab(e.detail);
+      }
+    };
+    window.addEventListener('tracker:setTab', handleSetTab);
+    return () => window.removeEventListener('tracker:setTab', handleSetTab);
+  }, [setActiveTab]);
+
   // Modal States
   const [taskModalOpen, setTaskModalOpen] = useState(false);
   const [editingTask, setEditingTask] = useState(null);
@@ -77,6 +88,17 @@ export function TrackerProvider({ children }) {
   const [activeResourceForNotes, setActiveResourceForNotes] = useState(null);
 
   const [searchModalOpen, setSearchModalOpen] = useState(false);
+
+  // Floating Timer Widget
+  const [floatWidgetOpen, setFloatWidgetOpen] = useState(false);
+  const [focusTimerSnapshot, setFocusTimerSnapshot] = useState({
+    isActive: false,
+    mode: 'countdown',
+    secondsRemaining: 25 * 60,
+    elapsedSeconds: 0,
+    selectedPreset: 25 * 60,
+    presetLabel: '25m Pomodoro',
+  });
 
   const [confirmModal, setConfirmModal] = useState({
     isOpen: false,
@@ -1155,6 +1177,11 @@ export function TrackerProvider({ children }) {
 
         searchModalOpen,
         setSearchModalOpen,
+
+        floatWidgetOpen,
+        setFloatWidgetOpen,
+        focusTimerSnapshot,
+        setFocusTimerSnapshot,
 
         confirmModal,
         openConfirmModal,

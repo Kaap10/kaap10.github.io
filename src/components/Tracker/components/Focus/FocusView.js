@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useTracker } from '../../context/TrackerContext';
 import {
   IconFocus,
@@ -30,6 +30,9 @@ export default function FocusView() {
     saveFocusSession,
     deleteFocusSession,
     openConfirmModal,
+    floatWidgetOpen,
+    setFloatWidgetOpen,
+    setFocusTimerSnapshot,
   } = useTracker();
 
   // Mode: countdown or stopwatch
@@ -44,22 +47,92 @@ export default function FocusView() {
   const [saving, setSaving] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
 
-  const timerRef = useRef(null);
+  // Timer refs — wall-clock based, immune to tab throttling
+  const rafRef = useRef(null);
+  const timerStartedAtRef = useRef(null); // Date.now() when the current run started
+  const accumulatedRef = useRef(0);       // seconds accumulated before current run
 
-  // Restore active session state from localStorage on mount
+  // Sync accumulatedRef when pausing/resetting
+  useEffect(() => {
+    accumulatedRef.current = elapsedSeconds;
+  }, [isActive]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // rAF tick — reads wall clock, no drift across tab switches
+  const tick = useCallback(() => {
+    if (!timerStartedAtRef.current) return;
+
+    const elapsed = Math.floor((Date.now() - timerStartedAtRef.current) / 1000) + accumulatedRef.current;
+
+    setElapsedSeconds(elapsed);
+
+    if (mode === 'countdown') {
+      const remaining = Math.max(0, selectedPreset - elapsed);
+      setSecondsRemaining(remaining);
+      setFocusTimerSnapshot((prev) => ({
+        ...prev,
+        isActive: true,
+        mode,
+        secondsRemaining: remaining,
+        elapsedSeconds: elapsed,
+        selectedPreset,
+      }));
+      if (remaining <= 0) {
+        // Timer done — stop
+        timerStartedAtRef.current = null;
+        setIsActive(false);
+        setFocusTimerSnapshot((prev) => ({ ...prev, isActive: false, secondsRemaining: 0 }));
+        localStorage.removeItem(FOCUS_STORAGE_KEY);
+        return;
+      }
+    } else {
+      setFocusTimerSnapshot((prev) => ({
+        ...prev,
+        isActive: true,
+        mode,
+        elapsedSeconds: elapsed,
+        selectedPreset,
+      }));
+    }
+
+    rafRef.current = requestAnimationFrame(tick);
+  }, [mode, selectedPreset, setFocusTimerSnapshot]);
+
+  useEffect(() => {
+    if (isActive) {
+      timerStartedAtRef.current = Date.now();
+      accumulatedRef.current = elapsedSeconds;
+      rafRef.current = requestAnimationFrame(tick);
+    } else {
+      cancelAnimationFrame(rafRef.current);
+      timerStartedAtRef.current = null;
+    }
+
+    return () => cancelAnimationFrame(rafRef.current);
+  }, [isActive]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Re-attach tick when mode/preset changes while active
+  useEffect(() => {
+    if (isActive) {
+      cancelAnimationFrame(rafRef.current);
+      rafRef.current = requestAnimationFrame(tick);
+    }
+  }, [tick]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Restore active session from localStorage on mount
   useEffect(() => {
     try {
       const saved = localStorage.getItem(FOCUS_STORAGE_KEY);
       if (saved) {
         const parsed = JSON.parse(saved);
-        if (parsed.startTime) {
+        if (parsed.startedAt) {
           const now = Date.now();
-          const elapsed = Math.floor((now - parsed.startTime) / 1000) + (parsed.accumulated || 0);
+          const elapsed = Math.floor((now - parsed.startedAt) / 1000) + (parsed.accumulated || 0);
 
           setSelectedTaskId(parsed.taskId || '');
           setSessionNotes(parsed.notes || '');
           setSessionStartTime(parsed.isoStartTime || new Date().toISOString());
           setMode(parsed.mode || 'countdown');
+          setSelectedPreset(parsed.totalPreset || 25 * 60);
 
           if (parsed.mode === 'stopwatch') {
             setElapsedSeconds(elapsed);
@@ -73,15 +146,15 @@ export default function FocusView() {
         }
       }
     } catch (e) {
-      console.warn('Failed to restore active focus session:', e);
+      console.warn('Failed to restore focus session:', e);
     }
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Save active timer progress to localStorage periodically
+  // Persist timer state to localStorage whenever relevant state changes
   useEffect(() => {
     if (isActive) {
       const state = {
-        startTime: Date.now(),
+        startedAt: Date.now(),
         accumulated: elapsedSeconds,
         totalPreset: selectedPreset,
         mode,
@@ -92,31 +165,7 @@ export default function FocusView() {
       };
       localStorage.setItem(FOCUS_STORAGE_KEY, JSON.stringify(state));
     }
-  }, [isActive, elapsedSeconds, selectedPreset, mode, selectedTaskId, sessionNotes, sessionStartTime]);
-
-  // Timer Tick
-  useEffect(() => {
-    if (isActive) {
-      timerRef.current = setInterval(() => {
-        setElapsedSeconds((prev) => prev + 1);
-
-        if (mode === 'countdown') {
-          setSecondsRemaining((prev) => {
-            if (prev <= 1) {
-              clearInterval(timerRef.current);
-              setIsActive(false);
-              return 0;
-            }
-            return prev - 1;
-          });
-        }
-      }, 1000);
-    } else {
-      clearInterval(timerRef.current);
-    }
-
-    return () => clearInterval(timerRef.current);
-  }, [isActive, mode]);
+  }, [isActive, elapsedSeconds]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleStart = () => {
     setErrorMsg('');
@@ -126,8 +175,30 @@ export default function FocusView() {
     setIsActive(true);
   };
 
+  // Listen for pause/resume/goToFocus events from GlobalTimerWidget (Root.js)
+  useEffect(() => {
+    const onWidgetPause = () => setIsActive(false);
+    const onWidgetResume = () => {
+      if (!sessionStartTime) setSessionStartTime(new Date().toISOString());
+      setIsActive(true);
+    };
+    const onGoToFocus = () => {
+      // Navigate to focus tab if context setActiveTab is available
+      window.dispatchEvent(new CustomEvent('tracker:setTab', { detail: 'focus' }));
+    };
+    window.addEventListener('focusWidget:pause', onWidgetPause);
+    window.addEventListener('focusWidget:resume', onWidgetResume);
+    window.addEventListener('focusWidget:goToFocus', onGoToFocus);
+    return () => {
+      window.removeEventListener('focusWidget:pause', onWidgetPause);
+      window.removeEventListener('focusWidget:resume', onWidgetResume);
+      window.removeEventListener('focusWidget:goToFocus', onGoToFocus);
+    };
+  }, [sessionStartTime]); // eslint-disable-line react-hooks/exhaustive-deps
+
   const handlePause = () => {
     setIsActive(false);
+    setFocusTimerSnapshot((prev) => ({ ...prev, isActive: false }));
   };
 
   const handleReset = () => {
@@ -135,6 +206,12 @@ export default function FocusView() {
     setElapsedSeconds(0);
     setSecondsRemaining(selectedPreset);
     setSessionStartTime(null);
+    setFocusTimerSnapshot((prev) => ({
+      ...prev,
+      isActive: false,
+      elapsedSeconds: 0,
+      secondsRemaining: selectedPreset,
+    }));
     localStorage.removeItem(FOCUS_STORAGE_KEY);
   };
 
@@ -375,6 +452,25 @@ export default function FocusView() {
               >
                 <IconCheck size={16} />
                 <span>{saving ? 'Saving...' : 'Save Log'}</span>
+              </button>
+            )}
+
+            {elapsedSeconds >= 10 && (
+              <button
+                type="button"
+                className={styles.btnSecondary}
+                onClick={() => {
+                  setFloatWidgetOpen(true);
+                  window.dispatchEvent(new CustomEvent('focusWidget:open'));
+                }}
+                title="Float timer widget"
+                style={{ padding: '0.75rem 1rem', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}
+              >
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="2" y="2" width="20" height="20" rx="2" ry="2"/>
+                  <path d="M7 7h4v4H7z"/>
+                </svg>
+                <span>Float</span>
               </button>
             )}
           </div>

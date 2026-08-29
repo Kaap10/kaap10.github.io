@@ -190,6 +190,14 @@
   gap: 1rem;
   padding-bottom: 1rem;
   border-bottom: 1px solid var(--vg-border);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background-color: var(--vg-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding-top: 0.5rem;
+  margin-top: -0.5rem;
 }
 
 .viewTitle {
