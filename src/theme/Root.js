@@ -157,17 +157,25 @@ function GlobalTimerWidget() {
   useEffect(() => {
     const mv = (cx, cy) => {
       if (!dragging.current) return;
+      const widgetWidth = size === 'expanded' ? 240 : size === 'mini' ? 190 : 130;
+      const widgetHeight = size === 'expanded' ? 140 : 50;
+      const maxX = Math.max(8, window.innerWidth - widgetWidth - 8);
+      const maxY = Math.max(8, window.innerHeight - widgetHeight - 80); // avoid mobile bottom nav
       setPos({
-        x: Math.max(0, Math.min(window.innerWidth - 240, cx - offset.current.x)),
-        y: Math.max(0, Math.min(window.innerHeight - 60, cy - offset.current.y)),
+        x: Math.max(8, Math.min(maxX, cx - offset.current.x)),
+        y: Math.max(8, Math.min(maxY, cy - offset.current.y)),
       });
     };
     const mm = (e) => mv(e.clientX, e.clientY);
-    const tm = (e) => { const t = e.touches[0]; mv(t.clientX, t.clientY); };
+    const tm = (e) => {
+      if (e.touches && e.touches[0]) {
+        mv(e.touches[0].clientX, e.touches[0].clientY);
+      }
+    };
     const up = () => { dragging.current = false; };
     window.addEventListener('mousemove', mm);
     window.addEventListener('mouseup', up);
-    window.addEventListener('touchmove', tm, { passive: false });
+    window.addEventListener('touchmove', tm, { passive: true });
     window.addEventListener('touchend', up);
     return () => {
       window.removeEventListener('mousemove', mm);
@@ -175,7 +183,7 @@ function GlobalTimerWidget() {
       window.removeEventListener('touchmove', tm);
       window.removeEventListener('touchend', up);
     };
-  }, []);
+  }, [size]);
 
   const handlePause = useCallback(() => {
     window.dispatchEvent(new CustomEvent('focusWidget:pause'));

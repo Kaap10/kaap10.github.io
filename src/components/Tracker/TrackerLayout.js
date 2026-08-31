@@ -147,6 +147,44 @@ export default function TrackerLayout({ children }) {
         </div>
       </aside>
 
+      {/* Mobile Top Header Bar (Shown only on Mobile < 768px) */}
+      <header className={styles.mobileHeader}>
+        <div className={styles.brandTitle}>
+          <div
+            style={{
+              width: '8px',
+              height: '8px',
+              borderRadius: '50%',
+              background: 'var(--vg-accent)',
+              boxShadow: '0 0 10px var(--vg-accent)',
+            }}
+          />
+          <span style={{ fontSize: '0.88rem', fontWeight: 600 }}>Productivity OS</span>
+        </div>
+
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+          <button
+            type="button"
+            className={styles.iconBtn}
+            onClick={() => setSearchModalOpen(true)}
+            title="Search (Cmd+K / Ctrl+K)"
+            style={{ padding: '0.45rem', border: '1px solid var(--vg-border)', borderRadius: 'var(--vg-radius-sm)' }}
+          >
+            <IconSearch size={16} />
+          </button>
+
+          <button
+            type="button"
+            className={styles.iconBtn}
+            onClick={signOut}
+            title={`Sign Out (${userName})`}
+            style={{ color: 'var(--vg-accent)', padding: '0.45rem', border: '1px solid var(--vg-border)', borderRadius: 'var(--vg-radius-sm)' }}
+          >
+            <IconLogOut size={16} />
+          </button>
+        </div>
+      </header>
+
       {/* Main View Area */}
       <main className={styles.mainContent}>
         {error && (

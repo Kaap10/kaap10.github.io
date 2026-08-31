@@ -166,7 +166,7 @@ export default function ResourcesView() {
           }}
         />
       ) : (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '1rem' }}>
+        <div className={styles.resourcesGrid}>
           {filteredResources.map((res) => {
             return (
               <div key={res.id} className={styles.resourceCard}>

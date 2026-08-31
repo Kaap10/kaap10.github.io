@@ -22,3 +22,6 @@ yarn-error.log*
 
 # Ignore PDFs (e.g., Resume)
 *.pdf
+
+# Local Docs & Interview Prep
+Project.md

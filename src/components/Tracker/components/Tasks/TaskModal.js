@@ -279,7 +279,7 @@ export default function TaskModal({ isOpen, onClose, initialData = null }) {
             </div>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: '0.75rem' }}>
+          <div className={styles.modalGridCols3}>
             <div className={styles.formGroup}>
               <label className={styles.formLabel}>Status</label>
               <select value={status} onChange={(e) => setStatus(e.target.value)} className={styles.select}>
@@ -308,8 +308,7 @@ export default function TaskModal({ isOpen, onClose, initialData = null }) {
             </div>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: '0.75rem' }}>
-
+          <div className={styles.modalGridCols3}>
             <div className={styles.formGroup}>
               <label className={styles.formLabel}>Due Date</label>
               <input
@@ -344,7 +343,7 @@ export default function TaskModal({ isOpen, onClose, initialData = null }) {
             </div>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+          <div className={styles.modalGridCols2}>
             <div className={styles.formGroup}>
               <label className={styles.formLabel}>Recurrence</label>
               <select value={recurrence} onChange={(e) => setRecurrence(e.target.value)} className={styles.select}>

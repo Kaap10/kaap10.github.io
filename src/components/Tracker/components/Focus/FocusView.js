@@ -361,14 +361,9 @@ export default function FocusView() {
 
           {/* Big Timer Digits */}
           <div
+            className={styles.focusTimerDisplay}
             style={{
-              fontFamily: 'var(--vg-font-mono)',
-              fontSize: '4.5rem',
-              fontWeight: 700,
-              letterSpacing: '-0.03em',
               color: isActive ? 'var(--vg-accent)' : 'var(--vg-text)',
-              marginBottom: '0.5rem',
-              lineHeight: 1,
             }}
           >
             {displayTime}
@@ -403,7 +398,7 @@ export default function FocusView() {
           )}
 
           {/* Control Buttons */}
-          <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+          <div className={styles.focusControlsRow}>
             {!isActive ? (
               <button
                 type="button"

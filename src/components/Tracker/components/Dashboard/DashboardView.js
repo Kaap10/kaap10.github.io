@@ -174,7 +174,7 @@ export default function DashboardView() {
       </div>
 
       {/* Main Grid: Today's Priorities & Active Goals / Habits */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '1.5rem' }}>
+      <div className={styles.dashboardGrid}>
         {/* Left Column: Today's Tasks */}
         <div className={styles.card}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>

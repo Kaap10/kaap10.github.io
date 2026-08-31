@@ -128,7 +128,7 @@ export default function GoalModal({ isOpen, onClose, initialData = null }) {
             />
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+          <div className={styles.modalGridCols2}>
             <div className={styles.formGroup}>
               <label className={styles.formLabel}>Horizon / Type</label>
               <select
@@ -155,7 +155,7 @@ export default function GoalModal({ isOpen, onClose, initialData = null }) {
             </div>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+          <div className={styles.modalGridCols2}>
             <div className={styles.formGroup}>
               <label className={styles.formLabel}>Target Deadline</label>
               <input

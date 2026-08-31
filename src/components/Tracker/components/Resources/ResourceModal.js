@@ -142,7 +142,7 @@ export default function ResourceModal({ isOpen, onClose, initialData = null }) {
             />
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+          <div className={styles.modalGridCols2}>
             <div className={styles.formGroup}>
               <label className={styles.formLabel}>Type</label>
               <select

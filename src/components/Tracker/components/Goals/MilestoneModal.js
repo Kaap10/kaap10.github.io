@@ -122,7 +122,7 @@ export default function MilestoneModal({ isOpen, onClose, initialData = null, go
         )}
 
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+          <div className={styles.modalGridCols2}>
             <div className={styles.formGroup}>
               <label className={styles.formLabel}>Parent Goal *</label>
               <select
@@ -183,7 +183,7 @@ export default function MilestoneModal({ isOpen, onClose, initialData = null, go
             />
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+          <div className={styles.modalGridCols2}>
             <div className={styles.formGroup}>
               <label className={styles.formLabel}>Target Date</label>
               <input

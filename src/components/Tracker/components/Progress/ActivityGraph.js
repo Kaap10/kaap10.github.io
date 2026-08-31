@@ -90,57 +90,61 @@ export default function ActivityGraph() {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-      {/* Month Labels */}
-      <div style={{ display: 'flex', marginLeft: '32px', position: 'relative', height: '18px', fontSize: '0.72rem', color: 'var(--vg-text-muted)' }}>
-        {monthLabels.map((m, idx) => (
-          <span
-            key={idx}
-            style={{
-              position: 'absolute',
-              left: `${m.index * 14}px`,
+      {/* Scrollable Container for Entire Heatmap */}
+      <div style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch', paddingBottom: '0.5rem' }}>
+        <div style={{ minWidth: '780px' }}>
+          {/* Month Labels */}
+          <div style={{ display: 'flex', marginLeft: '32px', position: 'relative', height: '18px', fontSize: '0.72rem', color: 'var(--vg-text-muted)' }}>
+            {monthLabels.map((m, idx) => (
+              <span
+                key={idx}
+                style={{
+                  position: 'absolute',
+                  left: `${m.index * 14}px`,
+                }}
+              >
+                {m.name}
+              </span>
+            ))}
+          </div>
 
-            }}
-          >
-            {m.name}
-          </span>
-        ))}
-      </div>
-
-      {/* Main Grid: Days of week labels + 52 Week Columns */}
-      <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
-        {/* Day of week labels (Mon, Wed, Fri) */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '3px', width: '26px', fontSize: '0.68rem', color: 'var(--vg-text-muted)', lineHeight: '11px' }}>
-          {DAY_LABELS.map((d, i) => (
-            <div key={i} style={{ height: '11px', textAlign: 'right' }}>
-              {d}
+          {/* Main Grid: Days of week labels + 52 Week Columns */}
+          <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
+            {/* Day of week labels (Mon, Wed, Fri) */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '3px', width: '26px', fontSize: '0.68rem', color: 'var(--vg-text-muted)', lineHeight: '11px' }}>
+              {DAY_LABELS.map((d, i) => (
+                <div key={i} style={{ height: '11px', textAlign: 'right' }}>
+                  {d}
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
 
-        {/* 52 Columns */}
-        <div style={{ display: 'flex', gap: '3px', overflowX: 'auto', paddingBottom: '0.25rem' }}>
-          {weeks.map((week, wIdx) => (
-            <div key={wIdx} style={{ display: 'flex', flexDirection: 'column', gap: '3px' }}>
-              {week.map((day) => {
-                const isHovered = hoveredDay && hoveredDay.date === day.date;
-                return (
-                  <div
-                    key={day.date}
-                    onMouseEnter={() => setHoveredDay(day)}
-                    onMouseLeave={() => setHoveredDay(null)}
-                    style={{
-                      width: '11px',
-                      height: '11px',
-                      borderRadius: '2px',
-                      background: getCellColor(day.totalScore),
-                      border: isHovered ? '1px solid var(--vg-text)' : '1px solid transparent',
-                      cursor: 'pointer',
-                    }}
-                  />
-                );
-              })}
+            {/* 52 Columns */}
+            <div style={{ display: 'flex', gap: '3px' }}>
+              {weeks.map((week, wIdx) => (
+                <div key={wIdx} style={{ display: 'flex', flexDirection: 'column', gap: '3px' }}>
+                  {week.map((day) => {
+                    const isHovered = hoveredDay && hoveredDay.date === day.date;
+                    return (
+                      <div
+                        key={day.date}
+                        onMouseEnter={() => setHoveredDay(day)}
+                        onMouseLeave={() => setHoveredDay(null)}
+                        style={{
+                          width: '11px',
+                          height: '11px',
+                          borderRadius: '2px',
+                          background: getCellColor(day.totalScore),
+                          border: isHovered ? '1px solid var(--vg-text)' : '1px solid transparent',
+                          cursor: 'pointer',
+                        }}
+                      />
+                    );
+                  })}
+                </div>
+              ))}
             </div>
-          ))}
+          </div>
         </div>
       </div>
 

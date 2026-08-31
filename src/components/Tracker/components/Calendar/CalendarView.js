@@ -228,7 +228,7 @@ export default function CalendarView() {
       </div>
 
       {/* Main Grid: Calendar Month Grid + Selected Date Inspector */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1.4fr 1fr', gap: '1.5rem' }}>
+      <div className={styles.calendarGrid}>
         {/* Left: Calendar Month Table */}
         <div className={styles.card} style={{ padding: '1rem' }}>
           {/* Day of week headers */}

@@ -101,9 +101,9 @@ export default function HabitsView() {
 
             return (
               <div key={habit.id} className={styles.card}>
-                <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '1rem', flexWrap: 'wrap' }}>
+                <div className={styles.habitCardHeader}>
                   {/* Left: Info */}
-                  <div style={{ flex: 1, minWidth: '220px' }}>
+                  <div style={{ flex: 1, minWidth: '200px' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
                       <span style={{ fontSize: '1.05rem', fontWeight: 600, color: 'var(--vg-text)' }}>
                         {habit.name}
@@ -147,7 +147,7 @@ export default function HabitsView() {
                   </div>
 
                   {/* Center: 7-Day Check-in Matrix */}
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', overflowX: 'auto', minWidth: 0 }}>
+                  <div className={styles.habitCheckinRow}>
                     {last7Days.map((day) => {
                       const isCompleted = logsForHabit.has(day.dateStr);
                       return (

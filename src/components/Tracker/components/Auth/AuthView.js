@@ -52,7 +52,7 @@ export default function AuthView() {
         alignItems: 'center',
         justifyContent: 'center',
         minHeight: 'calc(100vh - 120px)',
-        padding: '2rem 1.5rem',
+        padding: 'clamp(1rem, 4vw, 2rem) clamp(0.75rem, 4vw, 1.5rem)',
       }}
     >
       <div
@@ -62,7 +62,7 @@ export default function AuthView() {
           background: 'var(--vg-bg-elevated)',
           border: '1px solid var(--vg-border)',
           borderRadius: 'var(--vg-radius-lg)',
-          padding: '2.25rem 2rem',
+          padding: 'clamp(1.5rem, 5vw, 2.25rem) clamp(1rem, 5vw, 2rem)',
           boxShadow: '0 16px 36px -10px rgba(0, 0, 0, 0.4)',
           position: 'relative',
         }}
