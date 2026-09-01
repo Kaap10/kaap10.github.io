@@ -1,9 +1,10 @@
-﻿import React from 'react';
+import React from 'react';
 import { useAuth } from './context/AuthContext';
 import { useTracker } from './context/TrackerContext';
 import {
   IconDashboard,
   IconTasks,
+  IconGoals,
   IconFocus,
   IconHabit,
   IconProgress,
@@ -20,6 +21,7 @@ export default function TrackerLayout({ children }) {
   const navItems = [
     { id: 'dashboard', label: 'Today', icon: IconDashboard },
     { id: 'tasks', label: 'Tasks', icon: IconTasks },
+    { id: 'goals', label: 'Goals', icon: IconGoals },
     { id: 'habits', label: 'Habits', icon: IconHabit },
     { id: 'focus', label: 'Focus', icon: IconFocus },
     { id: 'progress', label: 'Insights', icon: IconProgress },

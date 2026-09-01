@@ -76,6 +76,13 @@ const COMMANDS = [
     action: () => (window.location.href = '/tracker?tab=tasks'),
   },
   {
+    id: 'nav-goals',
+    section: 'Tracker Views',
+    title: 'Tracker: Goals & Milestones',
+    icon: <IconZap size={16} />,
+    action: () => (window.location.href = '/tracker?tab=goals'),
+  },
+  {
     id: 'nav-habits',
     section: 'Tracker Views',
     title: 'Tracker: Daily Habits Matrix',

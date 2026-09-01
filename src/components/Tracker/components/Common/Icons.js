@@ -41,8 +41,8 @@ import {
   Video,
   FileCode,
   GraduationCap,
-  Book,
   Globe,
+  GripVertical,
 } from 'lucide-react';
 
 export function IconDashboard({ size = 18, className = '' }) {
@@ -59,6 +59,10 @@ export function IconGoals({ size = 18, className = '' }) {
 
 export function IconMilestone({ size = 16, className = '' }) {
   return <Flag size={size} className={className} />;
+}
+
+export function IconGripVertical({ size = 15, className = '' }) {
+  return <GripVertical size={size} className={className} />;
 }
 
 export function IconFocus({ size = 18, className = '' }) {

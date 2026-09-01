@@ -4,7 +4,7 @@ import { IconClose, IconMilestone, IconAlertCircle } from '../Common/Icons';
 import styles from '../../styles/tracker.module.css';
 
 export default function MilestoneModal({ isOpen, onClose, initialData = null, goalId = null, parentMilestoneId = null }) {
-  const { createMilestone, updateMilestone, goals, milestones } = useTracker();
+  const { createMilestone, updateMilestone, goals, milestones, setGoalModalOpen, setEditingGoal } = useTracker();
 
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -121,6 +121,26 @@ export default function MilestoneModal({ isOpen, onClose, initialData = null, go
           </div>
         )}
 
+        {goals.length === 0 ? (
+          <div style={{ padding: '1.75rem 1rem', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem' }}>
+            <p style={{ color: 'var(--vg-text-muted)', fontSize: '0.88rem', margin: 0 }}>
+              Milestones must belong to a Goal, but you have not created any goals yet.
+            </p>
+            <button
+              type="button"
+              className={styles.btnPrimary}
+              onClick={() => {
+                onClose();
+                setEditingGoal(null);
+                setGoalModalOpen(true);
+              }}
+            >
+              <IconMilestone size={15} />
+              <span>Create a Goal First</span>
+            </button>
+          </div>
+        ) : (
+
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
           <div className={styles.modalGridCols2}>
             <div className={styles.formGroup}>
@@ -212,6 +232,7 @@ export default function MilestoneModal({ isOpen, onClose, initialData = null, go
             </button>
           </div>
         </form>
+        )}
       </div>
     </div>
   );

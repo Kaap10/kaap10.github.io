@@ -11,6 +11,9 @@ import {
   IconTasks,
   IconCalendar,
   IconCornerDownRight,
+  IconGripVertical,
+  IconChevronUp,
+  IconChevronDown,
 } from '../Common/Icons';
 import styles from '../../styles/tracker.module.css';
 
@@ -22,6 +25,7 @@ export default function GoalsView() {
     deleteGoal,
     toggleMilestoneStatus,
     deleteMilestone,
+    reorderMilestones,
     setEditingGoal,
     setGoalModalOpen,
     setEditingMilestone,
@@ -34,6 +38,8 @@ export default function GoalsView() {
   } = useTracker();
 
   const [activeTab, setActiveTab] = useState('all'); // all, short_term, long_term, completed
+  const [draggedMilestoneId, setDraggedMilestoneId] = useState(null);
+  const [dragOverMilestoneId, setDragOverMilestoneId] = useState(null);
 
   // Helper to compute dynamic progress for a goal from its milestones and tasks
   const computeGoalProgress = (goal) => {
@@ -80,10 +86,103 @@ export default function GoalsView() {
     );
   };
 
+  const handleDropMilestone = (e, targetMilestone, goalId) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (!draggedMilestoneId || draggedMilestoneId === targetMilestone.id) {
+      setDraggedMilestoneId(null);
+      setDragOverMilestoneId(null);
+      return;
+    }
+
+    const sourceMilestone = milestones.find((item) => item.id === draggedMilestoneId);
+    if (!sourceMilestone) {
+      setDraggedMilestoneId(null);
+      setDragOverMilestoneId(null);
+      return;
+    }
+
+    // Must belong to the same goal
+    if (sourceMilestone.goal_id !== goalId || targetMilestone.goal_id !== goalId) {
+      setDraggedMilestoneId(null);
+      setDragOverMilestoneId(null);
+      return;
+    }
+
+    // Must be at the same hierarchy level (both root milestones or both sub-milestones under the same parent)
+    const isSourceRoot = !sourceMilestone.parent_id;
+    const isTargetRoot = !targetMilestone.parent_id;
+
+    if (isSourceRoot !== isTargetRoot) {
+      setDraggedMilestoneId(null);
+      setDragOverMilestoneId(null);
+      return;
+    }
+
+    if (!isSourceRoot && sourceMilestone.parent_id !== targetMilestone.parent_id) {
+      setDraggedMilestoneId(null);
+      setDragOverMilestoneId(null);
+      return;
+    }
+
+    const parentId = targetMilestone.parent_id || null;
+    const scopeSiblings = milestones
+      .filter((m) => m.goal_id === goalId && (parentId ? m.parent_id === parentId : !m.parent_id))
+      .sort((a, b) => (a.order_index ?? 0) - (b.order_index ?? 0));
+
+    const sourceIndex = scopeSiblings.findIndex((m) => m.id === sourceMilestone.id);
+    const targetIndex = scopeSiblings.findIndex((m) => m.id === targetMilestone.id);
+
+    if (sourceIndex === -1 || targetIndex === -1) {
+      setDraggedMilestoneId(null);
+      setDragOverMilestoneId(null);
+      return;
+    }
+
+    const reordered = [...scopeSiblings];
+    const [movedItem] = reordered.splice(sourceIndex, 1);
+    reordered.splice(targetIndex, 0, movedItem);
+
+    reorderMilestones(reordered);
+
+    setDraggedMilestoneId(null);
+    setDragOverMilestoneId(null);
+  };
+
+  const handleMoveMilestone = (milestone, direction, goalId) => {
+    const parentId = milestone.parent_id || null;
+    const scopeSiblings = milestones
+      .filter((m) => m.goal_id === goalId && (parentId ? m.parent_id === parentId : !m.parent_id))
+      .sort((a, b) => (a.order_index ?? 0) - (b.order_index ?? 0));
+
+    const currentIndex = scopeSiblings.findIndex((m) => m.id === milestone.id);
+    if (currentIndex === -1) return;
+
+    const targetIndex = direction === 'up' ? currentIndex - 1 : currentIndex + 1;
+    if (targetIndex < 0 || targetIndex >= scopeSiblings.length) return;
+
+    const reordered = [...scopeSiblings];
+    const [movedItem] = reordered.splice(currentIndex, 1);
+    reordered.splice(targetIndex, 0, movedItem);
+
+    reorderMilestones(reordered);
+  };
+
   return (
     <div className={styles.viewContainer}>
       {/* Header */}
       <div className={styles.viewHeader}>
+      {/* Header - Fixed at location when scrolling */}
+      <div
+        className={styles.viewHeader}
+        style={{
+          position: 'sticky',
+          top: '76px',
+          zIndex: 25,
+          backgroundColor: 'var(--vg-bg)',
+        }}
+      >
         <div>
           <h1 className={styles.viewTitle}>Strategic Goals & Milestones</h1>
           <p className={styles.viewSubtitle}>
@@ -91,17 +190,35 @@ export default function GoalsView() {
           </p>
         </div>
 
-        <button
-          type="button"
-          className={styles.btnPrimary}
-          onClick={() => {
-            setEditingGoal(null);
-            setGoalModalOpen(true);
-          }}
-        >
-          <IconPlus size={16} />
-          <span>New Goal</span>
-        </button>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+          {goals.length > 0 && (
+            <button
+              type="button"
+              className={styles.btnSecondary}
+              onClick={() => {
+                setSelectedGoalForMilestone(goals[0]?.id || null);
+                setParentMilestoneId(null);
+                setEditingMilestone(null);
+                setMilestoneModalOpen(true);
+              }}
+            >
+              <IconPlus size={15} />
+              <span>Add Milestone</span>
+            </button>
+          )}
+
+          <button
+            type="button"
+            className={styles.btnPrimary}
+            onClick={() => {
+              setEditingGoal(null);
+              setGoalModalOpen(true);
+            }}
+          >
+            <IconPlus size={16} />
+            <span>New Goal</span>
+          </button>
+        </div>
       </div>
 
       {/* Filter Tabs */}
@@ -139,7 +256,9 @@ export default function GoalsView() {
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
           {filteredGoals.map((goal) => {
             const goalMilestones = milestones.filter((m) => m.goal_id === goal.id);
-            const rootMilestones = goalMilestones.filter((m) => !m.parent_id);
+            const rootMilestones = goalMilestones
+              .filter((m) => !m.parent_id)
+              .sort((a, b) => (a.order_index ?? 0) - (b.order_index ?? 0));
             const goalTasks = tasks.filter((t) => t.goal_id === goal.id);
             const completedGoalTasks = goalTasks.filter((t) => t.status === 'completed');
             const completedMilestonesCount = goalMilestones.filter((m) => m.status === 'completed').length;
@@ -289,20 +408,60 @@ export default function GoalsView() {
                   </div>
 
                   {rootMilestones.length === 0 ? (
-                    <div style={{ padding: '0.75rem', borderRadius: 'var(--vg-radius-sm)', background: 'var(--vg-surface)', fontSize: '0.8rem', color: 'var(--vg-text-muted)', textAlign: 'center' }}>
-                      No milestones created yet. Add milestones to track step-by-step progress.
+                    <div style={{ padding: '0.85rem 1rem', borderRadius: 'var(--vg-radius-sm)', background: 'var(--vg-surface)', fontSize: '0.8rem', color: 'var(--vg-text-muted)', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem' }}>
+                      <span>No milestones created yet. Break this goal into concrete milestones.</span>
+                      <button
+                        type="button"
+                        className={styles.btnSecondary}
+                        onClick={() => {
+                          setSelectedGoalForMilestone(goal.id);
+                          setParentMilestoneId(null);
+                          setEditingMilestone(null);
+                          setMilestoneModalOpen(true);
+                        }}
+                        style={{ fontSize: '0.75rem', padding: '0.25rem 0.65rem' }}
+                      >
+                        <IconPlus size={12} /> Add First Milestone
+                      </button>
                     </div>
                   ) : (
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
-                      {rootMilestones.map((m) => {
+                      {rootMilestones.map((m, mIdx) => {
                         const isDone = m.status === 'completed';
                         const milestoneTasks = tasks.filter((t) => t.milestone_id === m.id);
-                        const subMilestones = goalMilestones.filter((sub) => sub.parent_id === m.id);
+                        const subMilestones = goalMilestones
+                          .filter((sub) => sub.parent_id === m.id)
+                          .sort((a, b) => (a.order_index ?? 0) - (b.order_index ?? 0));
+                        const isDragging = draggedMilestoneId === m.id;
+                        const isDragOver = dragOverMilestoneId === m.id && draggedMilestoneId !== m.id;
 
                         return (
                           <div key={m.id} style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
                             {/* Root Milestone Row */}
                             <div
+                              draggable={true}
+                              onDragStart={(e) => {
+                                if (e.target.closest('button, input, select')) {
+                                  e.preventDefault();
+                                  return;
+                                }
+                                e.dataTransfer.setData('text/plain', m.id);
+                                e.dataTransfer.effectAllowed = 'move';
+                                setDraggedMilestoneId(m.id);
+                              }}
+                              onDragOver={(e) => {
+                                e.preventDefault();
+                                e.dataTransfer.dropEffect = 'move';
+                                if (dragOverMilestoneId !== m.id) setDragOverMilestoneId(m.id);
+                              }}
+                              onDragLeave={() => {
+                                if (dragOverMilestoneId === m.id) setDragOverMilestoneId(null);
+                              }}
+                              onDrop={(e) => handleDropMilestone(e, m, goal.id)}
+                              onDragEnd={() => {
+                                setDraggedMilestoneId(null);
+                                setDragOverMilestoneId(null);
+                              }}
                               style={{
                                 display: 'flex',
                                 alignItems: 'center',
@@ -310,10 +469,30 @@ export default function GoalsView() {
                                 padding: '0.55rem 0.75rem',
                                 borderRadius: 'var(--vg-radius-sm)',
                                 background: isDone ? 'rgba(82, 196, 26, 0.06)' : 'var(--vg-surface)',
-                                border: '1px solid var(--vg-border)',
+                                border: isDragOver ? '1px dashed var(--vg-accent)' : '1px solid var(--vg-border)',
+                                borderTop: isDragOver ? '2px solid var(--vg-accent)' : undefined,
+                                opacity: isDragging ? 0.35 : 1,
+                                transform: isDragging ? 'scale(0.99)' : undefined,
+                                transition: 'border 0.15s ease, opacity 0.15s ease, transform 0.15s ease',
+                                cursor: 'grab',
                               }}
                             >
-                              <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', flex: 1, minWidth: 0 }}>
+                              <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', flex: 1, minWidth: 0 }}>
+                                <div
+                                  style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    color: 'var(--vg-text-muted)',
+                                    cursor: 'grab',
+                                    padding: '0.1rem',
+                                    opacity: 0.65,
+                                    userSelect: 'none',
+                                  }}
+                                  title="Drag milestone up or down to reorder"
+                                >
+                                  <IconGripVertical size={14} />
+                                </div>
+
                                 <button
                                   type="button"
                                   className={`${styles.checkbox} ${isDone ? styles.checkboxChecked : ''}`}
@@ -334,7 +513,7 @@ export default function GoalsView() {
                                 </div>
                               </div>
 
-                              <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+                              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                                 {m.target_date && (
                                   <span style={{ fontSize: '0.75rem', color: 'var(--vg-text-muted)', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
                                     <IconCalendar size={12} />
@@ -346,6 +525,30 @@ export default function GoalsView() {
                                     <IconTasks size={11} /> {milestoneTasks.filter((t) => t.status === 'completed').length}/{milestoneTasks.length}
                                   </span>
                                 )}
+
+                                {/* Up / Down buttons */}
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.15rem' }}>
+                                  <button
+                                    type="button"
+                                    className={styles.iconBtn}
+                                    onClick={() => handleMoveMilestone(m, 'up', goal.id)}
+                                    disabled={mIdx === 0}
+                                    style={{ padding: '0.2rem', opacity: mIdx === 0 ? 0.3 : 0.8 }}
+                                    title="Move milestone up"
+                                  >
+                                    <IconChevronUp size={13} />
+                                  </button>
+                                  <button
+                                    type="button"
+                                    className={styles.iconBtn}
+                                    onClick={() => handleMoveMilestone(m, 'down', goal.id)}
+                                    disabled={mIdx === rootMilestones.length - 1}
+                                    style={{ padding: '0.2rem', opacity: mIdx === rootMilestones.length - 1 ? 0.3 : 0.8 }}
+                                    title="Move milestone down"
+                                  >
+                                    <IconChevronDown size={13} />
+                                  </button>
+                                </div>
 
                                 <button
                                   type="button"
@@ -392,13 +595,38 @@ export default function GoalsView() {
                             {/* Sub-milestones List */}
                             {subMilestones.length > 0 && (
                               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.3rem', marginLeft: '1.5rem', paddingLeft: '0.5rem', borderLeft: '2px solid var(--vg-border)' }}>
-                                {subMilestones.map((sub) => {
+                                {subMilestones.map((sub, subIdx) => {
                                   const subDone = sub.status === 'completed';
                                   const subTasks = tasks.filter((t) => t.milestone_id === sub.id);
+                                  const isSubDragging = draggedMilestoneId === sub.id;
+                                  const isSubDragOver = dragOverMilestoneId === sub.id && draggedMilestoneId !== sub.id;
 
                                   return (
                                     <div
                                       key={sub.id}
+                                      draggable={true}
+                                      onDragStart={(e) => {
+                                        if (e.target.closest('button, input, select')) {
+                                          e.preventDefault();
+                                          return;
+                                        }
+                                        e.dataTransfer.setData('text/plain', sub.id);
+                                        e.dataTransfer.effectAllowed = 'move';
+                                        setDraggedMilestoneId(sub.id);
+                                      }}
+                                      onDragOver={(e) => {
+                                        e.preventDefault();
+                                        e.dataTransfer.dropEffect = 'move';
+                                        if (dragOverMilestoneId !== sub.id) setDragOverMilestoneId(sub.id);
+                                      }}
+                                      onDragLeave={() => {
+                                        if (dragOverMilestoneId === sub.id) setDragOverMilestoneId(null);
+                                      }}
+                                      onDrop={(e) => handleDropMilestone(e, sub, goal.id)}
+                                      onDragEnd={() => {
+                                        setDraggedMilestoneId(null);
+                                        setDragOverMilestoneId(null);
+                                      }}
                                       style={{
                                         display: 'flex',
                                         alignItems: 'center',
@@ -406,10 +634,30 @@ export default function GoalsView() {
                                         padding: '0.45rem 0.65rem',
                                         borderRadius: 'var(--vg-radius-sm)',
                                         background: subDone ? 'rgba(82, 196, 26, 0.04)' : 'var(--vg-surface)',
-                                        border: '1px solid var(--vg-border)',
+                                        border: isSubDragOver ? '1px dashed var(--vg-accent)' : '1px solid var(--vg-border)',
+                                        borderTop: isSubDragOver ? '2px solid var(--vg-accent)' : undefined,
+                                        opacity: isSubDragging ? 0.35 : 1,
+                                        transform: isSubDragging ? 'scale(0.99)' : undefined,
+                                        transition: 'border 0.15s ease, opacity 0.15s ease, transform 0.15s ease',
+                                        cursor: 'grab',
                                       }}
                                     >
-                                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flex: 1, minWidth: 0 }}>
+                                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', flex: 1, minWidth: 0 }}>
+                                        <div
+                                          style={{
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            color: 'var(--vg-text-muted)',
+                                            cursor: 'grab',
+                                            padding: '0.1rem',
+                                            opacity: 0.6,
+                                            userSelect: 'none',
+                                          }}
+                                          title="Drag sub-milestone up or down to reorder"
+                                        >
+                                          <IconGripVertical size={13} />
+                                        </div>
+
                                         <span style={{ color: 'var(--vg-text-muted)' }}>
                                           <IconCornerDownRight size={13} />
                                         </span>
@@ -428,7 +676,7 @@ export default function GoalsView() {
                                         </div>
                                       </div>
 
-                                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem' }}>
                                         {sub.target_date && (
                                           <span style={{ fontSize: '0.72rem', color: 'var(--vg-text-muted)', display: 'flex', alignItems: 'center', gap: '0.2rem' }}>
                                             <IconCalendar size={11} />
@@ -440,6 +688,31 @@ export default function GoalsView() {
                                             <IconTasks size={10} /> {subTasks.filter((t) => t.status === 'completed').length}/{subTasks.length}
                                           </span>
                                         )}
+
+                                        {/* Sub-milestone Up / Down buttons */}
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.1rem' }}>
+                                          <button
+                                            type="button"
+                                            className={styles.iconBtn}
+                                            onClick={() => handleMoveMilestone(sub, 'up', goal.id)}
+                                            disabled={subIdx === 0}
+                                            style={{ padding: '0.15rem', opacity: subIdx === 0 ? 0.3 : 0.8 }}
+                                            title="Move sub-milestone up"
+                                          >
+                                            <IconChevronUp size={12} />
+                                          </button>
+                                          <button
+                                            type="button"
+                                            className={styles.iconBtn}
+                                            onClick={() => handleMoveMilestone(sub, 'down', goal.id)}
+                                            disabled={subIdx === subMilestones.length - 1}
+                                            style={{ padding: '0.15rem', opacity: subIdx === subMilestones.length - 1 ? 0.3 : 0.8 }}
+                                            title="Move sub-milestone down"
+                                          >
+                                            <IconChevronDown size={12} />
+                                          </button>
+                                        </div>
+
                                         <button
                                           type="button"
                                           className={styles.iconBtn}

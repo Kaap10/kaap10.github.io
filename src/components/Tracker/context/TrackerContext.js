@@ -625,6 +625,33 @@ export function TrackerProvider({ children }) {
     setTasks((prev) => prev.map((t) => (t.milestone_id === id ? { ...t, milestone_id: null } : t)));
   };
 
+  const reorderMilestones = async (reorderedList) => {
+    if (!Array.isArray(reorderedList) || reorderedList.length === 0) return;
+
+    // 1. Instant 0ms optimistic UI update
+    setMilestones((prev) => {
+      const orderMap = new Map();
+      reorderedList.forEach((m, idx) => {
+        orderMap.set(m.id, idx);
+      });
+      return prev.map((m) => (orderMap.has(m.id) ? { ...m, order_index: orderMap.get(m.id) } : m));
+    });
+
+    // 2. Persist updated order_index to Supabase
+    const supabase = getSupabase();
+    if (!supabase) return;
+
+    try {
+      await Promise.all(
+        reorderedList.map((m, idx) =>
+          supabase.from('milestones').update({ order_index: idx }).eq('id', m.id)
+        )
+      );
+    } catch (err) {
+      console.warn('Could not persist milestone reordering to Supabase:', err);
+    }
+  };
+
 
   // ============================================================================
   // Focus Session Operations
@@ -1285,6 +1312,7 @@ export function TrackerProvider({ children }) {
         updateMilestone,
         toggleMilestoneStatus,
         deleteMilestone,
+        reorderMilestones,
 
         saveFocusSession,
         deleteFocusSession,
