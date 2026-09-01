@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useTracker } from '../../context/TrackerContext';
 import {
   IconFocus,
@@ -51,6 +51,13 @@ export default function FocusView() {
   const rafRef = useRef(null);
   const timerStartedAtRef = useRef(null); // Date.now() when the current run started
   const accumulatedRef = useRef(0);       // seconds accumulated before current run
+  const selectedPresetRef = useRef(25 * 60);
+  const modeRef = useRef('countdown');
+
+  useEffect(() => {
+    selectedPresetRef.current = selectedPreset;
+    modeRef.current = mode;
+  }, [selectedPreset, mode]);
 
   // rAF tick — reads wall clock, no drift across tab switches
   const tick = useCallback(() => {
@@ -161,6 +168,14 @@ export default function FocusView() {
     const onStateChange = (e) => {
       const d = e.detail;
       if (!d) return;
+      if (typeof d.totalPreset === 'number') {
+        setSelectedPreset(d.totalPreset);
+        selectedPresetRef.current = d.totalPreset;
+      }
+      if (d.mode) {
+        setMode(d.mode);
+        modeRef.current = d.mode;
+      }
       if (!d.isActive) {
         // Paused from external widget / PiP
         cancelAnimationFrame(rafRef.current);
@@ -170,7 +185,7 @@ export default function FocusView() {
         setIsActive(false);
         setElapsedSeconds(cur);
         if (d.mode === 'countdown') {
-          const p = d.totalPreset ?? selectedPreset;
+          const p = d.totalPreset ?? selectedPresetRef.current;
           setSecondsRemaining(Math.max(0, p - cur));
         }
       } else {
@@ -188,7 +203,7 @@ export default function FocusView() {
       accumulatedRef.current = 0;
       setIsActive(false);
       setElapsedSeconds(0);
-      setSecondsRemaining(selectedPreset);
+      setSecondsRemaining(selectedPresetRef.current);
       setSessionStartTime(null);
     };
 
@@ -198,7 +213,7 @@ export default function FocusView() {
       window.removeEventListener('focusWidget:stateChange', onStateChange);
       window.removeEventListener('focusWidget:reset', onReset);
     };
-  }, [selectedPreset]);
+  }, []);
 
   // Start / Resume Handler
   const handleStart = () => {
@@ -215,8 +230,8 @@ export default function FocusView() {
     const state = {
       startedAt: now,
       accumulated: elapsedSeconds,
-      totalPreset: selectedPreset,
-      mode,
+      totalPreset: selectedPresetRef.current,
+      mode: modeRef.current,
       taskId: selectedTaskId,
       notes: sessionNotes,
       isoStartTime: isoStart,
@@ -238,15 +253,15 @@ export default function FocusView() {
     accumulatedRef.current = currentElapsed;
     setIsActive(false);
     setElapsedSeconds(currentElapsed);
-    if (mode === 'countdown') {
-      setSecondsRemaining(Math.max(0, selectedPreset - currentElapsed));
+    if (modeRef.current === 'countdown') {
+      setSecondsRemaining(Math.max(0, selectedPresetRef.current - currentElapsed));
     }
 
     const state = {
       startedAt: null,
       accumulated: currentElapsed,
-      totalPreset: selectedPreset,
-      mode,
+      totalPreset: selectedPresetRef.current,
+      mode: modeRef.current,
       taskId: selectedTaskId,
       notes: sessionNotes,
       isoStartTime: sessionStartTime || new Date().toISOString(),
@@ -264,34 +279,67 @@ export default function FocusView() {
     accumulatedRef.current = 0;
     setIsActive(false);
     setElapsedSeconds(0);
-    setSecondsRemaining(selectedPreset);
+    const currPreset = selectedPresetRef.current;
+    setSecondsRemaining(currPreset);
     setSessionStartTime(null);
-    localStorage.removeItem(FOCUS_STORAGE_KEY);
-    window.dispatchEvent(new CustomEvent('focusWidget:reset'));
+    const resetState = {
+      startedAt: null,
+      accumulated: 0,
+      totalPreset: currPreset,
+      mode: modeRef.current,
+      taskId: selectedTaskId,
+      notes: sessionNotes,
+      isoStartTime: null,
+      isActive: false,
+    };
+    localStorage.setItem(FOCUS_STORAGE_KEY, JSON.stringify(resetState));
+    window.dispatchEvent(new CustomEvent('focusWidget:stateChange', { detail: resetState }));
     setFocusTimerSnapshot((prev) => ({
       ...prev,
       isActive: false,
       elapsedSeconds: 0,
-      secondsRemaining: selectedPreset,
+      secondsRemaining: currPreset,
     }));
   };
 
   const handlePresetSelect = (preset) => {
     if (isActive) return;
-    if (preset.seconds === 0) {
-      setMode('stopwatch');
-      setSelectedPreset(0);
-      setElapsedSeconds(0);
-      setSecondsRemaining(0);
-    } else {
-      setMode('countdown');
-      setSelectedPreset(preset.seconds);
-      setSecondsRemaining(preset.seconds);
-      setElapsedSeconds(0);
-    }
+    cancelAnimationFrame(rafRef.current);
+    timerStartedAtRef.current = null;
+    accumulatedRef.current = 0;
+    setIsActive(false);
+    setElapsedSeconds(0);
     setSessionStartTime(null);
-    localStorage.removeItem(FOCUS_STORAGE_KEY);
-    window.dispatchEvent(new CustomEvent('focusWidget:reset'));
+
+    const newSeconds = preset.seconds;
+    const newMode = newSeconds === 0 ? 'stopwatch' : 'countdown';
+
+    selectedPresetRef.current = newSeconds;
+    modeRef.current = newMode;
+    setSelectedPreset(newSeconds);
+    setMode(newMode);
+    setSecondsRemaining(newSeconds);
+
+    const newState = {
+      startedAt: null,
+      accumulated: 0,
+      totalPreset: newSeconds,
+      mode: newMode,
+      taskId: selectedTaskId,
+      notes: sessionNotes,
+      isoStartTime: null,
+      isActive: false,
+    };
+    localStorage.setItem(FOCUS_STORAGE_KEY, JSON.stringify(newState));
+    window.dispatchEvent(new CustomEvent('focusWidget:stateChange', { detail: newState }));
+    setFocusTimerSnapshot((prev) => ({
+      ...prev,
+      isActive: false,
+      mode: newMode,
+      elapsedSeconds: 0,
+      secondsRemaining: newSeconds,
+      selectedPreset: newSeconds,
+    }));
   };
 
   const handleFinishSession = async () => {
@@ -334,17 +382,12 @@ export default function FocusView() {
     );
   };
 
-  // Format MM:SS or HH:MM:SS
+  // Format MM:SS (e.g. 25:00, 50:00, 90:00)
   const formatTime = (totalSecs) => {
-    const hours = Math.floor(totalSecs / 3600);
-    const mins = Math.floor((totalSecs % 3600) / 60);
+    totalSecs = Math.max(0, Math.floor(totalSecs));
+    const mins = Math.floor(totalSecs / 60);
     const secs = totalSecs % 60;
-
     const pad = (n) => String(n).padStart(2, '0');
-
-    if (hours > 0) {
-      return `${pad(hours)}:${pad(mins)}:${pad(secs)}`;
-    }
     return `${pad(mins)}:${pad(secs)}`;
   };
 

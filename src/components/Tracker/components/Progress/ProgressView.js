@@ -1,7 +1,8 @@
-﻿import React, { useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { useTracker } from '../../context/TrackerContext';
 import ActivityGraph from './ActivityGraph';
 import ActivityLogSection from './ActivityLogSection';
+import NaamJapSection from './NaamJapSection';
 import {
   BarChart,
   Bar,
@@ -244,6 +245,9 @@ export default function ProgressView() {
           </div>
         </div>
       </div>
+
+      {/* Dedicated Naam Jap Section */}
+      <NaamJapSection />
 
       {/* Done Activity Logger Section */}
       <ActivityLogSection />

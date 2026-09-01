@@ -143,8 +143,17 @@ const config = {
         hideOnScroll: false,
         items: [
           { to: '/blogs/intro', label: 'Blogs', position: 'left' },
-          { to: '/board', label: 'Board', position: 'left' },
-          { to: '/tracker', label: 'Tracker', position: 'left' },
+          { to: '/projects', label: 'Projects', position: 'left' },
+          {
+            type: 'dropdown',
+            label: 'Tools',
+            position: 'left',
+            items: [
+              { to: '/tools', label: 'Tools Overview' },
+              { to: '/board', label: 'Interactive Whiteboard' },
+              { to: '/tracker', label: 'Productivity OS' },
+            ],
+          },
           { type: 'search', position: 'right' },
           {
             href: 'https://github.com/kaap10',

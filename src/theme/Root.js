@@ -1,5 +1,7 @@
-﻿import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import ReactDOM from 'react-dom';
+import GlobalCommandPalette from '../components/Common/GlobalCommandPalette';
+import GlobalScratchpad from '../components/Common/GlobalScratchpad';
 
 const FOCUS_KEY = 'kaap10_active_focus_session';
 const POS_KEY = 'kaap10_widget_pos';
@@ -8,9 +10,10 @@ const SIZE_KEY = 'kaap10_widget_size';
 
 function fmtTime(s) {
   s = Math.max(0, Math.floor(s));
-  const h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), sec = s % 60;
+  const m = Math.floor(s / 60);
+  const sec = s % 60;
   const p = (n) => String(n).padStart(2, '0');
-  return h > 0 ? `${p(h)}:${p(m)}:${p(sec)}` : `${p(m)}:${p(sec)}`;
+  return `${p(m)}:${p(sec)}`;
 }
 
 // Clean SVG icons
@@ -786,6 +789,8 @@ export default function Root({ children }) {
     <>
       {children}
       <GlobalTimerWidget />
+      <GlobalCommandPalette />
+      <GlobalScratchpad />
     </>
   );
 }

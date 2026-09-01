@@ -1,4 +1,4 @@
-﻿import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Link from '@docusaurus/Link';
 import Layout from '@theme/Layout';
 import { 
@@ -9,7 +9,11 @@ import {
   Server, 
   BrainCircuit, 
   Terminal,
-  FileText
+  FileText,
+  Sparkles,
+  PenTool,
+  Activity,
+  BookOpen
 } from 'lucide-react';
 import styles from './index.module.css';
 
@@ -25,7 +29,7 @@ const IconLinkedin = ({ size = 15 }) => (
   </svg>
 );
 
-// Reusable custom hook for smooth scroll-triggered progressive reveal
+// Custom hook for progressive scroll reveals
 function useScrollReveal() {
   const ref = useRef(null);
   const [isRevealed, setIsRevealed] = useState(false);
@@ -47,8 +51,8 @@ function useScrollReveal() {
         }
       },
       {
-        threshold: 0.12,
-        rootMargin: '0px 0px -40px 0px'
+        threshold: 0.1,
+        rootMargin: '0px 0px -30px 0px'
       }
     );
 
@@ -66,54 +70,45 @@ export default function Home() {
   const [heroRef, heroRevealed] = useScrollReveal();
   const [projectsRef, projectsRevealed] = useScrollReveal();
   const [toolkitRef, toolkitRevealed] = useScrollReveal();
-  const [blogsRef, blogsRevealed] = useScrollReveal();
+  const [ecoRef, ecoRevealed] = useScrollReveal();
   const [collabRef, collabRevealed] = useScrollReveal();
 
   return (
     <Layout
       title="Vardhman Gupta"
-      description="Personal portfolio and technical knowledge base of Vardhman Gupta — AI/ML Engineer & Full-Stack Developer."
+      description="Personal portfolio, engineering wiki, and productivity suite of Vardhman Gupta — AI/ML Engineer & Full-Stack Developer."
     >
       <main className={styles.pageContainer}>
-        {/* Ambient Animated Glowing Orbs & Technical Grid Overlay */}
+        {/* Subtle Ambient Glow & Minimal Grid Backdrop */}
         <div className={styles.bgCanvasWrapper} aria-hidden="true">
           <div className={styles.glowOrb1} />
           <div className={styles.glowOrb2} />
-          <div className={styles.glowOrb3} />
           <div className={styles.gridOverlay} />
         </div>
 
         <div className={styles.contentWrapper}>
           
           {/* ============================================================
-              1. Hero Section (Cinematic Editorial Introduction)
+              1. Hero Section (Clean, Minimal, Direct)
               ============================================================ */}
           <section 
             ref={heroRef} 
             className={`${styles.heroSection} ${styles.revealSection} ${heroRevealed ? styles.isRevealed : ''}`}
           >
-            <div className={styles.eyebrowPill}>
-              <span className={styles.pulseDot} />
-              <span>Engineer · Builder · Learner</span>
-            </div>
-
             <h1 className={styles.heroTitle}>
               Vardhman Gupta
             </h1>
 
-            <p className={styles.heroBio}>
-              AI/ML engineer and full-stack developer building practical systems across{' '}
-              <span className={styles.bioHighlight}>local LLMs</span>,{' '}
-              <span className={styles.bioHighlight}>RAG pipelines</span>,{' '}
-              <span className={styles.bioHighlight}>realtime collaboration</span>, and{' '}
-              <span className={styles.bioHighlight}>security AI</span>.
+            <p className={styles.heroHeadline}>
+              AI Engineer
             </p>
 
+            {/* Quick CTAs */}
             <div className={styles.heroActions}>
-              <Link to="/blogs/intro" className={styles.primaryHeroLink}>
-                <span>Explore Blogs</span>
+              <a href="#projects" className={styles.primaryHeroLink}>
+                <span>Explore Featured Work</span>
                 <ArrowRight size={16} />
-              </Link>
+              </a>
 
               <a 
                 href="/Vardhman_Gupta%20(Resume).pdf" 
@@ -122,25 +117,14 @@ export default function Home() {
                 className={styles.heroLink}
               >
                 <FileText size={15} />
-                <span>Resume</span>
-                <ArrowUpRight size={14} />
-              </a>
-
-              <a 
-                href="https://github.com/kaap10" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className={styles.heroLink}
-              >
-                <IconGithub size={15} />
-                <span>GitHub</span>
+                <span>Resume (PDF)</span>
                 <ArrowUpRight size={14} />
               </a>
             </div>
           </section>
 
           {/* ============================================================
-              2. Selected Work / Projects (Editorial Showcase Cards)
+              2. Selected Work / Projects (Minimalist Cards)
               ============================================================ */}
           <section 
             ref={projectsRef} 
@@ -149,10 +133,13 @@ export default function Home() {
           >
             <div className={styles.sectionHeader}>
               <div className={styles.sectionTitleGroup}>
-                <span className={styles.sectionEyebrow}>Featured Work</span>
-                <h2 className={styles.sectionTitle}>Projects</h2>
+                <span className={styles.sectionEyebrow}>Selected Engineering</span>
+                <h2 className={styles.sectionTitle}>Featured Projects</h2>
               </div>
-              <span className={styles.sectionSubtitle}>01 — 04</span>
+              <Link to="/projects" className={styles.sectionSubtitle} style={{ display: 'flex', alignItems: 'center', gap: '4px', textDecoration: 'none' }}>
+                <span>View All Details</span>
+                <ArrowRight size={14} />
+              </Link>
             </div>
 
             <div className={styles.projectCardsGrid}>
@@ -166,8 +153,7 @@ export default function Home() {
                 <div className={styles.projectCardBody}>
                   <h3 className={styles.projectCardTitle}>Guru-G</h3>
                   <p className={styles.projectCardDesc}>
-                    Offline AI Tutor. Local LLM learning system for internet-deprived regions featuring textbook 
-                    summaries, interactive practice questions, flashcards, and multilingual support.
+                    Offline AI Tutor running local small LLMs for internet-deprived regions with textbook summaries, interactive quizzes, and multilingual intelligence.
                   </p>
                 </div>
 
@@ -183,14 +169,13 @@ export default function Home() {
               <article className={`${styles.projectCard} ${styles.staggerItem}`}>
                 <div className={styles.projectCardTop}>
                   <span className={styles.projectIndexBadge}>02</span>
-                  <span className={styles.projectCategoryTag}>Information Retrieval &amp; RAG</span>
+                  <span className={styles.projectCategoryTag}>Retrieval &amp; Vector Embeddings</span>
                 </div>
 
                 <div className={styles.projectCardBody}>
                   <h3 className={styles.projectCardTitle}>AuraNow</h3>
                   <p className={styles.projectCardDesc}>
-                    CPU-first RAG Pipeline. Semantic clustering and hierarchical context generation for 100K+ comments 
-                    using CPU-friendly retrieval preprocessing and vector projections.
+                    CPU-optimized RAG pipeline performing semantic clustering and hierarchical context generation over 100K+ comments with projection embeddings.
                   </p>
                 </div>
 
@@ -212,7 +197,7 @@ export default function Home() {
                 <div className={styles.projectCardBody}>
                   <h3 className={styles.projectCardTitle}>Code With Buddy</h3>
                   <p className={styles.projectCardDesc}>
-                    Real-time collaborative code editor that lets multiple users write, edit, and collaborate on code together with synchronized changes and a seamless browser-based coding experience.
+                    Realtime collaborative code editor supporting multi-cursor live synchronization, syntax formatting, and frictionless browser-based pair programming.
                   </p>
                 </div>
 
@@ -228,14 +213,13 @@ export default function Home() {
               <article className={`${styles.projectCard} ${styles.staggerItem}`}>
                 <div className={styles.projectCardTop}>
                   <span className={styles.projectIndexBadge}>04</span>
-                  <span className={styles.projectCategoryTag}>Security AI &amp; Analytics</span>
+                  <span className={styles.projectCategoryTag}>Security AI &amp; Anomaly Detection</span>
                 </div>
 
                 <div className={styles.projectCardBody}>
                   <h3 className={styles.projectCardTitle}>AegisAI</h3>
                   <p className={styles.projectCardDesc}>
-                    AI Security Engine. Behavior-based anomaly detection for identity attacks, brute force, and lateral 
-                    movement with high-throughput SIEM-oriented alerting.
+                    Behavior-based anomaly detection engine identifying identity attack patterns, brute-force spikes, and lateral movement with SIEM-ready alerting.
                   </p>
                 </div>
 
@@ -250,7 +234,7 @@ export default function Home() {
           </section>
 
           {/* ============================================================
-              3. Technical Toolkit (Structured Domain Grid)
+              3. Core Engineering Toolkit (Minimal Structured Grid)
               ============================================================ */}
           <section 
             ref={toolkitRef} 
@@ -262,7 +246,7 @@ export default function Home() {
                 <span className={styles.sectionEyebrow}>Core Capabilities</span>
                 <h2 className={styles.sectionTitle}>Technical Toolkit</h2>
               </div>
-              <span className={styles.sectionSubtitle}>5 Specialized Domains</span>
+              <span className={styles.sectionSubtitle}>5 Domains</span>
             </div>
 
             <div className={styles.toolkitCardsGrid}>
@@ -270,7 +254,7 @@ export default function Home() {
               <div className={`${styles.toolkitDomainCard} ${styles.staggerItem}`}>
                 <div className={styles.toolkitDomainHeader}>
                   <div className={styles.toolkitDomainIcon}>
-                    <Code2 size={18} />
+                    <Code2 size={17} />
                   </div>
                   <span className={styles.toolkitDomainTitle}>Languages</span>
                 </div>
@@ -286,15 +270,15 @@ export default function Home() {
               <div className={`${styles.toolkitDomainCard} ${styles.staggerItem}`}>
                 <div className={styles.toolkitDomainHeader}>
                   <div className={styles.toolkitDomainIcon}>
-                    <LayoutIcon size={18} />
+                    <LayoutIcon size={17} />
                   </div>
                   <span className={styles.toolkitDomainTitle}>Frontend</span>
                 </div>
                 <div className={styles.toolkitPillsWrap}>
                   <span className={styles.skillPill}>React.js</span>
                   <span className={styles.skillPill}>Next.js</span>
-                  <span className={styles.skillPill}>HTML5</span>
-                  <span className={styles.skillPill}>CSS3</span>
+                  <span className={styles.skillPill}>HTML5 / CSS3</span>
+                  <span className={styles.skillPill}>Docusaurus</span>
                 </div>
               </div>
 
@@ -302,15 +286,15 @@ export default function Home() {
               <div className={`${styles.toolkitDomainCard} ${styles.staggerItem}`}>
                 <div className={styles.toolkitDomainHeader}>
                   <div className={styles.toolkitDomainIcon}>
-                    <Server size={18} />
+                    <Server size={17} />
                   </div>
-                  <span className={styles.toolkitDomainTitle}>Backend</span>
+                  <span className={styles.toolkitDomainTitle}>Backend &amp; DB</span>
                 </div>
                 <div className={styles.toolkitPillsWrap}>
-                  <span className={styles.skillPill}>Node.js</span>
                   <span className={styles.skillPill}>FastAPI</span>
-                  <span className={styles.skillPill}>REST APIs</span>
-                  <span className={styles.skillPill}>Express</span>
+                  <span className={styles.skillPill}>Node.js</span>
+                  <span className={styles.skillPill}>PostgreSQL</span>
+                  <span className={styles.skillPill}>Supabase</span>
                 </div>
               </div>
 
@@ -318,14 +302,13 @@ export default function Home() {
               <div className={`${styles.toolkitDomainCard} ${styles.staggerItem}`}>
                 <div className={styles.toolkitDomainHeader}>
                   <div className={styles.toolkitDomainIcon}>
-                    <BrainCircuit size={18} />
+                    <BrainCircuit size={17} />
                   </div>
                   <span className={styles.toolkitDomainTitle}>AI / ML</span>
                 </div>
                 <div className={styles.toolkitPillsWrap}>
                   <span className={styles.skillPill}>PyTorch</span>
-                  <span className={styles.skillPill}>LLMs</span>
-                  <span className={styles.skillPill}>RAG</span>
+                  <span className={styles.skillPill}>LLMs / RAG</span>
                   <span className={styles.skillPill}>Transformers</span>
                   <span className={styles.skillPill}>Scikit-Learn</span>
                 </div>
@@ -335,14 +318,14 @@ export default function Home() {
               <div className={`${styles.toolkitDomainCard} ${styles.staggerItem}`}>
                 <div className={styles.toolkitDomainHeader}>
                   <div className={styles.toolkitDomainIcon}>
-                    <Terminal size={18} />
+                    <Terminal size={17} />
                   </div>
-                  <span className={styles.toolkitDomainTitle}>Infrastructure</span>
+                  <span className={styles.toolkitDomainTitle}>DevOps &amp; Infra</span>
                 </div>
                 <div className={styles.toolkitPillsWrap}>
                   <span className={styles.skillPill}>Docker</span>
-                  <span className={styles.skillPill}>Git</span>
-                  <span className={styles.skillPill}>Linux Environment</span>
+                  <span className={styles.skillPill}>Git / GitHub</span>
+                  <span className={styles.skillPill}>Linux / Bash</span>
                   <span className={styles.skillPill}>CI / CD</span>
                 </div>
               </div>
@@ -350,138 +333,73 @@ export default function Home() {
           </section>
 
           {/* ============================================================
-              4. Blogs & Knowledge Base Showcase
+              4. Interactive Digital Garden Ecosystem
               ============================================================ */}
           <section 
-            ref={blogsRef} 
-            id="blogs"
-            className={`${styles.section} ${styles.revealSection} ${blogsRevealed ? styles.isRevealed : ''}`}
+            ref={ecoRef} 
+            className={`${styles.section} ${styles.revealSection} ${ecoRevealed ? styles.isRevealed : ''}`}
           >
             <div className={styles.sectionHeader}>
               <div className={styles.sectionTitleGroup}>
-                <span className={styles.sectionEyebrow}>Writing &amp; Research</span>
-                <h2 className={styles.sectionTitle}>Knowledge Base</h2>
+                <span className={styles.sectionEyebrow}>Living Workstation</span>
+                <h2 className={styles.sectionTitle}>Digital Garden &amp; Tools</h2>
               </div>
-              <Link to="/blogs/intro" className={styles.sectionSubtitle}>
-                <span>View All Categories</span>
-                <ArrowRight size={14} />
-              </Link>
+              <span className={styles.sectionSubtitle}>Built for Daily Engineering</span>
             </div>
 
-            <div className={styles.articlesGrid}>
-              <Link 
-                to="/blogs/Development/Python%20Full%20Stack/Flask" 
-                className={`${styles.articleCard} ${styles.staggerItem}`}
-              >
-                <div className={styles.articleCardBody}>
-                  <span className={styles.articleCategoryTag}>Development</span>
-                  <h4 className={styles.articleTitle}>Flask &amp; Backend Architecture</h4>
-                  <p className={styles.articleSummary}>
-                    Backend architectures, Flask, FastAPI, database integrations, and high-performance server configurations.
+            <div className={styles.ecoCardsGrid}>
+              {/* Tool 1: Blogs & Wiki */}
+              <Link to="/blogs/intro" className={`${styles.ecoCard} ${styles.staggerItem}`}>
+                <div className={styles.ecoIconWrap}>
+                  <BookOpen size={20} />
+                </div>
+                <div className={styles.ecoCardBody}>
+                  <h3 className={styles.ecoCardTitle}>Knowledge Base &amp; Blogs</h3>
+                  <p className={styles.ecoCardDesc}>
+                    100+ structured engineering articles spanning DSA, System Design, DBMS, ML, and Python Full-Stack.
                   </p>
                 </div>
-                <div className={styles.articleArrow}>
-                  <ArrowRight size={18} />
+                <div className={styles.ecoArrow}>
+                  <ArrowRight size={16} />
                 </div>
               </Link>
 
-              <Link 
-                to="/blogs/Core%20Subjects/DBMS" 
-                className={`${styles.articleCard} ${styles.staggerItem}`}
-              >
-                <div className={styles.articleCardBody}>
-                  <span className={styles.articleCategoryTag}>Core Computer Science</span>
-                  <h4 className={styles.articleTitle}>Database Management Systems (DBMS)</h4>
-                  <p className={styles.articleSummary}>
-                    ACID properties, concurrency control protocols, query optimization, indexing strategies, and relational schema designs.
+              {/* Tool 2: Interactive Whiteboard */}
+              <Link to="/board" className={`${styles.ecoCard} ${styles.staggerItem}`}>
+                <div className={styles.ecoIconWrap}>
+                  <PenTool size={20} />
+                </div>
+                <div className={styles.ecoCardBody}>
+                  <h3 className={styles.ecoCardTitle}>Interactive Whiteboard</h3>
+                  <p className={styles.ecoCardDesc}>
+                    Full-featured architectural sketching canvas powered by Excalidraw for designing distributed systems and algorithms.
                   </p>
                 </div>
-                <div className={styles.articleArrow}>
-                  <ArrowRight size={18} />
+                <div className={styles.ecoArrow}>
+                  <ArrowRight size={16} />
                 </div>
               </Link>
 
-              <Link 
-                to="/blogs/Core%20Subjects/OOPs" 
-                className={`${styles.articleCard} ${styles.staggerItem}`}
-              >
-                <div className={styles.articleCardBody}>
-                  <span className={styles.articleCategoryTag}>System Design</span>
-                  <h4 className={styles.articleTitle}>Object-Oriented Programming &amp; Architecture</h4>
-                  <p className={styles.articleSummary}>
-                    SOLID principles, design patterns, encapsulation, polymorphism, and maintainable software architecture.
+              {/* Tool 3: Productivity Suite */}
+              <Link to="/tracker" className={`${styles.ecoCard} ${styles.staggerItem}`}>
+                <div className={styles.ecoIconWrap}>
+                  <Activity size={20} />
+                </div>
+                <div className={styles.ecoCardBody}>
+                  <h3 className={styles.ecoCardTitle}>Personal Productivity OS</h3>
+                  <p className={styles.ecoCardDesc}>
+                    Custom productivity suite featuring Pomodoro Deep Work with floating PiP capsule, atomic habit streaks, and 52-week activity heatmap.
                   </p>
                 </div>
-                <div className={styles.articleArrow}>
-                  <ArrowRight size={18} />
-                </div>
-              </Link>
-
-              <Link 
-                to="/blogs/B.Tech%20Subjects/Data%20Warehouse%20and%20Data%20Mining" 
-                className={`${styles.articleCard} ${styles.staggerItem}`}
-              >
-                <div className={styles.articleCardBody}>
-                  <span className={styles.articleCategoryTag}>Data Engineering</span>
-                  <h4 className={styles.articleTitle}>Data Warehouse &amp; Data Mining</h4>
-                  <p className={styles.articleSummary}>
-                    OLAP cubes, dimensional modeling, ETL pipelines, association rule mining, and large-scale data clustering.
-                  </p>
-                </div>
-                <div className={styles.articleArrow}>
-                  <ArrowRight size={18} />
+                <div className={styles.ecoArrow}>
+                  <ArrowRight size={16} />
                 </div>
               </Link>
             </div>
           </section>
 
           {/* ============================================================
-              5. Intentional Narrative Transition / Collaboration CTA
-              ============================================================ */}
-          <section 
-            ref={collabRef} 
-            className={`${styles.collabSection} ${styles.revealSection} ${collabRevealed ? styles.isRevealed : ''}`}
-          >
-            <div className={styles.collabEyebrow}>Let&#39;s Collaborate</div>
-            <h2 className={styles.collabTitle}>Building systems that solve hard problems.</h2>
-            <p className={styles.collabText}>
-              Open to high-impact AI/ML engineering roles, production system architectures, and technical collaborations.
-            </p>
-            <div className={styles.collabActions}>
-              <a 
-                href="https://linkedin.com/in/vardhman-gupta" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className={styles.collabPrimaryBtn}
-              >
-                <IconLinkedin size={16} />
-                <span>Connect on LinkedIn</span>
-              </a>
-
-              <a 
-                href="/Vardhman_Gupta%20(Resume).pdf" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className={styles.collabSecondaryBtn}
-              >
-                <FileText size={15} />
-                <span>View Full Resume</span>
-              </a>
-
-              <a 
-                href="https://github.com/kaap10" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className={styles.collabSecondaryBtn}
-              >
-                <IconGithub size={15} />
-                <span>GitHub Profile</span>
-              </a>
-            </div>
-          </section>
-
-          {/* ============================================================
-              6. Minimal Editorial Footer
+              5. Minimal Clean Footer
               ============================================================ */}
           <footer className={styles.editorialFooter}>
             <div className={styles.footerTop}>
@@ -491,15 +409,15 @@ export default function Home() {
               </div>
               <div className={styles.footerLinks}>
                 <Link to="/blogs/intro" className={styles.footerLink}>Blogs</Link>
-                <Link to="/board" className={styles.footerLink}>Board</Link>
-                <Link to="/tracker" className={styles.footerLink}>Tracker</Link>
+                <Link to="/projects" className={styles.footerLink}>Projects</Link>
+                <Link to="/tools" className={styles.footerLink}>Tools</Link>
                 <a href="/Vardhman_Gupta%20(Resume).pdf" target="_blank" rel="noopener noreferrer" className={styles.footerLink}>Resume</a>
                 <a href="https://github.com/kaap10" target="_blank" rel="noopener noreferrer" className={styles.footerLink}>GitHub</a>
                 <a href="https://linkedin.com/in/vardhman-gupta" target="_blank" rel="noopener noreferrer" className={styles.footerLink}>LinkedIn</a>
               </div>
             </div>
             <div className={styles.footerBottom}>
-              © {new Date().getFullYear()} Vardhman Gupta. Built with editorial restraint.
+              © {new Date().getFullYear()} Vardhman Gupta. Built with technical precision and minimal design.
             </div>
           </footer>
 
