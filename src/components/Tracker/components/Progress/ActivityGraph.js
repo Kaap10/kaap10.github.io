@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+﻿import React, { useState, useMemo } from 'react';
 import { useTracker } from '../../context/TrackerContext';
 import styles from '../../styles/tracker.module.css';
 
@@ -156,7 +156,7 @@ export default function ActivityGraph() {
               <strong>{hoveredDay.date}:</strong>{' '}
               <strong style={{ color: 'var(--vg-accent)' }}>{hoveredDay.tasksCompleted}</strong> tasks completed,{' '}
               <strong style={{ color: '#fa8c16' }}>{Math.round((hoveredDay.focusSeconds || 0) / 60)}m</strong> focus,{' '}
-              <strong style={{ color: '#52c41a' }}>{hoveredDay.habitsCompleted}</strong> habits logged (Score: {hoveredDay.totalScore})
+              <strong style={{ color: '#52c41a' }}>{hoveredDay.habitsCompleted}</strong> habits, <strong style={{ color: '#ffa940' }}>{hoveredDay.activityLogsCount || 0}</strong> logs (Score: {hoveredDay.totalScore})
             </div>
           ) : (
             <span>Hover over any cell to inspect productivity velocity</span>

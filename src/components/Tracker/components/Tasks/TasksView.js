@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+﻿import React, { useState, useMemo } from 'react';
 import { useTracker } from '../../context/TrackerContext';
 import EmptyState from '../Common/EmptyState';
 import {
@@ -10,22 +10,17 @@ import {
   IconTrash,
   IconClock,
   IconRepeat,
-  IconMilestone,
-  IconGoals,
   IconChevronDown,
   IconChevronUp,
-  IconCornerDownRight,
   IconListPlus,
 } from '../Common/Icons';
 import styles from '../../styles/tracker.module.css';
 
-const CATEGORIES = ['All Categories', 'DSA', 'AI/ML', 'Development', 'Learning', 'Personal', 'Other'];
+const CATEGORIES = ['All Categories', 'Naam Jap', 'DSA', 'AI/ML', 'Development', 'Learning', 'Personal', 'Health', 'Other'];
 
 export default function TasksView() {
   const {
     tasks,
-    goals,
-    milestones,
     toggleTaskStatus,
     toggleSubtask,
     deleteTask,
@@ -34,16 +29,14 @@ export default function TasksView() {
     openConfirmModal,
   } = useTracker();
 
-  const [activeFilter, setActiveFilter] = useState('all'); // all, today, upcoming, overdue, completed, high
+  const [activeFilter, setActiveFilter] = useState('all');
   const [selectedCategory, setSelectedCategory] = useState('All Categories');
-  const [selectedGoal, setSelectedGoal] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
-  const [sortBy, setSortBy] = useState('due_date'); // due_date, priority, created_at, status
+  const [sortBy, setSortBy] = useState('due_date');
   const [expandedTasks, setExpandedTasks] = useState({});
 
   const _td = new Date();
   const todayStr = `${_td.getFullYear()}-${String(_td.getMonth() + 1).padStart(2, '0')}-${String(_td.getDate()).padStart(2, '0')}`;
-
 
   const toggleExpand = (taskId) => {
     setExpandedTasks((prev) => ({ ...prev, [taskId]: !prev[taskId] }));
@@ -67,12 +60,7 @@ export default function TasksView() {
         return false;
       }
 
-      // 3. Goal Filter
-      if (selectedGoal !== 'all' && task.goal_id !== selectedGoal) {
-        return false;
-      }
-
-      // 4. Search Query
+      // 3. Search Query
       if (searchQuery.trim()) {
         const q = searchQuery.toLowerCase();
         const matchTitle = task.title?.toLowerCase().includes(q);
@@ -82,7 +70,7 @@ export default function TasksView() {
 
       return true;
     });
-  }, [tasks, activeFilter, selectedCategory, selectedGoal, searchQuery, todayStr]);
+  }, [tasks, activeFilter, selectedCategory, searchQuery, todayStr]);
 
   // Sorting
   const sortedTasks = useMemo(() => {
@@ -97,7 +85,6 @@ export default function TasksView() {
       if (sortBy === 'status') {
         return a.status.localeCompare(b.status);
       }
-      // default: due_date
       if (!a.due_date) return 1;
       if (!b.due_date) return -1;
       return a.due_date.localeCompare(b.due_date);
@@ -107,7 +94,7 @@ export default function TasksView() {
   const handleDelete = (task) => {
     openConfirmModal(
       'Delete Task?',
-      `Are you sure you want to permanently delete "${task.title}"?`,
+      `Are you sure you want to delete "${task.title}"?`,
       () => deleteTask(task.id)
     );
   };
@@ -117,9 +104,9 @@ export default function TasksView() {
       {/* Header */}
       <div className={styles.viewHeader}>
         <div>
-          <h1 className={styles.viewTitle}>Engineering Tasks</h1>
+          <h1 className={styles.viewTitle}>Tasks</h1>
           <p className={styles.viewSubtitle}>
-            Manage, organize, and execute technical action items and subtasks with precision.
+            Capture, prioritize, and execute engineering action items with clarity.
           </p>
         </div>
 
@@ -195,18 +182,6 @@ export default function TasksView() {
             ))}
           </select>
 
-          <select
-            value={selectedGoal}
-            onChange={(e) => setSelectedGoal(e.target.value)}
-            className={styles.select}
-            style={{ width: 'auto' }}
-          >
-            <option value="all">All Goals</option>
-            {goals.map((g) => (
-              <option key={g.id} value={g.id}>{g.title}</option>
-            ))}
-          </select>
-
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', fontSize: '0.8rem', color: 'var(--vg-text-muted)' }}>
             <span>Sort:</span>
             <select
@@ -228,13 +203,13 @@ export default function TasksView() {
       {sortedTasks.length === 0 ? (
         <EmptyState
           icon={IconTasks}
-          title="No tasks match your criteria"
+          title="No tasks found"
           description={
             tasks.length === 0
               ? 'Get started by creating your first engineering task.'
-              : 'Try clearing your filters or search query.'
+              : 'Try clearing your search query or filters.'
           }
-          actionLabel="Add New Task"
+          actionLabel="Add Task"
           onAction={() => {
             setEditingTask(null);
             setTaskModalOpen(true);
@@ -245,8 +220,6 @@ export default function TasksView() {
           {sortedTasks.map((task) => {
             const isCompleted = task.status === 'completed';
             const isOverdue = !isCompleted && task.due_date && task.due_date < todayStr;
-            const goalObj = goals.find((g) => g.id === task.goal_id);
-            const milestoneObj = milestones.find((m) => m.id === task.milestone_id);
             const subtasks = Array.isArray(task.subtasks) ? task.subtasks : [];
             const completedSubtasks = subtasks.filter((s) => s.completed);
             const isExpanded = !!expandedTasks[task.id];
@@ -353,40 +326,6 @@ export default function TasksView() {
                         </span>
                       )}
 
-                      {goalObj && (
-                        <span
-                          style={{
-                            fontSize: '0.72rem',
-                            padding: '0.1rem 0.4rem',
-                            borderRadius: '3px',
-                            background: 'var(--vg-surface-strong)',
-                            color: 'var(--vg-text)',
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            gap: '0.25rem',
-                          }}
-                        >
-                          <IconGoals size={11} /> {goalObj.title}
-                        </span>
-                      )}
-
-                      {milestoneObj && (
-                        <span
-                          style={{
-                            fontSize: '0.72rem',
-                            padding: '0.1rem 0.4rem',
-                            borderRadius: '3px',
-                            background: 'var(--vg-surface-strong)',
-                            color: 'var(--vg-accent)',
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            gap: '0.2rem',
-                          }}
-                        >
-                          <IconMilestone size={11} /> {milestoneObj.title}
-                        </span>
-                      )}
-
                       {/* Subtasks Counter Badge */}
                       {subtasks.length > 0 && (
                         <button
@@ -422,7 +361,7 @@ export default function TasksView() {
                         setEditingTask(task);
                         setTaskModalOpen(true);
                       }}
-                      title="Edit Task & Subtasks"
+                      title="Edit Task"
                     >
                       <IconEdit size={15} />
                     </button>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+﻿import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useTracker } from '../../context/TrackerContext';
 import {
   IconFocus,
@@ -52,17 +52,11 @@ export default function FocusView() {
   const timerStartedAtRef = useRef(null); // Date.now() when the current run started
   const accumulatedRef = useRef(0);       // seconds accumulated before current run
 
-  // Sync accumulatedRef when pausing/resetting
-  useEffect(() => {
-    accumulatedRef.current = elapsedSeconds;
-  }, [isActive]); // eslint-disable-line react-hooks/exhaustive-deps
-
   // rAF tick — reads wall clock, no drift across tab switches
   const tick = useCallback(() => {
     if (!timerStartedAtRef.current) return;
 
     const elapsed = Math.floor((Date.now() - timerStartedAtRef.current) / 1000) + accumulatedRef.current;
-
     setElapsedSeconds(elapsed);
 
     if (mode === 'countdown') {
@@ -79,9 +73,21 @@ export default function FocusView() {
       if (remaining <= 0) {
         // Timer done — stop
         timerStartedAtRef.current = null;
+        accumulatedRef.current = selectedPreset;
         setIsActive(false);
-        setFocusTimerSnapshot((prev) => ({ ...prev, isActive: false, secondsRemaining: 0 }));
-        localStorage.removeItem(FOCUS_STORAGE_KEY);
+        const finalState = {
+          startedAt: null,
+          accumulated: selectedPreset,
+          totalPreset: selectedPreset,
+          mode,
+          taskId: selectedTaskId,
+          notes: sessionNotes,
+          isoStartTime: sessionStartTime || new Date().toISOString(),
+          isActive: false,
+        };
+        localStorage.setItem(FOCUS_STORAGE_KEY, JSON.stringify(finalState));
+        window.dispatchEvent(new CustomEvent('focusWidget:stateChange', { detail: finalState }));
+        setFocusTimerSnapshot((prev) => ({ ...prev, isActive: false, secondsRemaining: 0, elapsedSeconds: selectedPreset }));
         return;
       }
     } else {
@@ -95,11 +101,13 @@ export default function FocusView() {
     }
 
     rafRef.current = requestAnimationFrame(tick);
-  }, [mode, selectedPreset, setFocusTimerSnapshot]);
+  }, [mode, selectedPreset, selectedTaskId, sessionNotes, sessionStartTime, setFocusTimerSnapshot]);
 
   useEffect(() => {
     if (isActive) {
-      timerStartedAtRef.current = Date.now();
+      if (!timerStartedAtRef.current) {
+        timerStartedAtRef.current = Date.now();
+      }
       accumulatedRef.current = elapsedSeconds;
       rafRef.current = requestAnimationFrame(tick);
     } else {
@@ -108,15 +116,7 @@ export default function FocusView() {
     }
 
     return () => cancelAnimationFrame(rafRef.current);
-  }, [isActive]); // eslint-disable-line react-hooks/exhaustive-deps
-
-  // Re-attach tick when mode/preset changes while active
-  useEffect(() => {
-    if (isActive) {
-      cancelAnimationFrame(rafRef.current);
-      rafRef.current = requestAnimationFrame(tick);
-    }
-  }, [tick]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [isActive, tick]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Restore active session from localStorage on mount
   useEffect(() => {
@@ -124,95 +124,156 @@ export default function FocusView() {
       const saved = localStorage.getItem(FOCUS_STORAGE_KEY);
       if (saved) {
         const parsed = JSON.parse(saved);
-        if (parsed.startedAt) {
-          const now = Date.now();
-          const elapsed = Math.floor((now - parsed.startedAt) / 1000) + (parsed.accumulated || 0);
+        const preset = parsed.totalPreset ?? 25 * 60;
+        const savedMode = parsed.mode || 'countdown';
+        const isRun = !!parsed.isActive;
 
-          setSelectedTaskId(parsed.taskId || '');
-          setSessionNotes(parsed.notes || '');
-          setSessionStartTime(parsed.isoStartTime || new Date().toISOString());
-          setMode(parsed.mode || 'countdown');
-          setSelectedPreset(parsed.totalPreset || 25 * 60);
+        let elapsed = parsed.accumulated || 0;
+        if (isRun && parsed.startedAt) {
+          elapsed = Math.floor((Date.now() - parsed.startedAt) / 1000) + (parsed.accumulated || 0);
+        }
 
-          if (parsed.mode === 'stopwatch') {
-            setElapsedSeconds(elapsed);
-            setIsActive(parsed.isActive);
-          } else {
-            const rem = Math.max(0, (parsed.totalPreset || 25 * 60) - elapsed);
-            setSecondsRemaining(rem);
-            setElapsedSeconds(elapsed);
-            setIsActive(parsed.isActive && rem > 0);
-          }
+        setSelectedTaskId(parsed.taskId || '');
+        setSessionNotes(parsed.notes || '');
+        setSessionStartTime(parsed.isoStartTime || new Date().toISOString());
+        setMode(savedMode);
+        setSelectedPreset(preset);
+        accumulatedRef.current = elapsed;
+        setElapsedSeconds(elapsed);
+
+        if (savedMode === 'stopwatch') {
+          setIsActive(isRun);
+          if (isRun) timerStartedAtRef.current = parsed.startedAt || Date.now();
+        } else {
+          const rem = Math.max(0, preset - elapsed);
+          setSecondsRemaining(rem);
+          setIsActive(isRun && rem > 0);
+          if (isRun && rem > 0) timerStartedAtRef.current = parsed.startedAt || Date.now();
         }
       }
     } catch (e) {
       console.warn('Failed to restore focus session:', e);
     }
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
 
-  // Persist timer state to localStorage whenever relevant state changes
+  // Listen for sync events from GlobalTimerWidget / PiP Window
   useEffect(() => {
-    if (isActive) {
-      const state = {
-        startedAt: Date.now(),
-        accumulated: elapsedSeconds,
-        totalPreset: selectedPreset,
-        mode,
-        taskId: selectedTaskId,
-        notes: sessionNotes,
-        isoStartTime: sessionStartTime || new Date().toISOString(),
-        isActive: true,
-      };
-      localStorage.setItem(FOCUS_STORAGE_KEY, JSON.stringify(state));
-    }
-  }, [isActive, elapsedSeconds]); // eslint-disable-line react-hooks/exhaustive-deps
+    const onStateChange = (e) => {
+      const d = e.detail;
+      if (!d) return;
+      if (!d.isActive) {
+        // Paused from external widget / PiP
+        cancelAnimationFrame(rafRef.current);
+        timerStartedAtRef.current = null;
+        const cur = d.accumulated || 0;
+        accumulatedRef.current = cur;
+        setIsActive(false);
+        setElapsedSeconds(cur);
+        if (d.mode === 'countdown') {
+          const p = d.totalPreset ?? selectedPreset;
+          setSecondsRemaining(Math.max(0, p - cur));
+        }
+      } else {
+        // Resumed from external widget / PiP
+        const cur = d.accumulated || 0;
+        accumulatedRef.current = cur;
+        timerStartedAtRef.current = d.startedAt || Date.now();
+        setIsActive(true);
+      }
+    };
 
+    const onReset = () => {
+      cancelAnimationFrame(rafRef.current);
+      timerStartedAtRef.current = null;
+      accumulatedRef.current = 0;
+      setIsActive(false);
+      setElapsedSeconds(0);
+      setSecondsRemaining(selectedPreset);
+      setSessionStartTime(null);
+    };
+
+    window.addEventListener('focusWidget:stateChange', onStateChange);
+    window.addEventListener('focusWidget:reset', onReset);
+    return () => {
+      window.removeEventListener('focusWidget:stateChange', onStateChange);
+      window.removeEventListener('focusWidget:reset', onReset);
+    };
+  }, [selectedPreset]);
+
+  // Start / Resume Handler
   const handleStart = () => {
     setErrorMsg('');
+    const now = Date.now();
+    const isoStart = sessionStartTime || new Date().toISOString();
     if (!sessionStartTime) {
-      setSessionStartTime(new Date().toISOString());
+      setSessionStartTime(isoStart);
     }
+    timerStartedAtRef.current = now;
+    accumulatedRef.current = elapsedSeconds;
     setIsActive(true);
+
+    const state = {
+      startedAt: now,
+      accumulated: elapsedSeconds,
+      totalPreset: selectedPreset,
+      mode,
+      taskId: selectedTaskId,
+      notes: sessionNotes,
+      isoStartTime: isoStart,
+      isActive: true,
+    };
+    localStorage.setItem(FOCUS_STORAGE_KEY, JSON.stringify(state));
+    window.dispatchEvent(new CustomEvent('focusWidget:stateChange', { detail: state }));
   };
 
-  // Listen for pause/resume/goToFocus events from GlobalTimerWidget (Root.js)
-  useEffect(() => {
-    const onWidgetPause = () => setIsActive(false);
-    const onWidgetResume = () => {
-      if (!sessionStartTime) setSessionStartTime(new Date().toISOString());
-      setIsActive(true);
-    };
-    const onGoToFocus = () => {
-      // Navigate to focus tab if context setActiveTab is available
-      window.dispatchEvent(new CustomEvent('tracker:setTab', { detail: 'focus' }));
-    };
-    window.addEventListener('focusWidget:pause', onWidgetPause);
-    window.addEventListener('focusWidget:resume', onWidgetResume);
-    window.addEventListener('focusWidget:goToFocus', onGoToFocus);
-    return () => {
-      window.removeEventListener('focusWidget:pause', onWidgetPause);
-      window.removeEventListener('focusWidget:resume', onWidgetResume);
-      window.removeEventListener('focusWidget:goToFocus', onGoToFocus);
-    };
-  }, [sessionStartTime]); // eslint-disable-line react-hooks/exhaustive-deps
-
+  // Pause Handler
   const handlePause = () => {
+    const now = Date.now();
+    let currentElapsed = elapsedSeconds;
+    if (timerStartedAtRef.current) {
+      currentElapsed = Math.floor((now - timerStartedAtRef.current) / 1000) + accumulatedRef.current;
+    }
+    cancelAnimationFrame(rafRef.current);
+    timerStartedAtRef.current = null;
+    accumulatedRef.current = currentElapsed;
     setIsActive(false);
-    setFocusTimerSnapshot((prev) => ({ ...prev, isActive: false }));
+    setElapsedSeconds(currentElapsed);
+    if (mode === 'countdown') {
+      setSecondsRemaining(Math.max(0, selectedPreset - currentElapsed));
+    }
+
+    const state = {
+      startedAt: null,
+      accumulated: currentElapsed,
+      totalPreset: selectedPreset,
+      mode,
+      taskId: selectedTaskId,
+      notes: sessionNotes,
+      isoStartTime: sessionStartTime || new Date().toISOString(),
+      isActive: false,
+    };
+    localStorage.setItem(FOCUS_STORAGE_KEY, JSON.stringify(state));
+    window.dispatchEvent(new CustomEvent('focusWidget:stateChange', { detail: state }));
+    setFocusTimerSnapshot((prev) => ({ ...prev, isActive: false, elapsedSeconds: currentElapsed }));
   };
 
+  // Reset Handler
   const handleReset = () => {
+    cancelAnimationFrame(rafRef.current);
+    timerStartedAtRef.current = null;
+    accumulatedRef.current = 0;
     setIsActive(false);
     setElapsedSeconds(0);
     setSecondsRemaining(selectedPreset);
     setSessionStartTime(null);
+    localStorage.removeItem(FOCUS_STORAGE_KEY);
+    window.dispatchEvent(new CustomEvent('focusWidget:reset'));
     setFocusTimerSnapshot((prev) => ({
       ...prev,
       isActive: false,
       elapsedSeconds: 0,
       secondsRemaining: selectedPreset,
     }));
-    localStorage.removeItem(FOCUS_STORAGE_KEY);
   };
 
   const handlePresetSelect = (preset) => {
@@ -230,6 +291,7 @@ export default function FocusView() {
     }
     setSessionStartTime(null);
     localStorage.removeItem(FOCUS_STORAGE_KEY);
+    window.dispatchEvent(new CustomEvent('focusWidget:reset'));
   };
 
   const handleFinishSession = async () => {
@@ -443,31 +505,28 @@ export default function FocusView() {
                   background: 'var(--vg-success, #52c41a)',
                   borderColor: 'var(--vg-success, #52c41a)',
                 }}
-
               >
                 <IconCheck size={16} />
                 <span>{saving ? 'Saving...' : 'Save Log'}</span>
               </button>
             )}
 
-            {elapsedSeconds >= 10 && (
-              <button
-                type="button"
-                className={styles.btnSecondary}
-                onClick={() => {
-                  setFloatWidgetOpen(true);
-                  window.dispatchEvent(new CustomEvent('focusWidget:open'));
-                }}
-                title="Float timer widget"
-                style={{ padding: '0.75rem 1rem', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}
-              >
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <rect x="2" y="2" width="20" height="20" rx="2" ry="2"/>
-                  <path d="M7 7h4v4H7z"/>
-                </svg>
-                <span>Float</span>
-              </button>
-            )}
+            <button
+              type="button"
+              className={styles.btnSecondary}
+              onClick={() => {
+                setFloatWidgetOpen(true);
+                window.dispatchEvent(new CustomEvent('focusWidget:open'));
+              }}
+              title="Open floating PiP capsule widget"
+              style={{ padding: '0.75rem 1rem', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}
+            >
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="2" y="2" width="20" height="20" rx="2" ry="2"/>
+                <path d="M7 7h4v4H7z"/>
+              </svg>
+              <span>PiP Widget</span>
+            </button>
           </div>
         </div>
 
@@ -479,14 +538,18 @@ export default function FocusView() {
             </h3>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-              <div className={styles.formGroup}>
-                <label className={styles.formLabel}>Focusing on Task</label>
+              <div>
+                <label style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--vg-text-muted)', marginBottom: '0.35rem', display: 'block' }}>
+                  Link to Active Task (Optional)
+                </label>
                 <select
                   value={selectedTaskId}
                   onChange={(e) => setSelectedTaskId(e.target.value)}
+                  disabled={isActive}
                   className={styles.select}
+                  style={{ width: '100%' }}
                 >
-                  <option value="">No Specific Task (General Focus)</option>
+                  <option value="">No Specific Task</option>
                   {tasks
                     .filter((t) => t.status !== 'completed')
                     .map((t) => (
@@ -497,77 +560,93 @@ export default function FocusView() {
                 </select>
               </div>
 
-              <div className={styles.formGroup}>
-                <label className={styles.formLabel}>Session Reflection / Notes</label>
+              <div>
+                <label style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--vg-text-muted)', marginBottom: '0.35rem', display: 'block' }}>
+                  Deep Work Notes / Focus Log
+                </label>
                 <textarea
-                  placeholder="What did you accomplish? Any breakthroughs or roadblocks..."
                   value={sessionNotes}
                   onChange={(e) => setSessionNotes(e.target.value)}
+                  placeholder="What are you focusing on during this block? (e.g. implementing binary search tree, system architecture design, reading paper...)"
                   className={styles.textarea}
                   rows={4}
+                  style={{ width: '100%', resize: 'vertical' }}
                 />
               </div>
             </div>
           </div>
-
-          {/* Recent Focus History */}
-          <div className={styles.card}>
-            <h3 className={styles.cardTitle} style={{ marginBottom: '0.75rem' }}>
-              Recent Deep Work Logs
-            </h3>
-
-            {focusSessions.length === 0 ? (
-              <div style={{ padding: '1rem', textAlign: 'center', color: 'var(--vg-text-muted)', fontSize: '0.82rem' }}>
-                No focus sessions logged yet. Start your first session above!
-              </div>
-            ) : (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', maxHeight: '220px', overflowY: 'auto' }}>
-                {focusSessions.slice(0, 5).map((s) => {
-                  const durationMins = Math.round((Number(s.duration) || 0) / 60);
-                  const taskObj = tasks.find((t) => t.id === s.task_id);
-                  const logDate = (s.completed_at || s.created_at).split('T')[0];
-
-                  return (
-                    <div
-                      key={s.id}
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        padding: '0.5rem 0.75rem',
-                        borderRadius: 'var(--vg-radius-sm)',
-                        background: 'var(--vg-surface)',
-                        border: '1px solid var(--vg-border)',
-                        fontSize: '0.82rem',
-                      }}
-                    >
-                      <div style={{ minWidth: 0, flex: 1 }}>
-                        <div style={{ fontWeight: 500, color: 'var(--vg-text)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                          {taskObj ? taskObj.title : 'Deep Work Session'}
-                        </div>
-                        <div style={{ fontSize: '0.74rem', color: 'var(--vg-text-muted)' }}>
-                          {logDate} · {durationMins} mins {s.notes ? `· "${s.notes.slice(0, 30)}..."` : ''}
-                        </div>
-                      </div>
-
-                      <button
-                        type="button"
-                        className={styles.iconBtn}
-                        onClick={() => handleDeleteSession(s)}
-                        style={{ color: 'var(--vg-accent)', padding: '0.2rem' }}
-                        title="Delete Log"
-                      >
-                        <IconTrash size={13} />
-                      </button>
-                    </div>
-                  );
-                })}
-              </div>
-            )}
-          </div>
         </div>
+      </div>
+
+      {/* Focus History Logs */}
+      <div className={styles.card} style={{ marginTop: '1.5rem' }}>
+        <h3 className={styles.cardTitle} style={{ marginBottom: '1rem' }}>
+          Recent Focus Sessions ({focusSessions.length})
+        </h3>
+
+        {focusSessions.length === 0 ? (
+          <div style={{ padding: '2rem 1rem', textAlign: 'center', color: 'var(--vg-text-muted)', fontSize: '0.85rem' }}>
+            No completed focus sessions logged yet. Start your first session above!
+          </div>
+        ) : (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
+            {focusSessions.slice(0, 10).map((s) => {
+              const task = tasks.find((t) => t.id === s.task_id);
+              const mins = Math.round((Number(s.duration) || 0) / 60);
+              const dateStr = s.completed_at ? new Date(s.completed_at).toLocaleDateString() : 'Recent';
+
+              return (
+                <div
+                  key={s.id}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    padding: '0.75rem 1rem',
+                    borderRadius: 'var(--vg-radius-sm)',
+                    background: 'var(--vg-surface)',
+                    border: '1px solid var(--vg-border)',
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                    <span style={{ color: '#52c41a', display: 'flex' }}>
+                      <IconCheck size={16} />
+                    </span>
+                    <div>
+                      <div style={{ fontSize: '0.88rem', fontWeight: 500, color: 'var(--vg-text)' }}>
+                        {task ? task.title : 'General Deep Work Session'}
+                      </div>
+                      {s.notes && (
+                        <div style={{ fontSize: '0.78rem', color: 'var(--vg-text-muted)', marginTop: '0.15rem' }}>
+                          {s.notes}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                    <span style={{ fontSize: '0.82rem', fontWeight: 600, color: 'var(--vg-accent)' }}>
+                      {mins} mins
+                    </span>
+                    <span style={{ fontSize: '0.75rem', color: 'var(--vg-text-muted)' }}>
+                      {dateStr}
+                    </span>
+                    <button
+                      type="button"
+                      className={styles.iconBtn}
+                      onClick={() => handleDeleteSession(s)}
+                      title="Delete Session"
+                      style={{ color: 'var(--vg-text-muted)' }}
+                    >
+                      <IconTrash size={14} />
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
       </div>
     </div>
   );
 }
-

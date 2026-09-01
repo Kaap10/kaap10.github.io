@@ -1,17 +1,12 @@
-import React from 'react';
+﻿import React from 'react';
 import { useAuth } from './context/AuthContext';
 import { useTracker } from './context/TrackerContext';
 import {
   IconDashboard,
   IconTasks,
-  IconGoals,
   IconFocus,
   IconHabit,
-  IconCalendar,
-  IconResources,
   IconProgress,
-  IconReview,
-  IconStats,
   IconLogOut,
   IconUser,
   IconSearch,
@@ -23,16 +18,11 @@ export default function TrackerLayout({ children }) {
   const { activeTab, setActiveTab, error, refreshData, setSearchModalOpen } = useTracker();
 
   const navItems = [
-    { id: 'dashboard', label: 'Dashboard', icon: IconDashboard },
+    { id: 'dashboard', label: 'Today', icon: IconDashboard },
     { id: 'tasks', label: 'Tasks', icon: IconTasks },
-    { id: 'goals', label: 'Goals', icon: IconGoals },
-    { id: 'focus', label: 'Focus Mode', icon: IconFocus },
     { id: 'habits', label: 'Habits', icon: IconHabit },
-    { id: 'calendar', label: 'Calendar', icon: IconCalendar },
-    { id: 'resources', label: 'Resources', icon: IconResources },
-    { id: 'progress', label: 'Analytics', icon: IconProgress },
-    { id: 'reviews', label: 'Reviews', icon: IconReview },
-    { id: 'stats', label: 'Statistics', icon: IconStats },
+    { id: 'focus', label: 'Focus', icon: IconFocus },
+    { id: 'progress', label: 'Insights', icon: IconProgress },
   ];
 
   const userName = user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'User';
@@ -57,7 +47,7 @@ export default function TrackerLayout({ children }) {
               />
               <span>Productivity OS</span>
             </div>
-            <span className={styles.badge}>V2.0</span>
+            <span className={styles.badge}>Minimal</span>
           </div>
 
           {/* Quick Search Trigger */}
@@ -81,7 +71,7 @@ export default function TrackerLayout({ children }) {
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem' }}>
                 <IconSearch size={14} />
-                <span>Search...</span>
+                <span>Quick search...</span>
               </div>
               <kbd style={{ fontSize: '0.68rem', padding: '0.1rem 0.35rem', background: 'var(--vg-surface)', borderRadius: '3px', border: '1px solid var(--vg-border)' }}>
                 {typeof navigator !== 'undefined' && /Mac/i.test(navigator.platform) ? '⌘K' : 'Ctrl+K'}
@@ -147,7 +137,7 @@ export default function TrackerLayout({ children }) {
         </div>
       </aside>
 
-      {/* Mobile Top Header Bar (Shown only on Mobile < 768px) */}
+      {/* Mobile Top Header Bar */}
       <header className={styles.mobileHeader}>
         <div className={styles.brandTitle}>
           <div
@@ -217,7 +207,7 @@ export default function TrackerLayout({ children }) {
         {children}
       </main>
 
-      {/* Mobile Bottom Navigation */}
+      {/* Mobile Bottom Navigation (Clean 5 items) */}
       <nav className={styles.mobileNav}>
         {navItems.map((item) => {
           const Icon = item.icon;

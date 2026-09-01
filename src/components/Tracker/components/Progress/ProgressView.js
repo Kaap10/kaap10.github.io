@@ -1,6 +1,7 @@
-import React, { useMemo } from 'react';
+﻿import React, { useMemo } from 'react';
 import { useTracker } from '../../context/TrackerContext';
 import ActivityGraph from './ActivityGraph';
+import ActivityLogSection from './ActivityLogSection';
 import {
   BarChart,
   Bar,
@@ -17,7 +18,7 @@ import {
   IconTasks,
   IconFocus,
   IconFlame,
-  IconTrophy,
+  IconCheck,
 } from '../Common/Icons';
 import styles from '../../styles/tracker.module.css';
 
@@ -54,7 +55,7 @@ function CustomTooltip({ active, payload, label, unit = '' }) {
 }
 
 export default function ProgressView() {
-  const { tasks, focusSessions, lifetimeStats } = useTracker();
+  const { tasks, focusSessions, lifetimeStats, activityLogs } = useTracker();
 
   // 1. Last 7 Days Task Velocity (Recharts data)
   const taskVelocityData = useMemo(() => {
@@ -66,7 +67,6 @@ export default function ProgressView() {
       const d = new Date(now);
       d.setDate(d.getDate() - i);
       const dStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
-
 
       const planned = tasks.filter((t) => t.due_date === dStr || t.created_at?.startsWith(dStr)).length;
       const completed = tasks.filter((t) => t.status === 'completed' && t.completed_at?.startsWith(dStr)).length;
@@ -93,7 +93,6 @@ export default function ProgressView() {
       d.setDate(d.getDate() - i);
       const dStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 
-
       const totalSecs = focusSessions
         .filter((s) => (s.completed_at || s.created_at)?.startsWith(dStr))
         .reduce((acc, s) => acc + (Number(s.duration) || 0), 0);
@@ -112,27 +111,14 @@ export default function ProgressView() {
     return list;
   }, [focusSessions]);
 
-  // 3. Category Distribution Data
-  const categoryStats = useMemo(() => {
-    const counts = {};
-    tasks.forEach((t) => {
-      counts[t.category] = (counts[t.category] || 0) + 1;
-    });
-    return Object.entries(counts).map(([cat, count]) => ({
-      category: cat,
-      count,
-      pct: tasks.length > 0 ? Math.round((count / tasks.length) * 100) : 0,
-    }));
-  }, [tasks]);
-
   return (
     <div className={styles.viewContainer}>
       {/* Header */}
       <div className={styles.viewHeader}>
         <div>
-          <h1 className={styles.viewTitle}>Analytics & Velocity Engine</h1>
+          <h1 className={styles.viewTitle}>Analytics & Insights</h1>
           <p className={styles.viewSubtitle}>
-            Quantitative measurement of daily execution velocity, focus consistency, and multi-year trajectory.
+            Track multi-year consistency, log retrospective accomplishments, and measure execution volume.
           </p>
         </div>
       </div>
@@ -141,14 +127,14 @@ export default function ProgressView() {
       <div className={styles.metricsGrid}>
         <div className={styles.metricCard}>
           <div className={styles.metricHeader}>
-            <span className={styles.metricLabel}>Total Tasks Cleared</span>
+            <span className={styles.metricLabel}>Tasks Cleared</span>
             <IconTasks size={18} className={styles.metricIcon} />
           </div>
           <div className={styles.metricValue}>
             {lifetimeStats.completedTasks} <span style={{ fontSize: '1rem', color: 'var(--vg-text-muted)' }}>/ {lifetimeStats.totalTasks}</span>
           </div>
           <div style={{ fontSize: '0.8rem', color: 'var(--vg-text-muted)', marginTop: '0.5rem' }}>
-            Overall execution rate: <strong style={{ color: 'var(--vg-accent)' }}>{lifetimeStats.completionRate}%</strong>
+            Execution rate: <strong style={{ color: 'var(--vg-accent)' }}>{lifetimeStats.completionRate}%</strong>
           </div>
         </div>
 
@@ -161,33 +147,33 @@ export default function ProgressView() {
             {lifetimeStats.totalFocusHours} <span style={{ fontSize: '1rem', color: 'var(--vg-text-muted)' }}>hours</span>
           </div>
           <div style={{ fontSize: '0.8rem', color: 'var(--vg-text-muted)', marginTop: '0.5rem' }}>
-            Across {lifetimeStats.totalFocusSessions} logged focus sessions
+            Across {lifetimeStats.totalFocusSessions} logged sessions
           </div>
         </div>
 
         <div className={styles.metricCard}>
           <div className={styles.metricHeader}>
-            <span className={styles.metricLabel}>Peak Discipline Streak</span>
-            <IconFlame size={18} className={styles.metricIcon} />
+            <span className={styles.metricLabel}>Activities & Logs</span>
+            <IconCheck size={18} className={styles.metricIcon} />
           </div>
           <div className={styles.metricValue}>
-            {lifetimeStats.bestStreak} <span style={{ fontSize: '1rem', color: 'var(--vg-text-muted)' }}>days</span>
+            {activityLogs?.length || 0} <span style={{ fontSize: '1rem', color: 'var(--vg-text-muted)' }}>logged</span>
           </div>
           <div style={{ fontSize: '0.8rem', color: 'var(--vg-text-muted)', marginTop: '0.5rem' }}>
-            Most productive day: <strong style={{ color: 'var(--vg-text)' }}>{lifetimeStats.peakDay}</strong>
+            Peak discipline streak: <strong style={{ color: '#fa8c16' }}>{lifetimeStats.bestStreak} days</strong>
           </div>
         </div>
       </div>
 
       {/* 52-Week GitHub Heatmap Card */}
       <div className={styles.card}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.25rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.25rem', flexWrap: 'wrap', gap: '0.5rem' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
             <IconProgress size={18} style={{ color: 'var(--vg-accent)' }} />
             <h2 className={styles.cardTitle}>52-Week Productivity Heatmap (365 Days)</h2>
           </div>
           <span style={{ fontSize: '0.78rem', color: 'var(--vg-text-muted)' }}>
-            Tasks · Deep Work · Habits
+            Tasks · Deep Work · Habits · Done Logs
           </span>
         </div>
 
@@ -195,11 +181,11 @@ export default function ProgressView() {
       </div>
 
       {/* Two-Column Recharts Visualizations */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '1.5rem' }}>
         {/* Left: Recharts 7-Day Velocity Bar Chart */}
         <div className={styles.card}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
-            <h3 className={styles.cardTitle}>7-Day Task Completion Velocity</h3>
+            <h3 className={styles.cardTitle}>7-Day Task Velocity</h3>
             <span style={{ fontSize: '0.75rem', color: 'var(--vg-text-muted)' }}>Planned vs Completed</span>
           </div>
 
@@ -231,7 +217,7 @@ export default function ProgressView() {
         {/* Right: Recharts 7-Day Focus Time Area Chart */}
         <div className={styles.card}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
-            <h3 className={styles.cardTitle}>7-Day Deep Work Focus Time</h3>
+            <h3 className={styles.cardTitle}>7-Day Deep Work Volume</h3>
             <span style={{ fontSize: '0.75rem', color: 'var(--vg-text-muted)' }}>Hours per Day</span>
           </div>
 
@@ -254,37 +240,13 @@ export default function ProgressView() {
           </div>
 
           <div style={{ display: 'flex', justifyContent: 'center', gap: '0.5rem', marginTop: '0.75rem', fontSize: '0.78rem', color: 'var(--vg-text-muted)' }}>
-            <span>Orange area indicates daily focused execution volume (hours).</span>
+            <span>Deep work focus sessions (hours).</span>
           </div>
         </div>
       </div>
 
-      {/* Category Breakdown */}
-      <div className={styles.card}>
-        <h3 className={styles.cardTitle} style={{ marginBottom: '1rem' }}>
-          Work Distribution by Category
-        </h3>
-
-        {categoryStats.length === 0 ? (
-          <div style={{ padding: '1.5rem', textAlign: 'center', color: 'var(--vg-text-muted)', fontSize: '0.85rem' }}>
-            No categorized task data available yet.
-          </div>
-        ) : (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem' }}>
-            {categoryStats.map((item) => (
-              <div key={item.category} style={{ padding: '0.75rem', background: 'var(--vg-surface)', borderRadius: 'var(--vg-radius-sm)', border: '1px solid var(--vg-border)' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.35rem', fontSize: '0.84rem' }}>
-                  <span style={{ fontWeight: 500, color: 'var(--vg-text)' }}>{item.category}</span>
-                  <span style={{ color: 'var(--vg-text-muted)' }}>{item.count} tasks ({item.pct}%)</span>
-                </div>
-                <div className={styles.progressBarWrapper}>
-                  <div className={styles.progressBarFill} style={{ width: `${item.pct}%` }} />
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
+      {/* Done Activity Logger Section */}
+      <ActivityLogSection />
     </div>
   );
 }

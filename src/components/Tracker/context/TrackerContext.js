@@ -25,6 +25,7 @@ export function TrackerProvider({ children }) {
   const [resources, setResources] = useState([]);
   const [weeklyReviews, setWeeklyReviews] = useState([]);
   const [monthlyReviews, setMonthlyReviews] = useState([]);
+  const [activityLogs, setActivityLogs] = useState([]);
 
   // UI State
   const [activeTab, setActiveTabState] = useState('dashboard');
@@ -145,6 +146,7 @@ export function TrackerProvider({ children }) {
       setResources([]);
       setWeeklyReviews([]);
       setMonthlyReviews([]);
+      setActivityLogs([]);
       setLoading(false);
       return;
     }
@@ -207,6 +209,21 @@ export function TrackerProvider({ children }) {
       setResources(resourcesRes.data || []);
       setWeeklyReviews(weeklyReviewsRes.data || []);
       setMonthlyReviews(monthlyReviewsRes.data || []);
+
+      // Fetch activity logs
+      let fetchedLogs = [];
+      try {
+        const logsRes = await supabase.from('activity_logs').select('*').eq('user_id', user.id).order('created_at', { ascending: false });
+        if (logsRes.data) fetchedLogs = logsRes.data;
+      } catch (e) {}
+
+      if (fetchedLogs.length === 0 && typeof localStorage !== 'undefined') {
+        try {
+          const savedLocal = localStorage.getItem('kaap10_activity_logs');
+          if (savedLocal) fetchedLogs = JSON.parse(savedLocal);
+        } catch (e) {}
+      }
+      setActivityLogs(fetchedLogs);
     } catch (err) {
       console.error('Error fetching tracker data:', err);
       setError(err.message || 'Failed to load tracker data');
@@ -874,6 +891,62 @@ export function TrackerProvider({ children }) {
 
 
   // ============================================================================
+
+  // ============================================================================
+  // Daily Activity Logs (Done Log) Operations
+  // ============================================================================
+  const saveActivityLog = async (logData) => {
+    const supabase = getSupabase();
+    const logDate = logData.log_date || todayStr;
+    const newLog = {
+      id: logData.id || (typeof crypto !== 'undefined' && crypto.randomUUID ? crypto.randomUUID() : 'log_' + Date.now()),
+      user_id: user?.id || 'local_user',
+      category: logData.category || 'Naam Jap',
+      details: logData.details ? logData.details.trim() : '',
+      duration_minutes: Number(logData.duration_minutes) || 0,
+      log_date: logDate,
+      created_at: new Date().toISOString(),
+    };
+
+    if (supabase && user && user.id) {
+      try {
+        const { data, error: err } = await supabase.from('activity_logs').insert([newLog]).select().single();
+        if (!err && data) {
+          setActivityLogs((prev) => [data, ...prev]);
+          return data;
+        }
+      } catch (e) {
+        console.warn('Supabase activity_logs insert fallback to localStorage:', e);
+      }
+    }
+
+    setActivityLogs((prev) => {
+      const updated = [newLog, ...prev];
+      try {
+        localStorage.setItem('kaap10_activity_logs', JSON.stringify(updated));
+      } catch (e) {}
+      return updated;
+    });
+    return newLog;
+  };
+
+  const deleteActivityLog = async (id) => {
+    const supabase = getSupabase();
+    if (supabase && user && user.id) {
+      try {
+        await supabase.from('activity_logs').delete().eq('id', id);
+      } catch (e) {}
+    }
+
+    setActivityLogs((prev) => {
+      const updated = prev.filter((l) => l.id !== id);
+      try {
+        localStorage.setItem('kaap10_activity_logs', JSON.stringify(updated));
+      } catch (e) {}
+      return updated;
+    });
+  };
+
   // Derived Analytics & Productivity Statistics (Real Database Data)
   // ============================================================================
   // Use local date string to avoid off-by-one date issues in timezones ahead of UTC (e.g. IST UTC+5:30)
@@ -1062,8 +1135,17 @@ export function TrackerProvider({ children }) {
       }
     });
 
+    // 4. Activity Logs (Done Log)
+    activityLogs.forEach((l) => {
+      const key = l.log_date;
+      if (map[key]) {
+        map[key].activityLogsCount = (map[key].activityLogsCount || 0) + 1;
+        map[key].totalScore += 2;
+      }
+    });
+
     return map;
-  }, [tasks, focusSessions, habitLogs]);
+  }, [tasks, focusSessions, habitLogs, activityLogs]);
 
   // Lifetime Personal Statistics
   const lifetimeStats = useMemo(() => {
@@ -1097,6 +1179,7 @@ export function TrackerProvider({ children }) {
       completionRate: tasks.length > 0 ? Math.round((completedTasks.length / tasks.length) * 100) : 0,
       totalFocusHours: focusStats.totalHours,
       totalFocusSessions: focusStats.totalSessions,
+      totalActivityLogs: activityLogs.length,
       completedGoals: completedGoals.length,
       totalGoals: goals.length,
       completedMilestones: completedMilestones.length,
@@ -1106,7 +1189,7 @@ export function TrackerProvider({ children }) {
       peakDay: completedTasks.length > 0 ? dayNames[peakDayIdx] : 'N/A',
       bestStreak: bestHabitStreak,
     };
-  }, [tasks, goals, milestones, resources, focusStats, habitStreaks]);
+  }, [tasks, goals, milestones, resources, focusStats, habitStreaks, activityLogs]);
 
   // Rule-Based Productivity Insights
   const insights = useMemo(() => {
@@ -1217,6 +1300,11 @@ export function TrackerProvider({ children }) {
 
         saveWeeklyReview,
         saveMonthlyReview,
+
+        // Activity Logs
+        activityLogs,
+        saveActivityLog,
+        deleteActivityLog,
 
         // Computed Analytics & Insights
         todayTasks,

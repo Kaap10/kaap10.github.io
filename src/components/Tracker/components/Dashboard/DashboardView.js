@@ -1,36 +1,32 @@
-import React from 'react';
+﻿import React from 'react';
 import { useTracker } from '../../context/TrackerContext';
-import QuickActions from './QuickActions';
 import EmptyState from '../Common/EmptyState';
 import { DashboardSkeleton } from '../Common/LoadingSkeleton';
 import {
   IconTasks,
-  IconGoals,
   IconCheck,
   IconClock,
   IconFlame,
   IconFocus,
   IconAlertCircle,
-  IconSparkles,
-  IconRepeat,
+  IconPlus,
   IconChevronRight,
+  IconPlay,
+  IconCalendar,
 } from '../Common/Icons';
-
 import styles from '../../styles/tracker.module.css';
 
 export default function DashboardView() {
   const {
     loading,
     tasks,
-    goals,
     habits,
-    milestones,
     habitLogs,
     habitStreaks,
     todayTasks,
     overdueTasks,
     focusStats,
-    insights,
+    activityLogs,
     toggleTaskStatus,
     toggleHabitDate,
     setEditingTask,
@@ -38,27 +34,17 @@ export default function DashboardView() {
     setActiveTab,
   } = useTracker();
 
-  const computeGoalProgress = (goal) => {
-    const goalMilestones = milestones.filter((m) => m.goal_id === goal.id);
-    const goalTasks = tasks.filter((t) => t.goal_id === goal.id);
-    const totalUnits = goalMilestones.length + goalTasks.length;
-
-    if (totalUnits === 0) {
-      return Number(goal.progress) || 0;
-    }
-
-    const completedMilestones = goalMilestones.filter((m) => m.status === 'completed').length;
-    const completedTasks = goalTasks.filter((t) => t.status === 'completed').length;
-    return Math.round(((completedMilestones + completedTasks) / totalUnits) * 100);
-  };
-
-  if (loading && tasks.length === 0 && habits.length === 0 && goals.length === 0) {
+  if (loading && tasks.length === 0 && habits.length === 0 && (activityLogs || []).length === 0) {
     return <DashboardSkeleton />;
   }
 
   const d = new Date();
   const todayStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
-
+  const formattedTodayDate = d.toLocaleDateString('en-US', {
+    weekday: 'long',
+    month: 'short',
+    day: 'numeric',
+  });
 
   // Today's task completion progress
   const completedToday = todayTasks.filter((t) => t.status === 'completed').length;
@@ -69,20 +55,50 @@ export default function DashboardView() {
   const completedHabitsToday = habitLogs.filter((l) => l.completed_date === todayStr);
   const activeHabitIdsCompleted = new Set(completedHabitsToday.map((l) => l.habit_id));
 
-  // Active goals summary
-  const activeGoals = goals.filter((g) => g.status === 'active').slice(0, 3);
+  // Today's activity logs
+  const todayActivityLogs = (activityLogs || []).filter((l) => l.log_date === todayStr);
 
   return (
     <div className={styles.viewContainer}>
       {/* Header & Quick Action Bar */}
       <div className={styles.viewHeader}>
         <div>
-          <h1 className={styles.viewTitle}>Productivity Command Center</h1>
+          <h1 className={styles.viewTitle}>Today</h1>
           <p className={styles.viewSubtitle}>
-            Daily focus, priority execution, habit consistency, and active milestones.
+            {formattedTodayDate} · Focus on priority execution, deep work, and discipline.
           </p>
         </div>
-        <QuickActions />
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', flexWrap: 'wrap' }}>
+          <button
+            type="button"
+            className={styles.btnSecondary}
+            onClick={() => setActiveTab('progress')}
+            style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}
+          >
+            <IconCheck size={14} />
+            <span>Log Done</span>
+          </button>
+          <button
+            type="button"
+            className={styles.btnSecondary}
+            onClick={() => setActiveTab('focus')}
+            style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}
+          >
+            <IconPlay size={14} />
+            <span>Focus Mode</span>
+          </button>
+          <button
+            type="button"
+            className={styles.btnPrimary}
+            onClick={() => {
+              setEditingTask(null);
+              setTaskModalOpen(true);
+            }}
+          >
+            <IconPlus size={16} />
+            <span>New Task</span>
+          </button>
+        </div>
       </div>
 
       {/* Overdue Tasks Alert Banner */}
@@ -105,7 +121,7 @@ export default function DashboardView() {
             </span>
             <div>
               <div style={{ fontSize: '0.88rem', fontWeight: 600, color: 'var(--vg-accent)' }}>
-                {overdueTasks.length} {overdueTasks.length === 1 ? 'Task is Overdue' : 'Tasks are Overdue'}
+                {overdueTasks.length} {overdueTasks.length === 1 ? 'Task Overdue' : 'Tasks Overdue'}
               </div>
               <div style={{ fontSize: '0.78rem', color: 'var(--vg-text-muted)', marginTop: '0.15rem' }}>
                 Pending tasks past their scheduled due dates need attention.
@@ -118,14 +134,14 @@ export default function DashboardView() {
             onClick={() => setActiveTab('tasks')}
             style={{ fontSize: '0.8rem', padding: '0.35rem 0.75rem' }}
           >
-            Review Overdue
+            Review Tasks
           </button>
         </div>
       )}
 
-      {/* Top Metric Cards */}
+      {/* Top Essential Metric Cards */}
       <div className={styles.metricsGrid}>
-        {/* Today's Execution */}
+        {/* Today's Tasks */}
         <div className={styles.metricCard}>
           <div className={styles.metricHeader}>
             <span className={styles.metricLabel}>Today's Execution</span>
@@ -138,7 +154,7 @@ export default function DashboardView() {
             <div className={styles.progressBarFill} style={{ width: `${todayProgressPct}%` }} />
           </div>
           <div style={{ fontSize: '0.75rem', color: 'var(--vg-text-muted)', marginTop: '0.4rem', textAlign: 'right' }}>
-            {todayProgressPct}% completed
+            {todayProgressPct}% cleared
           </div>
         </div>
 
@@ -152,28 +168,28 @@ export default function DashboardView() {
             {focusStats.todayHours} <span style={{ fontSize: '1rem', color: 'var(--vg-text-muted)' }}>hrs today</span>
           </div>
           <div style={{ fontSize: '0.8rem', color: 'var(--vg-text-muted)', marginTop: '0.65rem' }}>
-            Week total: <strong style={{ color: 'var(--vg-text)' }}>{focusStats.weekHours} hrs</strong> across {focusStats.totalSessions} sessions
+            Week total: <strong style={{ color: 'var(--vg-text)' }}>{focusStats.weekHours} hrs</strong>
           </div>
         </div>
 
-        {/* Daily Habits */}
+        {/* Daily Habits & Activities */}
         <div className={styles.metricCard}>
           <div className={styles.metricHeader}>
-            <span className={styles.metricLabel}>Daily Habits</span>
+            <span className={styles.metricLabel}>Habits &amp; Done Logs</span>
             <IconFlame size={18} className={styles.metricIcon} />
           </div>
           <div className={styles.metricValue}>
-            {activeHabitIdsCompleted.size} <span style={{ fontSize: '1rem', color: 'var(--vg-text-muted)' }}>/ {activeHabits.length}</span>
+            {activeHabitIdsCompleted.size + todayActivityLogs.length} <span style={{ fontSize: '1rem', color: 'var(--vg-text-muted)' }}>logged</span>
           </div>
           <div style={{ fontSize: '0.8rem', color: 'var(--vg-text-muted)', marginTop: '0.65rem' }}>
             {activeHabits.length > 0 && activeHabitIdsCompleted.size === activeHabits.length
-              ? 'All habits logged for today.'
+              ? 'All daily habits done!'
               : `${activeHabits.length - activeHabitIdsCompleted.size} habits remaining today`}
           </div>
         </div>
       </div>
 
-      {/* Main Grid: Today's Priorities & Active Goals / Habits */}
+      {/* Main Grid: Today's Tasks & Habits Checklist */}
       <div className={styles.dashboardGrid}>
         {/* Left Column: Today's Tasks */}
         <div className={styles.card}>
@@ -188,17 +204,16 @@ export default function DashboardView() {
               onClick={() => setActiveTab('tasks')}
               style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}
             >
-              <span>View All Tasks</span>
+              <span>View All</span>
               <IconChevronRight size={14} />
             </button>
-
           </div>
 
           {todayTasks.length === 0 ? (
             <EmptyState
               icon={IconTasks}
               title="No tasks scheduled for today"
-              description="Plan your day by adding tasks or setting due dates to today."
+              description="Keep your day focused. Add priority tasks due today."
               actionLabel="Add Today's Task"
               onAction={() => {
                 setEditingTask(null);
@@ -248,11 +263,6 @@ export default function DashboardView() {
                             <IconClock size={12} /> {t.due_time}
                           </span>
                         )}
-                        {t.recurrence && t.recurrence !== 'none' && (
-                          <span style={{ fontSize: '0.72rem', color: 'var(--vg-accent)', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-                            <IconRepeat size={12} /> {t.recurrence}
-                          </span>
-                        )}
                       </div>
                     </div>
                   </div>
@@ -262,9 +272,9 @@ export default function DashboardView() {
           )}
         </div>
 
-        {/* Right Column: Daily Habits & Active Goals */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-          {/* Daily Habit Checklist */}
+        {/* Right Column: Daily Habits & Done Activities */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+          {/* Daily Habits */}
           <div className={styles.card}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
@@ -277,7 +287,7 @@ export default function DashboardView() {
                 onClick={() => setActiveTab('habits')}
                 style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}
               >
-                <span>Manage Habits</span>
+                <span>Manage</span>
                 <IconChevronRight size={14} />
               </button>
             </div>
@@ -286,7 +296,7 @@ export default function DashboardView() {
               <EmptyState
                 icon={IconFlame}
                 title="No habits defined yet"
-                description="Form daily routines (DSA, Reading, Workouts, Deep Work)."
+                description="Build atomic routines (Naam Jap, LeetCode, Workouts)."
                 actionLabel="Create Habit"
                 onAction={() => setActiveTab('habits')}
               />
@@ -332,115 +342,79 @@ export default function DashboardView() {
             )}
           </div>
 
-          {/* Active Goals Snapshot */}
-          <div className={styles.card}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                <IconGoals size={18} style={{ color: 'var(--vg-accent)' }} />
-                <h2 className={styles.cardTitle}>Active Milestones</h2>
+          {/* Today's Logged Activities (Quick Snapshot) */}
+          {todayActivityLogs.length > 0 && (
+            <div className={styles.card} style={{ border: '1px solid rgba(250, 140, 22, 0.25)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.85rem' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <IconCheck size={16} style={{ color: '#fa8c16' }} />
+                  <h3 className={styles.cardTitle} style={{ margin: 0, fontSize: '0.95rem' }}>
+                    Logged Done Today ({todayActivityLogs.length})
+                  </h3>
+                </div>
+                <button
+                  type="button"
+                  className={styles.linkBtn}
+                  onClick={() => setActiveTab('progress')}
+                  style={{ display: 'flex', alignItems: 'center', gap: '0.2rem', fontSize: '0.76rem' }}
+                >
+                  <span>Log More</span>
+                  <IconChevronRight size={13} />
+                </button>
               </div>
-              <button
-                type="button"
-                className={styles.linkBtn}
-                onClick={() => setActiveTab('goals')}
-                style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}
-              >
-                <span>View Roadmaps</span>
-                <IconChevronRight size={14} />
-              </button>
 
-            </div>
-
-            {activeGoals.length === 0 ? (
-              <EmptyState
-                icon={IconGoals}
-                title="No active milestones"
-                description="Set short-term & long-term engineering horizons."
-                actionLabel="Set Goal"
-                onAction={() => setActiveTab('goals')}
-              />
-            ) : (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
-                {activeGoals.map((g) => {
-                  const autoProg = computeGoalProgress(g);
-                  return (
-                    <div key={g.id}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.35rem' }}>
-                        <span style={{ fontSize: '0.86rem', fontWeight: 500, color: 'var(--vg-text)' }}>
-                          {g.title}
-                        </span>
-                        <span style={{ fontSize: '0.8rem', fontWeight: 600, color: autoProg === 100 ? '#52c41a' : 'var(--vg-accent)' }}>
-                          {autoProg}%
-                        </span>
-                      </div>
-                      <div className={styles.progressBarWrapper}>
-                        <div
-                          className={styles.progressBarFill}
-                          style={{
-                            width: `${autoProg}%`,
-                            background: autoProg === 100 ? '#52c41a' : 'var(--vg-accent)',
-                          }}
-                        />
-                      </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.45rem' }}>
+                {todayActivityLogs.map((log) => (
+                  <div
+                    key={log.id}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      padding: '0.55rem 0.75rem',
+                      borderRadius: 'var(--vg-radius-sm)',
+                      background: 'var(--vg-surface)',
+                      border: '1px solid var(--vg-border)',
+                      gap: '0.5rem',
+                    }}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', minWidth: 0, flex: 1 }}>
+                      <span
+                        style={{
+                          fontSize: '0.68rem',
+                          fontWeight: 600,
+                          padding: '0.12rem 0.4rem',
+                          borderRadius: '3px',
+                          background: log.category === 'Naam Jap' ? 'rgba(250, 140, 22, 0.15)' : 'var(--vg-surface-strong)',
+                          color: log.category === 'Naam Jap' ? '#ffa940' : 'var(--vg-accent)',
+                          whiteSpace: 'nowrap',
+                        }}
+                      >
+                        {log.category === 'Naam Jap' ? '🌸 ' : ''}{log.category}
+                      </span>
+                      <span
+                        style={{
+                          fontSize: '0.82rem',
+                          color: 'var(--vg-text)',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          whiteSpace: 'nowrap',
+                        }}
+                      >
+                        {log.details}
+                      </span>
                     </div>
-                  );
-                })}
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
 
-      {/* Rule-Based Heuristic Insights Section */}
-      <div className={styles.card}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1rem' }}>
-          <span style={{ color: 'var(--vg-accent)' }}>
-            <IconSparkles size={18} />
-          </span>
-          <h2 className={styles.cardTitle}>Productivity Insights & Heuristics</h2>
-          <span style={{ fontSize: '0.72rem', color: 'var(--vg-text-muted)', marginLeft: 'auto' }}>
-            Deterministic rule-based heuristics
-          </span>
-        </div>
-
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1rem' }}>
-          {insights.map((ins) => (
-            <div
-              key={ins.id}
-              style={{
-                padding: '0.9rem 1rem',
-                borderRadius: 'var(--vg-radius-sm)',
-                background: 'var(--vg-surface)',
-                border: '1px solid var(--vg-border)',
-                display: 'flex',
-                gap: '0.75rem',
-              }}
-            >
-              <div
-                style={{
-                  width: '32px',
-                  height: '32px',
-                  borderRadius: 'var(--vg-radius-sm)',
-                  background: 'var(--vg-surface-strong)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: 'var(--vg-accent)',
-                  flexShrink: 0,
-                }}
-              >
-                <IconSparkles size={15} />
-              </div>
-              <div>
-                <div style={{ fontSize: '0.88rem', fontWeight: 600, color: 'var(--vg-text)' }}>
-                  {ins.title}
-                </div>
-                <div style={{ fontSize: '0.8rem', color: 'var(--vg-text-muted)', marginTop: '0.25rem', lineHeight: '1.4' }}>
-                  {ins.description}
-                </div>
+                    {log.duration_minutes > 0 && (
+                      <span style={{ fontSize: '0.72rem', color: 'var(--vg-text-muted)', flexShrink: 0 }}>
+                        {log.duration_minutes}m
+                      </span>
+                    )}
+                  </div>
+                ))}
               </div>
             </div>
-          ))}
+          )}
         </div>
       </div>
     </div>

@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { useTracker } from '../../context/TrackerContext';
 import { IconClose, IconTasks, IconAlertCircle, IconPlus, IconTrash, IconCheck } from '../Common/Icons';
 import styles from '../../styles/tracker.module.css';
 
-const CATEGORIES = ['DSA', 'AI/ML', 'Development', 'Learning', 'Personal', 'Other'];
+const CATEGORIES = ['Naam Jap', 'DSA', 'AI/ML', 'Development', 'Learning', 'Personal', 'Health', 'Other'];
 const PRIORITIES = [
   { value: 'low', label: 'Low' },
   { value: 'medium', label: 'Medium' },
