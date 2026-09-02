@@ -171,8 +171,6 @@ export default function GoalsView() {
 
   return (
     <div className={styles.viewContainer}>
-      {/* Header */}
-      <div className={styles.viewHeader}>
       {/* Header - Fixed at location when scrolling */}
       <div
         className={styles.viewHeader}
