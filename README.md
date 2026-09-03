@@ -21,11 +21,11 @@ This repository houses an integrated developer ecosystem built on a hybrid **Sta
 +----------------------------------------------------------------------------------------------------+
 |                                    KAAP10 DEVELOPER ECOSYSTEM                                      |
 +----------------------------------------------------------------------------------------------------+
-|  [Portfolio]       |  [Projects]       |  [Technical Blogs]|  [Tools Hub]      |  [Global Layer]   |
-|  /                 |  /projects        |  /blogs/intro     |  /tools           |  theme/Root.js    |
-|  • Minimal hero    |  • 4 Systems      |  • 100+ Articles  |  • Board (/board) |  • Command Palette|
-|  • Core skills     |  • Tech badges    |  • DSA, Systems   |  • Tracker App    |  • Scratchpad     |
-|  • Garden tools    |  • GitHub links   |  • Algolia Search |  • PiP Capsule    |  • Floating Timer |
+|  [Portfolio]       |  [Projects]       |  [Tool Kit]       |  [Technical Blogs]|  [Global Layer]   |
+|  /                 |  /projects        |  /tools           |  /blogs/intro     |  theme/Root.js    |
+|  • Minimal hero    |  • 4 Systems      |  • Whiteboard     |  • 100+ Articles  |  • Command Palette|
+|  • Quick CTAs      |  • Tech badges    |  • Tracker App    |  • DSA, Systems   |  • Scratchpad     |
+|  • Techstack grid  |  • GitHub links   |  • Notebook       |  • Algolia Search |  • Floating Timer |
 +----------------------------------------------------------------------------------------------------+
 ```
 
@@ -34,19 +34,21 @@ This repository houses an integrated developer ecosystem built on a hybrid **Sta
 ## Key Features
 
 ### 1. Portfolio & Dynamic Projects Showcase
-- **Home (`/`)**: Minimal editorial layout introducing background in AI/ML and distributed systems, core competencies, and featured tools.
+- **Home (`/`)**: Minimal editorial layout featuring AI Engineer header, direct CTAs (`Explore Project`, `Explore Tools`, `Resume`), Featured Projects, interactive Tool Kit, dedicated Technical Blogs, and structured 5-domain Techstack.
 - **Projects Showcase (`/projects`)**: Dedicated directory highlighting 4 production-grade systems (**Guru-G**, **AuraNow**, **Code With Buddy**, **AegisAI**) with domain filtering (`All`, `AI / ML`, `Full-Stack`, `Security`), architectural highlights, and source code links.
 
-### 2. Technical Blogs (`/blogs/intro`)
+### 2. Tool Kit & Productivity Suite (`/tools`)
+- **Whiteboard (`/board`)**: Architectural sketching canvas powered by `@excalidraw/excalidraw` with local drawing persistence.
+- **Tracker (`/tracker`)**: Full-stack productivity operating system with Pomodoro deep work, atomic habits, goals roadmap, and activity heatmap.
+- **Notebook & Notepad (`/tracker?tab=notebook`)**: Distraction-free personal notepad with multi-notebook collections, zero typing lag (local state buffering + 400ms debounced auto-save), tag filtering, word/character counter, and `.txt` export.
+- **Global Quick Scratchpad (`Ctrl+J` / `Cmd+J`)**: Floating quick-capture scratchpad with multi-sheet tabs, live syntax preview toggle, code copy, and `.md` file export.
+- **Global Command Palette (`Ctrl+K` / `Cmd+K` / `Ctrl+H`)**: Keyboard-first spotlight search for instant route switching, system tools, and timer sessions.
+
+### 3. Technical Blogs (`/blogs/intro`)
 - 100+ structured engineering guides covering Data Structures & Algorithms, System Design, Database Management Systems (DBMS), Machine Learning, OOPs, and Full-Stack Web Development.
 - Sub-millisecond full-text document discovery powered by **Algolia DocSearch**.
 
-### 3. Developer Tools Suite (`/tools`)
-- **Whiteboard (`/board`)**: Architectural sketching canvas powered by `@excalidraw/excalidraw` with local drawing persistence.
-- **Global Quick Scratchpad (`Ctrl+J` / `Cmd+J`)**: Floating multi-sheet Markdown drawer with live syntax preview toggle, code copy, and `.md` file export.
-- **Global Command Palette (`Ctrl+H` / `Cmd+H` / `Ctrl+K`)**: Keyboard-first spotlight search for instant route switching, action triggers, and timer sessions.
-
-### 4. Tracker (`/tracker`)
+### 4. Tracker Deep Dive (`/tracker`)
 - **Dashboard**: Real-time overview of daily deliverables, active goal progress, and habit consistency.
 - **Tasks Pipeline**: Priority triage (`High`, `Medium`, `Low`), due date scheduling, and nested JSONB checklist items with optimistic state toggling.
 - **Goals & Milestones**: Multi-tiered roadmap decomposing high-level objectives into hierarchical milestone trees with automated percentage rollups.
@@ -54,10 +56,9 @@ This repository houses an integrated developer ecosystem built on a hybrid **Sta
 - **Document Picture-in-Picture (PiP)**: Chrome 116+ OS-level detached always-on-top timer window via `window.documentPictureInPicture`.
 - **Habits Engine**: Atomic habit tracking with streak calculus engine computing current and lifetime best streaks.
 - **Resource Library**: Bookmarking library with category filters (`GitHub`, `YouTube`, `PDF`, `Course`, `Book`, `Website`) and notes.
-- **Notebook & Notepad**: Private personal notepad with multi-notebook organization, fluid instant typing, tag filtering, word/char counters, `.txt` export, and local-first Supabase sync.
-- **Collapsible Sidebar**: Desktop collapsible sidebar with persistent state and `[` / `Ctrl+\` keyboard shortcut.
-- **Circular Quick Scratchpad**: Floating circular quick-launch scratchpad with glassmorphism modal and multi-sheet tabs (`Ctrl+J`).
-- **Telemetry & Heatmap**: 52-week GitHub-style contribution graph and interactive Recharts velocity bars and focus duration area curves.
+- **Notebook Workspace**: Fixed-viewport locked layout with independent internal scrolling and local-first Supabase persistence.
+- **Collapsible Sidebar**: Desktop collapsible navigation sidebar with persistent state and `[` / `Ctrl+\` keyboard shortcut.
+- **Telemetry & Heatmap**: 52-week GitHub-style contribution graph, interactive Recharts velocity bars, and focus duration area curves.
 - **Cadence Retrospectives**: Weekly and monthly structured reviews with automated metric rollups and PostgreSQL UPSERT idempotency.
 - **Zero-Cost Insights Engine**: Deterministic client-side heuristic engine discovering peak productivity days and overdue pacing with $0 API overhead.
 
@@ -140,7 +141,7 @@ To enable cloud synchronization for the Tracker:
 │   │   ├── Common/                   # GlobalCommandPalette, GlobalScratchpad, GlobalIcons
 │   │   ├── ExcalidrawBoard/          # Whiteboard canvas integration
 │   │   └── Tracker/                  # Tracker application
-│   │       ├── components/           # Views: Dashboard, Tasks, Focus, Habits, Progress...
+│   │       ├── components/           # Views: Dashboard, Tasks, Focus, Habits, Notebook...
 │   │       ├── context/              # AuthContext and TrackerContext
 │   │       ├── services/             # Supabase client and insightsEngine
 │   │       └── styles/               # Modular CSS system
@@ -158,9 +159,10 @@ To enable cloud synchronization for the Tracker:
 
 | Shortcut | Action | Description |
 |---|---|---|
-| `Ctrl+H` / `Cmd+H` | Spotlight Command Palette | Search and jump anywhere instantly |
-| `Ctrl+J` / `Cmd+J` | Quick Scratchpad | Open global multi-sheet markdown notepad |
-| `Ctrl+K` / `Cmd+K` | Command Palette (Alt) | Secondary spotlight trigger |
+| `Ctrl+K` / `Cmd+K` | Spotlight Command Palette | Search and jump anywhere instantly |
+| `Ctrl+H` / `Cmd+H` | Command Palette (Alt) | Secondary spotlight trigger |
+| `Ctrl+J` / `Cmd+J` | Quick Scratchpad | Open global floating markdown notepad |
+| `[` or `Ctrl+\` | Toggle Tracker Sidebar | Collapse or expand sidebar in Tracker |
 
 ---
 
