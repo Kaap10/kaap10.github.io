@@ -250,7 +250,7 @@ export default function Home() {
             <div className={styles.sectionHeader}>
               <div className={styles.sectionTitleGroup}>
                 <span className={styles.sectionEyebrow}>Core Capabilities</span>
-                <h2 className={styles.sectionTitle}>Technical Toolkit</h2>
+                <h2 className={styles.sectionTitle}>Techstack</h2>
               </div>
               <span className={styles.sectionSubtitle}>5 Domains</span>
             </div>
