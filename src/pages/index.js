@@ -13,7 +13,9 @@ import {
   Sparkles,
   PenTool,
   Activity,
-  BookOpen
+  BookOpen,
+  Command,
+  Edit3
 } from 'lucide-react';
 import styles from './index.module.css';
 
@@ -372,35 +374,117 @@ export default function Home() {
 
               {/* Tool 2: Whiteboard */}
               <Link to="/board" className={`${styles.ecoCard} ${styles.staggerItem}`}>
-                 <div className={styles.ecoIconWrap}>
-                   <PenTool size={20} />
-                 </div>
-                 <div className={styles.ecoCardBody}>
-                   <h3 className={styles.ecoCardTitle}>Whiteboard</h3>
-                   <p className={styles.ecoCardDesc}>
-                     Full-featured architectural sketching canvas powered by Excalidraw for designing distributed systems and algorithms.
-                   </p>
-                 </div>
-                 <div className={styles.ecoArrow}>
-                   <ArrowRight size={16} />
-                 </div>
-               </Link>
- 
-               {/* Tool 3: Tracker */}
-               <Link to="/tracker" className={`${styles.ecoCard} ${styles.staggerItem}`}>
-                 <div className={styles.ecoIconWrap}>
-                   <Activity size={20} />
-                 </div>
-                 <div className={styles.ecoCardBody}>
-                   <h3 className={styles.ecoCardTitle}>Tracker</h3>
-                   <p className={styles.ecoCardDesc}>
-                     Custom productivity suite featuring Pomodoro Deep Work with floating PiP capsule, atomic habit streaks, and 52-week activity heatmap.
-                   </p>
-                 </div>
-                 <div className={styles.ecoArrow}>
-                   <ArrowRight size={16} />
-                 </div>
-               </Link>
+                <div className={styles.ecoIconWrap}>
+                  <PenTool size={20} />
+                </div>
+                <div className={styles.ecoCardBody}>
+                  <h3 className={styles.ecoCardTitle}>Whiteboard</h3>
+                  <p className={styles.ecoCardDesc}>
+                    Full-featured architectural sketching canvas powered by Excalidraw for designing distributed systems and algorithms.
+                  </p>
+                </div>
+                <div className={styles.ecoArrow}>
+                  <ArrowRight size={16} />
+                </div>
+              </Link>
+
+              {/* Tool 3: Tracker */}
+              <Link to="/tracker" className={`${styles.ecoCard} ${styles.staggerItem}`}>
+                <div className={styles.ecoIconWrap}>
+                  <Activity size={20} />
+                </div>
+                <div className={styles.ecoCardBody}>
+                  <h3 className={styles.ecoCardTitle}>Tracker</h3>
+                  <p className={styles.ecoCardDesc}>
+                    Custom productivity suite featuring Pomodoro Deep Work with floating PiP capsule, atomic habits, and activity heatmap.
+                  </p>
+                </div>
+                <div className={styles.ecoArrow}>
+                  <ArrowRight size={16} />
+                </div>
+              </Link>
+
+              {/* Tool 4: Notebook */}
+              <Link to="/tracker?tab=notebook" className={`${styles.ecoCard} ${styles.staggerItem}`}>
+                <div className={styles.ecoIconWrap}>
+                  <FileText size={20} />
+                </div>
+                <div className={styles.ecoCardBody}>
+                  <h3 className={styles.ecoCardTitle}>Notebook</h3>
+                  <p className={styles.ecoCardDesc}>
+                    Distraction-free personal notepad with multi-notebook organization, zero typing lag, tag filtering, and auto-saving.
+                  </p>
+                </div>
+                <div className={styles.ecoArrow}>
+                  <ArrowRight size={16} />
+                </div>
+              </Link>
+
+              {/* Tool 5: Quick Scratchpad */}
+              <div
+                role="button"
+                tabIndex={0}
+                onClick={() => {
+                  if (typeof window !== 'undefined') {
+                    window.dispatchEvent(new CustomEvent('scratchpad:toggle'));
+                  }
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    if (typeof window !== 'undefined') {
+                      window.dispatchEvent(new CustomEvent('scratchpad:toggle'));
+                    }
+                  }
+                }}
+                className={`${styles.ecoCard} ${styles.staggerItem}`}
+                style={{ cursor: 'pointer' }}
+              >
+                <div className={styles.ecoIconWrap}>
+                  <Edit3 size={20} />
+                </div>
+                <div className={styles.ecoCardBody}>
+                  <h3 className={styles.ecoCardTitle}>Scratchpad</h3>
+                  <p className={styles.ecoCardDesc}>
+                    Global floating quick-capture scratchpad with multi-sheet tabs and instant export. Accessible everywhere with Ctrl+J.
+                  </p>
+                </div>
+                <div className={styles.ecoArrow}>
+                  <ArrowRight size={16} />
+                </div>
+              </div>
+
+              {/* Tool 6: Command Palette */}
+              <div
+                role="button"
+                tabIndex={0}
+                onClick={() => {
+                  if (typeof window !== 'undefined') {
+                    window.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', ctrlKey: true, bubbles: true }));
+                  }
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    if (typeof window !== 'undefined') {
+                      window.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', ctrlKey: true, bubbles: true }));
+                    }
+                  }
+                }}
+                className={`${styles.ecoCard} ${styles.staggerItem}`}
+                style={{ cursor: 'pointer' }}
+              >
+                <div className={styles.ecoIconWrap}>
+                  <Command size={20} />
+                </div>
+                <div className={styles.ecoCardBody}>
+                  <h3 className={styles.ecoCardTitle}>Command Palette</h3>
+                  <p className={styles.ecoCardDesc}>
+                    Spotlight command center for lightning-fast site navigation, deep search, focus timers, and quick developer tools (Ctrl+K).
+                  </p>
+                </div>
+                <div className={styles.ecoArrow}>
+                  <ArrowRight size={16} />
+                </div>
+              </div>
             </div>
           </section>
 
