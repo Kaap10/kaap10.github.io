@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import Layout from '@theme/Layout';
 import { ArrowUpRight, Code2, Sparkles, CheckCircle2 } from 'lucide-react';
 import styles from './projects.module.css';
@@ -146,7 +146,7 @@ export default function ProjectsPage() {
                 {/* Title & Summary */}
                 <div>
                   <h2 className={styles.projectTitle}>{project.title}</h2>
-                  <p style={{ fontSize: '0.92rem', color: 'var(--vg-text, #F5F5F7)', fontWeight: 500, margin: '0.35rem 0 0.75rem' }}>
+                  <p className={styles.projectTagline}>
                     {project.tagline}
                   </p>
                   <p className={styles.projectSummary}>{project.summary}</p>

@@ -62,7 +62,7 @@
   width: 480px;
   height: 480px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(130, 80, 223, 0.09) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(255, 77, 79, 0.05) 0%, transparent 70%);
   filter: blur(90px);
   will-change: transform;
   animation: floatOrb2 24s ease-in-out infinite alternate;
@@ -234,6 +234,22 @@
   font-weight: 500;
   color: var(--vg-text-muted, #A6A6AC);
   font-family: var(--ifm-font-family-monospace, monospace);
+}
+
+.viewAllLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  font-family: var(--ifm-font-family-monospace, monospace);
+  color: var(--vg-text-muted, #A6A6AC) !important;
+  text-decoration: none !important;
+  transition: color var(--vg-transition-fast, 0.15s ease);
+}
+
+.viewAllLink:hover {
+  color: var(--vg-accent, #FF4D4F) !important;
 }
 
 /* ==========================================================================

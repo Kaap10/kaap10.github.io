@@ -174,14 +174,6 @@ export default function GoalsView() {
       {/* Header - Fixed with glass blur effect when scrolling */}
       <div
         className={styles.viewHeader}
-        style={{
-          position: 'sticky',
-          top: '76px',
-          zIndex: 25,
-          backgroundColor: 'var(--vg-header-bg, rgba(30, 30, 30, 0.78))',
-          backdropFilter: 'blur(16px) saturate(180%)',
-          WebkitBackdropFilter: 'blur(16px) saturate(180%)',
-        }}
       >
         <div>
           <h1 className={styles.viewTitle}>Strategic Goals & Milestones</h1>

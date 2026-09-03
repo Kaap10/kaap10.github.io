@@ -1,4 +1,4 @@
-﻿.pageContainer {
+.pageContainer {
   display: flex;
   justify-content: center;
   padding: 5.5rem 1.5rem 5rem;
@@ -133,6 +133,14 @@
   background: var(--vg-surface-strong, #38383C);
   border: 1px solid var(--vg-border-hover, rgba(255, 255, 255, 0.14));
   color: var(--vg-text, #F5F5F7);
+}
+
+.shortcutHint {
+  font-size: 0.78rem;
+  color: var(--vg-text-muted, #A6A6AC);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
 }
 
 .toolDesc {

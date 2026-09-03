@@ -110,7 +110,7 @@ export default function ToolsPage() {
                 </li>
                 <li className={styles.featureItem}>
                   <span className={styles.featureDot}>•</span>
-                  <span>Retrospective Done Logger with first-class "🌸 Naam Jap" category support</span>
+                  <span>Retrospective Done Logger with categorized daily accomplishment tracking</span>
                 </li>
                 <li className={styles.featureItem}>
                   <span className={styles.featureDot}>•</span>
@@ -165,7 +165,7 @@ export default function ToolsPage() {
                   <span>Try Scratchpad Now</span>
                   <ArrowRight size={15} />
                 </button>
-                <span style={{ fontSize: '0.78rem', color: 'var(--vg-text-muted, #A6A6AC)' }}>
+                <span className={styles.shortcutHint}>
                   Shortcut: <kbd className={styles.shortcutBadge}>Ctrl+J</kbd>
                 </span>
               </div>
@@ -207,7 +207,7 @@ export default function ToolsPage() {
                   <span>Open Spotlight Search</span>
                   <ArrowRight size={15} />
                 </button>
-                <span style={{ fontSize: '0.78rem', color: 'var(--vg-text-muted, #A6A6AC)' }}>
+                <span className={styles.shortcutHint}>
                   Shortcut: <kbd className={styles.shortcutBadge}>Ctrl+H</kbd>
                 </span>
               </div>

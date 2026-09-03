@@ -840,3 +840,239 @@ html.plugin-docs .DocSearch-Button {
 .vg-navbar-icon:hover {
   transform: translateY(-1px);
 }
+
+/* ==========================================================================
+   Scrollbar — Refined minimal track
+   ========================================================================== */
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--vg-surface-strong);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--vg-text-subtle);
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--vg-surface-strong) transparent;
+}
+
+/* ==========================================================================
+   Text Selection — On-brand highlight
+   ========================================================================== */
+
+::selection {
+  background-color: rgba(255, 77, 79, 0.22);
+  color: var(--vg-text);
+}
+
+[data-theme='light'] ::selection {
+  background-color: rgba(224, 49, 49, 0.18);
+  color: var(--vg-text);
+}
+
+/* ==========================================================================
+   Focus Rings — Accessible, on-brand
+   ========================================================================== */
+
+:focus-visible {
+  outline: 2px solid var(--vg-accent);
+  outline-offset: 2px;
+  border-radius: var(--vg-radius-sm);
+}
+
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--vg-accent);
+  outline-offset: 2px;
+}
+
+/* ==========================================================================
+   Smooth scroll (respects reduced-motion override above)
+   ========================================================================== */
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* ==========================================================================
+   Docusaurus Footer — Minimal, dark, editorial
+   ========================================================================== */
+
+.footer {
+  background: var(--vg-bg-elevated) !important;
+  border-top: 1px solid var(--vg-border) !important;
+  padding: 2rem 1.5rem !important;
+}
+
+.footer__copyright {
+  font-size: 0.78rem !important;
+  color: var(--vg-text-subtle) !important;
+  margin-top: 1rem !important;
+}
+
+.footer__links {
+  margin-bottom: 0 !important;
+}
+
+.footer__link-item {
+  font-size: 0.82rem !important;
+  color: var(--vg-text-muted) !important;
+  transition: color var(--vg-transition-fast) !important;
+}
+
+.footer__link-item:hover {
+  color: var(--vg-accent) !important;
+  text-decoration: none !important;
+}
+
+.footer__title {
+  font-size: 0.72rem !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.07em !important;
+  color: var(--vg-text-subtle) !important;
+}
+
+/* ==========================================================================
+   Docusaurus Breadcrumbs — Compact & on-brand
+   ========================================================================== */
+
+.breadcrumbs__link {
+  font-size: 0.8rem !important;
+  color: var(--vg-text-muted) !important;
+  transition: color var(--vg-transition-fast) !important;
+}
+
+.breadcrumbs__link:hover {
+  color: var(--vg-accent) !important;
+  background: transparent !important;
+}
+
+.breadcrumbs__item--active .breadcrumbs__link {
+  color: var(--vg-text) !important;
+  font-weight: 500 !important;
+}
+
+.breadcrumbs__separator {
+  color: var(--vg-text-subtle) !important;
+}
+
+/* ==========================================================================
+   Documentation "Edit this page" & "Last updated" — Quiet metadata row
+   ========================================================================== */
+
+.theme-last-updated,
+[class*="lastUpdated"] {
+  font-size: 0.78rem !important;
+  color: var(--vg-text-subtle) !important;
+}
+
+[class*="editThisPage"] a {
+  font-size: 0.8rem !important;
+  color: var(--vg-text-muted) !important;
+  transition: color var(--vg-transition-fast) !important;
+}
+
+[class*="editThisPage"] a:hover {
+  color: var(--vg-accent) !important;
+  text-decoration: none !important;
+}
+
+/* ==========================================================================
+   Badge / Tag component used across pages — Consistent pill style
+   ========================================================================== */
+
+.badge {
+  border-radius: 9999px !important;
+  font-size: 0.72rem !important;
+  font-weight: 600 !important;
+  padding: 0.18rem 0.55rem !important;
+  letter-spacing: 0.02em !important;
+}
+
+/* ==========================================================================
+   Markdown Horizontal Rules — Minimal accent
+   ========================================================================== */
+
+.markdown hr {
+  border: none;
+  border-top: 1px solid var(--vg-border);
+  margin: 2rem 0;
+}
+
+/* ==========================================================================
+   Markdown "Details" / Admonition — On-brand treatment
+   ========================================================================== */
+
+.markdown details {
+  background: var(--vg-bg-elevated);
+  border: 1px solid var(--vg-border);
+  border-radius: var(--vg-radius-md);
+  padding: 0.85rem 1.15rem;
+  margin: 1.25rem 0;
+}
+
+.markdown summary {
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  color: var(--vg-text);
+}
+
+.admonition {
+  border-radius: var(--vg-radius-md) !important;
+  border-left-width: 2px !important;
+  background: var(--vg-bg-elevated) !important;
+}
+
+/* ==========================================================================
+   Misc UX Polish
+   ========================================================================== */
+
+/* Remove Docusaurus default blue link underline in blog/docs headings */
+.markdown h1 a,
+.markdown h2 a,
+.markdown h3 a,
+.markdown h4 a {
+  color: inherit !important;
+  border-bottom: none !important;
+  text-decoration: none !important;
+}
+
+.markdown h1 a:hover,
+.markdown h2 a:hover,
+.markdown h3 a:hover {
+  color: var(--vg-accent) !important;
+}
+
+/* Image treatment in markdown docs */
+.markdown img {
+  border-radius: var(--vg-radius-md);
+  border: 1px solid var(--vg-border);
+  max-width: 100%;
+}
+
+/* Inline <kbd> tag styling — keyboard key badges */
+kbd {
+  font-family: var(--ifm-font-family-monospace) !important;
+  font-size: 0.78rem !important;
+  padding: 0.15rem 0.4rem !important;
+  border-radius: var(--vg-radius-sm) !important;
+  background: var(--vg-surface-strong) !important;
+  border: 1px solid var(--vg-border-hover) !important;
+  color: var(--vg-text) !important;
+  box-shadow: 0 1px 0 var(--vg-border-hover) !important;
+}

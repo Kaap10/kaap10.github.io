@@ -136,7 +136,7 @@ export default function Home() {
                 <span className={styles.sectionEyebrow}>Selected Engineering</span>
                 <h2 className={styles.sectionTitle}>Featured Projects</h2>
               </div>
-              <Link to="/projects" className={styles.sectionSubtitle} style={{ display: 'flex', alignItems: 'center', gap: '4px', textDecoration: 'none' }}>
+              <Link to="/projects" className={styles.viewAllLink}>
                 <span>View All Details</span>
                 <ArrowRight size={14} />
               </Link>
