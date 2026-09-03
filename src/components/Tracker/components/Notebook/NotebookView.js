@@ -262,12 +262,25 @@ export default function NotebookView() {
         </div>
       </div>
 
-      {/* 3-Pane Notepad Layout */}
+      {/* 2-Pane Unified Notepad Layout */}
       <div className={styles.notebookLayout}>
         {/* ================================================================
-            Pane 1: Notebooks & Views Rail
+            Pane 1: Unified Notebooks, Views & Notes Navigation Sidebar
             ================================================================ */}
         <aside className={styles.notebookSidebar}>
+          {/* Search Box */}
+          <div style={{ padding: '0.75rem 0.65rem 0.5rem' }}>
+            <div className={styles.searchBox}>
+              <IconSearch size={14} style={{ color: 'var(--vg-text-subtle)', flexShrink: 0 }} />
+              <input
+                type="text"
+                placeholder="Search notes & tags..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
+          </div>
+
           {/* Quick Views */}
           <div className={styles.sidebarSectionHeader}>
             <span className={styles.sidebarSectionTitle}>Views</span>
@@ -315,7 +328,7 @@ export default function NotebookView() {
             </button>
           </div>
 
-          {/* Notebooks List */}
+          {/* Notebooks Section */}
           <div className={styles.sidebarSectionHeader}>
             <span className={styles.sidebarSectionTitle}>Notebooks</span>
             <button
@@ -384,13 +397,96 @@ export default function NotebookView() {
             })}
           </div>
 
+          {/* Notes List inside Sidebar */}
+          <div className={styles.sidebarSectionHeader}>
+            <span className={styles.sidebarSectionTitle}>
+              {selectedFilter === 'all' && 'All Notes'}
+              {selectedFilter === 'pinned' && 'Pinned Notes'}
+              {selectedFilter === 'favorites' && 'Starred Notes'}
+              {selectedFilter === 'tag' && `#${selectedTag}`}
+              {selectedFilter === 'notebook' && (currentNotebook?.title || 'Notes')}
+            </span>
+            <button
+              type="button"
+              className={globalStyles.iconBtn}
+              onClick={handleCreateNote}
+              title="New Note"
+            >
+              <IconPlus size={14} />
+            </button>
+          </div>
+
+          <div className={styles.notesScrollArea}>
+            {filteredNotes.length === 0 ? (
+              <div style={{ padding: '1rem 0.5rem', textAlign: 'center', color: 'var(--vg-text-subtle)', fontSize: '0.78rem' }}>
+                No notes found.
+                <button
+                  type="button"
+                  className={globalStyles.linkBtn}
+                  onClick={handleCreateNote}
+                  style={{ display: 'block', margin: '0.35rem auto 0', fontSize: '0.78rem' }}
+                >
+                  + Add new note
+                </button>
+              </div>
+            ) : (
+              filteredNotes.map((note) => {
+                const isActive = currentNote?.id === note.id;
+                const snippet = (note.content || '').replace(/\n+/g, ' ').trim();
+                const d = new Date(note.updated_at || note.created_at || Date.now());
+                const dateLabel = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+
+                return (
+                  <article
+                    key={note.id}
+                    className={`${styles.noteItem} ${isActive ? styles.noteItemActive : ''}`}
+                    onClick={() => setActiveNoteId(note.id)}
+                  >
+                    <div className={styles.noteItemTop}>
+                      <h3 className={styles.noteItemTitle}>
+                        {note.title || 'Untitled Note'}
+                      </h3>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '4px', flexShrink: 0 }}>
+                        {note.is_pinned && (
+                          <span style={{ color: 'var(--vg-accent)' }} title="Pinned">
+                            <IconPin size={11} filled />
+                          </span>
+                        )}
+                        {note.is_favorite && (
+                          <span style={{ color: '#FAAD14' }} title="Starred">
+                            <IconStar size={11} filled />
+                          </span>
+                        )}
+                      </div>
+                    </div>
+
+                    {snippet && (
+                      <p className={styles.noteItemSnippet}>
+                        {snippet}
+                      </p>
+                    )}
+
+                    <div className={styles.noteItemMeta}>
+                      <span>{dateLabel}</span>
+                      {Array.isArray(note.tags) && note.tags.length > 0 && (
+                        <span className={styles.tagPill}>
+                          #{note.tags[0]}
+                        </span>
+                      )}
+                    </div>
+                  </article>
+                );
+              })
+            )}
+          </div>
+
           {/* Tags Cloud */}
           {allTags.length > 0 && (
             <>
               <div className={styles.sidebarSectionHeader}>
                 <span className={styles.sidebarSectionTitle}>Tags</span>
               </div>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', padding: '0 0.75rem 1rem' }}>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', padding: '0 0.65rem 1rem' }}>
                 {allTags.map((t) => (
                   <button
                     key={t}
@@ -416,103 +512,7 @@ export default function NotebookView() {
         </aside>
 
         {/* ================================================================
-            Pane 2: Notes List
-            ================================================================ */}
-        <section className={styles.notesListPane}>
-          <div className={styles.notesListHeader}>
-            <div className={styles.notesListTopRow}>
-              <h2 className={styles.notesListTitle}>
-                {selectedFilter === 'all' && 'All Notes'}
-                {selectedFilter === 'pinned' && 'Pinned Notes'}
-                {selectedFilter === 'favorites' && 'Starred Notes'}
-                {selectedFilter === 'tag' && `#${selectedTag}`}
-                {selectedFilter === 'notebook' && (currentNotebook?.title || 'Notebook')}
-              </h2>
-              <span style={{ fontSize: '0.75rem', color: 'var(--vg-text-subtle)' }}>
-                {filteredNotes.length} {filteredNotes.length === 1 ? 'note' : 'notes'}
-              </span>
-            </div>
-
-            <div className={styles.searchBox}>
-              <IconSearch size={14} style={{ color: 'var(--vg-text-subtle)' }} />
-              <input
-                type="text"
-                placeholder="Search notes & tags..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
-            </div>
-          </div>
-
-          <div className={styles.notesScrollArea}>
-            {filteredNotes.length === 0 ? (
-              <div style={{ padding: '2rem 1rem', textAlign: 'center', color: 'var(--vg-text-subtle)', fontSize: '0.82rem' }}>
-                No notes found.
-                <button
-                  type="button"
-                  className={globalStyles.linkBtn}
-                  onClick={handleCreateNote}
-                  style={{ display: 'block', margin: '0.5rem auto 0' }}
-                >
-                  Create a new note →
-                </button>
-              </div>
-            ) : (
-              filteredNotes.map((note) => {
-                const isActive = currentNote?.id === note.id;
-                const snippet = (note.content || '').replace(/\n+/g, ' ').trim();
-                const d = new Date(note.updated_at || note.created_at || Date.now());
-                const dateLabel = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-
-                return (
-                  <article
-                    key={note.id}
-                    className={`${styles.noteItem} ${isActive ? styles.noteItemActive : ''}`}
-                    onClick={() => setActiveNoteId(note.id)}
-                  >
-                    <div className={styles.noteItemTop}>
-                      <h3 className={styles.noteItemTitle}>
-                        {note.title || 'Untitled Note'}
-                      </h3>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '4px', flexShrink: 0 }}>
-                        {note.is_pinned && (
-                          <span style={{ color: 'var(--vg-accent)' }} title="Pinned">
-                            <IconPin size={12} filled />
-                          </span>
-                        )}
-                        {note.is_favorite && (
-                          <span style={{ color: '#FAAD14' }} title="Starred">
-                            <IconStar size={12} filled />
-                          </span>
-                        )}
-                      </div>
-                    </div>
-
-                    <p className={styles.noteItemSnippet}>
-                      {snippet || 'Empty note...'}
-                    </p>
-
-                    <div className={styles.noteItemMeta}>
-                      <span>{dateLabel}</span>
-                      {Array.isArray(note.tags) && note.tags.length > 0 && (
-                        <div style={{ display: 'flex', gap: '3px' }}>
-                          {note.tags.slice(0, 2).map((t) => (
-                            <span key={t} className={styles.tagPill}>
-                              #{t}
-                            </span>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  </article>
-                );
-              })
-            )}
-          </div>
-        </section>
-
-        {/* ================================================================
-            Pane 3: Clean Full-Height Notepad Editor
+            Pane 2: Full-Width Clean Notepad Canvas
             ================================================================ */}
         <main className={styles.editorPane}>
           {currentNote ? (
@@ -693,7 +693,7 @@ export default function NotebookView() {
                 No Note Selected
               </h3>
               <p style={{ fontSize: '0.88rem', color: 'var(--vg-text-muted)', margin: 0, maxWidth: '320px' }}>
-                Select a note from the list on the left, or create a brand new note to begin writing.
+                Select a note from the sidebar or click New Note to begin writing.
               </p>
               <button
                 type="button"

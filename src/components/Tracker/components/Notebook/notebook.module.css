@@ -1,6 +1,6 @@
 /* ==============================================================================
    Notebook & Notepad View Stylesheet
-   Theme: Linear / Raycast Minimalist Clean Notepad
+   Theme: Linear / Raycast Minimalist Clean 2-Pane Notepad
    ============================================================================== */
 
 .notebookWrapper {
@@ -12,7 +12,7 @@
 
 .notebookLayout {
   display: grid;
-  grid-template-columns: 240px 300px 1fr;
+  grid-template-columns: 280px 1fr;
   min-height: calc(100vh - 200px);
   max-height: calc(100vh - 160px);
   background: var(--vg-bg-elevated);
@@ -23,7 +23,7 @@
 }
 
 /* ------------------------------------------------------------------------------
-   Pane 1: Notebooks & Views Sidebar Rail
+   Pane 1: Unified Notebooks, Views & Notes Sidebar Rail
    ------------------------------------------------------------------------------ */
 .notebookSidebar {
   background: var(--vg-bg-elevated);
@@ -35,7 +35,7 @@
 }
 
 .sidebarSectionHeader {
-  padding: 0.85rem 1rem 0.5rem;
+  padding: 0.75rem 0.85rem 0.35rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -53,7 +53,7 @@
   display: flex;
   flex-direction: column;
   gap: 2px;
-  padding: 0 0.5rem 0.75rem;
+  padding: 0 0.5rem 0.5rem;
 }
 
 .sidebarNavItem {
@@ -111,22 +111,20 @@
 .notebookList {
   display: flex;
   flex-direction: column;
-  gap: 3px;
-  padding: 0 0.5rem 1rem;
-  flex: 1;
-  overflow-y: auto;
+  gap: 2px;
+  padding: 0 0.5rem 0.65rem;
 }
 
 .notebookCard {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.5rem 0.65rem;
+  padding: 0.45rem 0.65rem;
   border-radius: var(--vg-radius-sm);
   background: transparent;
   border: 1px solid transparent;
   color: var(--vg-text);
-  font-size: 0.85rem;
+  font-size: 0.83rem;
   cursor: pointer;
   transition: all var(--vg-transition-fast);
   width: 100%;
@@ -158,7 +156,7 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  font-size: 0.84rem;
+  font-size: 0.83rem;
 }
 
 .notebookActions {
@@ -171,43 +169,6 @@
 
 .notebookCard:hover .notebookActions {
   opacity: 1;
-}
-
-/* ------------------------------------------------------------------------------
-   Pane 2: Notes List
-   ------------------------------------------------------------------------------ */
-.notesListPane {
-  background: var(--vg-bg);
-  border-right: 1px solid var(--vg-border);
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-
-.notesListHeader {
-  padding: 0.85rem 1rem;
-  border-bottom: 1px solid var(--vg-border);
-  display: flex;
-  flex-direction: column;
-  gap: 0.65rem;
-  background: var(--vg-bg-elevated);
-}
-
-.notesListTopRow {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.5rem;
-}
-
-.notesListTitle {
-  font-size: 1rem;
-  font-weight: 700;
-  color: var(--vg-text);
-  margin: 0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .searchBox {
@@ -225,7 +186,7 @@
   border: none;
   outline: none;
   color: var(--vg-text);
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   width: 100%;
 }
 
@@ -236,30 +197,28 @@
 .notesScrollArea {
   flex: 1;
   overflow-y: auto;
-  padding: 0.5rem;
+  padding: 0 0.5rem 0.75rem;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 3px;
 }
 
 .noteItem {
-  background: var(--vg-bg-elevated);
+  background: var(--vg-surface);
   border: 1px solid var(--vg-border);
   border-radius: var(--vg-radius-sm);
-  padding: 0.75rem 0.85rem;
+  padding: 0.55rem 0.7rem;
   cursor: pointer;
   display: flex;
   flex-direction: column;
-  gap: 0.35rem;
+  gap: 0.25rem;
   transition: all var(--vg-transition-fast);
   text-align: left;
-  position: relative;
 }
 
 .noteItem:hover {
-  background: var(--vg-surface);
+  background: var(--vg-surface-strong);
   border-color: var(--vg-border-hover);
-  transform: translateY(-1px);
 }
 
 .noteItemActive {
@@ -271,11 +230,11 @@
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 0.5rem;
+  gap: 0.45rem;
 }
 
 .noteItemTitle {
-  font-size: 0.88rem;
+  font-size: 0.83rem;
   font-weight: 600;
   color: var(--vg-text);
   margin: 0;
@@ -287,13 +246,13 @@
 }
 
 .noteItemSnippet {
-  font-size: 0.78rem;
+  font-size: 0.75rem;
   color: var(--vg-text-muted);
-  line-height: 1.4;
+  line-height: 1.35;
   margin: 0;
   overflow: hidden;
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
 }
 
@@ -301,15 +260,15 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   color: var(--vg-text-subtle);
-  margin-top: 0.15rem;
+  margin-top: 0.1rem;
 }
 
 .tagPill {
-  font-size: 0.68rem;
+  font-size: 0.65rem;
   font-family: var(--ifm-font-family-monospace, monospace);
-  padding: 0.1rem 0.4rem;
+  padding: 0.05rem 0.35rem;
   border-radius: var(--vg-radius-sm);
   background: var(--vg-surface-strong);
   color: var(--vg-text-muted);
@@ -317,7 +276,7 @@
 }
 
 /* ------------------------------------------------------------------------------
-   Pane 3: Clean Notepad Editor
+   Pane 2: Clean Notepad Canvas
    ------------------------------------------------------------------------------ */
 .editorPane {
   background: var(--vg-bg-elevated);
@@ -327,7 +286,7 @@
 }
 
 .editorHeader {
-  padding: 0.85rem 1.25rem;
+  padding: 0.85rem 1.5rem;
   border-bottom: 1px solid var(--vg-border);
   display: flex;
   align-items: center;
@@ -349,7 +308,7 @@
   background: transparent;
   border: none;
   outline: none;
-  font-size: 1.35rem;
+  font-size: 1.4rem;
   font-weight: 700;
   letter-spacing: -0.02em;
   color: var(--vg-text);
@@ -382,10 +341,10 @@
   background: transparent;
   border: none;
   outline: none;
-  padding: 1.5rem 1.75rem;
+  padding: 1.5rem 2rem;
   color: var(--vg-text);
   font-family: var(--ifm-font-family-base, sans-serif);
-  font-size: 0.95rem;
+  font-size: 0.98rem;
   line-height: 1.7;
   resize: none;
   box-sizing: border-box;
@@ -397,7 +356,7 @@
 }
 
 .editorFooter {
-  padding: 0.5rem 1.25rem;
+  padding: 0.5rem 1.5rem;
   border-top: 1px solid var(--vg-border);
   background: var(--vg-surface);
   display: flex;
@@ -419,24 +378,15 @@
   gap: 0.75rem;
 }
 
-@media (max-width: 1024px) {
-  .notebookLayout {
-    grid-template-columns: 200px 240px 1fr;
-  }
-}
-
-@media (max-width: 860px) {
+@media (max-width: 768px) {
   .notebookLayout {
     grid-template-columns: 1fr;
     max-height: none;
     min-height: auto;
   }
   .notebookSidebar {
-    display: none;
-  }
-  .notesListPane {
     border-right: none;
     border-bottom: 1px solid var(--vg-border);
-    max-height: 280px;
+    max-height: 320px;
   }
 }
