@@ -339,7 +339,7 @@ export default function Home() {
           </section>
 
           {/* ============================================================
-              4. Interactive Digital Garden Ecosystem
+              4. Tool Kit & Ecosystem
               ============================================================ */}
           <section 
             ref={ecoRef} 
@@ -348,7 +348,7 @@ export default function Home() {
             <div className={styles.sectionHeader}>
               <div className={styles.sectionTitleGroup}>
                 <span className={styles.sectionEyebrow}>Living Workstation</span>
-                <h2 className={styles.sectionTitle}>Digital Garden &amp; Tools</h2>
+                <h2 className={styles.sectionTitle}>Tool Kit</h2>
               </div>
               <span className={styles.sectionSubtitle}>Built for Daily Engineering</span>
             </div>
