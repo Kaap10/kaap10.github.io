@@ -1,4 +1,4 @@
-﻿/* ==============================================================================
+/* ==============================================================================
    Global Tools Modular Stylesheet (Scratchpad & Command Palette)
    Theme: Matching Portfolio Linear/Raycast Dark Grey Design System
    ============================================================================== */
@@ -295,17 +295,16 @@
   position: fixed;
   bottom: 24px;
   right: 24px;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  justify-content: center;
+  padding: 0;
   background: var(--vg-bg-elevated, #262628);
   border: 1px solid var(--vg-border-hover, rgba(255, 255, 255, 0.16));
-  color: var(--vg-text, #F5F5F7);
-  padding: 0.55rem 0.95rem;
-  border-radius: 9999px;
-  font-size: 0.8rem;
-  font-weight: 600;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.55);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   cursor: pointer;
@@ -314,7 +313,20 @@
 }
 
 .quickLauncherBtn:hover {
-  transform: translateY(-2px);
+  transform: translateY(-2px) scale(1.06);
   border-color: var(--vg-accent, #FF4D4F);
-  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.75);
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.75);
+}
+
+.quickLauncherBtn:active {
+  transform: scale(0.95);
+}
+
+.launcherIcon {
+  width: 26px;
+  height: 26px;
+  object-fit: contain;
+  display: block;
+  user-select: none;
+  pointer-events: none;
 }

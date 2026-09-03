@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import {
   IconEdit,
@@ -9,7 +9,6 @@ import {
   IconPlus,
   IconClose,
   IconCheck,
-  IconNote,
 } from './GlobalIcons';
 import styles from './commonComponents.module.css';
 
@@ -135,19 +134,22 @@ export default function GlobalScratchpad() {
 
   return ReactDOM.createPortal(
     <>
-      {/* Floating Launcher Button (Bottom Right) */}
+      {/* Floating Circular Launcher Button (Bottom Right) */}
       {!isOpen && (
         <button
           type="button"
           className={styles.quickLauncherBtn}
           onClick={() => setIsOpen(true)}
-          title="Open Quick Scratchpad (Ctrl+J / Cmd+J)"
+          title="Quick Scratchpad (Ctrl+J / Cmd+J)"
+          aria-label="Open Quick Scratchpad (Ctrl+J / Cmd+J)"
         >
-          <IconNote size={15} />
-          <span>Scratchpad</span>
-          <kbd style={{ fontSize: '0.68rem', opacity: 0.7, background: 'var(--vg-surface, #2E2E31)', padding: '0.1rem 0.4rem', borderRadius: '4px', border: '1px solid var(--vg-border)' }}>
-            Ctrl+J
-          </kbd>
+          <img
+            src="/img/scratchpad.png"
+            alt="Scratchpad"
+            className={styles.launcherIcon}
+            width="26"
+            height="26"
+          />
         </button>
       )}
 
