@@ -8,7 +8,6 @@ export default function BoardPage() {
   return (
     <Layout
       title="Whiteboard"
-      description="Interactive Whiteboard powered by Excalidraw — Sketch ideas, system designs, diagrams, and notes."
       description="Whiteboard powered by Excalidraw — Sketch ideas, system designs, diagrams, and notes."
       noFooter
     >

@@ -31,7 +31,6 @@ export default function ToolsPage() {
   return (
     <Layout
       title="Engineering Tools & Living Workstation"
-      description="Integrated productivity suite, interactive whiteboard, markdown scratchpad, and spotlight search designed by Vardhman Gupta."
       description="Integrated productivity suite, whiteboard, markdown scratchpad, and spotlight search designed by Vardhman Gupta."
     >
       <main className={styles.pageContainer}>
@@ -49,7 +48,6 @@ export default function ToolsPage() {
           {/* Tools Grid */}
           <div className={styles.toolsGrid}>
             
-            {/* Tool 1: Interactive Whiteboard */}
             {/* Tool 1: Whiteboard */}
             <article className={styles.toolCard}>
               <div className={styles.toolTop}>
@@ -57,7 +55,6 @@ export default function ToolsPage() {
                   <div className={styles.toolIconWrap}>
                     <PenTool size={20} />
                   </div>
-                  <h2 className={styles.toolTitle}>Interactive Whiteboard</h2>
                   <h2 className={styles.toolTitle}>Whiteboard</h2>
                 </div>
                 <span className={styles.shortcutBadge}>/board</span>
@@ -90,7 +87,6 @@ export default function ToolsPage() {
               </div>
             </article>
 
-            {/* Tool 2: Personal Productivity OS */}
             {/* Tool 2: Tracker */}
             <article className={styles.toolCard}>
               <div className={styles.toolTop}>
@@ -98,7 +94,6 @@ export default function ToolsPage() {
                   <div className={styles.toolIconWrap}>
                     <Activity size={20} />
                   </div>
-                  <h2 className={styles.toolTitle}>Personal Productivity OS</h2>
                   <h2 className={styles.toolTitle}>Tracker</h2>
                 </div>
                 <span className={styles.shortcutBadge}>/tracker</span>
@@ -125,7 +120,6 @@ export default function ToolsPage() {
 
               <div className={styles.cardBottom}>
                 <Link to="/tracker" className={styles.actionBtn}>
-                  <span>Launch Productivity OS</span>
                   <span>Launch Tracker</span>
                   <ArrowRight size={15} />
                 </Link>

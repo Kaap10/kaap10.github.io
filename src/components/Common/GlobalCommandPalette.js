@@ -55,7 +55,6 @@ const COMMANDS = [
   {
     id: 'nav-board',
     section: 'Navigation',
-    title: 'Open Interactive Whiteboard',
     title: 'Open Whiteboard',
     shortcut: 'G W',
     icon: <IconBoard size={16} />,

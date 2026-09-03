@@ -150,8 +150,6 @@ const config = {
             position: 'left',
             items: [
               { to: '/tools', label: 'Tools Overview' },
-              { to: '/board', label: 'Interactive Whiteboard' },
-              { to: '/tracker', label: 'Productivity OS' },
               { to: '/board', label: 'Whiteboard' },
               { to: '/tracker', label: 'Tracker' },
             ],
