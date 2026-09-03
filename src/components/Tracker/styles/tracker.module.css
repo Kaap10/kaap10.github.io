@@ -228,6 +228,16 @@
   box-sizing: border-box;
 }
 
+.mainContentNotebook {
+  padding: 1.25rem 2rem 1.25rem !important;
+  height: calc(100vh - 76px) !important;
+  max-height: calc(100vh - 76px) !important;
+  overflow: hidden !important;
+  display: flex !important;
+  flex-direction: column !important;
+  box-sizing: border-box !important;
+}
+
 .viewContainer {
   display: flex;
   flex-direction: column;

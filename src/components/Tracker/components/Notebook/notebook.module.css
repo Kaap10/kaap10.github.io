@@ -1,20 +1,38 @@
 /* ==============================================================================
    Notebook & Notepad View Stylesheet
-   Theme: Linear / Raycast Minimalist Clean 2-Pane Notepad
+   Theme: Linear / Raycast Minimalist Clean 2-Pane Notepad (Locked Layout)
    ============================================================================== */
 
 .notebookWrapper {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 0.75rem;
   width: 100%;
+  height: 100%;
+  max-height: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+  flex: 1;
+  min-height: 0;
+}
+
+.notebookHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--vg-border);
+  flex-shrink: 0;
 }
 
 .notebookLayout {
   display: grid;
   grid-template-columns: 280px 1fr;
-  min-height: calc(100vh - 200px);
-  max-height: calc(100vh - 160px);
+  flex: 1;
+  min-height: 0;
+  height: 100%;
   background: var(--vg-bg-elevated);
   border: 1px solid var(--vg-border);
   border-radius: var(--vg-radius-lg);
@@ -30,19 +48,22 @@
   border-right: 1px solid var(--vg-border);
   display: flex;
   flex-direction: column;
-  overflow-y: auto;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
   user-select: none;
 }
 
 .sidebarSectionHeader {
-  padding: 0.75rem 0.85rem 0.35rem;
+  padding: 0.65rem 0.85rem 0.25rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-shrink: 0;
 }
 
 .sidebarSectionTitle {
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -53,19 +74,20 @@
   display: flex;
   flex-direction: column;
   gap: 2px;
-  padding: 0 0.5rem 0.5rem;
+  padding: 0 0.5rem 0.35rem;
+  flex-shrink: 0;
 }
 
 .sidebarNavItem {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.45rem 0.65rem;
+  padding: 0.4rem 0.6rem;
   border-radius: var(--vg-radius-sm);
   background: transparent;
   border: 1px solid transparent;
   color: var(--vg-text-muted);
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   font-weight: 500;
   cursor: pointer;
   width: 100%;
@@ -88,7 +110,7 @@
 .sidebarItemLeft {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.45rem;
   min-width: 0;
   overflow: hidden;
 }
@@ -100,9 +122,9 @@
 }
 
 .sidebarItemBadge {
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   font-weight: 600;
-  padding: 0.1rem 0.4rem;
+  padding: 0.1rem 0.35rem;
   border-radius: 9999px;
   background: var(--vg-surface);
   color: var(--vg-text-subtle);
@@ -112,19 +134,22 @@
   display: flex;
   flex-direction: column;
   gap: 2px;
-  padding: 0 0.5rem 0.65rem;
+  padding: 0 0.5rem 0.5rem;
+  flex-shrink: 0;
+  max-height: 140px;
+  overflow-y: auto;
 }
 
 .notebookCard {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.45rem 0.65rem;
+  padding: 0.4rem 0.6rem;
   border-radius: var(--vg-radius-sm);
   background: transparent;
   border: 1px solid transparent;
   color: var(--vg-text);
-  font-size: 0.83rem;
+  font-size: 0.82rem;
   cursor: pointer;
   transition: all var(--vg-transition-fast);
   width: 100%;
@@ -156,7 +181,7 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  font-size: 0.83rem;
+  font-size: 0.82rem;
 }
 
 .notebookActions {
@@ -178,7 +203,7 @@
   background: var(--vg-surface);
   border: 1px solid var(--vg-border);
   border-radius: var(--vg-radius-sm);
-  padding: 0.35rem 0.65rem;
+  padding: 0.3rem 0.6rem;
 }
 
 .searchBox input {
@@ -186,7 +211,7 @@
   border: none;
   outline: none;
   color: var(--vg-text);
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   width: 100%;
 }
 
@@ -196,6 +221,7 @@
 
 .notesScrollArea {
   flex: 1;
+  min-height: 0;
   overflow-y: auto;
   padding: 0 0.5rem 0.75rem;
   display: flex;
@@ -207,11 +233,11 @@
   background: var(--vg-surface);
   border: 1px solid var(--vg-border);
   border-radius: var(--vg-radius-sm);
-  padding: 0.55rem 0.7rem;
+  padding: 0.5rem 0.65rem;
   cursor: pointer;
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 0.2rem;
   transition: all var(--vg-transition-fast);
   text-align: left;
 }
@@ -230,11 +256,11 @@
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 0.45rem;
+  gap: 0.4rem;
 }
 
 .noteItemTitle {
-  font-size: 0.83rem;
+  font-size: 0.82rem;
   font-weight: 600;
   color: var(--vg-text);
   margin: 0;
@@ -246,9 +272,9 @@
 }
 
 .noteItemSnippet {
-  font-size: 0.75rem;
+  font-size: 0.74rem;
   color: var(--vg-text-muted);
-  line-height: 1.35;
+  line-height: 1.3;
   margin: 0;
   overflow: hidden;
   display: -webkit-box;
@@ -260,7 +286,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   color: var(--vg-text-subtle);
   margin-top: 0.1rem;
 }
@@ -282,33 +308,35 @@
   background: var(--vg-bg-elevated);
   display: flex;
   flex-direction: column;
+  height: 100%;
+  min-height: 0;
   overflow: hidden;
 }
 
 .editorHeader {
-  padding: 0.85rem 1.5rem;
+  padding: 0.75rem 1.25rem;
   border-bottom: 1px solid var(--vg-border);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
+  gap: 0.75rem;
   background: var(--vg-bg-elevated);
-  flex-wrap: wrap;
+  flex-shrink: 0;
 }
 
 .editorHeaderLeft {
   display: flex;
   align-items: center;
-  gap: 0.65rem;
+  gap: 0.5rem;
   flex: 1;
-  min-width: 200px;
+  min-width: 150px;
 }
 
 .titleInput {
   background: transparent;
   border: none;
   outline: none;
-  font-size: 1.4rem;
+  font-size: 1.25rem;
   font-weight: 700;
   letter-spacing: -0.02em;
   color: var(--vg-text);
@@ -324,11 +352,13 @@
 .editorHeaderRight {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.35rem;
+  flex-shrink: 0;
 }
 
 .notepadWorkspace {
   flex: 1;
+  min-height: 0;
   display: flex;
   overflow: hidden;
   background: var(--vg-bg-elevated);
@@ -341,12 +371,13 @@
   background: transparent;
   border: none;
   outline: none;
-  padding: 1.5rem 2rem;
+  padding: 1.25rem 1.75rem;
   color: var(--vg-text);
   font-family: var(--ifm-font-family-base, sans-serif);
-  font-size: 0.98rem;
+  font-size: 0.96rem;
   line-height: 1.7;
   resize: none;
+  overflow-y: auto;
   box-sizing: border-box;
 }
 
@@ -356,14 +387,15 @@
 }
 
 .editorFooter {
-  padding: 0.5rem 1.5rem;
+  padding: 0.4rem 1.25rem;
   border-top: 1px solid var(--vg-border);
   background: var(--vg-surface);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 0.74rem;
+  font-size: 0.72rem;
   color: var(--vg-text-subtle);
+  flex-shrink: 0;
 }
 
 .emptyEditor {
@@ -387,6 +419,6 @@
   .notebookSidebar {
     border-right: none;
     border-bottom: 1px solid var(--vg-border);
-    max-height: 320px;
+    max-height: 260px;
   }
 }

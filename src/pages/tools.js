@@ -130,34 +130,34 @@ export default function ToolsPage() {
               </div>
             </article>
 
-            {/* Tool 3: Notebook & Markdown Knowledge Vault */}
+            {/* Tool 3: Notebook & Notepad */}
             <article className={styles.toolCard}>
               <div className={styles.toolTop}>
                 <div className={styles.toolIconTitle}>
                   <div className={styles.toolIconWrap}>
                     <BookOpen size={20} />
                   </div>
-                  <h2 className={styles.toolTitle}>Notebook &amp; Knowledge Vault</h2>
+                  <h2 className={styles.toolTitle}>Notebook &amp; Notepad</h2>
                 </div>
                 <span className={styles.shortcutBadge}>/tracker?tab=notebook</span>
               </div>
 
               <p className={styles.toolDesc}>
-                A private, distraction-free digital notebook with hierarchical folder collections, live split-pane markdown editing, instant word counter, tags, and export capabilities.
+                A private, distraction-free personal notepad with multi-notebook organization, fluid instant typing, tag filtering, auto-saving, and quick export.
               </p>
 
               <ul className={styles.featureList}>
                 <li className={styles.featureItem}>
                   <span className={styles.featureDot}>•</span>
-                  <span>Hierarchical notebook vaults with custom folder categorization</span>
+                  <span>Organized notebook collections with custom folders and tags</span>
                 </li>
                 <li className={styles.featureItem}>
                   <span className={styles.featureDot}>•</span>
-                  <span>Live WYSIWYG &amp; Split Markdown editor with tables, code blocks, and checklists</span>
+                  <span>Distraction-free pure notepad editor with zero typing lag and instant auto-save</span>
                 </li>
                 <li className={styles.featureItem}>
                   <span className={styles.featureDot}>•</span>
-                  <span>1-click export to .md files, clipboard sync, and offline localStorage caching</span>
+                  <span>1-click copy text, export to .txt, pin notes, and local-first Supabase sync</span>
                 </li>
               </ul>
 

@@ -220,7 +220,7 @@ export default function TrackerLayout({ children }) {
       </header>
 
       {/* Main View Area */}
-      <main className={styles.mainContent}>
+      <main className={`${styles.mainContent} ${activeTab === 'notebook' ? styles.mainContentNotebook : ''}`}>
         {sidebarCollapsed && (
           <button
             type="button"

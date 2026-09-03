@@ -53,8 +53,10 @@ This repository houses an integrated developer ecosystem built on a hybrid **Sta
 - **Deep Work Focus Timer**: Wall-clock delta engine (`requestAnimationFrame` + `Date.now()`) with 25m, 50m, 90m intervals, continuous stopwatch, and draggable floating widget.
 - **Document Picture-in-Picture (PiP)**: Chrome 116+ OS-level detached always-on-top timer window via `window.documentPictureInPicture`.
 - **Habits Engine**: Atomic habit tracking with streak calculus engine computing current and lifetime best streaks.
-- **Productivity Calendar**: Visual monthly and weekly grid plotting tasks, active milestones, and logged deep work sessions.
-- **Resource Vault**: Bookmarking library with category filters (`GitHub`, `YouTube`, `PDF`, `Course`, `Book`, `Website`) and markdown notes.
+- **Resource Library**: Bookmarking library with category filters (`GitHub`, `YouTube`, `PDF`, `Course`, `Book`, `Website`) and notes.
+- **Notebook & Notepad**: Private personal notepad with multi-notebook organization, fluid instant typing, tag filtering, word/char counters, `.txt` export, and local-first Supabase sync.
+- **Collapsible Sidebar**: Desktop collapsible sidebar with persistent state and `[` / `Ctrl+\` keyboard shortcut.
+- **Circular Quick Scratchpad**: Floating circular quick-launch scratchpad with glassmorphism modal and multi-sheet tabs (`Ctrl+J`).
 - **Telemetry & Heatmap**: 52-week GitHub-style contribution graph and interactive Recharts velocity bars and focus duration area curves.
 - **Cadence Retrospectives**: Weekly and monthly structured reviews with automated metric rollups and PostgreSQL UPSERT idempotency.
 - **Zero-Cost Insights Engine**: Deterministic client-side heuristic engine discovering peak productivity days and overdue pacing with $0 API overhead.

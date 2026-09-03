@@ -1036,7 +1036,7 @@ export function TrackerProvider({ children }) {
   };
 
   // ============================================================================
-  // Notebook Operations (Vaults & Notes)
+  // Notebook Operations (Notebooks & Notes)
   // ============================================================================
   const createNotebook = async (notebookData) => {
     const supabase = getSupabase();

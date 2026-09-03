@@ -85,7 +85,7 @@ const COMMANDS = [
   {
     id: 'nav-notebook',
     section: 'Tracker Views',
-    title: 'Tracker: Notebook & Knowledge Vault',
+    title: 'Tracker: Notebook',
     icon: <IconBook size={16} />,
     action: () => (window.location.href = '/tracker?tab=notebook'),
   },

@@ -284,11 +284,11 @@ export default function NotebookView() {
   return (
     <div className={styles.notebookWrapper}>
       {/* Header View Bar */}
-      <div className={globalStyles.viewHeader}>
+      <div className={styles.notebookHeader}>
         <div>
-          <h1 className={globalStyles.viewTitle}>Notebook</h1>
-          <p className={globalStyles.viewSubtitle}>
-            Personal notepad &amp; knowledge vault · Quick notes, thoughts, and technical ideas.
+          <h1 className={globalStyles.viewTitle} style={{ fontSize: '1.5rem', marginBottom: '0.15rem' }}>Notebook</h1>
+          <p className={globalStyles.viewSubtitle} style={{ fontSize: '0.8rem', margin: 0 }}>
+            Personal notepad &amp; notes · Quick thoughts, snippets, and technical ideas.
           </p>
         </div>
 

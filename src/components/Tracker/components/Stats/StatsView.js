@@ -57,7 +57,7 @@ export default function StatsView() {
       color: '#fa541c',
     },
     {
-      label: 'Knowledge Vault Read',
+      label: 'Resources Completed',
       value: lifetimeStats.completedResources,
       total: lifetimeStats.totalResources,
       unit: 'resources',

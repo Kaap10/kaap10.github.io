@@ -72,7 +72,7 @@ export default function ResourcesView() {
       {/* Header */}
       <div className={styles.viewHeader}>
         <div>
-          <h1 className={styles.viewTitle}>Knowledge Vault & Resources</h1>
+          <h1 className={styles.viewTitle}>Resources & References</h1>
           <p className={styles.viewSubtitle}>
             Curate technical papers, video courses, documentation repos, and learning notes.
           </p>

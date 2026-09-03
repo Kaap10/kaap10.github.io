@@ -153,7 +153,7 @@ CREATE TABLE IF NOT EXISTS public.monthly_reviews (
   CONSTRAINT unique_user_monthly_review UNIQUE (user_id, month_start_date)
 );
 
--- 11. Notebooks Table (Personal Knowledge Vaults / Collections)
+-- 11. Notebooks Table (Personal Notebooks / Collections)
 CREATE TABLE IF NOT EXISTS public.notebooks (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,

@@ -90,7 +90,7 @@ export default function AuthView() {
           </h2>
           <p style={{ fontSize: '0.86rem', color: 'var(--vg-text-muted)', margin: 0 }}>
             {mode === 'login' && 'Sign in to access your private tracker.'}
-            {mode === 'register' && 'Create your private productivity vault.'}
+            {mode === 'register' && 'Create your private productivity workspace.'}
             {mode === 'forgot' && 'Reset your password.'}
           </p>
         </div>
