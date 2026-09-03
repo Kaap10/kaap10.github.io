@@ -295,38 +295,36 @@
   position: fixed;
   bottom: 24px;
   right: 24px;
-  width: 46px;
-  height: 46px;
-  border-radius: 50%;
-  display: flex;
+  width: auto;
+  height: auto;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   padding: 0;
-  background: var(--vg-bg-elevated, #262628);
-  border: 1px solid var(--vg-border-hover, rgba(255, 255, 255, 0.16));
-  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.55);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: transparent;
+  border: none;
+  box-shadow: none;
   cursor: pointer;
   z-index: 9999;
-  transition: all var(--vg-transition-fast, 0.2s ease);
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), filter 0.2s ease;
+  outline: none;
 }
 
 .quickLauncherBtn:hover {
-  transform: translateY(-2px) scale(1.06);
-  border-color: var(--vg-accent, #FF4D4F);
-  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.75);
+  transform: translateY(-2px) scale(1.12);
+  filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.65));
 }
 
 .quickLauncherBtn:active {
-  transform: scale(0.95);
+  transform: scale(0.92);
 }
 
 .launcherIcon {
-  width: 26px;
-  height: 26px;
+  width: 38px;
+  height: 38px;
   object-fit: contain;
   display: block;
   user-select: none;
   pointer-events: none;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.4));
 }
