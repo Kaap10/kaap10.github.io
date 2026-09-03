@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from './context/AuthContext';
 import { useTracker } from './context/TrackerContext';
 import {
@@ -12,12 +12,44 @@ import {
   IconLogOut,
   IconUser,
   IconSearch,
+  IconSidebarCollapse,
+  IconSidebarExpand,
 } from './components/Common/Icons';
 import styles from './styles/tracker.module.css';
 
 export default function TrackerLayout({ children }) {
   const { user, signOut } = useAuth();
   const { activeTab, setActiveTab, error, refreshData, setSearchModalOpen } = useTracker();
+
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('tracker_sidebar_collapsed') === 'true';
+    }
+    return false;
+  });
+
+  const toggleSidebar = () => {
+    setSidebarCollapsed((prev) => {
+      const next = !prev;
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('tracker_sidebar_collapsed', String(next));
+      }
+      return next;
+    });
+  };
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      const tag = document.activeElement?.tagName?.toLowerCase();
+      const isInput = tag === 'input' || tag === 'textarea' || document.activeElement?.isContentEditable;
+      if (!isInput && (e.key === '[' || (e.ctrlKey && e.key === '\\') || (e.metaKey && e.key === '\\'))) {
+        e.preventDefault();
+        toggleSidebar();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   const navItems = [
     { id: 'dashboard', label: 'Today', icon: IconDashboard },
@@ -35,7 +67,7 @@ export default function TrackerLayout({ children }) {
   return (
     <div className={styles.trackerContainer}>
       {/* Desktop Sticky Sidebar */}
-      <aside className={styles.sidebar}>
+      <aside className={`${styles.sidebar} ${sidebarCollapsed ? styles.sidebarCollapsed : ''}`}>
         <div>
           {/* Workspace Brand / Header */}
           <div className={styles.sidebarHeader}>
@@ -51,7 +83,15 @@ export default function TrackerLayout({ children }) {
               />
               <span>Tracker</span>
             </div>
-            <span className={styles.badge}>Minimal</span>
+            <button
+              type="button"
+              className={styles.iconBtn}
+              onClick={toggleSidebar}
+              title="Hide Sidebar ([)"
+              style={{ color: 'var(--vg-text-muted)', padding: '0.2rem' }}
+            >
+              <IconSidebarCollapse size={16} />
+            </button>
           </div>
 
           {/* Quick Search Trigger */}
@@ -181,6 +221,18 @@ export default function TrackerLayout({ children }) {
 
       {/* Main View Area */}
       <main className={styles.mainContent}>
+        {sidebarCollapsed && (
+          <button
+            type="button"
+            className={styles.sidebarExpandBtn}
+            onClick={toggleSidebar}
+            title="Expand Sidebar ([)"
+            aria-label="Expand Sidebar"
+          >
+            <IconSidebarExpand size={15} />
+            <span>Sidebar</span>
+          </button>
+        )}
         {error && (
           <div
             style={{

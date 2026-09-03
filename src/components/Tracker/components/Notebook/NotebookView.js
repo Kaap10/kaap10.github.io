@@ -13,16 +13,6 @@ import {
   IconDownload,
   IconCheck,
   IconFolder,
-  IconBold,
-  IconItalic,
-  IconList,
-  IconQuote,
-  IconCode,
-  IconTable,
-  IconEye,
-  IconHeading1,
-  IconHeading2,
-  IconHeading3,
 } from '../Common/Icons';
 import styles from './notebook.module.css';
 import globalStyles from '../../styles/tracker.module.css';
@@ -50,7 +40,6 @@ export default function NotebookView() {
   const [selectedFilter, setSelectedFilter] = useState('notebook'); // 'all' | 'pinned' | 'favorites' | 'notebook' | 'tag'
   const [selectedTag, setSelectedTag] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
-  const [editorMode, setEditorMode] = useState('split'); // 'edit' | 'split' | 'preview'
   const [copiedStatus, setCopiedStatus] = useState(false);
   const [notebookModalOpen, setNotebookModalOpen] = useState(false);
   const [editingNotebookData, setEditingNotebookData] = useState(null);
@@ -107,7 +96,6 @@ export default function NotebookView() {
 
       return true;
     }).sort((a, b) => {
-      // Pinned first, then updated_at descending
       if (a.is_pinned && !b.is_pinned) return -1;
       if (!a.is_pinned && b.is_pinned) return 1;
       return new Date(b.updated_at || b.created_at || 0) - new Date(a.updated_at || a.created_at || 0);
@@ -141,7 +129,7 @@ export default function NotebookView() {
     const newNote = await createNote({
       notebook_id: parentId,
       title: 'Untitled Note',
-      content: '# Untitled Note\n\nStart writing your thoughts, design diagrams, or code architecture...\n',
+      content: '',
       tags: selectedTag ? [selectedTag] : [],
     });
 
@@ -150,10 +138,15 @@ export default function NotebookView() {
       if (selectedFilter !== 'notebook') {
         setSelectedFilter('notebook');
       }
+      setTimeout(() => {
+        if (textareaRef.current) {
+          textareaRef.current.focus();
+        }
+      }, 50);
     }
   };
 
-  // Note Content change with debounced save
+  // Note Content change with auto-save
   const handleContentChange = (val) => {
     if (!currentNote) return;
     updateNote(currentNote.id, { content: val });
@@ -213,45 +206,16 @@ export default function NotebookView() {
     setTimeout(() => setCopiedStatus(false), 2000);
   };
 
-  // Download note as .md file
+  // Download note as text file
   const handleDownloadNote = () => {
     if (!currentNote) return;
-    const blob = new Blob([currentNote.content || ''], { type: 'text/markdown;charset=utf-8' });
+    const blob = new Blob([currentNote.content || ''], { type: 'text/plain;charset=utf-8' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `${(currentNote.title || 'note').toLowerCase().replace(/\s+/g, '-')}.md`;
+    a.download = `${(currentNote.title || 'note').toLowerCase().replace(/\s+/g, '-')}.txt`;
     a.click();
     URL.revokeObjectURL(url);
-  };
-
-  // Markdown Toolbar Action Inserter
-  const insertMarkdown = (syntax, wrap = false) => {
-    const textarea = textareaRef.current;
-    if (!textarea || !currentNote) return;
-
-    const start = textarea.selectionStart;
-    const end = textarea.selectionEnd;
-    const text = currentNote.content || '';
-
-    let newText = '';
-    let newCursorPos = start;
-
-    if (wrap) {
-      const selected = text.substring(start, end) || 'text';
-      newText = text.substring(0, start) + syntax + selected + syntax + text.substring(end);
-      newCursorPos = start + syntax.length + selected.length + syntax.length;
-    } else {
-      newText = text.substring(0, start) + syntax + text.substring(end);
-      newCursorPos = start + syntax.length;
-    }
-
-    updateNote(currentNote.id, { content: newText });
-
-    setTimeout(() => {
-      textarea.focus();
-      textarea.setSelectionRange(newCursorPos, newCursorPos);
-    }, 0);
   };
 
   // Word & Character counter
@@ -261,130 +225,7 @@ export default function NotebookView() {
     return words.filter(Boolean).length;
   }, [currentNote?.content]);
 
-  const readingTimeMinutes = Math.max(1, Math.ceil(wordCount / 200));
-
-  // Custom rich markdown renderer
-  const renderRichMarkdown = (content) => {
-    if (!content || !content.trim()) {
-      return (
-        <div style={{ color: 'var(--vg-text-subtle)', fontStyle: 'italic', padding: '1rem 0' }}>
-          Empty note. Start typing in the editor or use the toolbar above.
-        </div>
-      );
-    }
-
-    const lines = content.split('\n');
-    let inCodeBlock = false;
-    let codeLines = [];
-    const elements = [];
-
-    lines.forEach((line, idx) => {
-      // Code Block Start / End
-      if (line.trim().startsWith('```')) {
-        if (!inCodeBlock) {
-          inCodeBlock = true;
-          codeLines = [];
-        } else {
-          inCodeBlock = false;
-          elements.push(
-            <pre key={`code-${idx}`}>
-              <code>{codeLines.join('\n')}</code>
-            </pre>
-          );
-          codeLines = [];
-        }
-        return;
-      }
-
-      if (inCodeBlock) {
-        codeLines.push(line);
-        return;
-      }
-
-      // Headings
-      if (line.startsWith('# ')) {
-        elements.push(<h1 key={idx}>{line.slice(2)}</h1>);
-        return;
-      }
-      if (line.startsWith('## ')) {
-        elements.push(<h2 key={idx}>{line.slice(3)}</h2>);
-        return;
-      }
-      if (line.startsWith('### ')) {
-        elements.push(<h3 key={idx}>{line.slice(4)}</h3>);
-        return;
-      }
-      if (line.startsWith('#### ')) {
-        elements.push(<h4 key={idx} style={{ fontSize: '1rem', fontWeight: 600, margin: '0.8rem 0 0.3rem', color: 'var(--vg-text)' }}>{line.slice(5)}</h4>);
-        return;
-      }
-
-      // Horizontal Rule
-      if (line.trim() === '---' || line.trim() === '***') {
-        elements.push(<hr key={idx} style={{ border: 'none', borderTop: '1px solid var(--vg-border)', margin: '1.25rem 0' }} />);
-        return;
-      }
-
-      // Checklists
-      if (line.startsWith('- [x] ') || line.startsWith('- [X] ')) {
-        elements.push(
-          <div key={idx} className={styles.taskItemRow}>
-            <span style={{ color: 'var(--vg-accent)', display: 'inline-flex' }}>
-              <IconCheck size={14} />
-            </span>
-            <span style={{ textDecoration: 'line-through', opacity: 0.65 }}>{line.slice(6)}</span>
-          </div>
-        );
-        return;
-      }
-      if (line.startsWith('- [ ] ')) {
-        elements.push(
-          <div key={idx} className={styles.taskItemRow}>
-            <span style={{ color: 'var(--vg-text-muted)', display: 'inline-flex' }}>◻</span>
-            <span>{line.slice(6)}</span>
-          </div>
-        );
-        return;
-      }
-
-      // Blockquotes / Callouts
-      if (line.startsWith('> ')) {
-        elements.push(
-          <blockquote key={idx}>
-            <p>{line.slice(2)}</p>
-          </blockquote>
-        );
-        return;
-      }
-
-      // Bullet List
-      if (line.startsWith('- ') || line.startsWith('* ')) {
-        elements.push(
-          <ul key={idx} style={{ margin: '0.25rem 0' }}>
-            <li>{line.slice(2)}</li>
-          </ul>
-        );
-        return;
-      }
-
-      // Standard Paragraph
-      if (line.trim() === '') {
-        elements.push(<div key={idx} style={{ height: '0.65rem' }} />);
-      } else {
-        elements.push(<p key={idx}>{line}</p>);
-      }
-    });
-
-    if (inCodeBlock && codeLines.length > 0) {
-      elements.push(
-        <pre key="unclosed-code">
-          <code>{codeLines.join('\n')}</code>
-        </pre>
-      );
-    }
-
-    return <div className={styles.previewContent}>{elements}</div>;
-  };
+  const charCount = (currentNote?.content || '').length;
 
   return (
     <div className={styles.notebookWrapper}>
@@ -393,7 +234,7 @@ export default function NotebookView() {
         <div>
           <h1 className={globalStyles.viewTitle}>Notebook</h1>
           <p className={globalStyles.viewSubtitle}>
-            Personal markdown knowledge vault · Distributed architecture notes, ideas, and system design docs.
+            Personal notepad &amp; knowledge vault · Quick notes, thoughts, and technical ideas.
           </p>
         </div>
 
@@ -421,10 +262,10 @@ export default function NotebookView() {
         </div>
       </div>
 
-      {/* 3-Pane Notebook Layout */}
+      {/* 3-Pane Notepad Layout */}
       <div className={styles.notebookLayout}>
         {/* ================================================================
-            Pane 1: Notebooks & Navigation Rail
+            Pane 1: Notebooks & Views Rail
             ================================================================ */}
         <aside className={styles.notebookSidebar}>
           {/* Quick Views */}
@@ -613,17 +454,13 @@ export default function NotebookView() {
                   onClick={handleCreateNote}
                   style={{ display: 'block', margin: '0.5rem auto 0' }}
                 >
-                  Create your first note →
+                  Create a new note →
                 </button>
               </div>
             ) : (
               filteredNotes.map((note) => {
                 const isActive = currentNote?.id === note.id;
-                const snippet = (note.content || '')
-                  .replace(/^[#\s\-*>`]+/gm, '')
-                  .replace(/\n+/g, ' ')
-                  .trim();
-
+                const snippet = (note.content || '').replace(/\n+/g, ' ').trim();
                 const d = new Date(note.updated_at || note.created_at || Date.now());
                 const dateLabel = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 
@@ -675,12 +512,12 @@ export default function NotebookView() {
         </section>
 
         {/* ================================================================
-            Pane 3: Full Note Editor & Live Preview Canvas
+            Pane 3: Clean Full-Height Notepad Editor
             ================================================================ */}
         <main className={styles.editorPane}>
           {currentNote ? (
             <>
-              {/* Editor Header */}
+              {/* Notepad Header */}
               <div className={styles.editorHeader}>
                 <div className={styles.editorHeaderLeft}>
                   <input
@@ -720,17 +557,17 @@ export default function NotebookView() {
                     type="button"
                     className={globalStyles.iconBtn}
                     onClick={handleCopyNote}
-                    title="Copy Markdown to Clipboard"
+                    title="Copy Note Text"
                   >
                     {copiedStatus ? <IconCheck size={14} style={{ color: '#52C41A' }} /> : <IconCopy size={15} />}
                   </button>
 
-                  {/* Download .md */}
+                  {/* Download Note as Text */}
                   <button
                     type="button"
                     className={globalStyles.iconBtn}
                     onClick={handleDownloadNote}
-                    title="Download as .md file"
+                    title="Download Note (.txt)"
                   >
                     <IconDownload size={15} />
                   </button>
@@ -745,41 +582,11 @@ export default function NotebookView() {
                   >
                     <IconTrash size={15} />
                   </button>
-
-                  {/* Mode Switcher */}
-                  <div style={{ display: 'flex', gap: '2px', background: 'var(--vg-surface)', padding: '2px', borderRadius: 'var(--vg-radius-sm)', marginLeft: '0.25rem' }}>
-                    <button
-                      type="button"
-                      className={`${styles.modeSwitchBtn} ${editorMode === 'edit' ? styles.modeSwitchBtnActive : ''}`}
-                      onClick={() => setEditorMode('edit')}
-                    >
-                      <IconEdit size={13} />
-                      <span>Edit</span>
-                    </button>
-
-                    <button
-                      type="button"
-                      className={`${styles.modeSwitchBtn} ${editorMode === 'split' ? styles.modeSwitchBtnActive : ''}`}
-                      onClick={() => setEditorMode('split')}
-                    >
-                      <span>Split</span>
-                    </button>
-
-                    <button
-                      type="button"
-                      className={`${styles.modeSwitchBtn} ${editorMode === 'preview' ? styles.modeSwitchBtnActive : ''}`}
-                      onClick={() => setEditorMode('preview')}
-                    >
-                      <IconEye size={13} />
-                      <span>Preview</span>
-                    </button>
-                  </div>
                 </div>
               </div>
 
-              {/* Tags & Notebook Meta Strip */}
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.35rem 1.25rem', borderBottom: '1px solid var(--vg-border)', background: 'var(--vg-surface)', fontSize: '0.76rem', gap: '0.75rem', flexWrap: 'wrap' }}>
-                {/* Notebook picker */}
+              {/* Tags & Notebook Selector Sub-bar */}
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.4rem 1.25rem', borderBottom: '1px solid var(--vg-border)', background: 'var(--vg-surface)', fontSize: '0.76rem', gap: '0.75rem', flexWrap: 'wrap' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
                   <span style={{ color: 'var(--vg-text-subtle)' }}>Notebook:</span>
                   <select
@@ -796,7 +603,6 @@ export default function NotebookView() {
                   </select>
                 </div>
 
-                {/* Tags row */}
                 <div style={{ display: 'flex', alignItems: 'center', gap: '4px', flexWrap: 'wrap' }}>
                   {Array.isArray(currentNote.tags) &&
                     currentNote.tags.map((t) => (
@@ -854,89 +660,24 @@ export default function NotebookView() {
                 </div>
               </div>
 
-              {/* Markdown Toolbar (Visible in Edit and Split modes) */}
-              {editorMode !== 'preview' && (
-                <div className={styles.markdownToolbar}>
-                  <button type="button" className={styles.toolBtn} onClick={() => insertMarkdown('**', true)} title="Bold (**text**)">
-                    <IconBold size={13} />
-                  </button>
-                  <button type="button" className={styles.toolBtn} onClick={() => insertMarkdown('*', true)} title="Italic (*text*)">
-                    <IconItalic size={13} />
-                  </button>
-
-                  <div className={styles.toolDivider} />
-
-                  <button type="button" className={styles.toolBtn} onClick={() => insertMarkdown('# ')} title="Heading 1 (# )">
-                    <IconHeading1 size={13} />
-                  </button>
-                  <button type="button" className={styles.toolBtn} onClick={() => insertMarkdown('## ')} title="Heading 2 (## )">
-                    <IconHeading2 size={13} />
-                  </button>
-                  <button type="button" className={styles.toolBtn} onClick={() => insertMarkdown('### ')} title="Heading 3 (### )">
-                    <IconHeading3 size={13} />
-                  </button>
-
-                  <div className={styles.toolDivider} />
-
-                  <button type="button" className={styles.toolBtn} onClick={() => insertMarkdown('- [ ] ')} title="Task Checklist (- [ ] )">
-                    <span style={{ fontSize: '0.78rem', fontWeight: 600 }}>☑</span>
-                  </button>
-                  <button type="button" className={styles.toolBtn} onClick={() => insertMarkdown('- ')} title="Bullet List (- )">
-                    <IconList size={13} />
-                  </button>
-                  <button type="button" className={styles.toolBtn} onClick={() => insertMarkdown('> ')} title="Quote Block (> )">
-                    <IconQuote size={13} />
-                  </button>
-
-                  <div className={styles.toolDivider} />
-
-                  <button type="button" className={styles.toolBtn} onClick={() => insertMarkdown('`', true)} title="Inline Code (`code`)">
-                    <span style={{ fontFamily: 'monospace', fontSize: '0.8rem' }}>&lt;/&gt;</span>
-                  </button>
-                  <button type="button" className={styles.toolBtn} onClick={() => insertMarkdown('\n```javascript\n// code here\n```\n')} title="Code Block (```)">
-                    <IconCode size={13} />
-                  </button>
-                  <button
-                    type="button"
-                    className={styles.toolBtn}
-                    onClick={() => insertMarkdown('\n| Column 1 | Column 2 |\n| :--- | :--- |\n| Item 1 | Item 2 |\n')}
-                    title="Insert Table"
-                  >
-                    <IconTable size={13} />
-                  </button>
-                  <button type="button" className={styles.toolBtn} onClick={() => insertMarkdown('\n---\n')} title="Horizontal Rule (---)">
-                    <span style={{ fontSize: '0.78rem' }}>―</span>
-                  </button>
-                </div>
-              )}
-
-              {/* Editor Workspace (Textarea + Preview) */}
-              <div className={styles.editorWorkspace}>
-                {editorMode !== 'preview' && (
-                  <textarea
-                    ref={textareaRef}
-                    className={styles.markdownTextarea}
-                    value={currentNote.content || ''}
-                    placeholder="Write markdown here... Use # for headings, - [ ] for tasks, ``` for code blocks."
-                    onChange={(e) => handleContentChange(e.target.value)}
-                  />
-                )}
-
-                {editorMode === 'split' && <div className={styles.splitDivider} />}
-
-                {editorMode !== 'edit' && (
-                  <div className={styles.markdownPreview}>
-                    {renderRichMarkdown(currentNote.content)}
-                  </div>
-                )}
+              {/* Clean Notepad Textarea Body */}
+              <div className={styles.notepadWorkspace}>
+                <textarea
+                  ref={textareaRef}
+                  className={styles.notepadTextarea}
+                  value={currentNote.content || ''}
+                  placeholder="Type your notes here..."
+                  onChange={(e) => handleContentChange(e.target.value)}
+                  spellCheck="false"
+                />
               </div>
 
-              {/* Editor Footer */}
+              {/* Notepad Status Footer */}
               <div className={styles.editorFooter}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
                   <span>{wordCount} words</span>
                   <span>·</span>
-                  <span>{readingTimeMinutes} min read</span>
+                  <span>{charCount} characters</span>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                   <span style={{ color: '#52C41A', display: 'inline-flex', alignItems: 'center', gap: '3px' }}>
@@ -952,7 +693,7 @@ export default function NotebookView() {
                 No Note Selected
               </h3>
               <p style={{ fontSize: '0.88rem', color: 'var(--vg-text-muted)', margin: 0, maxWidth: '320px' }}>
-                Select a note from the list on the left, or create a brand new note to begin drafting.
+                Select a note from the list on the left, or create a brand new note to begin writing.
               </p>
               <button
                 type="button"
@@ -980,4 +721,3 @@ export default function NotebookView() {
     </div>
   );
 }
-

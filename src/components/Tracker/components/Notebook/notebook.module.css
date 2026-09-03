@@ -1,74 +1,443 @@
-/* Notebook & Markdown Knowledge Vault Styles */
-.notebookWrapper { display: flex; flex-direction: column; gap: 1rem; width: 100%; }
-.notebookLayout { display: grid; grid-template-columns: 240px 300px 1fr; min-height: calc(100vh - 200px); max-height: calc(100vh - 160px); background: var(--vg-bg-elevated); border: 1px solid var(--vg-border); border-radius: var(--vg-radius-lg); overflow: hidden; box-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.4); }
-.notebookSidebar { background: var(--vg-bg-elevated); border-right: 1px solid var(--vg-border); display: flex; flex-direction: column; overflow-y: auto; user-select: none; }
-.sidebarSectionHeader { padding: 0.85rem 1rem 0.5rem; display: flex; align-items: center; justify-content: space-between; }
-.sidebarSectionTitle { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--vg-text-subtle); }
-.sidebarNavList { display: flex; flex-direction: column; gap: 2px; padding: 0 0.5rem 0.75rem; }
-.sidebarNavItem { display: flex; align-items: center; justify-content: space-between; padding: 0.45rem 0.65rem; border-radius: var(--vg-radius-sm); background: transparent; border: 1px solid transparent; color: var(--vg-text-muted); font-size: 0.82rem; font-weight: 500; cursor: pointer; width: 100%; text-align: left; transition: all var(--vg-transition-fast); }
-.sidebarNavItem:hover { background: var(--vg-surface); color: var(--vg-text); }
-.sidebarNavItemActive { background: var(--vg-surface-strong) !important; color: var(--vg-text) !important; font-weight: 600; border-color: var(--vg-border-hover); }
-.sidebarItemLeft { display: flex; align-items: center; gap: 0.5rem; min-width: 0; overflow: hidden; }
-.sidebarItemTitle { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.sidebarItemBadge { font-size: 0.7rem; font-weight: 600; padding: 0.1rem 0.4rem; border-radius: 9999px; background: var(--vg-surface); color: var(--vg-text-subtle); }
-.notebookList { display: flex; flex-direction: column; gap: 3px; padding: 0 0.5rem 1rem; flex: 1; overflow-y: auto; }
-.notebookCard { display: flex; align-items: center; justify-content: space-between; padding: 0.5rem 0.65rem; border-radius: var(--vg-radius-sm); background: transparent; border: 1px solid transparent; color: var(--vg-text); font-size: 0.85rem; cursor: pointer; transition: all var(--vg-transition-fast); width: 100%; text-align: left; }
-.notebookCard:hover { background: var(--vg-surface); }
-.notebookCardActive { background: var(--vg-surface-strong) !important; border-color: var(--vg-border-hover); font-weight: 600; }
-.notebookCardActive .notebookIcon { color: var(--vg-accent); }
-.notebookIcon { color: var(--vg-text-muted); display: flex; align-items: center; flex-shrink: 0; }
-.notebookTitle { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 0.84rem; }
-.notebookActions { display: flex; align-items: center; gap: 2px; opacity: 0; transition: opacity var(--vg-transition-fast); }
-.notebookCard:hover .notebookActions { opacity: 1; }
-.notesListPane { background: var(--vg-bg); border-right: 1px solid var(--vg-border); display: flex; flex-direction: column; overflow: hidden; }
-.notesListHeader { padding: 0.85rem 1rem; border-bottom: 1px solid var(--vg-border); display: flex; flex-direction: column; gap: 0.65rem; background: var(--vg-bg-elevated); }
-.notesListTopRow { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; }
-.notesListTitle { font-size: 1rem; font-weight: 700; color: var(--vg-text); margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.searchBox { display: flex; align-items: center; gap: 0.45rem; background: var(--vg-surface); border: 1px solid var(--vg-border); border-radius: var(--vg-radius-sm); padding: 0.35rem 0.65rem; }
-.searchBox input { background: transparent; border: none; outline: none; color: var(--vg-text); font-size: 0.82rem; width: 100%; }
-.searchBox input::placeholder { color: var(--vg-text-subtle); }
-.notesScrollArea { flex: 1; overflow-y: auto; padding: 0.5rem; display: flex; flex-direction: column; gap: 4px; }
-.noteItem { background: var(--vg-bg-elevated); border: 1px solid var(--vg-border); border-radius: var(--vg-radius-sm); padding: 0.75rem 0.85rem; cursor: pointer; display: flex; flex-direction: column; gap: 0.35rem; transition: all var(--vg-transition-fast); text-align: left; position: relative; }
-.noteItem:hover { background: var(--vg-surface); border-color: var(--vg-border-hover); transform: translateY(-1px); }
-.noteItemActive { background: var(--vg-surface) !important; border-color: var(--vg-accent-border) !important; box-shadow: inset 2px 0 0 0 var(--vg-accent); }
-.noteItemTop { display: flex; align-items: flex-start; justify-content: space-between; gap: 0.5rem; }
-.noteItemTitle { font-size: 0.88rem; font-weight: 600; color: var(--vg-text); margin: 0; line-height: 1.3; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; }
-.noteItemSnippet { font-size: 0.78rem; color: var(--vg-text-muted); line-height: 1.4; margin: 0; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
-.noteItemMeta { display: flex; align-items: center; justify-content: space-between; font-size: 0.72rem; color: var(--vg-text-subtle); margin-top: 0.15rem; }
-.tagPill { font-size: 0.68rem; font-family: var(--ifm-font-family-monospace, monospace); padding: 0.1rem 0.4rem; border-radius: var(--vg-radius-sm); background: var(--vg-surface-strong); color: var(--vg-text-muted); border: 1px solid var(--vg-border); }
-.editorPane { background: var(--vg-bg-elevated); display: flex; flex-direction: column; overflow: hidden; }
-.editorHeader { padding: 0.85rem 1.25rem; border-bottom: 1px solid var(--vg-border); display: flex; align-items: center; justify-content: space-between; gap: 1rem; background: var(--vg-bg-elevated); flex-wrap: wrap; }
-.editorHeaderLeft { display: flex; align-items: center; gap: 0.65rem; flex: 1; min-width: 200px; }
-.titleInput { background: transparent; border: none; outline: none; font-size: 1.35rem; font-weight: 700; letter-spacing: -0.02em; color: var(--vg-text); width: 100%; padding: 0; font-family: inherit; }
-.titleInput::placeholder { color: var(--vg-text-subtle); }
-.editorHeaderRight { display: flex; align-items: center; gap: 0.5rem; }
-.modeSwitchBtn { display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.78rem; font-weight: 500; padding: 0.3rem 0.65rem; border-radius: var(--vg-radius-sm); background: var(--vg-surface); border: 1px solid var(--vg-border); color: var(--vg-text-muted); cursor: pointer; transition: all var(--vg-transition-fast); }
-.modeSwitchBtn:hover { background: var(--vg-surface-strong); color: var(--vg-text); }
-.modeSwitchBtnActive { background: var(--vg-surface-strong) !important; color: var(--vg-text) !important; border-color: var(--vg-border-hover) !important; font-weight: 600; }
-.markdownToolbar { padding: 0.45rem 1.25rem; border-bottom: 1px solid var(--vg-border); background: var(--vg-surface); display: flex; align-items: center; gap: 0.25rem; overflow-x: auto; white-space: nowrap; }
-.toolBtn { background: transparent; border: 1px solid transparent; border-radius: var(--vg-radius-sm); padding: 0.3rem 0.45rem; color: var(--vg-text-muted); cursor: pointer; display: inline-flex; align-items: center; justify-content: center; transition: all var(--vg-transition-fast); }
-.toolBtn:hover { background: var(--vg-surface-strong); color: var(--vg-text); border-color: var(--vg-border); }
-.toolDivider { width: 1px; height: 16px; background: var(--vg-border); margin: 0 0.25rem; }
-.editorWorkspace { flex: 1; display: flex; overflow: hidden; position: relative; }
-.markdownTextarea { flex: 1; height: 100%; background: var(--vg-bg-elevated); border: none; outline: none; padding: 1.5rem; color: var(--vg-text); font-family: var(--ifm-font-family-monospace, monospace); font-size: 0.92rem; line-height: 1.65; resize: none; box-sizing: border-box; }
-.markdownPreview { flex: 1; height: 100%; overflow-y: auto; padding: 1.5rem 2rem; box-sizing: border-box; background: var(--vg-bg); }
-.splitDivider { width: 1px; background: var(--vg-border); height: 100%; }
-.editorFooter { padding: 0.5rem 1.25rem; border-top: 1px solid var(--vg-border); background: var(--vg-surface); display: flex; align-items: center; justify-content: space-between; font-size: 0.74rem; color: var(--vg-text-subtle); }
-.previewContent h1 { font-size: 1.75rem; font-weight: 700; letter-spacing: -0.03em; margin: 1.25rem 0 0.75rem; color: var(--vg-text); border-bottom: 1px solid var(--vg-border); padding-bottom: 0.4rem; }
-.previewContent h2 { font-size: 1.35rem; font-weight: 700; letter-spacing: -0.02em; margin: 1.15rem 0 0.55rem; color: var(--vg-text); }
-.previewContent h3 { font-size: 1.1rem; font-weight: 600; margin: 1rem 0 0.45rem; color: var(--vg-text); }
-.previewContent p { font-size: 0.95rem; line-height: 1.7; color: var(--vg-text-muted); margin: 0.6rem 0; }
-.previewContent ul, .previewContent ol { padding-left: 1.5rem; margin: 0.6rem 0; color: var(--vg-text-muted); font-size: 0.95rem; line-height: 1.7; }
-.previewContent li { margin: 0.25rem 0; }
-.previewContent blockquote { border-left: 3px solid var(--vg-accent); background: var(--vg-surface); padding: 0.65rem 1rem; margin: 0.85rem 0; border-radius: 0 var(--vg-radius-sm) var(--vg-radius-sm) 0; color: var(--vg-text-muted); }
-.previewContent blockquote p { margin: 0; }
-.previewContent pre { background: var(--vg-surface-strong) !important; border: 1px solid var(--vg-border); border-radius: var(--vg-radius-md); padding: 1rem 1.15rem; margin: 0.85rem 0; overflow-x: auto; }
-.previewContent pre code { font-family: var(--ifm-font-family-monospace, monospace); font-size: 0.85rem; color: var(--vg-text); background: transparent !important; padding: 0; }
-.previewContent code { font-family: var(--ifm-font-family-monospace, monospace); font-size: 0.84rem; background: var(--vg-surface); color: var(--vg-accent); padding: 0.12rem 0.35rem; border-radius: var(--vg-radius-sm); border: 1px solid var(--vg-border); }
-.previewContent table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.88rem; }
-.previewContent th { background: var(--vg-surface-strong); color: var(--vg-text); font-weight: 600; padding: 0.55rem 0.85rem; border: 1px solid var(--vg-border); text-align: left; }
-.previewContent td { padding: 0.55rem 0.85rem; border: 1px solid var(--vg-border); color: var(--vg-text-muted); }
-.taskItemRow { display: flex; align-items: center; gap: 0.5rem; margin: 0.35rem 0; font-size: 0.95rem; color: var(--vg-text); }
-.emptyEditor { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 2rem; color: var(--vg-text-muted); gap: 0.75rem; }
-@media (max-width: 1024px) { .notebookLayout { grid-template-columns: 200px 240px 1fr; } }
-@media (max-width: 860px) { .notebookLayout { grid-template-columns: 1fr; max-height: none; min-height: auto; } .notebookSidebar { display: none; } .notesListPane { border-right: none; border-bottom: 1px solid var(--vg-border); max-height: 280px; } }
+/* ==============================================================================
+   Notebook & Notepad View Stylesheet
+   Theme: Linear / Raycast Minimalist Clean Notepad
+   ============================================================================== */
+
+.notebookWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+}
+
+.notebookLayout {
+  display: grid;
+  grid-template-columns: 240px 300px 1fr;
+  min-height: calc(100vh - 200px);
+  max-height: calc(100vh - 160px);
+  background: var(--vg-bg-elevated);
+  border: 1px solid var(--vg-border);
+  border-radius: var(--vg-radius-lg);
+  overflow: hidden;
+  box-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.4);
+}
+
+/* ------------------------------------------------------------------------------
+   Pane 1: Notebooks & Views Sidebar Rail
+   ------------------------------------------------------------------------------ */
+.notebookSidebar {
+  background: var(--vg-bg-elevated);
+  border-right: 1px solid var(--vg-border);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  user-select: none;
+}
+
+.sidebarSectionHeader {
+  padding: 0.85rem 1rem 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sidebarSectionTitle {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--vg-text-subtle);
+}
+
+.sidebarNavList {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 0 0.5rem 0.75rem;
+}
+
+.sidebarNavItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.45rem 0.65rem;
+  border-radius: var(--vg-radius-sm);
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--vg-text-muted);
+  font-size: 0.82rem;
+  font-weight: 500;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  transition: all var(--vg-transition-fast);
+}
+
+.sidebarNavItem:hover {
+  background: var(--vg-surface);
+  color: var(--vg-text);
+}
+
+.sidebarNavItemActive {
+  background: var(--vg-surface-strong) !important;
+  color: var(--vg-text) !important;
+  font-weight: 600;
+  border-color: var(--vg-border-hover);
+}
+
+.sidebarItemLeft {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.sidebarItemTitle {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sidebarItemBadge {
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 0.1rem 0.4rem;
+  border-radius: 9999px;
+  background: var(--vg-surface);
+  color: var(--vg-text-subtle);
+}
+
+.notebookList {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 0 0.5rem 1rem;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.notebookCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0.65rem;
+  border-radius: var(--vg-radius-sm);
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--vg-text);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all var(--vg-transition-fast);
+  width: 100%;
+  text-align: left;
+}
+
+.notebookCard:hover {
+  background: var(--vg-surface);
+}
+
+.notebookCardActive {
+  background: var(--vg-surface-strong) !important;
+  border-color: var(--vg-border-hover);
+  font-weight: 600;
+}
+
+.notebookCardActive .notebookIcon {
+  color: var(--vg-accent);
+}
+
+.notebookIcon {
+  color: var(--vg-text-muted);
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.notebookTitle {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 0.84rem;
+}
+
+.notebookActions {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  opacity: 0;
+  transition: opacity var(--vg-transition-fast);
+}
+
+.notebookCard:hover .notebookActions {
+  opacity: 1;
+}
+
+/* ------------------------------------------------------------------------------
+   Pane 2: Notes List
+   ------------------------------------------------------------------------------ */
+.notesListPane {
+  background: var(--vg-bg);
+  border-right: 1px solid var(--vg-border);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.notesListHeader {
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid var(--vg-border);
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  background: var(--vg-bg-elevated);
+}
+
+.notesListTopRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.notesListTitle {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--vg-text);
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.searchBox {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: var(--vg-surface);
+  border: 1px solid var(--vg-border);
+  border-radius: var(--vg-radius-sm);
+  padding: 0.35rem 0.65rem;
+}
+
+.searchBox input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--vg-text);
+  font-size: 0.82rem;
+  width: 100%;
+}
+
+.searchBox input::placeholder {
+  color: var(--vg-text-subtle);
+}
+
+.notesScrollArea {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.noteItem {
+  background: var(--vg-bg-elevated);
+  border: 1px solid var(--vg-border);
+  border-radius: var(--vg-radius-sm);
+  padding: 0.75rem 0.85rem;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  transition: all var(--vg-transition-fast);
+  text-align: left;
+  position: relative;
+}
+
+.noteItem:hover {
+  background: var(--vg-surface);
+  border-color: var(--vg-border-hover);
+  transform: translateY(-1px);
+}
+
+.noteItemActive {
+  background: var(--vg-surface) !important;
+  border-color: var(--vg-accent-border) !important;
+  box-shadow: inset 2px 0 0 0 var(--vg-accent);
+}
+
+.noteItemTop {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.noteItemTitle {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--vg-text);
+  margin: 0;
+  line-height: 1.3;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+
+.noteItemSnippet {
+  font-size: 0.78rem;
+  color: var(--vg-text-muted);
+  line-height: 1.4;
+  margin: 0;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.noteItemMeta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.72rem;
+  color: var(--vg-text-subtle);
+  margin-top: 0.15rem;
+}
+
+.tagPill {
+  font-size: 0.68rem;
+  font-family: var(--ifm-font-family-monospace, monospace);
+  padding: 0.1rem 0.4rem;
+  border-radius: var(--vg-radius-sm);
+  background: var(--vg-surface-strong);
+  color: var(--vg-text-muted);
+  border: 1px solid var(--vg-border);
+}
+
+/* ------------------------------------------------------------------------------
+   Pane 3: Clean Notepad Editor
+   ------------------------------------------------------------------------------ */
+.editorPane {
+  background: var(--vg-bg-elevated);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.editorHeader {
+  padding: 0.85rem 1.25rem;
+  border-bottom: 1px solid var(--vg-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  background: var(--vg-bg-elevated);
+  flex-wrap: wrap;
+}
+
+.editorHeaderLeft {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex: 1;
+  min-width: 200px;
+}
+
+.titleInput {
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--vg-text);
+  width: 100%;
+  padding: 0;
+  font-family: inherit;
+}
+
+.titleInput::placeholder {
+  color: var(--vg-text-subtle);
+}
+
+.editorHeaderRight {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.notepadWorkspace {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+  background: var(--vg-bg-elevated);
+}
+
+.notepadTextarea {
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  padding: 1.5rem 1.75rem;
+  color: var(--vg-text);
+  font-family: var(--ifm-font-family-base, sans-serif);
+  font-size: 0.95rem;
+  line-height: 1.7;
+  resize: none;
+  box-sizing: border-box;
+}
+
+.notepadTextarea::placeholder {
+  color: var(--vg-text-subtle);
+  font-style: italic;
+}
+
+.editorFooter {
+  padding: 0.5rem 1.25rem;
+  border-top: 1px solid var(--vg-border);
+  background: var(--vg-surface);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.74rem;
+  color: var(--vg-text-subtle);
+}
+
+.emptyEditor {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem;
+  color: var(--vg-text-muted);
+  gap: 0.75rem;
+}
+
+@media (max-width: 1024px) {
+  .notebookLayout {
+    grid-template-columns: 200px 240px 1fr;
+  }
+}
+
+@media (max-width: 860px) {
+  .notebookLayout {
+    grid-template-columns: 1fr;
+    max-height: none;
+    min-height: auto;
+  }
+  .notebookSidebar {
+    display: none;
+  }
+  .notesListPane {
+    border-right: none;
+    border-bottom: 1px solid var(--vg-border);
+    max-height: 280px;
+  }
+}

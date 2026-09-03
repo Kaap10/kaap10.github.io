@@ -61,6 +61,10 @@ import {
   Heading1,
   Heading2,
   Heading3,
+  PanelLeftClose,
+  PanelLeftOpen,
+  PanelLeft,
+  Menu,
 } from 'lucide-react';
 
 export function IconNotebook({ size = 18, className = '' }) {
@@ -307,8 +311,21 @@ export function IconType({ type, size = 16, className = '' }) {
       return <GraduationCap size={size} className={className} />;
     case 'Book':
       return <Book size={size} className={className} />;
-    case 'Website':
     default:
-      return <Globe size={size} className={className} />;
+      return <FileText size={size} className={className} />;
   }
 }
+
+export function IconSidebarCollapse({ size = 16, className = '' }) {
+  return <PanelLeftClose size={size} className={className} />;
+}
+
+export function IconSidebarExpand({ size = 16, className = '' }) {
+  return <PanelLeftOpen size={size} className={className} />;
+}
+
+export function IconSidebar({ size = 16, className = '' }) {
+  return <PanelLeft size={size} className={className} />;
+}
+
+
