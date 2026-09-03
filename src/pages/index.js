@@ -71,6 +71,7 @@ function useScrollReveal() {
 export default function Home() {
   const [heroRef, heroRevealed] = useScrollReveal();
   const [projectsRef, projectsRevealed] = useScrollReveal();
+  const [blogsRef, blogsRevealed] = useScrollReveal();
   const [toolkitRef, toolkitRevealed] = useScrollReveal();
   const [ecoRef, ecoRevealed] = useScrollReveal();
   const [collabRef, collabRevealed] = useScrollReveal();
@@ -242,7 +243,80 @@ export default function Home() {
           </section>
 
           {/* ============================================================
-              3. Core Engineering Toolkit (Minimal Structured Grid)
+              3. Technical Blogs Section
+              ============================================================ */}
+          <section 
+            ref={blogsRef} 
+            id="blogs"
+            className={`${styles.section} ${styles.revealSection} ${blogsRevealed ? styles.isRevealed : ''}`}
+          >
+            <div className={styles.sectionHeader}>
+              <div className={styles.sectionTitleGroup}>
+                <span className={styles.sectionEyebrow}>Knowledge Base</span>
+                <h2 className={styles.sectionTitle}>Technical Blogs</h2>
+              </div>
+              <Link to="/blogs/intro" className={styles.viewAllLink}>
+                <span>View All 100+ Blogs</span>
+                <ArrowRight size={14} />
+              </Link>
+            </div>
+
+            <div className={styles.blogsCardsGrid}>
+              <Link to="/blogs/intro" className={`${styles.blogCard} ${styles.staggerItem}`}>
+                <div className={styles.blogCardHeader}>
+                  <div className={styles.blogIconWrap}>
+                    <BrainCircuit size={18} />
+                  </div>
+                  <span className={styles.blogCategoryBadge}>AI &amp; Machine Learning</span>
+                </div>
+                <h3 className={styles.blogCardTitle}>Machine Learning &amp; LLM Architecture</h3>
+                <p className={styles.blogCardDesc}>
+                  Deep dives into Transformer mechanics, quantization, local inference with Llama.cpp, and vector embeddings.
+                </p>
+                <div className={styles.blogCardFooter}>
+                  <span>Explore Articles</span>
+                  <ArrowRight size={14} />
+                </div>
+              </Link>
+
+              <Link to="/blogs/intro" className={`${styles.blogCard} ${styles.staggerItem}`}>
+                <div className={styles.blogCardHeader}>
+                  <div className={styles.blogIconWrap}>
+                    <Server size={18} />
+                  </div>
+                  <span className={styles.blogCategoryBadge}>Systems &amp; Backend</span>
+                </div>
+                <h3 className={styles.blogCardTitle}>System Design &amp; Distributed Systems</h3>
+                <p className={styles.blogCardDesc}>
+                  Scalability blueprints, cache invalidation strategies, database replication, and resilient microservice architectures.
+                </p>
+                <div className={styles.blogCardFooter}>
+                  <span>Explore Articles</span>
+                  <ArrowRight size={14} />
+                </div>
+              </Link>
+
+              <Link to="/blogs/intro" className={`${styles.blogCard} ${styles.staggerItem}`}>
+                <div className={styles.blogCardHeader}>
+                  <div className={styles.blogIconWrap}>
+                    <Code2 size={18} />
+                  </div>
+                  <span className={styles.blogCategoryBadge}>Algorithms &amp; DSA</span>
+                </div>
+                <h3 className={styles.blogCardTitle}>Data Structures &amp; Algorithms</h3>
+                <p className={styles.blogCardDesc}>
+                  Core algorithmic paradigms, dynamic programming optimizations, graph traversals, and time-complexity proofs.
+                </p>
+                <div className={styles.blogCardFooter}>
+                  <span>Explore Articles</span>
+                  <ArrowRight size={14} />
+                </div>
+              </Link>
+            </div>
+          </section>
+
+          {/* ============================================================
+              4. Core Engineering Techstack (Minimal Structured Grid)
               ============================================================ */}
           <section 
             ref={toolkitRef} 
@@ -356,23 +430,7 @@ export default function Home() {
             </div>
 
             <div className={styles.ecoCardsGrid}>
-              {/* Tool 1: Technical Blogs */}
-              <Link to="/blogs/intro" className={`${styles.ecoCard} ${styles.staggerItem}`}>
-                <div className={styles.ecoIconWrap}>
-                  <BookOpen size={20} />
-                </div>
-                <div className={styles.ecoCardBody}>
-                  <h3 className={styles.ecoCardTitle}>Technical Blogs</h3>
-                  <p className={styles.ecoCardDesc}>
-                    100+ structured engineering articles spanning DSA, System Design, DBMS, ML, and Python Full-Stack.
-                  </p>
-                </div>
-                <div className={styles.ecoArrow}>
-                  <ArrowRight size={16} />
-                </div>
-              </Link>
-
-              {/* Tool 2: Whiteboard */}
+              {/* Tool 1: Whiteboard */}
               <Link to="/board" className={`${styles.ecoCard} ${styles.staggerItem}`}>
                 <div className={styles.ecoIconWrap}>
                   <PenTool size={20} />
