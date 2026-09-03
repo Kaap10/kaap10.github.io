@@ -194,7 +194,7 @@ export default function ToolsPage() {
                 </li>
                 <li className={styles.featureItem}>
                   <span className={styles.featureDot}>•</span>
-                  <span>Direct execution actions: launch Pomodoro timers, float PiP capsule, or log Naam Jap</span>
+                  <span>Direct execution actions: launch Pomodoro timers, float PiP capsule, or log daily entries</span>
                 </li>
                 <li className={styles.featureItem}>
                   <span className={styles.featureDot}>•</span>
