@@ -364,37 +364,37 @@ export default function Home() {
                 </div>
               </Link>
 
-              {/* Tool 2: Interactive Whiteboard */}
+              {/* Tool 2: Whiteboard */}
               <Link to="/board" className={`${styles.ecoCard} ${styles.staggerItem}`}>
-                <div className={styles.ecoIconWrap}>
-                  <PenTool size={20} />
-                </div>
-                <div className={styles.ecoCardBody}>
-                  <h3 className={styles.ecoCardTitle}>Interactive Whiteboard</h3>
-                  <p className={styles.ecoCardDesc}>
-                    Full-featured architectural sketching canvas powered by Excalidraw for designing distributed systems and algorithms.
-                  </p>
-                </div>
-                <div className={styles.ecoArrow}>
-                  <ArrowRight size={16} />
-                </div>
-              </Link>
-
-              {/* Tool 3: Productivity Suite */}
-              <Link to="/tracker" className={`${styles.ecoCard} ${styles.staggerItem}`}>
-                <div className={styles.ecoIconWrap}>
-                  <Activity size={20} />
-                </div>
-                <div className={styles.ecoCardBody}>
-                  <h3 className={styles.ecoCardTitle}>Personal Productivity OS</h3>
-                  <p className={styles.ecoCardDesc}>
-                    Custom productivity suite featuring Pomodoro Deep Work with floating PiP capsule, atomic habit streaks, and 52-week activity heatmap.
-                  </p>
-                </div>
-                <div className={styles.ecoArrow}>
-                  <ArrowRight size={16} />
-                </div>
-              </Link>
+                 <div className={styles.ecoIconWrap}>
+                   <PenTool size={20} />
+                 </div>
+                 <div className={styles.ecoCardBody}>
+                   <h3 className={styles.ecoCardTitle}>Whiteboard</h3>
+                   <p className={styles.ecoCardDesc}>
+                     Full-featured architectural sketching canvas powered by Excalidraw for designing distributed systems and algorithms.
+                   </p>
+                 </div>
+                 <div className={styles.ecoArrow}>
+                   <ArrowRight size={16} />
+                 </div>
+               </Link>
+ 
+               {/* Tool 3: Tracker */}
+               <Link to="/tracker" className={`${styles.ecoCard} ${styles.staggerItem}`}>
+                 <div className={styles.ecoIconWrap}>
+                   <Activity size={20} />
+                 </div>
+                 <div className={styles.ecoCardBody}>
+                   <h3 className={styles.ecoCardTitle}>Tracker</h3>
+                   <p className={styles.ecoCardDesc}>
+                     Custom productivity suite featuring Pomodoro Deep Work with floating PiP capsule, atomic habit streaks, and 52-week activity heatmap.
+                   </p>
+                 </div>
+                 <div className={styles.ecoArrow}>
+                   <ArrowRight size={16} />
+                 </div>
+               </Link>
             </div>
           </section>
 

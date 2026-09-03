@@ -48,6 +48,7 @@ export default function TrackerLayout({ children }) {
                 }}
               />
               <span>Productivity OS</span>
+              <span>Tracker</span>
             </div>
             <span className={styles.badge}>Minimal</span>
           </div>
@@ -152,6 +153,7 @@ export default function TrackerLayout({ children }) {
             }}
           />
           <span style={{ fontSize: '0.88rem', fontWeight: 600 }}>Productivity OS</span>
+          <span style={{ fontSize: '0.88rem', fontWeight: 600 }}>Tracker</span>
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>

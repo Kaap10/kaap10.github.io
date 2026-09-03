@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import Link from '@docusaurus/Link';
 import Layout from '@theme/Layout';
 import { 
@@ -32,6 +32,7 @@ export default function ToolsPage() {
     <Layout
       title="Engineering Tools & Living Workstation"
       description="Integrated productivity suite, interactive whiteboard, markdown scratchpad, and spotlight search designed by Vardhman Gupta."
+      description="Integrated productivity suite, whiteboard, markdown scratchpad, and spotlight search designed by Vardhman Gupta."
     >
       <main className={styles.pageContainer}>
         <div className={styles.contentWrapper}>
@@ -49,6 +50,7 @@ export default function ToolsPage() {
           <div className={styles.toolsGrid}>
             
             {/* Tool 1: Interactive Whiteboard */}
+            {/* Tool 1: Whiteboard */}
             <article className={styles.toolCard}>
               <div className={styles.toolTop}>
                 <div className={styles.toolIconTitle}>
@@ -56,6 +58,7 @@ export default function ToolsPage() {
                     <PenTool size={20} />
                   </div>
                   <h2 className={styles.toolTitle}>Interactive Whiteboard</h2>
+                  <h2 className={styles.toolTitle}>Whiteboard</h2>
                 </div>
                 <span className={styles.shortcutBadge}>/board</span>
               </div>
@@ -88,6 +91,7 @@ export default function ToolsPage() {
             </article>
 
             {/* Tool 2: Personal Productivity OS */}
+            {/* Tool 2: Tracker */}
             <article className={styles.toolCard}>
               <div className={styles.toolTop}>
                 <div className={styles.toolIconTitle}>
@@ -95,6 +99,7 @@ export default function ToolsPage() {
                     <Activity size={20} />
                   </div>
                   <h2 className={styles.toolTitle}>Personal Productivity OS</h2>
+                  <h2 className={styles.toolTitle}>Tracker</h2>
                 </div>
                 <span className={styles.shortcutBadge}>/tracker</span>
               </div>
@@ -121,6 +126,7 @@ export default function ToolsPage() {
               <div className={styles.cardBottom}>
                 <Link to="/tracker" className={styles.actionBtn}>
                   <span>Launch Productivity OS</span>
+                  <span>Launch Tracker</span>
                   <ArrowRight size={15} />
                 </Link>
                 <Link to="/tracker?tab=focus" className={styles.secondaryBtn}>

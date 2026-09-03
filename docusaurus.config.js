@@ -152,6 +152,8 @@ const config = {
               { to: '/tools', label: 'Tools Overview' },
               { to: '/board', label: 'Interactive Whiteboard' },
               { to: '/tracker', label: 'Productivity OS' },
+              { to: '/board', label: 'Whiteboard' },
+              { to: '/tracker', label: 'Tracker' },
             ],
           },
           { type: 'search', position: 'right' },

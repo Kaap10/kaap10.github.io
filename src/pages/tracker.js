@@ -7,6 +7,7 @@ export default function TrackerPage() {
   return (
     <Layout
       title="Personal Productivity OS"
+      title="Tracker"
       description="Private productivity dashboard with tasks, milestones, resources, and progress analytics."
       noFooter
     >

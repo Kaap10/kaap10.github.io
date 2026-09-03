@@ -1,4 +1,4 @@
-﻿# Vardhman Gupta — Developer Ecosystem & Portfolio
+# Vardhman Gupta — Developer Ecosystem & Portfolio
 
 [![Deploy to GitHub Pages](https://github.com/kaap10/kaap10.github.io/actions/workflows/deploy.yml/badge.svg)](https://github.com/kaap10/kaap10.github.io/actions/workflows/deploy.yml)
 [![Docusaurus v3](https://img.shields.io/badge/Docusaurus-v3.10.1-3ECC5F?logo=docusaurus)](https://docusaurus.io/)
@@ -43,10 +43,12 @@ This repository houses an integrated developer ecosystem built on a hybrid **Sta
 
 ### 3. Developer Tools Suite (`/tools`)
 - **Interactive Whiteboard (`/board`)**: Architectural sketching canvas powered by `@excalidraw/excalidraw` with local drawing persistence.
+- **Whiteboard (`/board`)**: Architectural sketching canvas powered by `@excalidraw/excalidraw` with local drawing persistence.
 - **Global Quick Scratchpad (`Ctrl+J` / `Cmd+J`)**: Floating multi-sheet Markdown drawer with live syntax preview toggle, code copy, and `.md` file export.
 - **Global Command Palette (`Ctrl+H` / `Cmd+H` / `Ctrl+K`)**: Keyboard-first spotlight search for instant route switching, action triggers, and timer sessions.
 
 ### 4. Personal Productivity OS (`/tracker`)
+### 4. Tracker (`/tracker`)
 - **Dashboard**: Real-time overview of daily deliverables, active goal progress, and habit consistency.
 - **Tasks Pipeline**: Priority triage (`High`, `Medium`, `Low`), due date scheduling, and nested JSONB checklist items with optimistic state toggling.
 - **Goals & Milestones**: Multi-tiered roadmap decomposing high-level objectives into hierarchical milestone trees with automated percentage rollups.
@@ -112,6 +114,7 @@ npm run serve
 ## Database Configuration (Supabase)
 
 To enable cloud synchronization for the Productivity OS:
+To enable cloud synchronization for the Tracker:
 
 1. Create a project at [supabase.com](https://supabase.com/).
 2. Run the database schemas located in `supabase/`:
@@ -138,6 +141,7 @@ To enable cloud synchronization for the Productivity OS:
 │   │   ├── Common/                   # GlobalCommandPalette, GlobalScratchpad, GlobalIcons
 │   │   ├── ExcalidrawBoard/          # Whiteboard canvas integration
 │   │   └── Tracker/                  # Productivity OS application
+│   │   └── Tracker/                  # Tracker application
 │   │       ├── components/           # Views: Dashboard, Tasks, Focus, Habits, Progress...
 │   │       ├── context/              # AuthContext and TrackerContext
 │   │       ├── services/             # Supabase client and insightsEngine
