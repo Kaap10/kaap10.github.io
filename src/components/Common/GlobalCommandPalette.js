@@ -31,7 +31,7 @@ const COMMANDS = [
   {
     id: 'nav-blogs',
     section: 'Navigation',
-    title: 'Go to Blogs & Knowledge Base',
+    title: 'Go to Technical Blogs',
     shortcut: 'G B',
     icon: <IconBook size={16} />,
     action: () => (window.location.href = '/blogs'),

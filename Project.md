@@ -6,12 +6,12 @@
 ## 1. Executive Summary and Project Pitch
 
 ### 30-Second Elevator Pitch
-> *"I engineered a full-stack personal developer ecosystem and high-performance productivity tracker. It merges an engineering knowledge base and technical portfolio built on Docusaurus 3 with a secure, real-time productivity platform backed by Supabase and PostgreSQL. The application features multi-account Row-Level Security (RLS) isolation, a drift-proof focus timer that overcomes browser background throttling using wall-clock delta mathematics, an OS-level Document Picture-in-Picture (PiP) floating widget, an interactive Excalidraw whiteboard, interactive Recharts telemetry, and a deterministic rule-based insights engine—all engineered with custom CSS modules, crisp inline SVG iconography, and zero runtime animation overhead."*
+> *"I engineered a full-stack personal developer ecosystem and high-performance productivity tracker. It merges technical blogs and engineering portfolio built on Docusaurus 3 with a secure, real-time productivity platform backed by Supabase and PostgreSQL. The application features multi-account Row-Level Security (RLS) isolation, a drift-proof focus timer that overcomes browser background throttling using wall-clock delta mathematics, an OS-level Document Picture-in-Picture (PiP) floating widget, an interactive Excalidraw whiteboard, interactive Recharts telemetry, and a deterministic rule-based insights engine—all engineered with custom CSS modules, crisp inline SVG iconography, and zero runtime animation overhead."*
 
 ### 2-Minute Deep Pitch (for System Design / Technical Leads)
-> *"Modern developers struggle with fragmented tooling—reading docs in one place, sketching system architectures in another, tracking tasks in a separate app, and managing focus sessions elsewhere. I designed this system to consolidate technical documentation, system design sketching, personal branding, and daily workflow execution into a single, cohesive SPA/SSG hybrid architecture.*
+> *"Modern developers struggle with fragmented tooling—reading docs in one place, sketching system architectures in another, tracking tasks in a separate app, and managing focus sessions elsewhere. I designed this system to consolidate technical documentation, system design sketching, personal branding, and daily workflow execution into a single, cohesive SPA/SSG hybrid architecture.
 > 
-> *On the frontend, it uses Docusaurus 3.10 with React 19, custom CSS modules, and a global root injection layer (`theme/Root.js`) that renders persistent floating micro-UIs across both static and dynamic routes. On the backend, it leverages PostgreSQL 15 via Supabase with strict Row-Level Security policies to guarantee zero cross-tenant data leakage. The system solves non-trivial frontend challenges: timer clock drift caused by browser background tab throttling, token-refresh re-render loops in authentication providers, multi-tab state synchronization without expensive persistent WebSockets, and headless DOM portal mounting into Chrome''s Document Picture-in-Picture API.*
+> *On the frontend, it uses Docusaurus 3.10 with React 19, custom CSS modules, and a global root injection layer (`theme/Root.js`) that renders persistent floating micro-UIs across both static and dynamic routes. On the backend, it leverages PostgreSQL 15 via Supabase with strict Row-Level Security policies to guarantee zero cross-tenant data leakage. The system solves non-trivial frontend challenges: timer clock drift caused by browser background tab throttling, token-refresh re-render loops in authentication providers, multi-tab state synchronization without expensive persistent WebSockets, and headless DOM portal mounting into Chrome''s Document Picture-in-Picture API.
 > 
 > *Everything is engineered with an editorial restraint philosophy: zero emojis, crisp inline SVG iconography, CSS custom property theming, native Recharts data visualization, embedded Excalidraw architecture sketching, and deterministic mathematical algorithms for streak calculus and productivity heuristics."*
 
@@ -35,7 +35,7 @@ flowchart TB
             EventBus["DOM Custom Event Bus (focusWidget:open/pause/resume/goToFocus)"]
         end
 
-        subgraph StaticRouteLayer ["2. Static Content and Knowledge Base Layer (SSG + MDX)"]
+        subgraph StaticRouteLayer ["2. Static Content and Technical Blogs Layer (SSG + MDX)"]
             PortfolioHome["Portfolio and Landing Page (/)"]
             CSWiki["Computer Science Wiki (/blogs/*)"]
             ExcalidrawBoard["Interactive System Design Whiteboard (/board)"]
@@ -245,8 +245,8 @@ CREATE POLICY "Users can manage their own tasks"
 +-------------------------------------------------------------------------------------------------------+
 ```
 
-### 5.1 Personal Portfolio, Engineering Wiki and Whiteboard
-* **Core Functionality**: Centralized knowledge base covering Computer Science fundamentals: System Design, Database Management Systems (DBMS), Object-Oriented Programming (OOPs), Data Warehouse & Data Mining (DWDM), and Full Stack Development, paired with an interactive Excalidraw Whiteboard on `/board`.
+### 5.1 Personal Portfolio, Technical Blogs and Whiteboard
+* **Core Functionality**: Centralized technical blogs covering Computer Science fundamentals: System Design, Database Management Systems (DBMS), Object-Oriented Programming (OOPs), Data Warehouse & Data Mining (DWDM), and Full Stack Development, paired with an interactive Excalidraw Whiteboard on `/board`.
 * **Implementation Details**:
   * Built using Docusaurus MDX files in `/docs` mounted to `/blogs`.
   * Pre-configured with Algolia search indexing (`my_wiki_index`).

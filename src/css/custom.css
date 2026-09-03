@@ -23,6 +23,10 @@
   --vg-accent-subtle: rgba(255, 77, 79, 0.12);
   --vg-accent-border: rgba(255, 77, 79, 0.28);
 
+  /* Glassmorphic Navbar & Header Blur Tokens */
+  --vg-navbar-bg: rgba(30, 30, 30, 0.72);
+  --vg-header-bg: rgba(30, 30, 30, 0.78);
+
   /* Typography Stacks */
   --ifm-font-family-base: 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --ifm-font-family-monospace: 'JetBrains Mono', SFMono-Regular, Menlo, Monaco, Consolas, monospace;
@@ -104,6 +108,10 @@
   --vg-accent-subtle: rgba(224, 49, 49, 0.08);
   --vg-accent-border: rgba(224, 49, 49, 0.25);
 
+  /* Glassmorphic Navbar & Header Blur Tokens (Light) */
+  --vg-navbar-bg: rgba(255, 255, 255, 0.78);
+  --vg-header-bg: rgba(250, 250, 249, 0.82);
+
   --ifm-background-color: var(--vg-bg);
   --ifm-background-surface-color: var(--vg-bg-elevated);
   --ifm-font-color-base: var(--vg-text);
@@ -154,7 +162,7 @@ h1, h2, h3, h4, h5, h6 {
   right: 0 !important;
   margin-left: auto !important;
   margin-right: auto !important;
-  transform: none !important;
+  transform: translateZ(0) !important;
   width: calc(100% - 2.5rem) !important;
   max-width: 960px !important;
   height: 52px !important;
@@ -162,7 +170,7 @@ h1, h2, h3, h4, h5, h6 {
   padding: 0 1rem 0 1.25rem !important;
   border-radius: 9999px !important;
   border: 1px solid var(--vg-border) !important;
-  background-color: var(--vg-navbar-bg, rgba(30, 30, 30, 0.78)) !important;
+  background-color: var(--vg-navbar-bg, rgba(30, 30, 30, 0.72)) !important;
   backdrop-filter: blur(20px) saturate(180%) !important;
   -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
   box-shadow: 
@@ -174,7 +182,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 [data-theme='light'] .navbar {
-  --vg-navbar-bg: rgba(255, 255, 255, 0.85);
+  background-color: var(--vg-navbar-bg, rgba(255, 255, 255, 0.78)) !important;
   border: 1px solid rgba(24, 24, 27, 0.1) !important;
   box-shadow: 
     0 16px 36px -10px rgba(0, 0, 0, 0.08),
@@ -452,7 +460,7 @@ html.plugin-docs .navbar {
   left: 0 !important;
   right: 0 !important;
   margin: 0 !important;
-  transform: none !important;
+  transform: translateZ(0) !important;
   width: 100% !important;
   max-width: 100% !important;
   height: 60px !important;
@@ -461,15 +469,15 @@ html.plugin-docs .navbar {
   border-radius: 0 !important;
   border: none !important;
   border-bottom: 1px solid var(--vg-border) !important;
-  background-color: var(--ifm-navbar-background-color, rgba(30, 30, 30, 0.85)) !important;
-  backdrop-filter: blur(12px) !important;
-  -webkit-backdrop-filter: blur(12px) !important;
+  background-color: var(--vg-navbar-bg, rgba(30, 30, 30, 0.75)) !important;
+  backdrop-filter: blur(16px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
   box-shadow: none !important;
   z-index: 1000 !important;
 }
 
 html.plugin-docs[data-theme='light'] .navbar {
-  background-color: rgba(250, 250, 249, 0.85) !important;
+  background-color: var(--vg-navbar-bg, rgba(250, 250, 249, 0.82)) !important;
   border-bottom: 1px solid var(--vg-border) !important;
   box-shadow: none !important;
 }

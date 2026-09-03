@@ -348,13 +348,13 @@ export default function Home() {
             </div>
 
             <div className={styles.ecoCardsGrid}>
-              {/* Tool 1: Blogs & Wiki */}
+              {/* Tool 1: Technical Blogs */}
               <Link to="/blogs/intro" className={`${styles.ecoCard} ${styles.staggerItem}`}>
                 <div className={styles.ecoIconWrap}>
                   <BookOpen size={20} />
                 </div>
                 <div className={styles.ecoCardBody}>
-                  <h3 className={styles.ecoCardTitle}>Knowledge Base &amp; Blogs</h3>
+                  <h3 className={styles.ecoCardTitle}>Technical Blogs</h3>
                   <p className={styles.ecoCardDesc}>
                     100+ structured engineering articles spanning DSA, System Design, DBMS, ML, and Python Full-Stack.
                   </p>

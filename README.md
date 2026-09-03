@@ -7,7 +7,7 @@
 [![Supabase](https://img.shields.io/badge/Supabase-Auth%20%26%20RLS-3ECF8E?logo=supabase)](https://supabase.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-> Personal portfolio, computer science knowledge base, interactive architectural whiteboard, and full-stack productivity operating system with multi-tenant cloud persistence.
+> Personal portfolio, computer science technical blogs, interactive architectural whiteboard, and full-stack productivity operating system with multi-tenant cloud persistence.
 
 **Live Site:** [https://kaap10.github.io/](https://kaap10.github.io/)
 
@@ -21,7 +21,7 @@ This repository houses an integrated developer ecosystem built on a hybrid **Sta
 +----------------------------------------------------------------------------------------------------+
 |                                    KAAP10 DEVELOPER ECOSYSTEM                                      |
 +----------------------------------------------------------------------------------------------------+
-|  [Portfolio]       |  [Projects]       |  [Blogs & Wiki]   |  [Tools Hub]      |  [Global Layer]   |
+|  [Portfolio]       |  [Projects]       |  [Technical Blogs]|  [Tools Hub]      |  [Global Layer]   |
 |  /                 |  /projects        |  /blogs/intro     |  /tools           |  theme/Root.js    |
 |  • Minimal hero    |  • 4 Systems      |  • 100+ Articles  |  • Board (/board) |  • Command Palette|
 |  • Core skills     |  • Tech badges    |  • DSA, Systems   |  • Tracker App    |  • Scratchpad     |
@@ -37,7 +37,7 @@ This repository houses an integrated developer ecosystem built on a hybrid **Sta
 - **Home (`/`)**: Minimal editorial layout introducing background in AI/ML and distributed systems, core competencies, and featured tools.
 - **Projects Showcase (`/projects`)**: Dedicated directory highlighting 4 production-grade systems (**Guru-G**, **AuraNow**, **Code With Buddy**, **AegisAI**) with domain filtering (`All`, `AI / ML`, `Full-Stack`, `Security`), architectural highlights, and source code links.
 
-### 2. Engineering Wiki & Knowledge Base (`/blogs/intro`)
+### 2. Technical Blogs (`/blogs/intro`)
 - 100+ structured engineering guides covering Data Structures & Algorithms, System Design, Database Management Systems (DBMS), Machine Learning, OOPs, and Full-Stack Web Development.
 - Sub-millisecond full-text document discovery powered by **Algolia DocSearch**.
 
