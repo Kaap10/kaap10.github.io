@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useRef, useEffect } from 'react';
+import React, { useState, useMemo, useRef, useEffect, useCallback } from 'react';
 import { useTracker } from '../../context/TrackerContext';
 import NotebookModal from './NotebookModal';
 import {
@@ -46,7 +46,14 @@ export default function NotebookView() {
   const [newTagInput, setNewTagInput] = useState('');
   const [isTagInputOpen, setIsTagInputOpen] = useState(false);
 
+  // Local note buffer for 100% fluid, zero-lag typing
+  const [localTitle, setLocalTitle] = useState('');
+  const [localContent, setLocalContent] = useState('');
+  const [isSaving, setIsSaving] = useState(false);
+
   const textareaRef = useRef(null);
+  const saveTimeoutRef = useRef(null);
+  const currentNoteIdRef = useRef(activeNoteId);
 
   // Default selection initialization
   useEffect(() => {
@@ -111,6 +118,48 @@ export default function NotebookView() {
     return filteredNotes.length > 0 ? filteredNotes[0] : null;
   }, [notes, activeNoteId, filteredNotes]);
 
+  // Synchronize local input state whenever the selected note ID changes
+  useEffect(() => {
+    if (currentNote) {
+      if (currentNoteIdRef.current !== currentNote.id) {
+        // Switching notes: flush any pending save for the previous note
+        if (saveTimeoutRef.current) {
+          clearTimeout(saveTimeoutRef.current);
+          saveTimeoutRef.current = null;
+        }
+        currentNoteIdRef.current = currentNote.id;
+        setLocalTitle(currentNote.title || '');
+        setLocalContent(currentNote.content || '');
+      }
+    } else {
+      currentNoteIdRef.current = null;
+      setLocalTitle('');
+      setLocalContent('');
+    }
+  }, [currentNote?.id]);
+
+  // Debounced auto-save function (400ms)
+  const triggerDebouncedSave = useCallback((noteId, updates) => {
+    setIsSaving(true);
+    if (saveTimeoutRef.current) {
+      clearTimeout(saveTimeoutRef.current);
+    }
+    saveTimeoutRef.current = setTimeout(() => {
+      updateNote(noteId, updates);
+      setIsSaving(false);
+      saveTimeoutRef.current = null;
+    }, 400);
+  }, [updateNote]);
+
+  // Clean up on unmount
+  useEffect(() => {
+    return () => {
+      if (saveTimeoutRef.current) {
+        clearTimeout(saveTimeoutRef.current);
+      }
+    };
+  }, []);
+
   // Auto-select first note if activeNoteId is not valid
   useEffect(() => {
     if (filteredNotes.length > 0 && (!activeNoteId || !notes.some((n) => n.id === activeNoteId))) {
@@ -135,6 +184,9 @@ export default function NotebookView() {
 
     if (newNote && newNote.id) {
       setActiveNoteId(newNote.id);
+      currentNoteIdRef.current = newNote.id;
+      setLocalTitle('Untitled Note');
+      setLocalContent('');
       if (selectedFilter !== 'notebook') {
         setSelectedFilter('notebook');
       }
@@ -146,16 +198,20 @@ export default function NotebookView() {
     }
   };
 
-  // Note Content change with auto-save
+  // Note Content change handler (instant local state + debounced background sync)
   const handleContentChange = (val) => {
-    if (!currentNote) return;
-    updateNote(currentNote.id, { content: val });
+    setLocalContent(val);
+    if (currentNote) {
+      triggerDebouncedSave(currentNote.id, { content: val });
+    }
   };
 
-  // Note Title change
+  // Note Title change handler
   const handleTitleChange = (val) => {
-    if (!currentNote) return;
-    updateNote(currentNote.id, { title: val });
+    setLocalTitle(val);
+    if (currentNote) {
+      triggerDebouncedSave(currentNote.id, { title: val });
+    }
   };
 
   // Add Tag to active note
@@ -183,7 +239,7 @@ export default function NotebookView() {
     if (!note) return;
     openConfirmModal(
       'Delete Note?',
-      `Are you sure you want to permanently delete "${note.title || 'Untitled Note'}"?`,
+      `Are you sure you want to permanently delete "${localTitle || note.title || 'Untitled Note'}"?`,
       () => deleteNote(note.id)
     );
   };
@@ -200,32 +256,30 @@ export default function NotebookView() {
 
   // Copy note content
   const handleCopyNote = () => {
-    if (!currentNote) return;
-    navigator.clipboard.writeText(currentNote.content || '');
+    navigator.clipboard.writeText(localContent || '');
     setCopiedStatus(true);
     setTimeout(() => setCopiedStatus(false), 2000);
   };
 
   // Download note as text file
   const handleDownloadNote = () => {
-    if (!currentNote) return;
-    const blob = new Blob([currentNote.content || ''], { type: 'text/plain;charset=utf-8' });
+    const blob = new Blob([localContent || ''], { type: 'text/plain;charset=utf-8' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `${(currentNote.title || 'note').toLowerCase().replace(/\s+/g, '-')}.txt`;
+    a.download = `${(localTitle || 'note').toLowerCase().replace(/\s+/g, '-')}.txt`;
     a.click();
     URL.revokeObjectURL(url);
   };
 
   // Word & Character counter
   const wordCount = useMemo(() => {
-    if (!currentNote?.content) return 0;
-    const words = currentNote.content.trim().split(/\s+/);
+    if (!localContent) return 0;
+    const words = localContent.trim().split(/\s+/);
     return words.filter(Boolean).length;
-  }, [currentNote?.content]);
+  }, [localContent]);
 
-  const charCount = (currentNote?.content || '').length;
+  const charCount = (localContent || '').length;
 
   return (
     <div className={styles.notebookWrapper}>
@@ -432,7 +486,8 @@ export default function NotebookView() {
             ) : (
               filteredNotes.map((note) => {
                 const isActive = currentNote?.id === note.id;
-                const snippet = (note.content || '').replace(/\n+/g, ' ').trim();
+                const noteTitle = isActive ? (localTitle || 'Untitled Note') : (note.title || 'Untitled Note');
+                const noteSnippet = isActive ? (localContent || '').replace(/\n+/g, ' ').trim() : (note.content || '').replace(/\n+/g, ' ').trim();
                 const d = new Date(note.updated_at || note.created_at || Date.now());
                 const dateLabel = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 
@@ -444,7 +499,7 @@ export default function NotebookView() {
                   >
                     <div className={styles.noteItemTop}>
                       <h3 className={styles.noteItemTitle}>
-                        {note.title || 'Untitled Note'}
+                        {noteTitle}
                       </h3>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '4px', flexShrink: 0 }}>
                         {note.is_pinned && (
@@ -460,9 +515,9 @@ export default function NotebookView() {
                       </div>
                     </div>
 
-                    {snippet && (
+                    {noteSnippet && (
                       <p className={styles.noteItemSnippet}>
-                        {snippet}
+                        {noteSnippet}
                       </p>
                     )}
 
@@ -523,7 +578,7 @@ export default function NotebookView() {
                   <input
                     type="text"
                     className={styles.titleInput}
-                    value={currentNote.title || ''}
+                    value={localTitle}
                     placeholder="Untitled Note"
                     onChange={(e) => handleTitleChange(e.target.value)}
                   />
@@ -665,7 +720,7 @@ export default function NotebookView() {
                 <textarea
                   ref={textareaRef}
                   className={styles.notepadTextarea}
-                  value={currentNote.content || ''}
+                  value={localContent}
                   placeholder="Type your notes here..."
                   onChange={(e) => handleContentChange(e.target.value)}
                   spellCheck="false"
@@ -680,8 +735,8 @@ export default function NotebookView() {
                   <span>{charCount} characters</span>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <span style={{ color: '#52C41A', display: 'inline-flex', alignItems: 'center', gap: '3px' }}>
-                    <IconCheck size={12} /> Auto-saved
+                  <span style={{ color: isSaving ? 'var(--vg-text-muted)' : '#52C41A', display: 'inline-flex', alignItems: 'center', gap: '3px' }}>
+                    <IconCheck size={12} /> {isSaving ? 'Saving...' : 'Auto-saved'}
                   </span>
                 </div>
               </div>

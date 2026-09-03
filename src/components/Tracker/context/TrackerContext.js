@@ -1185,22 +1185,8 @@ export function TrackerProvider({ children }) {
   const updateNote = async (id, updates) => {
     const supabase = getSupabase();
     const updatedPayload = { ...updates, updated_at: new Date().toISOString() };
-    if ('title' in updatedPayload && updatedPayload.title) {
-      updatedPayload.title = updatedPayload.title.trim();
-    }
 
-    if (supabase && user?.id) {
-      try {
-        const { data, error: err } = await supabase.from('notes').update(updatedPayload).eq('id', id).select().single();
-        if (!err && data) {
-          setNotes((prev) => prev.map((n) => (n.id === id ? data : n)));
-          return data;
-        }
-      } catch (e) {
-        console.warn('Supabase notes update fallback to local state:', e);
-      }
-    }
-
+    // 1. Instant 0ms Optimistic State Update
     setNotes((prev) => {
       const updated = prev.map((n) => (n.id === id ? { ...n, ...updatedPayload } : n));
       try {
@@ -1209,6 +1195,15 @@ export function TrackerProvider({ children }) {
       } catch (e) {}
       return updated;
     });
+
+    // 2. Background Sync to Supabase
+    if (supabase && user?.id) {
+      try {
+        await supabase.from('notes').update(updatedPayload).eq('id', id);
+      } catch (e) {
+        console.warn('Supabase notes update fallback to local state:', e);
+      }
+    }
   };
 
   const deleteNote = async (id) => {
