@@ -152,6 +152,7 @@ const config = {
               { to: '/tools', label: 'Tools Overview' },
               { to: '/board', label: 'Whiteboard' },
               { to: '/tracker', label: 'Tracker' },
+              { to: '/tracker?tab=notebook', label: 'Notebook' },
             ],
           },
           { type: 'search', position: 'right' },

@@ -83,6 +83,13 @@ const COMMANDS = [
     action: () => (window.location.href = '/tracker?tab=goals'),
   },
   {
+    id: 'nav-notebook',
+    section: 'Tracker Views',
+    title: 'Tracker: Notebook & Knowledge Vault',
+    icon: <IconBook size={16} />,
+    action: () => (window.location.href = '/tracker?tab=notebook'),
+  },
+  {
     id: 'nav-habits',
     section: 'Tracker Views',
     title: 'Tracker: Daily Habits Matrix',

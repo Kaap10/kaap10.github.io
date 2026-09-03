@@ -9,7 +9,8 @@ import {
   Search, 
   Sparkles,
   Command,
-  Maximize2
+  Maximize2,
+  BookOpen
 } from 'lucide-react';
 import styles from './tools.module.css';
 
@@ -129,7 +130,46 @@ export default function ToolsPage() {
               </div>
             </article>
 
-            {/* Tool 3: Floating Quick Scratchpad */}
+            {/* Tool 3: Notebook & Markdown Knowledge Vault */}
+            <article className={styles.toolCard}>
+              <div className={styles.toolTop}>
+                <div className={styles.toolIconTitle}>
+                  <div className={styles.toolIconWrap}>
+                    <BookOpen size={20} />
+                  </div>
+                  <h2 className={styles.toolTitle}>Notebook &amp; Knowledge Vault</h2>
+                </div>
+                <span className={styles.shortcutBadge}>/tracker?tab=notebook</span>
+              </div>
+
+              <p className={styles.toolDesc}>
+                A private, distraction-free digital notebook with hierarchical folder collections, live split-pane markdown editing, instant word counter, tags, and export capabilities.
+              </p>
+
+              <ul className={styles.featureList}>
+                <li className={styles.featureItem}>
+                  <span className={styles.featureDot}>•</span>
+                  <span>Hierarchical notebook vaults with custom folder categorization</span>
+                </li>
+                <li className={styles.featureItem}>
+                  <span className={styles.featureDot}>•</span>
+                  <span>Live WYSIWYG &amp; Split Markdown editor with tables, code blocks, and checklists</span>
+                </li>
+                <li className={styles.featureItem}>
+                  <span className={styles.featureDot}>•</span>
+                  <span>1-click export to .md files, clipboard sync, and offline localStorage caching</span>
+                </li>
+              </ul>
+
+              <div className={styles.cardBottom}>
+                <Link to="/tracker?tab=notebook" className={styles.actionBtn}>
+                  <span>Open Notebook</span>
+                  <ArrowRight size={15} />
+                </Link>
+              </div>
+            </article>
+
+            {/* Tool 4: Floating Quick Scratchpad */}
             <article className={styles.toolCard}>
               <div className={styles.toolTop}>
                 <div className={styles.toolIconTitle}>

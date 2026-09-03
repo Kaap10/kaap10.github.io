@@ -41,9 +41,95 @@ import {
   Video,
   FileCode,
   GraduationCap,
-  Globe,
   GripVertical,
+  Book,
+  Folder,
+  Pin,
+  Copy,
+  Download,
+  Bold,
+  Italic,
+  List,
+  Quote,
+  Code,
+  Table,
+  Eye,
+  Tag,
+  Share2,
+  Maximize2,
+  Minimize2,
+  Heading1,
+  Heading2,
+  Heading3,
 } from 'lucide-react';
+
+export function IconNotebook({ size = 18, className = '' }) {
+  return <BookOpen size={size} className={className} />;
+}
+
+export function IconFolder({ size = 16, className = '' }) {
+  return <Folder size={size} className={className} />;
+}
+
+export function IconPin({ size = 15, className = '', filled = false }) {
+  return <Pin size={size} className={className} fill={filled ? 'currentColor' : 'none'} />;
+}
+
+export function IconCopy({ size = 15, className = '' }) {
+  return <Copy size={size} className={className} />;
+}
+
+export function IconDownload({ size = 15, className = '' }) {
+  return <Download size={size} className={className} />;
+}
+
+export function IconBold({ size = 14, className = '' }) {
+  return <Bold size={size} className={className} />;
+}
+
+export function IconItalic({ size = 14, className = '' }) {
+  return <Italic size={size} className={className} />;
+}
+
+export function IconList({ size = 14, className = '' }) {
+  return <List size={size} className={className} />;
+}
+
+export function IconQuote({ size = 14, className = '' }) {
+  return <Quote size={size} className={className} />;
+}
+
+export function IconCode({ size = 14, className = '' }) {
+  return <Code size={size} className={className} />;
+}
+
+export function IconTable({ size = 14, className = '' }) {
+  return <Table size={size} className={className} />;
+}
+
+export function IconEye({ size = 15, className = '' }) {
+  return <Eye size={size} className={className} />;
+}
+
+export function IconTag({ size = 14, className = '' }) {
+  return <Tag size={size} className={className} />;
+}
+
+export function IconShare({ size = 15, className = '' }) {
+  return <Share2 size={size} className={className} />;
+}
+
+export function IconHeading1({ size = 14, className = '' }) {
+  return <Heading1 size={size} className={className} />;
+}
+
+export function IconHeading2({ size = 14, className = '' }) {
+  return <Heading2 size={size} className={className} />;
+}
+
+export function IconHeading3({ size = 14, className = '' }) {
+  return <Heading3 size={size} className={className} />;
+}
 
 export function IconDashboard({ size = 18, className = '' }) {
   return <LayoutDashboard size={size} className={className} />;

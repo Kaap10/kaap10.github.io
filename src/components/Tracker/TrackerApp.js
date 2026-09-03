@@ -6,6 +6,7 @@ import TrackerLayout from './TrackerLayout';
 import DashboardView from './components/Dashboard/DashboardView';
 import TasksView from './components/Tasks/TasksView';
 import GoalsView from './components/Goals/GoalsView';
+import NotebookView from './components/Notebook/NotebookView';
 import HabitsView from './components/Habits/HabitsView';
 import FocusView from './components/Focus/FocusView';
 import ProgressView from './components/Progress/ProgressView';
@@ -56,6 +57,9 @@ function TrackerContent() {
       </div>
       <div style={{ display: activeTab === 'goals' ? 'block' : 'none' }}>
         <GoalsView />
+      </div>
+      <div style={{ display: activeTab === 'notebook' ? 'block' : 'none' }}>
+        <NotebookView />
       </div>
       <div style={{ display: activeTab === 'habits' ? 'block' : 'none' }}>
         <HabitsView />

@@ -8,6 +8,7 @@ import {
   IconMilestone,
   IconResources,
   IconReview,
+  IconNotebook,
 } from './Icons';
 import styles from '../../styles/tracker.module.css';
 
@@ -19,6 +20,10 @@ export default function GlobalSearchModal({ isOpen, onClose }) {
     resources,
     weeklyReviews,
     monthlyReviews,
+    notes,
+    notebooks,
+    setActiveNotebookId,
+    setActiveNoteId,
     setActiveTab,
     setEditingTask,
     setTaskModalOpen,
@@ -171,6 +176,30 @@ export default function GlobalSearchModal({ isOpen, onClose }) {
           item: w,
           onSelect: () => {
             setActiveTab('reviews');
+            onClose();
+          },
+        });
+      }
+    });
+
+    // Search Notes in Notebook
+    (notes || []).forEach((n) => {
+      if (
+        n.title?.toLowerCase().includes(q) ||
+        n.content?.toLowerCase().includes(q) ||
+        (Array.isArray(n.tags) && n.tags.some((t) => t.toLowerCase().includes(q)))
+      ) {
+        const parentNb = (notebooks || []).find((nb) => nb.id === n.notebook_id);
+        list.push({
+          type: 'Note',
+          icon: IconNotebook,
+          title: n.title || 'Untitled Note',
+          subtitle: `Notebook: ${parentNb?.title || 'General'} · Updated: ${new Date(n.updated_at || n.created_at || Date.now()).toLocaleDateString()}`,
+          item: n,
+          onSelect: () => {
+            if (n.notebook_id) setActiveNotebookId(n.notebook_id);
+            setActiveNoteId(n.id);
+            setActiveTab('notebook');
             onClose();
           },
         });

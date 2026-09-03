@@ -27,6 +27,14 @@ export function TrackerProvider({ children }) {
   const [monthlyReviews, setMonthlyReviews] = useState([]);
   const [activityLogs, setActivityLogs] = useState([]);
 
+  // Notebook & Notes Collections
+  const [notebooks, setNotebooks] = useState([]);
+  const [notes, setNotes] = useState([]);
+  const [activeNotebookId, setActiveNotebookId] = useState(null);
+  const [activeNoteId, setActiveNoteId] = useState(null);
+  const [notebookModalOpen, setNotebookModalOpen] = useState(false);
+  const [editingNotebook, setEditingNotebook] = useState(null);
+
   // UI State
   const [activeTab, setActiveTabState] = useState('dashboard');
   const [loading, setLoading] = useState(true);
@@ -173,6 +181,8 @@ export function TrackerProvider({ children }) {
         resourcesRes,
         weeklyReviewsRes,
         monthlyReviewsRes,
+        notebooksRes,
+        notesRes,
       ] = await Promise.all([
         supabase.from('tasks').select('*').eq('user_id', user.id).order('created_at', { ascending: false }),
         supabase.from('goals').select('*').eq('user_id', user.id).order('created_at', { ascending: false }),
@@ -183,6 +193,8 @@ export function TrackerProvider({ children }) {
         supabase.from('resources').select('*').eq('user_id', user.id).order('created_at', { ascending: false }),
         supabase.from('weekly_reviews').select('*').eq('user_id', user.id).order('week_start_date', { ascending: false }),
         supabase.from('monthly_reviews').select('*').eq('user_id', user.id).order('month_start_date', { ascending: false }),
+        supabase.from('notebooks').select('*').eq('user_id', user.id).order('order_index', { ascending: true }),
+        supabase.from('notes').select('*').eq('user_id', user.id).order('updated_at', { ascending: false }),
       ]);
 
       // Check table existence errors gracefully
@@ -210,6 +222,51 @@ export function TrackerProvider({ children }) {
       setWeeklyReviews(weeklyReviewsRes.data || []);
       setMonthlyReviews(monthlyReviewsRes.data || []);
 
+      // Notebooks & Notes with local storage sync/fallback
+      let fetchedNotebooks = notebooksRes.data || [];
+      let fetchedNotes = notesRes.data || [];
+
+      if (fetchedNotebooks.length === 0 && typeof localStorage !== 'undefined') {
+        try {
+          const savedLocalNbs = localStorage.getItem(`kaap10_tracker_notebooks_${user.id}`) || localStorage.getItem('kaap10_tracker_notebooks');
+          if (savedLocalNbs) fetchedNotebooks = JSON.parse(savedLocalNbs);
+        } catch (e) {}
+      }
+
+      if (fetchedNotes.length === 0 && typeof localStorage !== 'undefined') {
+        try {
+          const savedLocalNotes = localStorage.getItem(`kaap10_tracker_notes_${user.id}`) || localStorage.getItem('kaap10_tracker_notes');
+          if (savedLocalNotes) fetchedNotes = JSON.parse(savedLocalNotes);
+        } catch (e) {}
+      }
+
+      // Default Notebook initialization if user has zero notebooks
+      if (fetchedNotebooks.length === 0) {
+        const defaultNb = {
+          id: 'nb-default-' + (user.id ? user.id.slice(0, 8) : 'guest'),
+          user_id: user.id,
+          title: 'General Notes',
+          description: 'Daily thoughts, ideas, and scratchpads',
+          icon: 'book',
+          color: '#FF4D4F',
+          order_index: 0,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+        };
+        fetchedNotebooks = [defaultNb];
+        if (typeof localStorage !== 'undefined') {
+          localStorage.setItem(`kaap10_tracker_notebooks_${user.id}`, JSON.stringify([defaultNb]));
+        }
+      }
+
+      setNotebooks(fetchedNotebooks);
+      setNotes(fetchedNotes);
+
+      // Default active selections
+      if (fetchedNotebooks.length > 0 && !activeNotebookId) {
+        setActiveNotebookId(fetchedNotebooks[0].id);
+      }
+
       // Fetch activity logs
       let fetchedLogs = [];
       try {
@@ -230,7 +287,7 @@ export function TrackerProvider({ children }) {
     } finally {
       setLoading(false);
     }
-  }, [user?.id]);
+  }, [user?.id, activeNotebookId]);
 
   useEffect(() => {
     // Only wipe data if the user account actually changed (login/logout/switch account)
@@ -245,6 +302,10 @@ export function TrackerProvider({ children }) {
       setResources([]);
       setWeeklyReviews([]);
       setMonthlyReviews([]);
+      setNotebooks([]);
+      setNotes([]);
+      setActiveNotebookId(null);
+      setActiveNoteId(null);
       fetchData(false);
     } else {
       // Same user re-focusing or background revalidation: silent refresh without flashing skeleton
@@ -974,6 +1035,216 @@ export function TrackerProvider({ children }) {
     });
   };
 
+  // ============================================================================
+  // Notebook Operations (Vaults & Notes)
+  // ============================================================================
+  const createNotebook = async (notebookData) => {
+    const supabase = getSupabase();
+    const newNb = {
+      id: notebookData.id || (typeof crypto !== 'undefined' && crypto.randomUUID ? crypto.randomUUID() : 'nb_' + Date.now()),
+      user_id: user?.id || 'local_user',
+      title: notebookData.title?.trim() || 'Untitled Notebook',
+      description: notebookData.description?.trim() || null,
+      icon: notebookData.icon || 'book',
+      color: notebookData.color || '#FF4D4F',
+      order_index: notebooks.length,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    };
+
+    if (supabase && user?.id) {
+      try {
+        const { data, error: err } = await supabase.from('notebooks').insert([newNb]).select().single();
+        if (!err && data) {
+          setNotebooks((prev) => [...prev, data]);
+          if (!activeNotebookId) setActiveNotebookId(data.id);
+          return data;
+        }
+      } catch (e) {
+        console.warn('Supabase notebooks insert fallback to local state:', e);
+      }
+    }
+
+    setNotebooks((prev) => {
+      const updated = [...prev, newNb];
+      try {
+        const key = user?.id ? `kaap10_tracker_notebooks_${user.id}` : 'kaap10_tracker_notebooks';
+        localStorage.setItem(key, JSON.stringify(updated));
+      } catch (e) {}
+      return updated;
+    });
+
+    if (!activeNotebookId) setActiveNotebookId(newNb.id);
+    return newNb;
+  };
+
+  const updateNotebook = async (id, updates) => {
+    const supabase = getSupabase();
+    const updatedPayload = { ...updates, updated_at: new Date().toISOString() };
+    if (updatedPayload.title) updatedPayload.title = updatedPayload.title.trim();
+
+    if (supabase && user?.id) {
+      try {
+        const { data, error: err } = await supabase.from('notebooks').update(updatedPayload).eq('id', id).select().single();
+        if (!err && data) {
+          setNotebooks((prev) => prev.map((nb) => (nb.id === id ? data : nb)));
+          return data;
+        }
+      } catch (e) {
+        console.warn('Supabase notebooks update fallback to local state:', e);
+      }
+    }
+
+    setNotebooks((prev) => {
+      const updated = prev.map((nb) => (nb.id === id ? { ...nb, ...updatedPayload } : nb));
+      try {
+        const key = user?.id ? `kaap10_tracker_notebooks_${user.id}` : 'kaap10_tracker_notebooks';
+        localStorage.setItem(key, JSON.stringify(updated));
+      } catch (e) {}
+      return updated;
+    });
+  };
+
+  const deleteNotebook = async (id) => {
+    const supabase = getSupabase();
+    if (supabase && user?.id) {
+      try {
+        await supabase.from('notebooks').delete().eq('id', id);
+      } catch (e) {}
+    }
+
+    setNotebooks((prev) => {
+      const updated = prev.filter((nb) => nb.id !== id);
+      try {
+        const key = user?.id ? `kaap10_tracker_notebooks_${user.id}` : 'kaap10_tracker_notebooks';
+        localStorage.setItem(key, JSON.stringify(updated));
+      } catch (e) {}
+      return updated;
+    });
+
+    // Also delete notes in this notebook
+    setNotes((prev) => {
+      const updatedNotes = prev.filter((n) => n.notebook_id !== id);
+      try {
+        const key = user?.id ? `kaap10_tracker_notes_${user.id}` : 'kaap10_tracker_notes';
+        localStorage.setItem(key, JSON.stringify(updatedNotes));
+      } catch (e) {}
+      return updatedNotes;
+    });
+
+    if (activeNotebookId === id) {
+      const remaining = notebooks.filter((nb) => nb.id !== id);
+      setActiveNotebookId(remaining.length > 0 ? remaining[0].id : null);
+      setActiveNoteId(null);
+    }
+  };
+
+  const createNote = async (noteData) => {
+    const supabase = getSupabase();
+    const parentNbId = noteData.notebook_id || activeNotebookId || (notebooks[0] ? notebooks[0].id : null);
+    const newNote = {
+      id: noteData.id || (typeof crypto !== 'undefined' && crypto.randomUUID ? crypto.randomUUID() : 'note_' + Date.now()),
+      user_id: user?.id || 'local_user',
+      notebook_id: parentNbId,
+      title: noteData.title ? noteData.title.trim() : 'Untitled Note',
+      content: noteData.content || '',
+      category: noteData.category || 'General',
+      tags: Array.isArray(noteData.tags) ? noteData.tags : [],
+      is_pinned: Boolean(noteData.is_pinned),
+      is_favorite: Boolean(noteData.is_favorite),
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    };
+
+    if (supabase && user?.id) {
+      try {
+        const { data, error: err } = await supabase.from('notes').insert([newNote]).select().single();
+        if (!err && data) {
+          setNotes((prev) => [data, ...prev]);
+          setActiveNoteId(data.id);
+          return data;
+        }
+      } catch (e) {
+        console.warn('Supabase notes insert fallback to local state:', e);
+      }
+    }
+
+    setNotes((prev) => {
+      const updated = [newNote, ...prev];
+      try {
+        const key = user?.id ? `kaap10_tracker_notes_${user.id}` : 'kaap10_tracker_notes';
+        localStorage.setItem(key, JSON.stringify(updated));
+      } catch (e) {}
+      return updated;
+    });
+
+    setActiveNoteId(newNote.id);
+    return newNote;
+  };
+
+  const updateNote = async (id, updates) => {
+    const supabase = getSupabase();
+    const updatedPayload = { ...updates, updated_at: new Date().toISOString() };
+    if ('title' in updatedPayload && updatedPayload.title) {
+      updatedPayload.title = updatedPayload.title.trim();
+    }
+
+    if (supabase && user?.id) {
+      try {
+        const { data, error: err } = await supabase.from('notes').update(updatedPayload).eq('id', id).select().single();
+        if (!err && data) {
+          setNotes((prev) => prev.map((n) => (n.id === id ? data : n)));
+          return data;
+        }
+      } catch (e) {
+        console.warn('Supabase notes update fallback to local state:', e);
+      }
+    }
+
+    setNotes((prev) => {
+      const updated = prev.map((n) => (n.id === id ? { ...n, ...updatedPayload } : n));
+      try {
+        const key = user?.id ? `kaap10_tracker_notes_${user.id}` : 'kaap10_tracker_notes';
+        localStorage.setItem(key, JSON.stringify(updated));
+      } catch (e) {}
+      return updated;
+    });
+  };
+
+  const deleteNote = async (id) => {
+    const supabase = getSupabase();
+    if (supabase && user?.id) {
+      try {
+        await supabase.from('notes').delete().eq('id', id);
+      } catch (e) {}
+    }
+
+    setNotes((prev) => {
+      const updated = prev.filter((n) => n.id !== id);
+      try {
+        const key = user?.id ? `kaap10_tracker_notes_${user.id}` : 'kaap10_tracker_notes';
+        localStorage.setItem(key, JSON.stringify(updated));
+      } catch (e) {}
+      return updated;
+    });
+
+    if (activeNoteId === id) {
+      setActiveNoteId(null);
+    }
+  };
+
+  const toggleNotePin = async (id) => {
+    const note = notes.find((n) => n.id === id);
+    if (!note) return;
+    await updateNote(id, { is_pinned: !note.is_pinned });
+  };
+
+  const toggleNoteFavorite = async (id) => {
+    const note = notes.find((n) => n.id === id);
+    if (!note) return;
+    await updateNote(id, { is_favorite: !note.is_favorite });
+  };
+
   // Derived Analytics & Productivity Statistics (Real Database Data)
   // ============================================================================
   // Use local date string to avoid off-by-one date issues in timezones ahead of UTC (e.g. IST UTC+5:30)
@@ -1242,10 +1513,16 @@ export function TrackerProvider({ children }) {
         resources,
         weeklyReviews,
         monthlyReviews,
+        notebooks,
+        notes,
 
         // State & Loading
         activeTab,
         setActiveTab,
+        activeNotebookId,
+        setActiveNotebookId,
+        activeNoteId,
+        setActiveNoteId,
         loading,
         error,
         refreshData: fetchData,
@@ -1284,6 +1561,11 @@ export function TrackerProvider({ children }) {
         setNotesModalOpen,
         activeResourceForNotes,
         setActiveResourceForNotes,
+
+        notebookModalOpen,
+        setNotebookModalOpen,
+        editingNotebook,
+        setEditingNotebook,
 
         searchModalOpen,
         setSearchModalOpen,
@@ -1328,6 +1610,16 @@ export function TrackerProvider({ children }) {
 
         saveWeeklyReview,
         saveMonthlyReview,
+
+        // Notebook & Notes Operations
+        createNotebook,
+        updateNotebook,
+        deleteNotebook,
+        createNote,
+        updateNote,
+        deleteNote,
+        toggleNotePin,
+        toggleNoteFavorite,
 
         // Activity Logs
         activityLogs,

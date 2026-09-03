@@ -153,6 +153,34 @@ CREATE TABLE IF NOT EXISTS public.monthly_reviews (
   CONSTRAINT unique_user_monthly_review UNIQUE (user_id, month_start_date)
 );
 
+-- 11. Notebooks Table (Personal Knowledge Vaults / Collections)
+CREATE TABLE IF NOT EXISTS public.notebooks (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  title TEXT NOT NULL,
+  description TEXT,
+  icon TEXT DEFAULT 'book',
+  color TEXT DEFAULT '#FF4D4F',
+  order_index INTEGER NOT NULL DEFAULT 0,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+-- 12. Notes Table (Markdown pages inside Notebooks)
+CREATE TABLE IF NOT EXISTS public.notes (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  notebook_id UUID NOT NULL REFERENCES public.notebooks(id) ON DELETE CASCADE,
+  title TEXT NOT NULL DEFAULT 'Untitled Note',
+  content TEXT DEFAULT '',
+  category TEXT DEFAULT 'General',
+  tags JSONB DEFAULT '[]'::jsonb,
+  is_pinned BOOLEAN NOT NULL DEFAULT FALSE,
+  is_favorite BOOLEAN NOT NULL DEFAULT FALSE,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
 -- ==============================================================================
 -- Enable Row Level Security (RLS)
 -- ==============================================================================
@@ -166,6 +194,8 @@ ALTER TABLE public.habit_logs ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.resources ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.weekly_reviews ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.monthly_reviews ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.notebooks ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.notes ENABLE ROW LEVEL SECURITY;
 
 -- ==============================================================================
 -- RLS Policies — DROP IF EXISTS then CREATE for safe idempotent re-runs
@@ -221,6 +251,16 @@ CREATE POLICY "Users can manage their own monthly reviews"
   ON public.monthly_reviews FOR ALL TO authenticated
   USING (auth.uid() = user_id) WITH CHECK (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can manage their own notebooks" ON public.notebooks;
+CREATE POLICY "Users can manage their own notebooks"
+  ON public.notebooks FOR ALL TO authenticated
+  USING (auth.uid() = user_id) WITH CHECK (auth.uid() = user_id);
+
+DROP POLICY IF EXISTS "Users can manage their own notes" ON public.notes;
+CREATE POLICY "Users can manage their own notes"
+  ON public.notes FOR ALL TO authenticated
+  USING (auth.uid() = user_id) WITH CHECK (auth.uid() = user_id);
+
 -- ==============================================================================
 -- Profile Trigger (auto-create profile on user sign-up)
 -- SET search_path = public prevents search_path injection attacks
@@ -256,6 +296,9 @@ CREATE INDEX IF NOT EXISTS idx_milestones_parent_id ON public.milestones(parent_
 CREATE INDEX IF NOT EXISTS idx_focus_sessions_user_id ON public.focus_sessions(user_id);
 CREATE INDEX IF NOT EXISTS idx_habits_user_id ON public.habits(user_id);
 CREATE INDEX IF NOT EXISTS idx_habit_logs_user_id_date ON public.habit_logs(user_id, completed_date);
+CREATE INDEX IF NOT EXISTS idx_notebooks_user_id ON public.notebooks(user_id);
+CREATE INDEX IF NOT EXISTS idx_notes_user_id ON public.notes(user_id);
+CREATE INDEX IF NOT EXISTS idx_notes_notebook_id ON public.notes(notebook_id);
 
 -- ==============================================================================
 -- Schema Privileges for Supabase Roles (authenticated & anon)
