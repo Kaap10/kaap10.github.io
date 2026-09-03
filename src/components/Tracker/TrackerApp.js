@@ -58,7 +58,16 @@ function TrackerContent() {
       <div style={{ display: activeTab === 'goals' ? 'block' : 'none' }}>
         <GoalsView />
       </div>
-      <div style={{ display: activeTab === 'notebook' ? 'block' : 'none' }}>
+      <div
+        style={{
+          display: activeTab === 'notebook' ? 'flex' : 'none',
+          flex: 1,
+          height: '100%',
+          minHeight: 0,
+          flexDirection: 'column',
+          width: '100%',
+        }}
+      >
         <NotebookView />
       </div>
       <div style={{ display: activeTab === 'habits' ? 'block' : 'none' }}>

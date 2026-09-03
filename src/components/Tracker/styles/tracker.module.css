@@ -229,13 +229,17 @@
 }
 
 .mainContentNotebook {
-  padding: 1.25rem 2rem 1.25rem !important;
+  padding: 1rem 1.75rem 1.25rem !important;
   height: calc(100vh - 76px) !important;
   max-height: calc(100vh - 76px) !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  width: 100% !important;
   overflow: hidden !important;
   display: flex !important;
   flex-direction: column !important;
   box-sizing: border-box !important;
+  flex: 1 !important;
 }
 
 .viewContainer {

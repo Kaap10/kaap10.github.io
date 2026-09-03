@@ -29,7 +29,7 @@
 
 .notebookLayout {
   display: grid;
-  grid-template-columns: 280px 1fr;
+  grid-template-columns: 290px 1fr;
   flex: 1;
   min-height: 0;
   height: 100%;
