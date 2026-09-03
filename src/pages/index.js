@@ -106,9 +106,15 @@ export default function Home() {
             {/* Quick CTAs */}
             <div className={styles.heroActions}>
               <a href="#projects" className={styles.primaryHeroLink}>
-                <span>Explore Featured Work</span>
+                <span>Explore Project</span>
                 <ArrowRight size={16} />
               </a>
+
+              <Link to="/tools" className={styles.heroLink}>
+                <Sparkles size={15} />
+                <span>Explore Tools</span>
+                <ArrowRight size={14} />
+              </Link>
 
               <a 
                 href="/Vardhman_Gupta%20(Resume).pdf" 
@@ -117,7 +123,7 @@ export default function Home() {
                 className={styles.heroLink}
               >
                 <FileText size={15} />
-                <span>Resume (PDF)</span>
+                <span>Resume</span>
                 <ArrowUpRight size={14} />
               </a>
             </div>
