@@ -15,6 +15,12 @@ const sidebars = {
     'intro',
     {
       type: 'category',
+      label: 'Core Python',
+      collapsed: false,
+      items: ['core-python'],
+    },
+    {
+      type: 'category',
       label: 'Flask',
       collapsed: false,
       items: ['Development/Python Full Stack/Flask'],
