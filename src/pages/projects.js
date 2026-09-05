@@ -24,12 +24,12 @@ const IconGithub = ({ size = 15 }) => (
 );
 
 const PROJECTS = [
-  // 1. Karya
+  // 1. Karya (AI)
   {
     id: 'karya',
     index: '01',
-    category: 'AI / Education (Multilingual)',
-    filterTag: 'AI & Agents',
+    category: 'AI',
+    filterTag: 'AI',
     icon: BookOpen,
     title: 'Karya',
     headline: 'Offline-first multilingual AI learning platform.',
@@ -46,7 +46,7 @@ const PROJECTS = [
       'Implemented an offline-first AI architecture by quantizing a 1.5B LLM for low-RAM devices, enabling advanced NLP features without cloud dependence.',
     github: 'https://github.com/kaap10',
     demo: null,
-    tags: ['AI / ML', 'RAG', 'Multilingual', 'Offline-First', 'llama.cpp', 'ChromaDB', 'EdTech'],
+    tags: ['AI', 'RAG', 'Multilingual', 'Offline-First', 'llama.cpp', 'ChromaDB', 'EdTech'],
     details: {
       description:
         'Karya is an offline-first AI education platform designed for low-resource and multilingual environments. It integrates on-device LLM inference (using Distill Qwen-1.5B) with neural machine translation (NLLB-200), enabling tutoring and content generation in 22+ languages. Users can upload documents or images (via OCR) and audio (via speech-to-text), and Karya semantically indexes this content for search and retrieval.\n\nThe platform builds a knowledge tree from documents and generates AI-crafted study materials: summaries, notes, flashcards, and multiple-choice questions. There is also an AI-assisted whiteboard (Excalidraw) that can create flowcharts and diagrams algorithmically.\n\nAll processing is optimized for limited hardware: Karya uses a quantized 1.5B LLM to run on 4–8GB devices, and stores embeddings in a local ChromaDB. The web UI (React + Tailwind) supports rich interactions, and a mobile app (React Native) allows on-device learning with SQLite fallback when offline.',
@@ -63,12 +63,12 @@ const PROJECTS = [
     },
   },
 
-  // 2. AuraNow
+  // 2. AuraNow (Fullstack)
   {
     id: 'auranow',
     index: '02',
-    category: 'Full-Stack / Video Conferencing',
-    filterTag: 'Full-Stack',
+    category: 'Fullstack',
+    filterTag: 'Fullstack',
     icon: Video,
     title: 'AuraNow',
     headline: 'AI-native video conferencing platform with semantic search.',
@@ -85,7 +85,7 @@ const PROJECTS = [
       'Built an AI-enhanced video conferencing platform combining LiveKit WebRTC with real-time meeting transcription and semantic search.',
     github: 'https://github.com/kaap10',
     demo: null,
-    tags: ['Full-Stack', 'LiveKit', 'Next.js', 'React', 'WebRTC', 'AI', 'MongoDB'],
+    tags: ['Fullstack', 'LiveKit', 'Next.js', 'React', 'WebRTC', 'AI', 'MongoDB'],
     details: {
       description:
         'Auranow (also known as Aura) is an advanced video conferencing platform combining LiveKit\'s WebRTC infrastructure with AI enhancements. It allows multiple participants to join video calls with chat and screen sharing. The frontend is built with Next.js and React, ensuring a smooth user experience.\n\nIts key differentiator is the built-in AI assistant. During a call, an LLM listens and produces live transcripts, summaries, and action items. After the meeting, users can ask questions about the content: the system uses embeddings and semantic search (OpenAI/Pinecone) to retrieve relevant sections of the transcript.\n\nThe app uses Clerk for authentication and MongoDB for storage. It supports serverless deployment on Vercel, making it scalable. Auranow demonstrates a combination of real-time communication and NLP: it is literally an "AI-powered Zoom" designed for modern remote teams.',
@@ -101,12 +101,12 @@ const PROJECTS = [
     },
   },
 
-  // 3. Code with Buddy
+  // 3. Code with Buddy (Fullstack)
   {
     id: 'code-with-buddy',
     index: '03',
-    category: 'Full-Stack / Collaboration',
-    filterTag: 'Full-Stack',
+    category: 'Fullstack',
+    filterTag: 'Fullstack',
     icon: Code2,
     title: 'Code with Buddy',
     headline: 'Real-time collaborative code editor with live execution.',
@@ -123,7 +123,7 @@ const PROJECTS = [
       'Engineered low-latency sync by filtering update events and using targeted handshakes for late-joiners.',
     github: 'https://github.com/kaap10',
     demo: null,
-    tags: ['Full-Stack', 'React', 'WebSockets', 'Collaboration', 'Node.js', 'CodeMirror'],
+    tags: ['Fullstack', 'React', 'WebSockets', 'Collaboration', 'Node.js', 'CodeMirror'],
     details: {
       description:
         'Code with Buddy is a browser-based collaborative coding environment for pair programming and technical interviews. Multiple users can join a session via a shared URL and edit code in a CodeMirror editor simultaneously. Changes are propagated in real-time using Socket.IO, and the interface shows live collaborator cursors and an integrated chat panel.\n\nTo handle concurrency, the system filters out local change events triggered by remote updates, preventing infinite broadcast loops. Late-joiners receive the current code state through a one-time synchronization handshake instead of replaying the entire edit history.\n\nUsers can switch programming languages on the fly; the app integrates with the Judge0 API to compile and run code (supporting JavaScript, Python, Java, C/C++, C#, Ruby, etc.). The backend (Express) handles execution and returns output. The UI, built with React and Tailwind CSS, includes custom themes and a shareable room UUID mechanism.',
@@ -139,12 +139,12 @@ const PROJECTS = [
     },
   },
 
-  // 4. IncidentFlow
+  // 4. IncidentFlow (Fullstack)
   {
     id: 'incidentflow',
     index: '04',
-    category: 'Full-Stack / Backend',
-    filterTag: 'Full-Stack',
+    category: 'Fullstack',
+    filterTag: 'Fullstack',
     icon: Activity,
     title: 'IncidentFlow',
     headline: 'Mission-critical incident management platform.',
@@ -161,7 +161,7 @@ const PROJECTS = [
       'Engineered an idempotent asynchronous SLA engine that reliably notifies on approaching deadlines without duplicating alerts.',
     github: 'https://github.com/kaap10',
     demo: null,
-    tags: ['Python', 'FastAPI', 'React', 'Celery', 'PostgreSQL', 'Redis', 'DevOps'],
+    tags: ['Fullstack', 'FastAPI', 'React', 'Celery', 'PostgreSQL', 'Redis', 'DevOps'],
     details: {
       description:
         'IncidentFlow is an end-to-end incident response platform built to manage engineering incidents and Service-Level Objectives (SLOs). It allows teams to log incidents with priorities (P0–P3) and automatically calculates SLA deadlines. Using a REST API or web interface, users can create incidents, assign ownership, update statuses, and comment on investigations.\n\nA core feature is the SLA engine. Using Celery and Redis, IncidentFlow continuously monitors active incidents. It sends early-warning alerts at 80% of the SLA duration and flags breaches past the deadline. The engine is idempotent: it avoids duplicate alerts while re-evaluating incidents in real time. The system also enforces that no incident can move from Resolved to Closed without a required postmortem, embedding reliability into the workflow.\n\nSecurity and compliance are built-in with JWT authentication, Role-Based Access Control (Admin/Manager/Engineer), and an immutable audit log. A React + Tailwind dashboard provides analytics (MTTR, SLA compliance) and a command palette for quick navigation.',
@@ -179,12 +179,12 @@ const PROJECTS = [
     },
   },
 
-  // 5. Terminal Agent
+  // 5. Terminal Agent (Agents)
   {
     id: 'terminal-agent',
     index: '05',
-    category: 'AI Agents / CLI Tools',
-    filterTag: 'AI & Agents',
+    category: 'Agents',
+    filterTag: 'Agents',
     icon: Terminal,
     title: 'Terminal Agent',
     headline: 'Verify-first autonomous software engineering agent.',
@@ -201,7 +201,7 @@ const PROJECTS = [
       'Implements a verify-first workflow by executing an independent test suite in an isolated sandbox for each code modification.',
     github: 'https://github.com/kaap10',
     demo: null,
-    tags: ['Python', 'AI Agents', 'CLI', 'Testing', 'DevTools', 'Docker', 'SQLite'],
+    tags: ['Agents', 'Python', 'CLI', 'Testing', 'DevTools', 'Docker', 'SQLite'],
     details: {
       description:
         'Terminal Agent is an autonomous coding agent that executes development tasks end-to-end. It translates natural-language tasks into structured plans, applies code changes using controlled CLI tools, and immediately runs the project\'s test suite. It follows a verify-first approach: changes are only accepted when an independent verifier (an LLM-based test runner) confirms all tests pass in a sandboxed environment.\n\nThe agent maintains context by ranking repository information and supports multiple LLM providers (OpenAI, Anthropic, Gemini, Ollama). It enforces strict security policies by performing secret detection and redaction. All tool commands execute inside isolated Docker or local sandboxes to avoid system contamination.\n\nTerminal Agent includes 12 specialized developer tools (for file editing, shell commands, etc.) and uses a SQLite database for session persistence and checkpoints. If failures occur, it classifies the error and automatically rolls back to the last stable state.',
@@ -219,12 +219,12 @@ const PROJECTS = [
     },
   },
 
-  // 6. Agent Bench
+  // 6. Agent Bench (Agents)
   {
     id: 'agent-bench',
     index: '06',
-    category: 'AI / Benchmarking',
-    filterTag: 'AI & Agents',
+    category: 'Agents',
+    filterTag: 'Agents',
     icon: Gauge,
     title: 'Agent Bench',
     headline: 'Autonomous AI agent benchmarking framework.',
@@ -241,7 +241,7 @@ const PROJECTS = [
       'Automated multi-task benchmarking of AI agents with deterministic rule-based scoring for fair, non-stochastic comparison.',
     github: 'https://github.com/kaap10',
     demo: null,
-    tags: ['AI / ML', 'Python', 'CLI', 'Benchmarking', 'DevTools', 'Docker'],
+    tags: ['Agents', 'Python', 'CLI', 'Benchmarking', 'DevTools', 'Docker'],
     details: {
       description:
         'Agent Bench (AgentBench) is a command-line benchmarking framework to evaluate autonomous AI agents. It defines benchmarks using YAML, where each task specifies a series of prompts and expected outputs. The framework launches the agent in an isolated workspace, allowing it to run code or use tools. After execution, Agent Bench applies a multi-stage, rule-based judge to score the outputs.\n\nThis evaluation avoids stochastic LLM judgments: instead, it uses cascaded rules and regex checks to deterministically assess success. Every step of the agent\'s run is logged with timestamps, creating a full JSON trace of tool calls. This enables fine-grained analysis of performance and timing.\n\nUsers can define custom tasks or use the built-in 40+ real-world programming scenarios. Agent Bench provides metrics on task success rates and execution details, facilitating comparative analysis of different agents.',
@@ -257,12 +257,12 @@ const PROJECTS = [
     },
   },
 
-  // 7. Model Router
+  // 7. Model Router (AI)
   {
     id: 'model-router',
     index: '07',
-    category: 'AI / LLM Orchestration',
-    filterTag: 'AI & Agents',
+    category: 'AI',
+    filterTag: 'AI',
     icon: Cpu,
     title: 'Model Router',
     headline: 'Adaptive LLM selection proxy reducing costs by 40–70%.',
@@ -279,7 +279,7 @@ const PROJECTS = [
       'Engineered a cost-optimized LLM gateway that saves up to 70% on API calls by dynamically routing prompts to appropriate models.',
     github: 'https://github.com/kaap10',
     demo: null,
-    tags: ['AI / ML', 'Python', 'FastAPI', 'LLM Proxy', 'Cost Optimization', 'OpenAI'],
+    tags: ['AI', 'Python', 'FastAPI', 'LLM Proxy', 'Cost Optimization', 'OpenAI'],
     details: {
       description:
         'Model Router is an inference routing service that acts as a gateway for LLM requests. It analyzes each incoming prompt to determine complexity or intent, then dispatches it to the best-fitting model. For example, trivial prompts might be served by an open-source local model or GPT-3.5, while complex tasks are sent to GPT-4 or Claude for higher-quality responses.\n\nClients use standard OpenAI or Anthropic API endpoints to query the router, requiring no changes to existing code. The router handles API keys and can stream results from multiple backends.\n\nBy leveraging cheaper models for easy queries and preserving high-end models for difficult ones, Model Router achieves significant savings—studies show about 40–70% reduction in API costs. This adaptive orchestration maintains output quality while lowering expenses. The service is fully self-hosted, enabling data privacy and customization.',
@@ -309,14 +309,15 @@ export default function ProjectsPage() {
 
   const filteredProjects = useMemo(() => {
     if (activeFilter === 'All') return PROJECTS;
-    return PROJECTS.filter((p) => p.filterTag === activeFilter || p.tags.includes(activeFilter));
+    return PROJECTS.filter((p) => p.filterTag === activeFilter);
   }, [activeFilter]);
 
   const counts = useMemo(() => {
     return {
       all: PROJECTS.length,
-      ai: PROJECTS.filter((p) => p.filterTag === 'AI & Agents').length,
-      fullstack: PROJECTS.filter((p) => p.filterTag === 'Full-Stack').length,
+      ai: PROJECTS.filter((p) => p.filterTag === 'AI').length,
+      fullstack: PROJECTS.filter((p) => p.filterTag === 'Fullstack').length,
+      agents: PROJECTS.filter((p) => p.filterTag === 'Agents').length,
     };
   }, []);
 
@@ -335,21 +336,19 @@ export default function ProjectsPage() {
           
           {/* Header */}
           <header className={styles.pageHeader}>
-            <div className={styles.headerTopRow}>
-              <span className={styles.headerEyebrow}>Engineering Portfolio · 7 Systems</span>
-            </div>
             <h1 className={styles.pageTitle}>Projects</h1>
             <p className={styles.pageSubtitle}>
               Production systems, autonomous AI agents, and full-stack platforms engineered for scale, reliability, and real-world impact.
             </p>
           </header>
 
-          {/* Filter Pills with Counts */}
+          {/* Filter Pills with Exact Categories: All, AI, Fullstack, Agents */}
           <div className={styles.filterRow}>
             {[
-              { id: 'All', label: `All Systems (${counts.all})` },
-              { id: 'AI & Agents', label: `AI & Agents (${counts.ai})` },
-              { id: 'Full-Stack', label: `Full-Stack (${counts.fullstack})` },
+              { id: 'All', label: `All (${counts.all})` },
+              { id: 'AI', label: `AI (${counts.ai})` },
+              { id: 'Fullstack', label: `Fullstack (${counts.fullstack})` },
+              { id: 'Agents', label: `Agents (${counts.agents})` },
             ].map(({ id, label }) => (
               <button
                 key={id}

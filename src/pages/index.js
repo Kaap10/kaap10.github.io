@@ -143,7 +143,7 @@ export default function Home() {
                 <div className={styles.projectCardTop}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                     <span className={styles.projectIndexBadge}>01</span>
-                    <span className={styles.projectCategoryTag}>Offline AI &amp; RAG</span>
+                    <span className={styles.projectCategoryTag}>AI</span>
                   </div>
                 </div>
 
@@ -168,7 +168,7 @@ export default function Home() {
                 <div className={styles.projectCardTop}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                     <span className={styles.projectIndexBadge}>02</span>
-                    <span className={styles.projectCategoryTag}>Video &amp; WebRTC</span>
+                    <span className={styles.projectCategoryTag}>Fullstack</span>
                   </div>
                 </div>
 
@@ -193,7 +193,7 @@ export default function Home() {
                 <div className={styles.projectCardTop}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                     <span className={styles.projectIndexBadge}>03</span>
-                    <span className={styles.projectCategoryTag}>Realtime Collaboration</span>
+                    <span className={styles.projectCategoryTag}>Fullstack</span>
                   </div>
                 </div>
 
@@ -218,7 +218,7 @@ export default function Home() {
                 <div className={styles.projectCardTop}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                     <span className={styles.projectIndexBadge}>04</span>
-                    <span className={styles.projectCategoryTag}>Full-Stack &amp; DevOps</span>
+                    <span className={styles.projectCategoryTag}>Fullstack</span>
                   </div>
                   <span className={styles.projectMetricTag}>29/29 Tests</span>
                 </div>
