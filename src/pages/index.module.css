@@ -380,6 +380,118 @@
 }
 
 /* ==========================================================================
+   2b. Open Source Section Card
+   ========================================================================== */
+
+.openSourceCard {
+  background: var(--vg-bg-elevated, #262628);
+  border: 1px solid var(--vg-border, rgba(255, 255, 255, 0.08));
+  border-radius: var(--vg-radius-md, 8px);
+  padding: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  position: relative;
+  overflow: hidden;
+  transition: all var(--vg-transition-smooth, 0.22s cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+.openSourceCard::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--vg-accent, #FF4D4F), transparent);
+  opacity: 0;
+  transition: opacity 0.22s ease;
+}
+
+.openSourceCard:hover {
+  transform: translateY(-3px);
+  border-color: var(--vg-border-hover, rgba(255, 255, 255, 0.16));
+  box-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.6);
+}
+
+.openSourceCard:hover::before {
+  opacity: 1;
+}
+
+.openSourceCardTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.openSourceCardActions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.openSourceBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--vg-radius-sm, 6px);
+  background: var(--vg-surface, #2E2E31);
+  border: 1px solid var(--vg-border, rgba(255, 255, 255, 0.08));
+  color: var(--vg-text, #F5F5F7) !important;
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-decoration: none !important;
+  transition: all var(--vg-transition-fast, 0.15s ease);
+}
+
+.openSourceBtn:hover {
+  background: var(--vg-surface-strong, #38383C);
+  border-color: var(--vg-accent, #FF4D4F);
+  color: var(--vg-accent, #FF4D4F) !important;
+  transform: translateY(-1px);
+}
+
+.openSourceCardBody {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.openSourceCardTitle {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--vg-text, #F5F5F7);
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.openSourceCardTagline {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--vg-accent, #FF4D4F);
+  margin: 0;
+  line-height: 1.4;
+}
+
+.openSourceCardDesc {
+  font-size: 0.88rem;
+  color: var(--vg-text-muted, #A6A6AC);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.openSourceCardDesc code {
+  background: var(--vg-surface, #2E2E31);
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
+  font-size: 0.82rem;
+  border: 1px solid var(--vg-border, rgba(255, 255, 255, 0.08));
+}
+
+/* ==========================================================================
    3. Technical Blogs Grid
    ========================================================================== */
 

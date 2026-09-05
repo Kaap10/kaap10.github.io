@@ -18,6 +18,18 @@ import {
 } from 'lucide-react';
 import styles from './index.module.css';
 
+const IconGithub = ({ size = 15 }) => (
+  <svg viewBox="0 0 24 24" width={size} height={size} fill="currentColor" aria-hidden="true">
+    <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
+  </svg>
+);
+
+const IconNpm = ({ size = 15 }) => (
+  <svg viewBox="0 0 24 24" width={size} height={size} fill="currentColor" aria-hidden="true">
+    <path d="M1.763 0C.786 0 0 .786 0 1.763v20.474C0 23.214.786 24 1.763 24h20.474c.977 0 1.763-.786 1.763-1.763V1.763C24 .786 23.214 0 22.237 0zM5.13 5.13h13.74v13.74h-3.435V8.565h-3.435v10.305H5.13z" />
+  </svg>
+);
+
 // Custom hook for progressive scroll reveals
 function useScrollReveal() {
   const ref = useRef(null);
@@ -58,6 +70,7 @@ function useScrollReveal() {
 export default function Home() {
   const [heroRef, heroRevealed] = useScrollReveal();
   const [projectsRef, projectsRevealed] = useScrollReveal();
+  const [openSourceRef, openSourceRevealed] = useScrollReveal();
   const [ecoRef, ecoRevealed] = useScrollReveal();
   const [blogsRef, blogsRevealed] = useScrollReveal();
   const [toolkitRef, toolkitRevealed] = useScrollReveal();
@@ -139,6 +152,7 @@ export default function Home() {
 
             <div className={styles.projectCardsGrid}>
               {/* Project 01: build-with-ai */}
+              {/* Project 01: Karya */}
               <article className={`${styles.projectCard} ${styles.staggerItem}`}>
                 <div className={styles.projectCardTop}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
@@ -190,10 +204,12 @@ export default function Home() {
               </article>
 
               {/* Project 03: AuraNow */}
+              {/* Project 02: AuraNow */}
               <article className={`${styles.projectCard} ${styles.staggerItem}`}>
                 <div className={styles.projectCardTop}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                     <span className={styles.projectIndexBadge}>03</span>
+                    <span className={styles.projectIndexBadge}>02</span>
                     <span className={styles.projectCategoryTag}>AI</span>
                   </div>
                 </div>
@@ -215,10 +231,12 @@ export default function Home() {
               </article>
 
               {/* Project 04: Code with Buddy */}
+              {/* Project 03: Code with Buddy */}
               <article className={`${styles.projectCard} ${styles.staggerItem}`}>
                 <div className={styles.projectCardTop}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                     <span className={styles.projectIndexBadge}>04</span>
+                    <span className={styles.projectIndexBadge}>03</span>
                     <span className={styles.projectCategoryTag}>Fullstack</span>
                   </div>
                 </div>
@@ -240,10 +258,12 @@ export default function Home() {
               </article>
 
               {/* Project 05: IncidentFlow */}
+              {/* Project 04: IncidentFlow */}
               <article className={`${styles.projectCard} ${styles.staggerItem}`}>
                 <div className={styles.projectCardTop}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                     <span className={styles.projectIndexBadge}>05</span>
+                    <span className={styles.projectIndexBadge}>04</span>
                     <span className={styles.projectCategoryTag}>Fullstack</span>
                   </div>
                   <span className={styles.projectMetricTag}>29/29 Tests</span>
@@ -266,10 +286,12 @@ export default function Home() {
               </article>
 
               {/* Project 06: Terminal Agent */}
+              {/* Project 05: Terminal Agent */}
               <article className={`${styles.projectCard} ${styles.staggerItem}`}>
                 <div className={styles.projectCardTop}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                     <span className={styles.projectIndexBadge}>06</span>
+                    <span className={styles.projectIndexBadge}>05</span>
                     <span className={styles.projectCategoryTag}>Agents</span>
                   </div>
                 </div>
@@ -291,10 +313,12 @@ export default function Home() {
               </article>
 
               {/* Project 07: Agent Bench */}
+              {/* Project 06: Agent Bench */}
               <article className={`${styles.projectCard} ${styles.staggerItem}`}>
                 <div className={styles.projectCardTop}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                     <span className={styles.projectIndexBadge}>07</span>
+                    <span className={styles.projectIndexBadge}>06</span>
                     <span className={styles.projectCategoryTag}>Agents</span>
                   </div>
                 </div>
@@ -316,10 +340,12 @@ export default function Home() {
               </article>
 
               {/* Project 08: Model Router */}
+              {/* Project 07: Model Router */}
               <article className={`${styles.projectCard} ${styles.staggerItem}`}>
                 <div className={styles.projectCardTop}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                     <span className={styles.projectIndexBadge}>08</span>
+                    <span className={styles.projectIndexBadge}>07</span>
                     <span className={styles.projectCategoryTag}>Agents</span>
                   </div>
                   <span className={styles.projectMetricTag}>40–70% Cost Reduction</span>
@@ -340,6 +366,76 @@ export default function Home() {
                   <span className={styles.techTag}>Docker</span>
                 </div>
               </article>
+            </div>
+          </section>
+
+          {/* ============================================================
+              3. Open Source Section (build-with-ai)
+              ============================================================ */}
+          <section 
+            ref={openSourceRef} 
+            id="open-source"
+            className={`${styles.section} ${styles.revealSection} ${openSourceRevealed ? styles.isRevealed : ''}`}
+          >
+            <div className={styles.sectionHeader}>
+              <div className={styles.sectionTitleGroup}>
+                <span className={styles.sectionEyebrow}>Public Tooling & Packages</span>
+                <h2 className={styles.sectionTitle}>Open Source</h2>
+              </div>
+              <span className={styles.sectionSubtitle}>MIT Licensed · npm Registry</span>
+            </div>
+
+            <div className={styles.openSourceCard}>
+              <div className={styles.openSourceCardTop}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', flexWrap: 'wrap' }}>
+                  <span className={styles.projectCategoryTag}>Open Source</span>
+                  <span className={styles.projectMetricTag}>MIT License</span>
+                  <span className={styles.projectMetricTag}>npm package</span>
+                </div>
+                <div className={styles.openSourceCardActions}>
+                  <a 
+                    href="https://github.com/Kaap10/build-with-ai" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className={styles.openSourceBtn}
+                    aria-label="GitHub Repository"
+                  >
+                    <IconGithub size={14} />
+                    <span>GitHub</span>
+                    <ArrowUpRight size={12} />
+                  </a>
+                  <a 
+                    href="https://www.npmjs.com/package/build-with-ai" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className={styles.openSourceBtn}
+                    aria-label="npm package"
+                  >
+                    <IconNpm size={14} />
+                    <span>npm</span>
+                    <ArrowUpRight size={12} />
+                  </a>
+                </div>
+              </div>
+
+              <div className={styles.openSourceCardBody}>
+                <h3 className={styles.openSourceCardTitle}>build-with-ai</h3>
+                <p className={styles.openSourceCardTagline}>
+                  Zero-API, local-first CLI for structured AI-assisted software development.
+                </p>
+                <p className={styles.openSourceCardDesc}>
+                  Open-source CLI that guides developers through complete software projects using 10–23 phase structured engineering workflows. It generates context-aware prompts for each phase while maintaining architectural decisions locally in <code>.buildwithai/</code> to prevent context drift across AI sessions — with zero API keys, accounts, or telemetry.
+                </p>
+              </div>
+
+              <div className={styles.projectTechRow}>
+                <span className={styles.techTag}>Node.js</span>
+                <span className={styles.techTag}>JavaScript</span>
+                <span className={styles.techTag}>CLI</span>
+                <span className={styles.techTag}>npm</span>
+                <span className={styles.techTag}>JSON</span>
+                <span className={styles.techTag}>AI Prompt Engineering</span>
+              </div>
             </div>
           </section>
 
