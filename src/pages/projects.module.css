@@ -556,9 +556,66 @@
   flex-shrink: 0;
 }
 
+/* Open Source Section */
+.openSourceSection {
+  margin-top: 4.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+.openSourceHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  border-bottom: 1px solid var(--vg-border, rgba(255, 255, 255, 0.08));
+  padding-bottom: 1.25rem;
+}
+
+.openSourceEyebrow {
+  font-size: 0.76rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--vg-accent, #FF4D4F);
+}
+
+.openSourceTitle {
+  font-size: 1.85rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--vg-text, #F5F5F7);
+  margin: 0;
+  line-height: 1.2;
+}
+
+.openSourceSubtitle {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--vg-text-muted, #A6A6AC);
+  margin: 0;
+}
+
+.licenseBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  font-family: var(--ifm-font-family-monospace, monospace);
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--vg-radius-sm, 6px);
+  background: rgba(34, 197, 94, 0.1);
+  color: #4ade80;
+  border: 1px solid rgba(34, 197, 94, 0.25);
+}
+
 @media (max-width: 768px) {
   .pageTitle {
     font-size: 2.1rem;
+  }
+  .openSourceTitle {
+    font-size: 1.5rem;
   }
   .projectCard {
     padding: 1.5rem;

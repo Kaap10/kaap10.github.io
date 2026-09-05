@@ -13,13 +13,20 @@ import {
   Gauge, 
   Cpu, 
   Video, 
-  ShieldCheck
+  ShieldCheck,
+  Package
 } from 'lucide-react';
 import styles from './projects.module.css';
 
 const IconGithub = ({ size = 15 }) => (
   <svg viewBox="0 0 24 24" width={size} height={size} fill="currentColor" aria-hidden="true">
     <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
+  </svg>
+);
+
+const IconNpm = ({ size = 15 }) => (
+  <svg viewBox="0 0 24 24" width={size} height={size} fill="currentColor" aria-hidden="true">
+    <path d="M1.763 0C.786 0 0 .786 0 1.763v20.474C0 23.214.786 24 1.763 24h20.474c.977 0 1.763-.786 1.763-1.763V1.763C24 .786 23.214 0 22.237 0zM5.13 5.13h13.74v13.74h-3.435V8.565h-3.435v10.305H5.13z" />
   </svg>
 );
 
@@ -296,6 +303,50 @@ const PROJECTS = [
   },
 ];
 
+const OPEN_SOURCE_PROJECTS = [
+  {
+    id: 'build-with-ai',
+    category: 'Open Source / CLI',
+    icon: Terminal,
+    title: 'build-with-ai',
+    headline: 'Zero-API, local-first CLI for structured AI-assisted software development.',
+    cardDescription:
+      'Open-source CLI that turns AI-assisted development into a structured engineering workflow. Generates context-aware prompts, preserves architectural decisions locally, and guides developers from discovery to deployment — with zero API keys or telemetry.',
+    license: 'MIT License',
+    techStack: ['Node.js', 'JavaScript', 'CLI', 'npm', 'JSON', 'AI Prompt Engineering'],
+    highlights: [
+      '10–23 phase structured development workflows',
+      'Automatic architectural context injection across steps',
+      'Works with ChatGPT, Claude, Gemini, Cursor, Copilot, DeepSeek & Ollama',
+      'Local .buildwithai/ state and decision management',
+      '6 built-in production-oriented templates',
+      'Deterministic README.md, BUILD_LOG.md & CONTEXT.md generation',
+      'Zero API keys, accounts, telemetry, or vendor lock-in',
+      'Custom community templates via local JSON or HTTPS',
+    ],
+    github: 'https://github.com/Kaap10/build-with-ai',
+    npm: 'https://www.npmjs.com/package/build-with-ai',
+    tags: ['Open Source', 'Node.js', 'CLI', 'Developer Tools', 'AI'],
+    details: {
+      description:
+        'build-with-ai is an open-source CLI that guides developers through complete software projects using structured, sequential engineering workflows. It generates context-aware prompts for each development phase while maintaining architectural decisions locally to prevent context drift between AI sessions.\n\nBy keeping state within a local `.buildwithai/` directory and utilizing reproducible prompts, developers can seamlessly switch between AI models (ChatGPT, Claude, Gemini, DeepSeek, Cursor, Copilot, Ollama) while ensuring strict architectural continuity without vendor lock-in.',
+      allTech: ['Node.js', 'JavaScript', 'CLI', 'npm', 'JSON', 'Markdown', 'Git', 'Prompt Engineering'],
+      fullHighlights: [
+        '10–23 phase structured development workflows',
+        'Automatic architectural context injection across steps',
+        'Works with ChatGPT, Claude, Gemini, Cursor, Copilot, DeepSeek & Ollama',
+        'Local .buildwithai/ state and decision management',
+        '6 built-in production-oriented templates',
+        'Deterministic README.md, BUILD_LOG.md & CONTEXT.md generation',
+        'Zero API keys, accounts, telemetry, or vendor lock-in',
+        'Custom community templates via local JSON or HTTPS',
+        'Open-source under the MIT License',
+      ],
+      metricsDetail: 'Zero API keys required · 100% Local-first · 6 Production Templates · MIT License',
+    },
+  },
+];
+
 export default function ProjectsPage() {
   const [activeFilter, setActiveFilter] = useState('All');
   const [expandedCards, setExpandedCards] = useState({});
@@ -509,6 +560,166 @@ export default function ProjectsPage() {
               );
             })}
           </div>
+
+          {/* ============================================================
+              Open Source Section
+              ============================================================ */}
+          <section className={styles.openSourceSection}>
+            <div className={styles.openSourceHeader}>
+              <span className={styles.openSourceEyebrow}>Public Tooling &amp; Packages</span>
+              <h2 className={styles.openSourceTitle}>Open Source</h2>
+              <p className={styles.openSourceSubtitle}>
+                Developer-first CLI utilities, packages, and frameworks published to npm and GitHub.
+              </p>
+            </div>
+
+            <div className={styles.projectsList}>
+              {OPEN_SOURCE_PROJECTS.map((project) => {
+                const isExpanded = !!expandedCards[project.id];
+                const IconComponent = project.icon;
+
+                return (
+                  <article key={project.id} className={styles.projectCard}>
+                    {/* Card Header */}
+                    <div className={styles.cardHeader}>
+                      <div className={styles.indexCategoryWrap}>
+                        <div className={styles.iconBadge}>
+                          <IconComponent size={16} />
+                        </div>
+                        <span className={styles.categoryBadge}>{project.category}</span>
+                      </div>
+
+                      {project.license && (
+                        <div className={styles.licenseBadge}>
+                          <ShieldCheck size={13} />
+                          <span>{project.license}</span>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Title & Tagline */}
+                    <div className={styles.titleBlock}>
+                      <h3 className={styles.projectTitle}>{project.title}</h3>
+                      <p className={styles.projectTagline}>{project.headline}</p>
+                      <p className={styles.projectSummary}>{project.cardDescription}</p>
+                    </div>
+
+                    {/* Key Highlights List */}
+                    <div className={styles.highlightsContainer}>
+                      <span className={styles.highlightsHeader}>Key Highlights</span>
+                      <ul className={styles.highlightsList}>
+                        {project.highlights.map((h, i) => (
+                          <li key={i} className={styles.highlightItem}>
+                            <span className={styles.highlightDot}>•</span>
+                            <span>{h}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    {/* Tech Stack Chips */}
+                    <div className={styles.techTagsRow}>
+                      {project.techStack.map((t, idx) => (
+                        <span key={idx} className={styles.techTag}>
+                          {t}
+                        </span>
+                      ))}
+                    </div>
+
+                    {/* Action Bar (Deep Dive toggle + GitHub + npm) */}
+                    <div className={styles.cardFooter}>
+                      <div className={styles.footerLeft}>
+                        <button
+                          type="button"
+                          className={`${styles.deepDiveBtn} ${isExpanded ? styles.deepDiveBtnActive : ''}`}
+                          onClick={() => toggleExpand(project.id)}
+                          aria-expanded={isExpanded}
+                        >
+                          <Layers size={14} />
+                          <span>{isExpanded ? 'Hide Architecture Details' : 'View Architecture Details'}</span>
+                          {isExpanded ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+                        </button>
+                      </div>
+
+                      <div className={styles.footerRight}>
+                        <a
+                          href={project.github}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={styles.actionBtn}
+                          title="View on GitHub"
+                        >
+                          <IconGithub size={14} />
+                          <span>GitHub</span>
+                          <ArrowUpRight size={13} />
+                        </a>
+                        {project.npm && (
+                          <a
+                            href={project.npm}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={styles.actionBtn}
+                            title="View on npm"
+                          >
+                            <IconNpm size={14} />
+                            <span>npm</span>
+                            <ArrowUpRight size={13} />
+                          </a>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Expandable Architecture Deep Dive Panel */}
+                    {isExpanded && (
+                      <div className={styles.deepDivePanel}>
+                        <div className={styles.deepDiveDivider} />
+                        
+                        <div className={styles.deepDiveContent}>
+                          <h4 className={styles.deepDiveHeading}>System Architecture &amp; Implementation Details</h4>
+                          
+                          {project.details.description.split('\n\n').map((paragraph, pIdx) => (
+                            <p key={pIdx} className={styles.deepDiveParagraph}>
+                              {paragraph}
+                            </p>
+                          ))}
+
+                          {project.details.metricsDetail && (
+                            <div className={styles.metricsDetailBox}>
+                              <span className={styles.metricsDetailLabel}>Specifications &amp; Model:</span>
+                              <span className={styles.metricsDetailText}>{project.details.metricsDetail}</span>
+                            </div>
+                          )}
+
+                          <div className={styles.deepDiveSection}>
+                            <h5 className={styles.deepDiveSubheading}>Complete Technical Stack</h5>
+                            <div className={styles.fullTechWrap}>
+                              {project.details.allTech.map((techItem, tIdx) => (
+                                <span key={tIdx} className={styles.fullTechChip}>
+                                  {techItem}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+
+                          <div className={styles.deepDiveSection}>
+                            <h5 className={styles.deepDiveSubheading}>Complete Workflow Capabilities</h5>
+                            <ul className={styles.fullHighlightsList}>
+                              {project.details.fullHighlights.map((fh, fhIdx) => (
+                                <li key={fhIdx} className={styles.fullHighlightItem}>
+                                  <CheckCircle2 size={13} className={styles.fullHighlightIcon} />
+                                  <span>{fh}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </article>
+                );
+              })}
+            </div>
+          </section>
 
         </div>
       </main>
