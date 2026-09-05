@@ -385,7 +385,7 @@ export default function Home() {
                   Zero-API, local-first CLI for structured AI-assisted software development.
                 </p>
                 <p className={styles.openSourceCardDesc}>
-                  Open-source CLI that guides developers through complete software projects using 10–23 phase structured engineering workflows. It generates context-aware prompts for each phase while maintaining architectural decisions locally in <code>.buildwithai/</code> to prevent context drift across AI sessions — with zero API keys, accounts, or telemetry.
+                  Open-source CLI that guides developers through complete software projects using 10–23 phase structured workflows across different project templates. It generates context-aware prompts for each phase while maintaining architectural decisions locally in <code>.buildwithai/</code> to prevent context drift across AI sessions — with zero API keys, accounts, or telemetry.
                 </p>
               </div>
 
