@@ -163,7 +163,6 @@ export default function Home() {
                 <div className={styles.projectCardBody}>
                   <h3 className={styles.projectCardTitle}>Karya</h3>
                   <p className={styles.projectCardDesc}>
-                    Offline-first educational platform combining local 1.5B LLM inference, multilingual RAG (22+ languages), OCR document indexing, and AI whiteboard.
                     Offline-first educational platform combining local 1.5B LLM inference, multilingual RAG (22 Indian languages + English), OCR document indexing, and AI whiteboard.
                   </p>
                 </div>
@@ -189,7 +188,6 @@ export default function Home() {
                 <div className={styles.projectCardBody}>
                   <h3 className={styles.projectCardTitle}>AuraNow</h3>
                   <p className={styles.projectCardDesc}>
-                    AI-powered video comment intelligence platform transforming unstructured YouTube comments into RAPTOR topic trees, sentiment analytics, and conversational intelligence.
                     AI-powered video comment intelligence platform transforming YouTube comments into RAPTOR topic trees, sentiment analytics, and conversational intelligence.
                   </p>
                 </div>
@@ -215,7 +213,6 @@ export default function Home() {
                 <div className={styles.projectCardBody}>
                   <h3 className={styles.projectCardTitle}>Code with Buddy</h3>
                   <p className={styles.projectCardDesc}>
-                    Realtime collaborative code editor supporting multi-cursor live synchronization via WebSockets, in-room chat, and remote code execution across 20+ languages.
                     Realtime collaborative code editor supporting live document synchronization via WebSockets, in-room chat, and remote code execution across 7 languages.
                   </p>
                 </div>
@@ -312,15 +309,13 @@ export default function Home() {
                     <span className={styles.projectIndexBadge}>07</span>
                     <span className={styles.projectCategoryTag}>Agents</span>
                   </div>
-                  <span className={styles.projectMetricTag}>40–70% Cost Reduction</span>
-                  <span className={styles.projectMetricTag}>Observed ~40–70% Savings</span>
+                  <span className={styles.projectMetricTag}>Cost Optimization · Benchmark-tested</span>
                 </div>
 
                 <div className={styles.projectCardBody}>
                   <h3 className={styles.projectCardTitle}>Model Router</h3>
                   <p className={styles.projectCardDesc}>
-                    Adaptive LLM selection proxy and gateway that analyzes prompt complexity to route queries between local models and premium APIs.
-                    Adaptive LLM selection proxy and gateway that analyzes prompt complexity to route queries between local models and premium APIs to reduce token costs.
+                    Adaptive LLM selection proxy and gateway that analyzes prompt complexity to route queries between local models and premium APIs to optimize token costs.
                   </p>
                 </div>
 
