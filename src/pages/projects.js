@@ -55,14 +55,17 @@ const PROJECTS = [
       'Custom community templates via local JSON or HTTPS',
     ],
     metrics: 'MIT License',
+    metrics: null,
     recruiterHighlight:
       'Architected a deterministic, local-first CLI workflow engine that orchestrates multi-phase software delivery across disparate LLMs without cloud storage or telemetry.',
+      'Architected a deterministic, local-first CLI workflow engine that orchestrates multi-phase software delivery across multiple AI assistants and models without cloud storage or telemetry.',
     github: 'https://github.com/Kaap10/build-with-ai',
     npm: 'https://www.npmjs.com/package/build-with-ai',
     tags: ['Open Source', 'Node.js', 'CLI', 'Developer Tools', 'AI'],
     details: {
       description:
         'build-with-ai is an open-source CLI that guides developers through complete software projects using structured, sequential engineering workflows. It generates context-aware prompts for each development phase while maintaining architectural decisions locally to prevent context drift between AI sessions.\n\nBy keeping state within a local `.buildwithai/` directory and utilizing reproducible prompts, developers can seamlessly switch between AI models (ChatGPT, Claude, Gemini, DeepSeek, Cursor, Copilot, Ollama) while ensuring strict architectural continuity without vendor lock-in.',
+        'build-with-ai is an open-source CLI that guides developers through complete software projects using structured, sequential engineering workflows. It generates context-aware prompts for each development phase while maintaining architectural decisions locally to prevent context drift between AI sessions.\n\nBy keeping state within a local `.buildwithai/` directory and utilizing reproducible prompts, developers can seamlessly switch between multiple AI assistants and models (ChatGPT, Claude, Gemini, DeepSeek, Cursor, Copilot, Ollama) while ensuring strict architectural continuity without vendor lock-in.',
       allTech: ['Node.js', 'JavaScript', 'CLI', 'npm', 'JSON', 'Markdown', 'Git', 'Prompt Engineering'],
       fullHighlights: [
         '10–23 phase structured development workflows',
@@ -90,31 +93,40 @@ const PROJECTS = [
     headline: 'Offline-first multilingual AI learning platform.',
     cardDescription:
       'An offline AI education platform combining quantized on-device LLM inference, multilingual RAG (22+ languages), document OCR, and interactive whiteboard tools.',
+      'An offline AI education platform combining quantized on-device LLM inference, multilingual RAG across 22 Indian languages + English, document OCR, and interactive whiteboard tools.',
     techStack: ['React', 'Node.js', 'MongoDB', 'ChromaDB', 'llama.cpp'],
     highlights: [
       'Local LLM-powered tutoring: Quantized 1.5B model running on consumer 4–8GB hardware',
       'Multilingual RAG search: Neural machine translation across 22+ languages with local ChromaDB',
+      'Local LLM-powered tutoring: Quantized 1.5B model designed and tested for 4–8GB RAM environments',
+      'Multilingual RAG & NMT: Semantic search and separate Neural Machine Translation (NMT) across 22 Indian languages + English with local ChromaDB',
       'AI-generated study materials: Instant automated summaries, notes, flashcards, MCQs & diagrams',
     ],
     metrics: 'Vector ~68ms · Chat ~1.1s',
+    metrics: 'Vector ~68ms · Chat ~1.1s (Benchmark)',
     recruiterHighlight:
       'Implemented an offline-first AI architecture by quantizing a 1.5B LLM for low-RAM devices, enabling advanced NLP features without cloud dependence.',
+      'Implemented an offline-first AI architecture by quantizing a 1.5B LLM for 4–8GB RAM environments, enabling multilingual RAG and NMT without cloud dependence.',
     github: 'https://github.com/kaap10',
     demo: null,
     tags: ['AI', 'RAG', 'Multilingual', 'Offline-First', 'llama.cpp', 'ChromaDB', 'EdTech'],
     details: {
       description:
         'Karya is an offline-first AI education platform designed for low-resource and multilingual environments. It integrates on-device LLM inference (using Distill Qwen-1.5B) with neural machine translation (NLLB-200), enabling tutoring and content generation in 22+ languages. Users can upload documents or images (via OCR) and audio (via speech-to-text), and Karya semantically indexes this content for search and retrieval.\n\nThe platform builds a knowledge tree from documents and generates AI-crafted study materials: summaries, notes, flashcards, and multiple-choice questions. There is also an AI-assisted whiteboard (Excalidraw) that can create flowcharts and diagrams algorithmically.\n\nAll processing is optimized for limited hardware: Karya uses a quantized 1.5B LLM to run on 4–8GB devices, and stores embeddings in a local ChromaDB. The web UI (React + Tailwind) supports rich interactions, and a mobile app (React Native) allows on-device learning with SQLite fallback when offline.',
+        'Karya is an offline-first AI education platform designed for low-resource and multilingual environments. It integrates on-device LLM inference (using Distill Qwen-1.5B) with separate neural machine translation (NLLB-200), enabling tutoring and content generation in 22 Indian languages + English. Users can upload documents or images (via OCR) and audio (via speech-to-text), and Karya semantically indexes this content for search and retrieval.\n\nThe platform builds a knowledge tree from documents and generates AI-crafted study materials: summaries, notes, flashcards, and multiple-choice questions. There is also an AI-assisted whiteboard (Excalidraw) that can create flowcharts and diagrams algorithmically.\n\nAll processing is optimized for limited hardware: Karya uses a quantized 1.5B LLM designed and tested for 4–8GB RAM environments, and stores embeddings in a local ChromaDB. The web UI (React + Tailwind) supports rich interactions, and a mobile app (React Native) allows on-device learning with SQLite fallback when offline.',
       allTech: ['React', 'TypeScript', 'Vite', 'Tailwind CSS', 'React Native', 'Expo', 'Node.js', 'Express', 'MongoDB', 'Mongoose', 'ChromaDB', 'llama.cpp', 'NLLB-200', 'Tesseract.js', 'Whisper', 'Excalidraw', 'PyTorch', 'onnxruntime', 'SQLite'],
       fullHighlights: [
         'Local multilingual LLM tutoring on low-spec hardware',
         'RAG-enabled semantic search across 22+ languages',
+        'Local multilingual LLM tutoring designed and tested for 4–8GB RAM environments',
+        'RAG-enabled semantic search and separate NMT across 22 Indian languages + English',
         'AI-generated educational notes, flashcards, and quizzes',
         'On-device OCR and speech transcription (Whisper)',
         'Interactive AI whiteboard with algorithmic flowchart creation',
         'Complete offline-first architecture with SQLite caching',
       ],
       metricsDetail: 'Vector retrieval ~68ms · Chat latency ~1.1s · Flowchart gen ~24s · 10-page PDF indexing ~4.2s · OCR CER ~1.1%',
+      metricsDetail: 'Project Benchmarks: Vector retrieval ~68ms · Chat latency ~1.1s · Flowchart gen ~24s · 10-page PDF indexing ~4.2s · OCR CER ~1.1%',
     },
   },
 
@@ -129,21 +141,26 @@ const PROJECTS = [
     headline: 'AI social media intelligence transforming video comments into hierarchical RAPTOR topic trees.',
     cardDescription:
       'An AI-powered video comment intelligence platform that automatically clusters thousands of YouTube comments into interactive RAPTOR topic trees, audience sentiment analytics, toxicity audits, and conversational insights.',
+      'An AI-powered video comment intelligence platform that automatically clusters YouTube comments into interactive RAPTOR topic trees, audience sentiment analytics, toxicity audits, and conversational insights.',
     techStack: ['FastAPI', 'Python', 'React 18', 'RAPTOR', 'UMAP / HDBSCAN', 'MongoDB'],
     highlights: [
       'Hierarchical RAPTOR Topic Trees: Recursive clustering and medoid summarization of thousands of comments into thematic sub-trees',
       'Audience & Sentiment Insights: Real-time velocity tracking, sentiment breakdown, engagement distribution, and emoji/word clouds',
+      'Hierarchical RAPTOR Topic Trees: Recursive clustering and medoid summarization of comment threads into thematic sub-trees',
+      'Audience & Sentiment Insights: Engagement velocity tracking, sentiment distribution, engagement breakdown, and emoji/word clouds',
       'Community Health & Discovery: Toxic comment/spam detection with health scoring and recurring audience question clustering',
     ],
     metrics: 'RAPTOR Tree · Async Queue',
     recruiterHighlight:
       'Engineered an asynchronous NLP pipeline combining SentenceTransformers, UMAP dimensionality reduction, and HDBSCAN with recursive RAPTOR tree summarization for sub-second comment intelligence.',
+      'Engineered an asynchronous NLP pipeline combining SentenceTransformers, UMAP dimensionality reduction, and HDBSCAN with recursive RAPTOR tree summarization for video comment intelligence.',
     github: 'https://github.com/kaap10',
     demo: null,
     tags: ['AI', 'Python', 'FastAPI', 'RAPTOR', 'NLP', 'React', 'MongoDB', 'Redis', 'UMAP'],
     details: {
       description:
         'AuraNow is an AI-powered social media intelligence platform that transforms unstructured YouTube video comments into structured hierarchical topic trees, audience insights, sentiment analytics, and conversational intelligence.\n\nSimply paste a YouTube video URL, and AuraNow automatically fetches comment threads, generates vector embeddings, clusters discussion topics using UMAP and HDBSCAN, and builds an interactive RAPTOR topic tree with context-aware AI chat.\n\nThe backend is powered by asynchronous FastAPI with MongoDB/Motor and Redis job queues for scalable background scraping and processing. The frontend is built on React 18 and Vite with scoped CSS Modules for smooth real-time analytics visualization.',
+        'AuraNow is an AI-powered social media intelligence platform that transforms unstructured YouTube video comments into structured hierarchical topic trees, audience insights, sentiment analytics, and conversational intelligence.\n\nSimply paste a YouTube video URL, and AuraNow automatically fetches comment threads, generates vector embeddings, clusters discussion topics using UMAP and HDBSCAN, and builds an interactive RAPTOR topic tree with context-aware AI chat.\n\nThe backend is powered by asynchronous FastAPI with MongoDB/Motor and Redis job queues for scalable background scraping and processing. The frontend is built on React 18 and Vite with scoped CSS Modules for smooth analytics visualization.',
       allTech: [
         'Python',
         'FastAPI',
@@ -167,6 +184,7 @@ const PROJECTS = [
       ],
       fullHighlights: [
         'Hierarchical Topic Tree (RAPTOR): Automatically clusters thousands of comments into high-level themes and sub-topics with representative quotes and keyword extraction',
+        'Hierarchical Topic Tree (RAPTOR): Automatically clusters comments into high-level themes and sub-topics with representative quotes and keyword extraction',
         'Audience & Sentiment Insights: Tracks comment velocity over time, sentiment distribution, engagement metrics, word clouds, and emoji usage',
         'Question & Topic Discovery: Identifies, groups, and categorizes recurring viewer questions to help creators plan future content',
         'Community Health Audit: Flags toxic comments, copy-paste spam, and computes an overall audience health score',
@@ -188,30 +206,38 @@ const PROJECTS = [
     headline: 'Real-time collaborative code editor with live execution.',
     cardDescription:
       'A browser-based pair programming tool featuring real-time multi-user code editing synchronized via WebSockets, multi-language execution, and integrated chat.',
+      'A browser-based pair programming tool featuring real-time collaborative code editing synchronized via WebSockets, multi-language execution across 7 languages, and integrated chat.',
     techStack: ['React', 'Node.js', 'Socket.IO', 'Express', 'CodeMirror'],
     highlights: [
       'WebSocket-based real-time editing: Low-latency multi-cursor synchronization',
+      'WebSocket-based real-time editing: Low-latency collaborative document synchronization',
       'Late-joiner state sync: Fast one-time handshake without replaying full edit history',
       'Multi-language execution: Remote code compilation across 20+ languages via Judge0 API',
+      'Multi-language execution: Remote code compilation across 7 languages via Judge0 API',
     ],
     metrics: null,
+    metrics: '7 Languages · Real-time Sync',
     recruiterHighlight:
       'Engineered low-latency sync by filtering update events and using targeted handshakes for late-joiners.',
+      'Engineered low-latency document sync by filtering update events and using targeted handshakes for late-joiners.',
     github: 'https://github.com/kaap10',
     demo: null,
     tags: ['Fullstack', 'React', 'WebSockets', 'Collaboration', 'Node.js', 'CodeMirror'],
     details: {
       description:
         'Code with Buddy is a browser-based collaborative coding environment for pair programming and technical interviews. Multiple users can join a session via a shared URL and edit code in a CodeMirror editor simultaneously. Changes are propagated in real-time using Socket.IO, and the interface shows live collaborator cursors and an integrated chat panel.\n\nTo handle concurrency, the system filters out local change events triggered by remote updates, preventing infinite broadcast loops. Late-joiners receive the current code state through a one-time synchronization handshake instead of replaying the entire edit history.\n\nUsers can switch programming languages on the fly; the app integrates with the Judge0 API to compile and run code (supporting JavaScript, Python, Java, C/C++, C#, Ruby, etc.). The backend (Express) handles execution and returns output. The UI, built with React and Tailwind CSS, includes custom themes and a shareable room UUID mechanism.',
+        'Code with Buddy is a browser-based collaborative coding environment for pair programming and technical interviews. Multiple users can join a session via a shared URL and edit code in a CodeMirror editor simultaneously. Changes are propagated in real-time using Socket.IO, and the interface includes an integrated chat panel.\n\nTo handle concurrency, the system filters out local change events triggered by remote updates, preventing infinite broadcast loops. Late-joiners receive the current code state through a one-time synchronization handshake instead of replaying the entire edit history.\n\nUsers can switch programming languages on the fly; the app integrates with the Judge0 API to compile and run code across 7 languages (JavaScript, TypeScript, Python, Java, C, C++, Ruby). The backend (Express) handles execution and returns output. The UI, built with React and Tailwind CSS, includes custom themes and a shareable room UUID mechanism.',
       allTech: ['React', 'TypeScript', 'Vite', 'Tailwind CSS', 'Node.js', 'Express', 'Socket.IO', 'CodeMirror', 'Judge0 API'],
       fullHighlights: [
         'WebSocket-based real-time synchronized code editing',
         'Room UUID collaboration and live user presence',
         'Late-joiner state handshake minimizing network overhead',
         'Multi-language code compilation and live terminal output',
+        '7-language code compilation and live terminal output',
         'In-room live chat with collaborator presence indicators',
       ],
       metricsDetail: 'Multi-user real-time state sync · Sub-50ms WebSocket latency · 20+ language compilers',
+      metricsDetail: 'Multi-user real-time state sync · Sub-50ms WebSocket latency · 7 language compilers',
     },
   },
 
@@ -226,6 +252,7 @@ const PROJECTS = [
     headline: 'Mission-critical incident management platform.',
     cardDescription:
       'A full-stack incident management system with automated SLA enforcement, Celery asynchronous alerts, RBAC, audit trails, and real-time reliability analytics.',
+      'A full-stack incident management system with automated SLA enforcement, Celery asynchronous alerts, RBAC, audit trails, and reliability analytics.',
     techStack: ['Python', 'FastAPI', 'React', 'PostgreSQL', 'Celery'],
     highlights: [
       'Automated SLA deadline monitoring: Idempotent Celery engine with 80% duration early-warning alerts',
@@ -235,12 +262,14 @@ const PROJECTS = [
     metrics: '29/29 tests passing',
     recruiterHighlight:
       'Engineered an idempotent asynchronous SLA engine that reliably notifies on approaching deadlines without duplicating alerts.',
+      'Engineered an idempotent asynchronous SLA engine that reliably notifies on approaching deadlines with an 80% duration warning threshold.',
     github: 'https://github.com/kaap10',
     demo: null,
     tags: ['Fullstack', 'FastAPI', 'React', 'Celery', 'PostgreSQL', 'Redis', 'DevOps'],
     details: {
       description:
         'IncidentFlow is an end-to-end incident response platform built to manage engineering incidents and Service-Level Objectives (SLOs). It allows teams to log incidents with priorities (P0–P3) and automatically calculates SLA deadlines. Using a REST API or web interface, users can create incidents, assign ownership, update statuses, and comment on investigations.\n\nA core feature is the SLA engine. Using Celery and Redis, IncidentFlow continuously monitors active incidents. It sends early-warning alerts at 80% of the SLA duration and flags breaches past the deadline. The engine is idempotent: it avoids duplicate alerts while re-evaluating incidents in real time. The system also enforces that no incident can move from Resolved to Closed without a required postmortem, embedding reliability into the workflow.\n\nSecurity and compliance are built-in with JWT authentication, Role-Based Access Control (Admin/Manager/Engineer), and an immutable audit log. A React + Tailwind dashboard provides analytics (MTTR, SLA compliance) and a command palette for quick navigation.',
+        'IncidentFlow is an end-to-end incident response platform built to manage engineering incidents and Service-Level Objectives (SLOs). It allows teams to log incidents with priorities (P0–P3) and automatically calculates SLA deadlines. Using a REST API or web interface, users can create incidents, assign ownership, update statuses, and comment on investigations.\n\nA core feature is the SLA engine. Using Celery and Redis, IncidentFlow continuously monitors active incidents. It sends early-warning alerts at 80% of the SLA duration and flags breaches past the deadline. The engine is idempotent: it avoids duplicate alerts while re-evaluating incidents. The system also enforces that no incident can move from Resolved to Closed without a required postmortem, embedding reliability into the workflow.\n\nSecurity and compliance are built-in with JWT authentication, Role-Based Access Control (Admin/Manager/Engineer), and an immutable audit log. A React + Tailwind dashboard provides reliability analytics (MTTR, SLA compliance) and a command palette for quick navigation.',
       allTech: ['Python', 'FastAPI', 'React', 'TypeScript', 'PostgreSQL', 'SQLite', 'SQLAlchemy', 'Alembic', 'Celery', 'Redis', 'JWT', 'bcrypt', 'Pydantic', 'SlowAPI', 'Tailwind CSS', 'Recharts'],
       fullHighlights: [
         'Automated SLA deadline calculation and monitoring',
@@ -249,6 +278,7 @@ const PROJECTS = [
         'Mandatory postmortem gating before incident closure',
         'Role-based access control (Admin, Manager, Engineer)',
         'Real-time MTTR and SLA compliance analytics',
+        'Reliability analytics (MTTR and SLA compliance metrics)',
         'Full 29/29 automated test coverage',
       ],
       metricsDetail: '29/29 tests passing · 100% SLA alert idempotency · Multi-timezone awareness',
@@ -270,11 +300,14 @@ const PROJECTS = [
     highlights: [
       'Autonomous agent loop: LLM planning, controlled CLI execution & test verification',
       'Sandboxed test verification: Changes accepted only when independent test runner passes',
+      'Sandboxed test verification: Verify-first workflow where changes are validated by an independent test runner in an isolated sandbox',
       'Automatic rollback & recovery: Classifies failures across 12 categories with SQLite checkpoints',
     ],
     metrics: null,
+    metrics: 'Verify-First Workflow',
     recruiterHighlight:
       'Implements a verify-first workflow by executing an independent test suite in an isolated sandbox for each code modification.',
+      'Implements a verify-first workflow by executing an independent test runner in an isolated sandbox for each code modification.',
     github: 'https://github.com/kaap10',
     demo: null,
     tags: ['Agents', 'Python', 'CLI', 'Testing', 'DevTools', 'Docker', 'SQLite'],
@@ -342,32 +375,42 @@ const PROJECTS = [
     icon: Cpu,
     title: 'Model Router',
     headline: 'Adaptive LLM selection proxy reducing costs by 40–70%.',
+    headline: 'Adaptive LLM selection proxy designed to reduce API costs through intelligent routing.',
     cardDescription:
       'An intelligent proxy gateway that dynamically routes LLM queries based on prompt complexity—directing simple tasks to lightweight models and reserving premium APIs for hard queries.',
+      'An intelligent proxy gateway that dynamically routes LLM queries based on prompt complexity—directing simple tasks to lightweight models and reserving premium APIs for complex queries.',
     techStack: ['Python', 'FastAPI', 'OpenAI API', 'Anthropic API', 'Local LLMs'],
     highlights: [
       'Prompt-based model selection: Analyzes complexity to route between local models and flagship APIs',
       'OpenAI / Claude API proxy: Drop-in replacement compatible with standard client SDKs',
       '40–70% cost reduction: Preserves output quality while dramatically lowering token expenses',
+      'OpenAI / Claude API proxy: API-compatible gateway and proxy for standard client SDKs',
+      'Cost-efficient routing: Designed to reduce LLM API costs with observed savings of up to 40–70% on benchmark workloads',
     ],
     metrics: '40–70% cost reduction',
+    metrics: 'Observed ~40–70% Savings',
     recruiterHighlight:
       'Engineered a cost-optimized LLM gateway that saves up to 70% on API calls by dynamically routing prompts to appropriate models.',
+      'Engineered an adaptive LLM gateway designed to reduce API costs by dynamically routing prompts based on query complexity.',
     github: 'https://github.com/kaap10',
     demo: null,
     tags: ['Agents', 'AI', 'Python', 'FastAPI', 'LLM Proxy', 'Cost Optimization', 'OpenAI'],
     details: {
       description:
         'Model Router is an inference routing service that acts as a gateway for LLM requests. It analyzes each incoming prompt to determine complexity or intent, then dispatches it to the best-fitting model. For example, trivial prompts might be served by an open-source local model or GPT-3.5, while complex tasks are sent to GPT-4 or Claude for higher-quality responses.\n\nClients use standard OpenAI or Anthropic API endpoints to query the router, requiring no changes to existing code. The router handles API keys and can stream results from multiple backends.\n\nBy leveraging cheaper models for easy queries and preserving high-end models for difficult ones, Model Router achieves significant savings—studies show about 40–70% reduction in API costs. This adaptive orchestration maintains output quality while lowering expenses. The service is fully self-hosted, enabling data privacy and customization.',
+        'Model Router is an inference routing service that acts as a gateway for LLM requests. It analyzes each incoming prompt to determine complexity or intent, then dispatches it to the best-fitting model. For example, trivial prompts might be served by an open-source local model or GPT-3.5, while complex tasks are sent to GPT-4 or Claude for higher-quality responses.\n\nClients use standard OpenAI or Anthropic API endpoints to query the router, requiring no changes to existing code. The router handles API keys and can stream results from multiple backends.\n\nBy leveraging cheaper models for easy queries and reserving high-end models for difficult ones, Model Router is designed to reduce API costs, with observed savings of up to 40–70% on benchmark workloads. This adaptive orchestration maintains output quality while lowering expenses. The service is fully self-hosted, enabling data privacy and customization.',
       allTech: ['Python', 'FastAPI', 'HTTPX', 'OpenAI API', 'Anthropic API', 'Docker', 'Pydantic'],
       fullHighlights: [
         'Dynamic model routing based on prompt difficulty and token length',
         'Drop-in OpenAI and Anthropic proxy interface',
+        'OpenAI and Anthropic API-compatible proxy interface',
         'Unified streaming support across local and cloud backends',
         '40–70% verified API cost savings without quality degradation',
+        'Observed up to 40–70% API cost savings in benchmark workloads',
         'Self-hosted gateway ensuring complete data privacy',
       ],
       metricsDetail: '40–70% cost reduction · Sub-10ms routing overhead · Multi-provider failover',
+      metricsDetail: 'Observed up to 40–70% cost reduction in benchmarks · Sub-10ms routing overhead · Multi-provider failover',
     },
   },
 ];

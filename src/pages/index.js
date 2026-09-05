@@ -151,38 +151,11 @@ export default function Home() {
             </div>
 
             <div className={styles.projectCardsGrid}>
-              {/* Project 01: build-with-ai */}
               {/* Project 01: Karya */}
               <article className={`${styles.projectCard} ${styles.staggerItem}`}>
                 <div className={styles.projectCardTop}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                     <span className={styles.projectIndexBadge}>01</span>
-                    <span className={styles.projectCategoryTag}>Open Source</span>
-                  </div>
-                  <span className={styles.projectMetricTag}>MIT License</span>
-                </div>
-
-                <div className={styles.projectCardBody}>
-                  <h3 className={styles.projectCardTitle}>build-with-ai</h3>
-                  <p className={styles.projectCardDesc}>
-                    Open-source CLI that turns AI-assisted development into a structured engineering workflow with context-aware prompts and zero API keys.
-                  </p>
-                </div>
-
-                <div className={styles.projectTechRow}>
-                  <span className={styles.techTag}>Node.js</span>
-                  <span className={styles.techTag}>CLI</span>
-                  <span className={styles.techTag}>npm</span>
-                  <span className={styles.techTag}>JSON</span>
-                  <span className={styles.techTag}>AI Prompts</span>
-                </div>
-              </article>
-
-              {/* Project 02: Karya */}
-              <article className={`${styles.projectCard} ${styles.staggerItem}`}>
-                <div className={styles.projectCardTop}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                    <span className={styles.projectIndexBadge}>02</span>
                     <span className={styles.projectCategoryTag}>AI</span>
                   </div>
                 </div>
@@ -191,6 +164,7 @@ export default function Home() {
                   <h3 className={styles.projectCardTitle}>Karya</h3>
                   <p className={styles.projectCardDesc}>
                     Offline-first educational platform combining local 1.5B LLM inference, multilingual RAG (22+ languages), OCR document indexing, and AI whiteboard.
+                    Offline-first educational platform combining local 1.5B LLM inference, multilingual RAG (22 Indian languages + English), OCR document indexing, and AI whiteboard.
                   </p>
                 </div>
 
@@ -203,12 +177,10 @@ export default function Home() {
                 </div>
               </article>
 
-              {/* Project 03: AuraNow */}
               {/* Project 02: AuraNow */}
               <article className={`${styles.projectCard} ${styles.staggerItem}`}>
                 <div className={styles.projectCardTop}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                    <span className={styles.projectIndexBadge}>03</span>
                     <span className={styles.projectIndexBadge}>02</span>
                     <span className={styles.projectCategoryTag}>AI</span>
                   </div>
@@ -218,6 +190,7 @@ export default function Home() {
                   <h3 className={styles.projectCardTitle}>AuraNow</h3>
                   <p className={styles.projectCardDesc}>
                     AI-powered video comment intelligence platform transforming unstructured YouTube comments into RAPTOR topic trees, sentiment analytics, and conversational intelligence.
+                    AI-powered video comment intelligence platform transforming YouTube comments into RAPTOR topic trees, sentiment analytics, and conversational intelligence.
                   </p>
                 </div>
 
@@ -230,12 +203,10 @@ export default function Home() {
                 </div>
               </article>
 
-              {/* Project 04: Code with Buddy */}
               {/* Project 03: Code with Buddy */}
               <article className={`${styles.projectCard} ${styles.staggerItem}`}>
                 <div className={styles.projectCardTop}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                    <span className={styles.projectIndexBadge}>04</span>
                     <span className={styles.projectIndexBadge}>03</span>
                     <span className={styles.projectCategoryTag}>Fullstack</span>
                   </div>
@@ -245,6 +216,7 @@ export default function Home() {
                   <h3 className={styles.projectCardTitle}>Code with Buddy</h3>
                   <p className={styles.projectCardDesc}>
                     Realtime collaborative code editor supporting multi-cursor live synchronization via WebSockets, in-room chat, and remote code execution across 20+ languages.
+                    Realtime collaborative code editor supporting live document synchronization via WebSockets, in-room chat, and remote code execution across 7 languages.
                   </p>
                 </div>
 
@@ -257,12 +229,10 @@ export default function Home() {
                 </div>
               </article>
 
-              {/* Project 05: IncidentFlow */}
               {/* Project 04: IncidentFlow */}
               <article className={`${styles.projectCard} ${styles.staggerItem}`}>
                 <div className={styles.projectCardTop}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                    <span className={styles.projectIndexBadge}>05</span>
                     <span className={styles.projectIndexBadge}>04</span>
                     <span className={styles.projectCategoryTag}>Fullstack</span>
                   </div>
@@ -285,12 +255,10 @@ export default function Home() {
                 </div>
               </article>
 
-              {/* Project 06: Terminal Agent */}
               {/* Project 05: Terminal Agent */}
               <article className={`${styles.projectCard} ${styles.staggerItem}`}>
                 <div className={styles.projectCardTop}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                    <span className={styles.projectIndexBadge}>06</span>
                     <span className={styles.projectIndexBadge}>05</span>
                     <span className={styles.projectCategoryTag}>Agents</span>
                   </div>
@@ -312,12 +280,10 @@ export default function Home() {
                 </div>
               </article>
 
-              {/* Project 07: Agent Bench */}
               {/* Project 06: Agent Bench */}
               <article className={`${styles.projectCard} ${styles.staggerItem}`}>
                 <div className={styles.projectCardTop}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                    <span className={styles.projectIndexBadge}>07</span>
                     <span className={styles.projectIndexBadge}>06</span>
                     <span className={styles.projectCategoryTag}>Agents</span>
                   </div>
@@ -339,22 +305,22 @@ export default function Home() {
                 </div>
               </article>
 
-              {/* Project 08: Model Router */}
               {/* Project 07: Model Router */}
               <article className={`${styles.projectCard} ${styles.staggerItem}`}>
                 <div className={styles.projectCardTop}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                    <span className={styles.projectIndexBadge}>08</span>
                     <span className={styles.projectIndexBadge}>07</span>
                     <span className={styles.projectCategoryTag}>Agents</span>
                   </div>
                   <span className={styles.projectMetricTag}>40–70% Cost Reduction</span>
+                  <span className={styles.projectMetricTag}>Observed ~40–70% Savings</span>
                 </div>
 
                 <div className={styles.projectCardBody}>
                   <h3 className={styles.projectCardTitle}>Model Router</h3>
                   <p className={styles.projectCardDesc}>
                     Adaptive LLM selection proxy and gateway that analyzes prompt complexity to route queries between local models and premium APIs.
+                    Adaptive LLM selection proxy and gateway that analyzes prompt complexity to route queries between local models and premium APIs to reduce token costs.
                   </p>
                 </div>
 
