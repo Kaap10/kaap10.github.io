@@ -63,12 +63,12 @@ const PROJECTS = [
     },
   },
 
-  // 2. AuraNow (Fullstack)
+  // 2. AuraNow (AI)
   {
     id: 'auranow',
     index: '02',
-    category: 'Fullstack',
-    filterTag: 'Fullstack',
+    category: 'AI',
+    filterTag: 'AI',
     icon: Video,
     title: 'AuraNow',
     headline: 'AI-native video conferencing platform with semantic search.',
@@ -85,7 +85,7 @@ const PROJECTS = [
       'Built an AI-enhanced video conferencing platform combining LiveKit WebRTC with real-time meeting transcription and semantic search.',
     github: 'https://github.com/kaap10',
     demo: null,
-    tags: ['Fullstack', 'LiveKit', 'Next.js', 'React', 'WebRTC', 'AI', 'MongoDB'],
+    tags: ['AI', 'LiveKit', 'Next.js', 'React', 'WebRTC', 'Fullstack', 'MongoDB'],
     details: {
       description:
         'Auranow (also known as Aura) is an advanced video conferencing platform combining LiveKit\'s WebRTC infrastructure with AI enhancements. It allows multiple participants to join video calls with chat and screen sharing. The frontend is built with Next.js and React, ensuring a smooth user experience.\n\nIts key differentiator is the built-in AI assistant. During a call, an LLM listens and produces live transcripts, summaries, and action items. After the meeting, users can ask questions about the content: the system uses embeddings and semantic search (OpenAI/Pinecone) to retrieve relevant sections of the transcript.\n\nThe app uses Clerk for authentication and MongoDB for storage. It supports serverless deployment on Vercel, making it scalable. Auranow demonstrates a combination of real-time communication and NLP: it is literally an "AI-powered Zoom" designed for modern remote teams.',
@@ -257,12 +257,12 @@ const PROJECTS = [
     },
   },
 
-  // 7. Model Router (AI)
+  // 7. Model Router (Agents)
   {
     id: 'model-router',
     index: '07',
-    category: 'AI',
-    filterTag: 'AI',
+    category: 'Agents',
+    filterTag: 'Agents',
     icon: Cpu,
     title: 'Model Router',
     headline: 'Adaptive LLM selection proxy reducing costs by 40–70%.',
@@ -279,7 +279,7 @@ const PROJECTS = [
       'Engineered a cost-optimized LLM gateway that saves up to 70% on API calls by dynamically routing prompts to appropriate models.',
     github: 'https://github.com/kaap10',
     demo: null,
-    tags: ['AI', 'Python', 'FastAPI', 'LLM Proxy', 'Cost Optimization', 'OpenAI'],
+    tags: ['Agents', 'AI', 'Python', 'FastAPI', 'LLM Proxy', 'Cost Optimization', 'OpenAI'],
     details: {
       description:
         'Model Router is an inference routing service that acts as a gateway for LLM requests. It analyzes each incoming prompt to determine complexity or intent, then dispatches it to the best-fitting model. For example, trivial prompts might be served by an open-source local model or GPT-3.5, while complex tasks are sent to GPT-4 or Claude for higher-quality responses.\n\nClients use standard OpenAI or Anthropic API endpoints to query the router, requiring no changes to existing code. The router handles API keys and can stream results from multiple backends.\n\nBy leveraging cheaper models for easy queries and preserving high-end models for difficult ones, Model Router achieves significant savings—studies show about 40–70% reduction in API costs. This adaptive orchestration maintains output quality while lowering expenses. The service is fully self-hosted, enabling data privacy and customization.',

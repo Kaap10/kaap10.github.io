@@ -168,7 +168,7 @@ export default function Home() {
                 <div className={styles.projectCardTop}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                     <span className={styles.projectIndexBadge}>02</span>
-                    <span className={styles.projectCategoryTag}>Fullstack</span>
+                    <span className={styles.projectCategoryTag}>AI</span>
                   </div>
                 </div>
 
@@ -236,6 +236,82 @@ export default function Home() {
                   <span className={styles.techTag}>PostgreSQL</span>
                   <span className={styles.techTag}>Celery</span>
                   <span className={styles.techTag}>Redis</span>
+                </div>
+              </article>
+
+              {/* Project 05: Terminal Agent */}
+              <article className={`${styles.projectCard} ${styles.staggerItem}`}>
+                <div className={styles.projectCardTop}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <span className={styles.projectIndexBadge}>05</span>
+                    <span className={styles.projectCategoryTag}>Agents</span>
+                  </div>
+                </div>
+
+                <div className={styles.projectCardBody}>
+                  <h3 className={styles.projectCardTitle}>Terminal Agent</h3>
+                  <p className={styles.projectCardDesc}>
+                    Verify-first autonomous coding agent executing end-to-end tasks with sandboxed CLI tool execution, secret redaction, and rollback.
+                  </p>
+                </div>
+
+                <div className={styles.projectTechRow}>
+                  <span className={styles.techTag}>Python</span>
+                  <span className={styles.techTag}>Docker</span>
+                  <span className={styles.techTag}>SQLite</span>
+                  <span className={styles.techTag}>CLI</span>
+                  <span className={styles.techTag}>LLMs</span>
+                </div>
+              </article>
+
+              {/* Project 06: Agent Bench */}
+              <article className={`${styles.projectCard} ${styles.staggerItem}`}>
+                <div className={styles.projectCardTop}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <span className={styles.projectIndexBadge}>06</span>
+                    <span className={styles.projectCategoryTag}>Agents</span>
+                  </div>
+                </div>
+
+                <div className={styles.projectCardBody}>
+                  <h3 className={styles.projectCardTitle}>Agent Bench</h3>
+                  <p className={styles.projectCardDesc}>
+                    Autonomous AI agent evaluation framework providing 40+ real-world tasks, deterministic rule-based judging, and JSON execution traces.
+                  </p>
+                </div>
+
+                <div className={styles.projectTechRow}>
+                  <span className={styles.techTag}>Python</span>
+                  <span className={styles.techTag}>CLI</span>
+                  <span className={styles.techTag}>Docker</span>
+                  <span className={styles.techTag}>DevTools</span>
+                  <span className={styles.techTag}>Testing</span>
+                </div>
+              </article>
+
+              {/* Project 07: Model Router */}
+              <article className={`${styles.projectCard} ${styles.staggerItem}`}>
+                <div className={styles.projectCardTop}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <span className={styles.projectIndexBadge}>07</span>
+                    <span className={styles.projectCategoryTag}>Agents</span>
+                  </div>
+                  <span className={styles.projectMetricTag}>40–70% Cost Reduction</span>
+                </div>
+
+                <div className={styles.projectCardBody}>
+                  <h3 className={styles.projectCardTitle}>Model Router</h3>
+                  <p className={styles.projectCardDesc}>
+                    Adaptive LLM selection proxy and gateway that analyzes prompt complexity to route queries between local models and premium APIs.
+                  </p>
+                </div>
+
+                <div className={styles.projectTechRow}>
+                  <span className={styles.techTag}>Python</span>
+                  <span className={styles.techTag}>FastAPI</span>
+                  <span className={styles.techTag}>OpenAI</span>
+                  <span className={styles.techTag}>Anthropic</span>
+                  <span className={styles.techTag}>Docker</span>
                 </div>
               </article>
             </div>
