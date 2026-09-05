@@ -175,15 +175,15 @@ export default function Home() {
                 <div className={styles.projectCardBody}>
                   <h3 className={styles.projectCardTitle}>AuraNow</h3>
                   <p className={styles.projectCardDesc}>
-                    AI-native video conferencing platform with LiveKit WebRTC, real-time automated meeting transcription, action-item synthesis, and semantic archive search.
+                    AI-powered video comment intelligence platform transforming unstructured YouTube comments into RAPTOR topic trees, sentiment analytics, and conversational intelligence.
                   </p>
                 </div>
 
                 <div className={styles.projectTechRow}>
-                  <span className={styles.techTag}>LiveKit</span>
-                  <span className={styles.techTag}>Next.js</span>
-                  <span className={styles.techTag}>TypeScript</span>
-                  <span className={styles.techTag}>React</span>
+                  <span className={styles.techTag}>FastAPI</span>
+                  <span className={styles.techTag}>React 18</span>
+                  <span className={styles.techTag}>Python</span>
+                  <span className={styles.techTag}>RAPTOR</span>
                   <span className={styles.techTag}>MongoDB</span>
                 </div>
               </article>
