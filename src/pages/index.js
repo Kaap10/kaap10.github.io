@@ -129,7 +129,7 @@ export default function Home() {
             <div className={styles.sectionHeader}>
               <div className={styles.sectionTitleGroup}>
                 <span className={styles.sectionEyebrow}>Selected Engineering</span>
-                <h2 className={styles.sectionTitle}>Featured Projects</h2>
+                <h2 className={styles.sectionTitle}>Projects</h2>
               </div>
               <Link to="/projects" className={styles.viewAllLink}>
                 <span>View All Details</span>
@@ -145,7 +145,6 @@ export default function Home() {
                     <span className={styles.projectIndexBadge}>01</span>
                     <span className={styles.projectCategoryTag}>Offline AI &amp; RAG</span>
                   </div>
-                  <span className={styles.projectTierBadge}>Featured</span>
                 </div>
 
                 <div className={styles.projectCardBody}>
@@ -171,7 +170,6 @@ export default function Home() {
                     <span className={styles.projectIndexBadge}>02</span>
                     <span className={styles.projectCategoryTag}>Video &amp; WebRTC</span>
                   </div>
-                  <span className={styles.projectTierBadge}>Featured</span>
                 </div>
 
                 <div className={styles.projectCardBody}>
@@ -197,7 +195,6 @@ export default function Home() {
                     <span className={styles.projectIndexBadge}>03</span>
                     <span className={styles.projectCategoryTag}>Realtime Collaboration</span>
                   </div>
-                  <span className={styles.projectTierBadge}>Featured</span>
                 </div>
 
                 <div className={styles.projectCardBody}>

@@ -2,7 +2,6 @@ import React, { useState, useMemo } from 'react';
 import Layout from '@theme/Layout';
 import { 
   ArrowUpRight, 
-  Sparkles, 
   CheckCircle2, 
   ChevronDown, 
   ChevronUp, 
@@ -14,9 +13,7 @@ import {
   Gauge, 
   Cpu, 
   Video, 
-  ExternalLink,
-  ShieldCheck,
-  TrendingDown
+  ShieldCheck
 } from 'lucide-react';
 import styles from './projects.module.css';
 
@@ -31,7 +28,6 @@ const PROJECTS = [
   {
     id: 'karya',
     index: '01',
-    tier: 'featured',
     category: 'AI / Education (Multilingual)',
     filterTag: 'AI & Agents',
     icon: BookOpen,
@@ -71,7 +67,6 @@ const PROJECTS = [
   {
     id: 'auranow',
     index: '02',
-    tier: 'featured',
     category: 'Full-Stack / Video Conferencing',
     filterTag: 'Full-Stack',
     icon: Video,
@@ -110,7 +105,6 @@ const PROJECTS = [
   {
     id: 'code-with-buddy',
     index: '03',
-    tier: 'featured',
     category: 'Full-Stack / Collaboration',
     filterTag: 'Full-Stack',
     icon: Code2,
@@ -149,7 +143,6 @@ const PROJECTS = [
   {
     id: 'incidentflow',
     index: '04',
-    tier: 'featured',
     category: 'Full-Stack / Backend',
     filterTag: 'Full-Stack',
     icon: Activity,
@@ -190,7 +183,6 @@ const PROJECTS = [
   {
     id: 'terminal-agent',
     index: '05',
-    tier: 'featured',
     category: 'AI Agents / CLI Tools',
     filterTag: 'AI & Agents',
     icon: Terminal,
@@ -231,7 +223,6 @@ const PROJECTS = [
   {
     id: 'agent-bench',
     index: '06',
-    tier: 'standard',
     category: 'AI / Benchmarking',
     filterTag: 'AI & Agents',
     icon: Gauge,
@@ -270,7 +261,6 @@ const PROJECTS = [
   {
     id: 'model-router',
     index: '07',
-    tier: 'standard',
     category: 'AI / LLM Orchestration',
     filterTag: 'AI & Agents',
     icon: Cpu,
@@ -319,14 +309,12 @@ export default function ProjectsPage() {
 
   const filteredProjects = useMemo(() => {
     if (activeFilter === 'All') return PROJECTS;
-    if (activeFilter === 'Featured') return PROJECTS.filter((p) => p.tier === 'featured');
     return PROJECTS.filter((p) => p.filterTag === activeFilter || p.tags.includes(activeFilter));
   }, [activeFilter]);
 
   const counts = useMemo(() => {
     return {
       all: PROJECTS.length,
-      featured: PROJECTS.filter((p) => p.tier === 'featured').length,
       ai: PROJECTS.filter((p) => p.filterTag === 'AI & Agents').length,
       fullstack: PROJECTS.filter((p) => p.filterTag === 'Full-Stack').length,
     };
@@ -334,7 +322,7 @@ export default function ProjectsPage() {
 
   return (
     <Layout
-      title="Featured Projects"
+      title="Projects"
       description="Production systems, autonomous AI agents, and full-stack software built by Vardhman Gupta."
     >
       <main className={styles.pageContainer}>
@@ -349,9 +337,8 @@ export default function ProjectsPage() {
           <header className={styles.pageHeader}>
             <div className={styles.headerTopRow}>
               <span className={styles.headerEyebrow}>Engineering Portfolio · 7 Systems</span>
-              <span className={styles.tierCountBadge}>Top Systems</span>
             </div>
-            <h1 className={styles.pageTitle}>Featured Projects</h1>
+            <h1 className={styles.pageTitle}>Projects</h1>
             <p className={styles.pageSubtitle}>
               Production systems, autonomous AI agents, and full-stack platforms engineered for scale, reliability, and real-world impact.
             </p>
@@ -361,7 +348,6 @@ export default function ProjectsPage() {
           <div className={styles.filterRow}>
             {[
               { id: 'All', label: `All Systems (${counts.all})` },
-              { id: 'Featured', label: `Featured (${counts.featured})` },
               { id: 'AI & Agents', label: `AI & Agents (${counts.ai})` },
               { id: 'Full-Stack', label: `Full-Stack (${counts.fullstack})` },
             ].map(({ id, label }) => (
@@ -385,7 +371,7 @@ export default function ProjectsPage() {
               return (
                 <article
                   key={project.id}
-                  className={`${styles.projectCard} ${project.tier === 'featured' ? styles.projectCardFeatured : ''}`}
+                  className={styles.projectCard}
                 >
                   {/* Card Header */}
                   <div className={styles.cardHeader}>
@@ -395,12 +381,6 @@ export default function ProjectsPage() {
                         <IconComponent size={16} />
                       </div>
                       <span className={styles.categoryBadge}>{project.category}</span>
-                      {project.tier === 'featured' && (
-                        <span className={styles.featuredBadge}>
-                          <Sparkles size={12} />
-                          <span>Featured System</span>
-                        </span>
-                      )}
                     </div>
 
                     {project.metrics && (
