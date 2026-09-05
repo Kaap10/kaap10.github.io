@@ -31,10 +31,58 @@ const IconNpm = ({ size = 15 }) => (
 );
 
 const PROJECTS = [
-  // 1. Karya (AI)
+  // 1. build-with-ai (Open Source)
+  {
+    id: 'build-with-ai',
+    index: '01',
+    category: 'Open Source',
+    filterTag: 'Open Source',
+    icon: Terminal,
+    title: 'build-with-ai',
+    headline: 'Zero-API, local-first CLI for structured AI-assisted software development.',
+    cardDescription:
+      'Open-source CLI that turns AI-assisted development into a structured engineering workflow. Generates context-aware prompts, preserves architectural decisions locally, and guides developers from discovery to deployment — with zero API keys or telemetry.',
+    license: 'MIT License',
+    techStack: ['Node.js', 'JavaScript', 'CLI', 'npm', 'JSON', 'AI Prompt Engineering'],
+    highlights: [
+      '10–23 phase structured development workflows',
+      'Automatic architectural context injection across steps',
+      'Works with ChatGPT, Claude, Gemini, Cursor, Copilot, DeepSeek & Ollama',
+      'Local .buildwithai/ state and decision management',
+      '6 built-in production-oriented templates',
+      'Deterministic README.md, BUILD_LOG.md & CONTEXT.md generation',
+      'Zero API keys, accounts, telemetry, or vendor lock-in',
+      'Custom community templates via local JSON or HTTPS',
+    ],
+    metrics: 'MIT License',
+    recruiterHighlight:
+      'Architected a deterministic, local-first CLI workflow engine that orchestrates multi-phase software delivery across disparate LLMs without cloud storage or telemetry.',
+    github: 'https://github.com/Kaap10/build-with-ai',
+    npm: 'https://www.npmjs.com/package/build-with-ai',
+    tags: ['Open Source', 'Node.js', 'CLI', 'Developer Tools', 'AI'],
+    details: {
+      description:
+        'build-with-ai is an open-source CLI that guides developers through complete software projects using structured, sequential engineering workflows. It generates context-aware prompts for each development phase while maintaining architectural decisions locally to prevent context drift between AI sessions.\n\nBy keeping state within a local `.buildwithai/` directory and utilizing reproducible prompts, developers can seamlessly switch between AI models (ChatGPT, Claude, Gemini, DeepSeek, Cursor, Copilot, Ollama) while ensuring strict architectural continuity without vendor lock-in.',
+      allTech: ['Node.js', 'JavaScript', 'CLI', 'npm', 'JSON', 'Markdown', 'Git', 'Prompt Engineering'],
+      fullHighlights: [
+        '10–23 phase structured development workflows',
+        'Automatic architectural context injection across steps',
+        'Works with ChatGPT, Claude, Gemini, Cursor, Copilot, DeepSeek & Ollama',
+        'Local .buildwithai/ state and decision management',
+        '6 built-in production-oriented templates',
+        'Deterministic README.md, BUILD_LOG.md & CONTEXT.md generation',
+        'Zero API keys, accounts, telemetry, or vendor lock-in',
+        'Custom community templates via local JSON or HTTPS',
+        'Open-source under the MIT License',
+      ],
+      metricsDetail: 'Zero API keys required · 100% Local-first · 6 Production Templates · MIT License',
+    },
+  },
+
+  // 2. Karya (AI)
   {
     id: 'karya',
-    index: '01',
+    index: '02',
     category: 'AI',
     filterTag: 'AI',
     icon: BookOpen,
@@ -70,10 +118,10 @@ const PROJECTS = [
     },
   },
 
-  // 2. AuraNow (AI)
+  // 3. AuraNow (AI)
   {
     id: 'auranow',
-    index: '02',
+    index: '03',
     category: 'AI',
     filterTag: 'AI',
     icon: Activity,
@@ -129,10 +177,10 @@ const PROJECTS = [
     },
   },
 
-  // 3. Code with Buddy (Fullstack)
+  // 4. Code with Buddy (Fullstack)
   {
     id: 'code-with-buddy',
-    index: '03',
+    index: '04',
     category: 'Fullstack',
     filterTag: 'Fullstack',
     icon: Code2,
@@ -167,10 +215,10 @@ const PROJECTS = [
     },
   },
 
-  // 4. IncidentFlow (Fullstack)
+  // 5. IncidentFlow (Fullstack)
   {
     id: 'incidentflow',
-    index: '04',
+    index: '05',
     category: 'Fullstack',
     filterTag: 'Fullstack',
     icon: Activity,
@@ -207,10 +255,10 @@ const PROJECTS = [
     },
   },
 
-  // 5. Terminal Agent (Agents)
+  // 6. Terminal Agent (Agents)
   {
     id: 'terminal-agent',
-    index: '05',
+    index: '06',
     category: 'Agents',
     filterTag: 'Agents',
     icon: Terminal,
@@ -247,10 +295,10 @@ const PROJECTS = [
     },
   },
 
-  // 6. Agent Bench (Agents)
+  // 7. Agent Bench (Agents)
   {
     id: 'agent-bench',
-    index: '06',
+    index: '07',
     category: 'Agents',
     filterTag: 'Agents',
     icon: Gauge,
@@ -285,10 +333,10 @@ const PROJECTS = [
     },
   },
 
-  // 7. Model Router (Agents)
+  // 8. Model Router (Agents)
   {
     id: 'model-router',
-    index: '07',
+    index: '08',
     category: 'Agents',
     filterTag: 'Agents',
     icon: Cpu,
@@ -324,50 +372,6 @@ const PROJECTS = [
   },
 ];
 
-const OPEN_SOURCE_PROJECTS = [
-  {
-    id: 'build-with-ai',
-    category: 'Open Source / CLI',
-    icon: Terminal,
-    title: 'build-with-ai',
-    headline: 'Zero-API, local-first CLI for structured AI-assisted software development.',
-    cardDescription:
-      'Open-source CLI that turns AI-assisted development into a structured engineering workflow. Generates context-aware prompts, preserves architectural decisions locally, and guides developers from discovery to deployment — with zero API keys or telemetry.',
-    license: 'MIT License',
-    techStack: ['Node.js', 'JavaScript', 'CLI', 'npm', 'JSON', 'AI Prompt Engineering'],
-    highlights: [
-      '10–23 phase structured development workflows',
-      'Automatic architectural context injection across steps',
-      'Works with ChatGPT, Claude, Gemini, Cursor, Copilot, DeepSeek & Ollama',
-      'Local .buildwithai/ state and decision management',
-      '6 built-in production-oriented templates',
-      'Deterministic README.md, BUILD_LOG.md & CONTEXT.md generation',
-      'Zero API keys, accounts, telemetry, or vendor lock-in',
-      'Custom community templates via local JSON or HTTPS',
-    ],
-    github: 'https://github.com/Kaap10/build-with-ai',
-    npm: 'https://www.npmjs.com/package/build-with-ai',
-    tags: ['Open Source', 'Node.js', 'CLI', 'Developer Tools', 'AI'],
-    details: {
-      description:
-        'build-with-ai is an open-source CLI that guides developers through complete software projects using structured, sequential engineering workflows. It generates context-aware prompts for each development phase while maintaining architectural decisions locally to prevent context drift between AI sessions.\n\nBy keeping state within a local `.buildwithai/` directory and utilizing reproducible prompts, developers can seamlessly switch between AI models (ChatGPT, Claude, Gemini, DeepSeek, Cursor, Copilot, Ollama) while ensuring strict architectural continuity without vendor lock-in.',
-      allTech: ['Node.js', 'JavaScript', 'CLI', 'npm', 'JSON', 'Markdown', 'Git', 'Prompt Engineering'],
-      fullHighlights: [
-        '10–23 phase structured development workflows',
-        'Automatic architectural context injection across steps',
-        'Works with ChatGPT, Claude, Gemini, Cursor, Copilot, DeepSeek & Ollama',
-        'Local .buildwithai/ state and decision management',
-        '6 built-in production-oriented templates',
-        'Deterministic README.md, BUILD_LOG.md & CONTEXT.md generation',
-        'Zero API keys, accounts, telemetry, or vendor lock-in',
-        'Custom community templates via local JSON or HTTPS',
-        'Open-source under the MIT License',
-      ],
-      metricsDetail: 'Zero API keys required · 100% Local-first · 6 Production Templates · MIT License',
-    },
-  },
-];
-
 export default function ProjectsPage() {
   const [activeFilter, setActiveFilter] = useState('All');
   const [expandedCards, setExpandedCards] = useState({});
@@ -387,6 +391,7 @@ export default function ProjectsPage() {
   const counts = useMemo(() => {
     return {
       all: PROJECTS.length,
+      openSource: PROJECTS.filter((p) => p.filterTag === 'Open Source').length,
       ai: PROJECTS.filter((p) => p.filterTag === 'AI').length,
       fullstack: PROJECTS.filter((p) => p.filterTag === 'Fullstack').length,
       agents: PROJECTS.filter((p) => p.filterTag === 'Agents').length,
@@ -396,7 +401,7 @@ export default function ProjectsPage() {
   return (
     <Layout
       title="Projects"
-      description="Production systems, autonomous AI agents, and full-stack software built by Vardhman Gupta."
+      description="Production systems, autonomous AI agents, open-source software, and full-stack platforms built by Vardhman Gupta."
     >
       <main className={styles.pageContainer}>
         {/* Subtle Ambient Glow */}
@@ -410,14 +415,15 @@ export default function ProjectsPage() {
           <header className={styles.pageHeader}>
             <h1 className={styles.pageTitle}>Projects</h1>
             <p className={styles.pageSubtitle}>
-              Production systems, autonomous AI agents, and full-stack platforms engineered for scale, reliability, and real-world impact.
+              Production systems, autonomous AI agents, open-source developer tooling, and full-stack platforms engineered for scale and impact.
             </p>
           </header>
 
-          {/* Filter Pills with Exact Categories: All, AI, Fullstack, Agents */}
+          {/* Filter Pills: All, Open Source, AI, Fullstack, Agents */}
           <div className={styles.filterRow}>
             {[
               { id: 'All', label: `All (${counts.all})` },
+              { id: 'Open Source', label: `Open Source (${counts.openSource})` },
               { id: 'AI', label: `AI (${counts.ai})` },
               { id: 'Fullstack', label: `Fullstack (${counts.fullstack})` },
               { id: 'Agents', label: `Agents (${counts.agents})` },
@@ -454,12 +460,20 @@ export default function ProjectsPage() {
                       <span className={styles.categoryBadge}>{project.category}</span>
                     </div>
 
-                    {project.metrics && (
-                      <div className={styles.metricsPill}>
-                        <CheckCircle2 size={13} />
-                        <span>{project.metrics}</span>
-                      </div>
-                    )}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
+                      {project.license && (
+                        <div className={styles.licenseBadge}>
+                          <ShieldCheck size={13} />
+                          <span>{project.license}</span>
+                        </div>
+                      )}
+                      {project.metrics && (
+                        <div className={styles.metricsPill}>
+                          <CheckCircle2 size={13} />
+                          <span>{project.metrics}</span>
+                        </div>
+                      )}
+                    </div>
                   </div>
 
                   {/* Title & Tagline */}
@@ -470,13 +484,15 @@ export default function ProjectsPage() {
                   </div>
 
                   {/* Recruiter Callout */}
-                  <div className={styles.recruiterCallout}>
-                    <div className={styles.recruiterHeader}>
-                      <ShieldCheck size={14} className={styles.recruiterIcon} />
-                      <span className={styles.recruiterLabel}>Architecture Highlight</span>
+                  {project.recruiterHighlight && (
+                    <div className={styles.recruiterCallout}>
+                      <div className={styles.recruiterHeader}>
+                        <ShieldCheck size={14} className={styles.recruiterIcon} />
+                        <span className={styles.recruiterLabel}>Architecture Highlight</span>
+                      </div>
+                      <p className={styles.recruiterText}>{project.recruiterHighlight}</p>
                     </div>
-                    <p className={styles.recruiterText}>{project.recruiterHighlight}</p>
-                  </div>
+                  )}
 
                   {/* Key Highlights List */}
                   <div className={styles.highlightsContainer}>
@@ -500,7 +516,7 @@ export default function ProjectsPage() {
                     ))}
                   </div>
 
-                  {/* Action Bar (Deep Dive toggle + Source Code) */}
+                  {/* Action Bar (Deep Dive toggle + Source Code + npm) */}
                   <div className={styles.cardFooter}>
                     <div className={styles.footerLeft}>
                       <button
@@ -516,17 +532,32 @@ export default function ProjectsPage() {
                     </div>
 
                     <div className={styles.footerRight}>
-                      <a
-                        href={project.github}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={styles.actionBtn}
-                        title="View Source on GitHub"
-                      >
-                        <IconGithub size={14} />
-                        <span>GitHub</span>
-                        <ArrowUpRight size={13} />
-                      </a>
+                      {project.github && (
+                        <a
+                          href={project.github}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={styles.actionBtn}
+                          title="View Source on GitHub"
+                        >
+                          <IconGithub size={14} />
+                          <span>GitHub</span>
+                          <ArrowUpRight size={13} />
+                        </a>
+                      )}
+                      {project.npm && (
+                        <a
+                          href={project.npm}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={styles.actionBtn}
+                          title="View Package on npm"
+                        >
+                          <IconNpm size={14} />
+                          <span>npm</span>
+                          <ArrowUpRight size={13} />
+                        </a>
+                      )}
                     </div>
                   </div>
 
@@ -581,166 +612,6 @@ export default function ProjectsPage() {
               );
             })}
           </div>
-
-          {/* ============================================================
-              Open Source Section
-              ============================================================ */}
-          <section className={styles.openSourceSection}>
-            <div className={styles.openSourceHeader}>
-              <span className={styles.openSourceEyebrow}>Public Tooling &amp; Packages</span>
-              <h2 className={styles.openSourceTitle}>Open Source</h2>
-              <p className={styles.openSourceSubtitle}>
-                Developer-first CLI utilities, packages, and frameworks published to npm and GitHub.
-              </p>
-            </div>
-
-            <div className={styles.projectsList}>
-              {OPEN_SOURCE_PROJECTS.map((project) => {
-                const isExpanded = !!expandedCards[project.id];
-                const IconComponent = project.icon;
-
-                return (
-                  <article key={project.id} className={styles.projectCard}>
-                    {/* Card Header */}
-                    <div className={styles.cardHeader}>
-                      <div className={styles.indexCategoryWrap}>
-                        <div className={styles.iconBadge}>
-                          <IconComponent size={16} />
-                        </div>
-                        <span className={styles.categoryBadge}>{project.category}</span>
-                      </div>
-
-                      {project.license && (
-                        <div className={styles.licenseBadge}>
-                          <ShieldCheck size={13} />
-                          <span>{project.license}</span>
-                        </div>
-                      )}
-                    </div>
-
-                    {/* Title & Tagline */}
-                    <div className={styles.titleBlock}>
-                      <h3 className={styles.projectTitle}>{project.title}</h3>
-                      <p className={styles.projectTagline}>{project.headline}</p>
-                      <p className={styles.projectSummary}>{project.cardDescription}</p>
-                    </div>
-
-                    {/* Key Highlights List */}
-                    <div className={styles.highlightsContainer}>
-                      <span className={styles.highlightsHeader}>Key Highlights</span>
-                      <ul className={styles.highlightsList}>
-                        {project.highlights.map((h, i) => (
-                          <li key={i} className={styles.highlightItem}>
-                            <span className={styles.highlightDot}>•</span>
-                            <span>{h}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-
-                    {/* Tech Stack Chips */}
-                    <div className={styles.techTagsRow}>
-                      {project.techStack.map((t, idx) => (
-                        <span key={idx} className={styles.techTag}>
-                          {t}
-                        </span>
-                      ))}
-                    </div>
-
-                    {/* Action Bar (Deep Dive toggle + GitHub + npm) */}
-                    <div className={styles.cardFooter}>
-                      <div className={styles.footerLeft}>
-                        <button
-                          type="button"
-                          className={`${styles.deepDiveBtn} ${isExpanded ? styles.deepDiveBtnActive : ''}`}
-                          onClick={() => toggleExpand(project.id)}
-                          aria-expanded={isExpanded}
-                        >
-                          <Layers size={14} />
-                          <span>{isExpanded ? 'Hide Architecture Details' : 'View Architecture Details'}</span>
-                          {isExpanded ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
-                        </button>
-                      </div>
-
-                      <div className={styles.footerRight}>
-                        <a
-                          href={project.github}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className={styles.actionBtn}
-                          title="View on GitHub"
-                        >
-                          <IconGithub size={14} />
-                          <span>GitHub</span>
-                          <ArrowUpRight size={13} />
-                        </a>
-                        {project.npm && (
-                          <a
-                            href={project.npm}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className={styles.actionBtn}
-                            title="View on npm"
-                          >
-                            <IconNpm size={14} />
-                            <span>npm</span>
-                            <ArrowUpRight size={13} />
-                          </a>
-                        )}
-                      </div>
-                    </div>
-
-                    {/* Expandable Architecture Deep Dive Panel */}
-                    {isExpanded && (
-                      <div className={styles.deepDivePanel}>
-                        <div className={styles.deepDiveDivider} />
-                        
-                        <div className={styles.deepDiveContent}>
-                          <h4 className={styles.deepDiveHeading}>System Architecture &amp; Implementation Details</h4>
-                          
-                          {project.details.description.split('\n\n').map((paragraph, pIdx) => (
-                            <p key={pIdx} className={styles.deepDiveParagraph}>
-                              {paragraph}
-                            </p>
-                          ))}
-
-                          {project.details.metricsDetail && (
-                            <div className={styles.metricsDetailBox}>
-                              <span className={styles.metricsDetailLabel}>Specifications &amp; Model:</span>
-                              <span className={styles.metricsDetailText}>{project.details.metricsDetail}</span>
-                            </div>
-                          )}
-
-                          <div className={styles.deepDiveSection}>
-                            <h5 className={styles.deepDiveSubheading}>Complete Technical Stack</h5>
-                            <div className={styles.fullTechWrap}>
-                              {project.details.allTech.map((techItem, tIdx) => (
-                                <span key={tIdx} className={styles.fullTechChip}>
-                                  {techItem}
-                                </span>
-                              ))}
-                            </div>
-                          </div>
-
-                          <div className={styles.deepDiveSection}>
-                            <h5 className={styles.deepDiveSubheading}>Complete Workflow Capabilities</h5>
-                            <ul className={styles.fullHighlightsList}>
-                              {project.details.fullHighlights.map((fh, fhIdx) => (
-                                <li key={fhIdx} className={styles.fullHighlightItem}>
-                                  <CheckCircle2 size={13} className={styles.fullHighlightIcon} />
-                                  <span>{fh}</span>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                  </article>
-                );
-              })}
-            </div>
-          </section>
 
         </div>
       </main>

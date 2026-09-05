@@ -138,11 +138,37 @@ export default function Home() {
             </div>
 
             <div className={styles.projectCardsGrid}>
-              {/* Project 01: Karya */}
+              {/* Project 01: build-with-ai */}
               <article className={`${styles.projectCard} ${styles.staggerItem}`}>
                 <div className={styles.projectCardTop}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                     <span className={styles.projectIndexBadge}>01</span>
+                    <span className={styles.projectCategoryTag}>Open Source</span>
+                  </div>
+                  <span className={styles.projectMetricTag}>MIT License</span>
+                </div>
+
+                <div className={styles.projectCardBody}>
+                  <h3 className={styles.projectCardTitle}>build-with-ai</h3>
+                  <p className={styles.projectCardDesc}>
+                    Open-source CLI that turns AI-assisted development into a structured engineering workflow with context-aware prompts and zero API keys.
+                  </p>
+                </div>
+
+                <div className={styles.projectTechRow}>
+                  <span className={styles.techTag}>Node.js</span>
+                  <span className={styles.techTag}>CLI</span>
+                  <span className={styles.techTag}>npm</span>
+                  <span className={styles.techTag}>JSON</span>
+                  <span className={styles.techTag}>AI Prompts</span>
+                </div>
+              </article>
+
+              {/* Project 02: Karya */}
+              <article className={`${styles.projectCard} ${styles.staggerItem}`}>
+                <div className={styles.projectCardTop}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <span className={styles.projectIndexBadge}>02</span>
                     <span className={styles.projectCategoryTag}>AI</span>
                   </div>
                 </div>
@@ -163,11 +189,11 @@ export default function Home() {
                 </div>
               </article>
 
-              {/* Project 02: AuraNow */}
+              {/* Project 03: AuraNow */}
               <article className={`${styles.projectCard} ${styles.staggerItem}`}>
                 <div className={styles.projectCardTop}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                    <span className={styles.projectIndexBadge}>02</span>
+                    <span className={styles.projectIndexBadge}>03</span>
                     <span className={styles.projectCategoryTag}>AI</span>
                   </div>
                 </div>
@@ -188,11 +214,11 @@ export default function Home() {
                 </div>
               </article>
 
-              {/* Project 03: Code with Buddy */}
+              {/* Project 04: Code with Buddy */}
               <article className={`${styles.projectCard} ${styles.staggerItem}`}>
                 <div className={styles.projectCardTop}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                    <span className={styles.projectIndexBadge}>03</span>
+                    <span className={styles.projectIndexBadge}>04</span>
                     <span className={styles.projectCategoryTag}>Fullstack</span>
                   </div>
                 </div>
@@ -213,11 +239,11 @@ export default function Home() {
                 </div>
               </article>
 
-              {/* Project 04: IncidentFlow */}
+              {/* Project 05: IncidentFlow */}
               <article className={`${styles.projectCard} ${styles.staggerItem}`}>
                 <div className={styles.projectCardTop}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                    <span className={styles.projectIndexBadge}>04</span>
+                    <span className={styles.projectIndexBadge}>05</span>
                     <span className={styles.projectCategoryTag}>Fullstack</span>
                   </div>
                   <span className={styles.projectMetricTag}>29/29 Tests</span>
@@ -239,11 +265,11 @@ export default function Home() {
                 </div>
               </article>
 
-              {/* Project 05: Terminal Agent */}
+              {/* Project 06: Terminal Agent */}
               <article className={`${styles.projectCard} ${styles.staggerItem}`}>
                 <div className={styles.projectCardTop}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                    <span className={styles.projectIndexBadge}>05</span>
+                    <span className={styles.projectIndexBadge}>06</span>
                     <span className={styles.projectCategoryTag}>Agents</span>
                   </div>
                 </div>
@@ -264,11 +290,11 @@ export default function Home() {
                 </div>
               </article>
 
-              {/* Project 06: Agent Bench */}
+              {/* Project 07: Agent Bench */}
               <article className={`${styles.projectCard} ${styles.staggerItem}`}>
                 <div className={styles.projectCardTop}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                    <span className={styles.projectIndexBadge}>06</span>
+                    <span className={styles.projectIndexBadge}>07</span>
                     <span className={styles.projectCategoryTag}>Agents</span>
                   </div>
                 </div>
@@ -289,11 +315,11 @@ export default function Home() {
                 </div>
               </article>
 
-              {/* Project 07: Model Router */}
+              {/* Project 08: Model Router */}
               <article className={`${styles.projectCard} ${styles.staggerItem}`}>
                 <div className={styles.projectCardTop}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                    <span className={styles.projectIndexBadge}>07</span>
+                    <span className={styles.projectIndexBadge}>08</span>
                     <span className={styles.projectCategoryTag}>Agents</span>
                   </div>
                   <span className={styles.projectMetricTag}>40–70% Cost Reduction</span>
