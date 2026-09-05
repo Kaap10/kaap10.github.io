@@ -138,91 +138,107 @@ export default function Home() {
             </div>
 
             <div className={styles.projectCardsGrid}>
-              {/* Project 01: Guru-G */}
+              {/* Project 01: Terminal Agent */}
               <article className={`${styles.projectCard} ${styles.staggerItem}`}>
                 <div className={styles.projectCardTop}>
-                  <span className={styles.projectIndexBadge}>01</span>
-                  <span className={styles.projectCategoryTag}>Edge AI &amp; Local LLMs</span>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <span className={styles.projectIndexBadge}>01</span>
+                    <span className={styles.projectCategoryTag}>AI Agents &amp; CLI</span>
+                  </div>
+                  <span className={styles.projectTierBadge}>Featured</span>
                 </div>
 
                 <div className={styles.projectCardBody}>
-                  <h3 className={styles.projectCardTitle}>Guru-G</h3>
+                  <h3 className={styles.projectCardTitle}>Terminal Agent</h3>
                   <p className={styles.projectCardDesc}>
-                    Offline AI Tutor running local small LLMs for internet-deprived regions with textbook summaries, interactive quizzes, and multilingual intelligence.
+                    Autonomous AI coding agent that plans, modifies, and independently verifies real-world codebases with sandboxed test execution and automatic rollback.
                   </p>
                 </div>
 
                 <div className={styles.projectTechRow}>
-                  <span className={styles.techTag}>Llama.cpp</span>
                   <span className={styles.techTag}>Python</span>
-                  <span className={styles.techTag}>FastAPI</span>
-                  <span className={styles.techTag}>React Native</span>
+                  <span className={styles.techTag}>Docker</span>
+                  <span className={styles.techTag}>SQLite</span>
+                  <span className={styles.techTag}>Git</span>
+                  <span className={styles.techTag}>Pytest</span>
                 </div>
               </article>
 
-              {/* Project 02: AuraNow */}
+              {/* Project 02: IncidentFlow */}
               <article className={`${styles.projectCard} ${styles.staggerItem}`}>
                 <div className={styles.projectCardTop}>
-                  <span className={styles.projectIndexBadge}>02</span>
-                  <span className={styles.projectCategoryTag}>Retrieval &amp; Vector Embeddings</span>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <span className={styles.projectIndexBadge}>02</span>
+                    <span className={styles.projectCategoryTag}>Full-Stack &amp; DevOps</span>
+                  </div>
+                  <span className={styles.projectMetricTag}>29/29 Tests</span>
                 </div>
 
                 <div className={styles.projectCardBody}>
-                  <h3 className={styles.projectCardTitle}>AuraNow</h3>
+                  <h3 className={styles.projectCardTitle}>IncidentFlow</h3>
                   <p className={styles.projectCardDesc}>
-                    CPU-optimized RAG pipeline performing semantic clustering and hierarchical context generation over 100K+ comments with projection embeddings.
+                    Mission-critical incident response platform with automated SLA deadline monitoring, Celery async alerts, RBAC, and immutable audit logs.
                   </p>
                 </div>
 
                 <div className={styles.projectTechRow}>
-                  <span className={styles.techTag}>Sentence Transformers</span>
-                  <span className={styles.techTag}>UMAP</span>
-                  <span className={styles.techTag}>HDBSCAN</span>
                   <span className={styles.techTag}>FastAPI</span>
+                  <span className={styles.techTag}>React</span>
+                  <span className={styles.techTag}>PostgreSQL</span>
+                  <span className={styles.techTag}>Celery</span>
+                  <span className={styles.techTag}>Redis</span>
                 </div>
               </article>
 
-              {/* Project 03: Code With Buddy */}
+              {/* Project 03: Karya */}
               <article className={`${styles.projectCard} ${styles.staggerItem}`}>
                 <div className={styles.projectCardTop}>
-                  <span className={styles.projectIndexBadge}>03</span>
-                  <span className={styles.projectCategoryTag}>Realtime Collaboration</span>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <span className={styles.projectIndexBadge}>03</span>
+                    <span className={styles.projectCategoryTag}>Offline AI &amp; RAG</span>
+                  </div>
+                  <span className={styles.projectTierBadge}>Featured</span>
                 </div>
 
                 <div className={styles.projectCardBody}>
-                  <h3 className={styles.projectCardTitle}>Code With Buddy</h3>
+                  <h3 className={styles.projectCardTitle}>Karya</h3>
                   <p className={styles.projectCardDesc}>
-                    Realtime collaborative code editor supporting multi-cursor live synchronization, syntax formatting, and frictionless browser-based pair programming.
+                    Offline-first educational platform combining local 1.5B LLM inference, multilingual RAG (22+ languages), OCR document indexing, and AI whiteboard.
                   </p>
                 </div>
 
                 <div className={styles.projectTechRow}>
-                  <span className={styles.techTag}>React.js</span>
-                  <span className={styles.techTag}>CodeMirror</span>
+                  <span className={styles.techTag}>React</span>
+                  <span className={styles.techTag}>llama.cpp</span>
+                  <span className={styles.techTag}>ChromaDB</span>
                   <span className={styles.techTag}>Node.js</span>
-                  <span className={styles.techTag}>Socket.IO</span>
+                  <span className={styles.techTag}>MongoDB</span>
                 </div>
               </article>
 
-              {/* Project 04: AegisAI */}
+              {/* Project 04: Model Router */}
               <article className={`${styles.projectCard} ${styles.staggerItem}`}>
                 <div className={styles.projectCardTop}>
-                  <span className={styles.projectIndexBadge}>04</span>
-                  <span className={styles.projectCategoryTag}>Security AI &amp; Anomaly Detection</span>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <span className={styles.projectIndexBadge}>04</span>
+                    <span className={styles.projectCategoryTag}>LLM Orchestration</span>
+                  </div>
+                  <span className={styles.projectMetricTag}>40–70% Savings</span>
                 </div>
 
                 <div className={styles.projectCardBody}>
-                  <h3 className={styles.projectCardTitle}>AegisAI</h3>
+                  <h3 className={styles.projectCardTitle}>Model Router</h3>
                   <p className={styles.projectCardDesc}>
-                    Behavior-based anomaly detection engine identifying identity attack patterns, brute-force spikes, and lateral movement with SIEM-ready alerting.
+                    Adaptive LLM proxy gateway dynamically routing queries based on complexity—dispatching simple prompts to local models and complex queries to flagship APIs.
                   </p>
                 </div>
 
                 <div className={styles.projectTechRow}>
-                  <span className={styles.techTag}>TensorFlow</span>
-                  <span className={styles.techTag}>FastAPI</span>
-                  <span className={styles.techTag}>Elasticsearch</span>
                   <span className={styles.techTag}>Python</span>
+                  <span className={styles.techTag}>FastAPI</span>
+                  <span className={styles.techTag}>OpenAI</span>
+                  <span className={styles.techTag}>Anthropic</span>
+                  <span className={styles.techTag}>Docker</span>
                 </div>
               </article>
             </div>

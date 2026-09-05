@@ -23,8 +23,8 @@ This repository houses an integrated developer ecosystem built on a hybrid **Sta
 +----------------------------------------------------------------------------------------------------+
 |  [Portfolio]       |  [Projects]       |  [Tool Kit]       |  [Technical Blogs]|  [Global Layer]   |
 |  /                 |  /projects        |  /tools           |  /blogs/intro     |  theme/Root.js    |
-|  • Minimal hero    |  • 4 Systems      |  • Whiteboard     |  • 100+ Articles  |  • Command Palette|
-|  • Quick CTAs      |  • Tech badges    |  • Tracker App    |  • DSA, Systems   |  • Scratchpad     |
+|  • Minimal hero    |  • 7 Systems      |  • Whiteboard     |  • 100+ Articles  |  • Command Palette|
+|  • Quick CTAs      |  • Tier-1 Showcase|  • Tracker App    |  • DSA, Systems   |  • Scratchpad     |
 |  • Techstack grid  |  • GitHub links   |  • Notebook       |  • Algolia Search |  • Floating Timer |
 +----------------------------------------------------------------------------------------------------+
 ```
@@ -34,8 +34,8 @@ This repository houses an integrated developer ecosystem built on a hybrid **Sta
 ## Key Features
 
 ### 1. Portfolio & Dynamic Projects Showcase
-- **Home (`/`)**: Minimal editorial layout featuring AI Engineer header, direct CTAs (`Explore Project`, `Explore Tools`, `Resume`), Featured Projects, interactive Tool Kit, dedicated Technical Blogs, and structured 5-domain Techstack.
-- **Projects Showcase (`/projects`)**: Dedicated directory highlighting 4 production-grade systems (**Guru-G**, **AuraNow**, **Code With Buddy**, **AegisAI**) with domain filtering (`All`, `AI / ML`, `Full-Stack`, `Security`), architectural highlights, and source code links.
+- **Home (`/`)**: Minimal editorial layout featuring AI Engineer header, direct CTAs (`Explore Project`, `Explore Tools`, `Resume`), Tier-1 Featured Projects (**Terminal Agent**, **IncidentFlow**, **Karya**, **Model Router**), interactive Tool Kit, dedicated Technical Blogs, and structured 5-domain Techstack.
+- **Projects Showcase (`/projects`)**: Dedicated directory highlighting 7 production-grade systems (**Terminal Agent**, **IncidentFlow**, **Karya**, **Code with Buddy**, **Agent Bench**, **Model Router**, **Auranow**) with category filtering (`All (7)`, `Featured (3)`, `AI & Agents (4)`, `Full-Stack (3)`), architecture highlights, metric chips, recruiter callouts, and expandable deep-dive panels.
 
 ### 2. Tool Kit & Productivity Suite (`/tools`)
 - **Whiteboard (`/board`)**: Architectural sketching canvas powered by `@excalidraw/excalidraw` with local drawing persistence.

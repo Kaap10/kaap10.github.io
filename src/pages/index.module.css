@@ -321,6 +321,29 @@
   border: 1px solid var(--vg-border, rgba(255, 255, 255, 0.08));
 }
 
+.projectTierBadge {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 0.15rem 0.5rem;
+  border-radius: 9999px;
+  background: rgba(255, 77, 79, 0.14);
+  color: var(--vg-accent, #FF4D4F);
+  border: 1px solid var(--vg-accent-border, rgba(255, 77, 79, 0.3));
+}
+
+.projectMetricTag {
+  font-size: 0.68rem;
+  font-weight: 600;
+  font-family: var(--ifm-font-family-monospace, monospace);
+  padding: 0.15rem 0.5rem;
+  border-radius: 9999px;
+  background: rgba(52, 211, 153, 0.1);
+  color: #34D399;
+  border: 1px solid rgba(52, 211, 153, 0.25);
+}
+
 .projectCardBody {
   margin-bottom: 1.25rem;
 }
