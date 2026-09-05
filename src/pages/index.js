@@ -163,7 +163,7 @@ export default function Home() {
                 <div className={styles.projectCardBody}>
                   <h3 className={styles.projectCardTitle}>Karya</h3>
                   <p className={styles.projectCardDesc}>
-                    Offline-first educational platform combining local 1.5B LLM inference, multilingual RAG (22 Indian languages + English), OCR document indexing, and AI whiteboard.
+                    An offline AI education platform combining quantized on-device LLM inference, multilingual RAG across 22 Indian languages + English, document OCR, and interactive whiteboard tools.
                   </p>
                 </div>
 
@@ -188,7 +188,7 @@ export default function Home() {
                 <div className={styles.projectCardBody}>
                   <h3 className={styles.projectCardTitle}>AuraNow</h3>
                   <p className={styles.projectCardDesc}>
-                    AI-powered video comment intelligence platform transforming YouTube comments into RAPTOR topic trees, sentiment analytics, and conversational intelligence.
+                    An AI-powered video comment intelligence platform that automatically clusters YouTube comments into interactive RAPTOR topic trees, audience sentiment analytics, toxicity audits, and conversational insights.
                   </p>
                 </div>
 
@@ -213,7 +213,7 @@ export default function Home() {
                 <div className={styles.projectCardBody}>
                   <h3 className={styles.projectCardTitle}>Code with Buddy</h3>
                   <p className={styles.projectCardDesc}>
-                    Realtime collaborative code editor supporting live document synchronization via WebSockets, in-room chat, and remote code execution across 7 languages.
+                    A browser-based pair programming tool featuring real-time collaborative code editing synchronized via WebSockets, multi-language execution across 7 languages, and integrated chat.
                   </p>
                 </div>
 
@@ -239,7 +239,7 @@ export default function Home() {
                 <div className={styles.projectCardBody}>
                   <h3 className={styles.projectCardTitle}>IncidentFlow</h3>
                   <p className={styles.projectCardDesc}>
-                    Mission-critical incident response platform with automated SLA deadline monitoring, Celery async alerts, RBAC, and immutable audit logs.
+                    A full-stack incident management system with automated SLA enforcement, Celery asynchronous alerts, RBAC, audit trails, and reliability analytics.
                   </p>
                 </div>
 
@@ -264,7 +264,7 @@ export default function Home() {
                 <div className={styles.projectCardBody}>
                   <h3 className={styles.projectCardTitle}>Terminal Agent</h3>
                   <p className={styles.projectCardDesc}>
-                    Verify-first autonomous coding agent executing end-to-end tasks with sandboxed CLI tool execution, secret redaction, and rollback.
+                    An autonomous AI coding agent that plans, modifies, tests, and independently verifies real-world codebases with sandboxed isolation and automatic rollback.
                   </p>
                 </div>
 
@@ -289,7 +289,7 @@ export default function Home() {
                 <div className={styles.projectCardBody}>
                   <h3 className={styles.projectCardTitle}>Agent Bench</h3>
                   <p className={styles.projectCardDesc}>
-                    Autonomous AI agent evaluation framework providing 40+ real-world tasks, deterministic rule-based judging, and JSON execution traces.
+                    A CLI toolkit for benchmarking AI coding agents across 40+ programming tasks using deterministic rule-based scoring and full execution trace logging.
                   </p>
                 </div>
 
@@ -309,13 +309,13 @@ export default function Home() {
                     <span className={styles.projectIndexBadge}>07</span>
                     <span className={styles.projectCategoryTag}>Agents</span>
                   </div>
-                  <span className={styles.projectMetricTag}>Cost Optimization · Benchmark-tested</span>
+                  <span className={styles.projectMetricTag}>Adaptive Routing · Cost Optimization</span>
                 </div>
 
                 <div className={styles.projectCardBody}>
                   <h3 className={styles.projectCardTitle}>Model Router</h3>
                   <p className={styles.projectCardDesc}>
-                    Adaptive LLM selection proxy and gateway that analyzes prompt complexity to route queries between local models and premium APIs to optimize token costs.
+                    An intelligent proxy gateway that dynamically routes LLM queries based on prompt complexity—directing simpler queries to lower-cost models while reserving premium models for complex tasks.
                   </p>
                 </div>
 
@@ -385,7 +385,7 @@ export default function Home() {
                   Zero-API, local-first CLI for structured AI-assisted software development.
                 </p>
                 <p className={styles.openSourceCardDesc}>
-                  Open-source CLI that guides developers through complete software projects using 10–23 phase structured workflows across different project templates. It generates context-aware prompts for each phase while maintaining architectural decisions locally in <code>.buildwithai/</code> to prevent context drift across AI sessions — with zero API keys, accounts, or telemetry.
+                  Open-source CLI that turns AI-assisted development into a structured engineering workflow. Generates context-aware prompts, preserves architectural decisions locally, and guides developers from discovery to deployment — with zero API keys or telemetry.
                 </p>
               </div>
 
