@@ -27,48 +27,128 @@ const IconGithub = ({ size = 15 }) => (
 );
 
 const PROJECTS = [
+  // 1. Karya
   {
-    id: 'terminal-agent',
+    id: 'karya',
     index: '01',
     tier: 'featured',
-    category: 'AI Agents / CLI Tools',
+    category: 'AI / Education (Multilingual)',
     filterTag: 'AI & Agents',
-    icon: Terminal,
-    title: 'Terminal Agent',
-    headline: 'Verify-first autonomous software engineering agent.',
+    icon: BookOpen,
+    title: 'Karya',
+    headline: 'Offline-first multilingual AI learning platform.',
     cardDescription:
-      'An autonomous AI coding agent that plans, modifies, tests, and independently verifies real-world codebases with sandboxed isolation and automatic rollback.',
-    techStack: ['Python', 'Docker', 'SQLite', 'Git', 'Pytest'],
+      'An offline AI education platform combining quantized on-device LLM inference, multilingual RAG (22+ languages), document OCR, and interactive whiteboard tools.',
+    techStack: ['React', 'Node.js', 'MongoDB', 'ChromaDB', 'llama.cpp'],
     highlights: [
-      'Autonomous agent loop: LLM planning, controlled CLI execution & test verification',
-      'Sandboxed test verification: Changes accepted only when independent test runner passes',
-      'Automatic rollback & recovery: Classifies failures across 12 categories with SQLite checkpoints',
+      'Local LLM-powered tutoring: Quantized 1.5B model running on consumer 4–8GB hardware',
+      'Multilingual RAG search: Neural machine translation across 22+ languages with local ChromaDB',
+      'AI-generated study materials: Instant automated summaries, notes, flashcards, MCQs & diagrams',
+    ],
+    metrics: 'Vector ~68ms · Chat ~1.1s',
+    recruiterHighlight:
+      'Implemented an offline-first AI architecture by quantizing a 1.5B LLM for low-RAM devices, enabling advanced NLP features without cloud dependence.',
+    github: 'https://github.com/kaap10',
+    demo: null,
+    tags: ['AI / ML', 'RAG', 'Multilingual', 'Offline-First', 'llama.cpp', 'ChromaDB', 'EdTech'],
+    details: {
+      description:
+        'Karya is an offline-first AI education platform designed for low-resource and multilingual environments. It integrates on-device LLM inference (using Distill Qwen-1.5B) with neural machine translation (NLLB-200), enabling tutoring and content generation in 22+ languages. Users can upload documents or images (via OCR) and audio (via speech-to-text), and Karya semantically indexes this content for search and retrieval.\n\nThe platform builds a knowledge tree from documents and generates AI-crafted study materials: summaries, notes, flashcards, and multiple-choice questions. There is also an AI-assisted whiteboard (Excalidraw) that can create flowcharts and diagrams algorithmically.\n\nAll processing is optimized for limited hardware: Karya uses a quantized 1.5B LLM to run on 4–8GB devices, and stores embeddings in a local ChromaDB. The web UI (React + Tailwind) supports rich interactions, and a mobile app (React Native) allows on-device learning with SQLite fallback when offline.',
+      allTech: ['React', 'TypeScript', 'Vite', 'Tailwind CSS', 'React Native', 'Expo', 'Node.js', 'Express', 'MongoDB', 'Mongoose', 'ChromaDB', 'llama.cpp', 'NLLB-200', 'Tesseract.js', 'Whisper', 'Excalidraw', 'PyTorch', 'onnxruntime', 'SQLite'],
+      fullHighlights: [
+        'Local multilingual LLM tutoring on low-spec hardware',
+        'RAG-enabled semantic search across 22+ languages',
+        'AI-generated educational notes, flashcards, and quizzes',
+        'On-device OCR and speech transcription (Whisper)',
+        'Interactive AI whiteboard with algorithmic flowchart creation',
+        'Complete offline-first architecture with SQLite caching',
+      ],
+      metricsDetail: 'Vector retrieval ~68ms · Chat latency ~1.1s · Flowchart gen ~24s · 10-page PDF indexing ~4.2s · OCR CER ~1.1%',
+    },
+  },
+
+  // 2. AuraNow
+  {
+    id: 'auranow',
+    index: '02',
+    tier: 'featured',
+    category: 'Full-Stack / Video Conferencing',
+    filterTag: 'Full-Stack',
+    icon: Video,
+    title: 'AuraNow',
+    headline: 'AI-native video conferencing platform with semantic search.',
+    cardDescription:
+      'An open-source video conferencing app built with Next.js and LiveKit WebRTC, featuring real-time automated meeting summarization and semantic transcript Q&A.',
+    techStack: ['React', 'TypeScript', 'LiveKit', 'Next.js', 'MongoDB'],
+    highlights: [
+      'LiveKit WebRTC conferencing: Multi-party low-latency video, audio, and screen sharing',
+      'AI meeting assistant: Real-time live transcript generation, action items, and executive summaries',
+      'Semantic transcript Q&A: Vector search (Pinecone) over meeting archives for instant retrieval',
     ],
     metrics: null,
     recruiterHighlight:
-      'Implements a verify-first workflow by executing an independent test suite in an isolated sandbox for each code modification.',
+      'Built an AI-enhanced video conferencing platform combining LiveKit WebRTC with real-time meeting transcription and semantic search.',
     github: 'https://github.com/kaap10',
     demo: null,
-    tags: ['Python', 'AI Agents', 'CLI', 'Testing', 'DevTools', 'Docker', 'SQLite'],
+    tags: ['Full-Stack', 'LiveKit', 'Next.js', 'React', 'WebRTC', 'AI', 'MongoDB'],
     details: {
       description:
-        'Terminal Agent is an autonomous coding agent that executes development tasks end-to-end. It translates natural-language tasks into structured plans, applies code changes using controlled CLI tools, and immediately runs the project\'s test suite. It follows a verify-first approach: changes are only accepted when an independent verifier (an LLM-based test runner) confirms all tests pass in a sandboxed environment.\n\nThe agent maintains context by ranking repository information and supports multiple LLM providers (OpenAI, Anthropic, Gemini, Ollama). It enforces strict security policies by performing secret detection and redaction. All tool commands execute inside isolated Docker or local sandboxes to avoid system contamination.\n\nTerminal Agent includes 12 specialized developer tools (for file editing, shell commands, etc.) and uses a SQLite database for session persistence and checkpoints. If failures occur, it classifies the error and automatically rolls back to the last stable state.',
-      allTech: ['Python', 'Typer', 'Rich', 'Pydantic', 'HTTPX', 'GitPython', 'psutil', 'SQLite', 'Docker', 'Ollama', 'OpenAI API', 'Anthropic API', 'Gemini API', 'Pytest'],
+        'Auranow (also known as Aura) is an advanced video conferencing platform combining LiveKit\'s WebRTC infrastructure with AI enhancements. It allows multiple participants to join video calls with chat and screen sharing. The frontend is built with Next.js and React, ensuring a smooth user experience.\n\nIts key differentiator is the built-in AI assistant. During a call, an LLM listens and produces live transcripts, summaries, and action items. After the meeting, users can ask questions about the content: the system uses embeddings and semantic search (OpenAI/Pinecone) to retrieve relevant sections of the transcript.\n\nThe app uses Clerk for authentication and MongoDB for storage. It supports serverless deployment on Vercel, making it scalable. Auranow demonstrates a combination of real-time communication and NLP: it is literally an "AI-powered Zoom" designed for modern remote teams.',
+      allTech: ['React', 'Next.js', 'TypeScript', 'LiveKit', 'MongoDB', 'Clerk', 'Stripe', 'Anthropic API', 'OpenAI API', 'Pinecone', 'Tailwind CSS'],
       fullHighlights: [
-        'Autonomous LLM planning and execution loop',
-        'Deterministic context ranking over repository files',
-        'Multi-LLM provider architecture (OpenAI, Anthropic, Gemini, Ollama)',
-        'Secret detection and redaction engine',
-        'Independent sandboxed test verification',
-        '12-category failure classification and automatic rollback',
-        'SQLite checkpoint persistence across sessions',
+        'LiveKit-based multi-party WebRTC video and audio streams',
+        'Real-time LLM meeting transcription and action-item synthesis',
+        'Semantic transcript Q&A powered by vector embeddings',
+        'Scalable Next.js and React full-stack architecture',
+        'Secure Clerk authentication and MongoDB persistence',
       ],
-      metricsDetail: '12 specialized CLI tools · Zero-contamination sandboxes · Multi-LLM provider support',
+      metricsDetail: 'Low-latency WebRTC video · Real-time AI transcription · Vector archive retrieval',
     },
   },
+
+  // 3. Code with Buddy
+  {
+    id: 'code-with-buddy',
+    index: '03',
+    tier: 'featured',
+    category: 'Full-Stack / Collaboration',
+    filterTag: 'Full-Stack',
+    icon: Code2,
+    title: 'Code with Buddy',
+    headline: 'Real-time collaborative code editor with live execution.',
+    cardDescription:
+      'A browser-based pair programming tool featuring real-time multi-user code editing synchronized via WebSockets, multi-language execution, and integrated chat.',
+    techStack: ['React', 'Node.js', 'Socket.IO', 'Express', 'CodeMirror'],
+    highlights: [
+      'WebSocket-based real-time editing: Low-latency multi-cursor synchronization',
+      'Late-joiner state sync: Fast one-time handshake without replaying full edit history',
+      'Multi-language execution: Remote code compilation across 20+ languages via Judge0 API',
+    ],
+    metrics: null,
+    recruiterHighlight:
+      'Engineered low-latency sync by filtering update events and using targeted handshakes for late-joiners.',
+    github: 'https://github.com/kaap10',
+    demo: null,
+    tags: ['Full-Stack', 'React', 'WebSockets', 'Collaboration', 'Node.js', 'CodeMirror'],
+    details: {
+      description:
+        'Code with Buddy is a browser-based collaborative coding environment for pair programming and technical interviews. Multiple users can join a session via a shared URL and edit code in a CodeMirror editor simultaneously. Changes are propagated in real-time using Socket.IO, and the interface shows live collaborator cursors and an integrated chat panel.\n\nTo handle concurrency, the system filters out local change events triggered by remote updates, preventing infinite broadcast loops. Late-joiners receive the current code state through a one-time synchronization handshake instead of replaying the entire edit history.\n\nUsers can switch programming languages on the fly; the app integrates with the Judge0 API to compile and run code (supporting JavaScript, Python, Java, C/C++, C#, Ruby, etc.). The backend (Express) handles execution and returns output. The UI, built with React and Tailwind CSS, includes custom themes and a shareable room UUID mechanism.',
+      allTech: ['React', 'TypeScript', 'Vite', 'Tailwind CSS', 'Node.js', 'Express', 'Socket.IO', 'CodeMirror', 'Judge0 API'],
+      fullHighlights: [
+        'WebSocket-based real-time synchronized code editing',
+        'Room UUID collaboration and live user presence',
+        'Late-joiner state handshake minimizing network overhead',
+        'Multi-language code compilation and live terminal output',
+        'In-room live chat with collaborator presence indicators',
+      ],
+      metricsDetail: 'Multi-user real-time state sync · Sub-50ms WebSocket latency · 20+ language compilers',
+    },
+  },
+
+  // 4. IncidentFlow
   {
     id: 'incidentflow',
-    index: '02',
+    index: '04',
     tier: 'featured',
     category: 'Full-Stack / Backend',
     filterTag: 'Full-Stack',
@@ -105,84 +185,52 @@ const PROJECTS = [
       metricsDetail: '29/29 tests passing · 100% SLA alert idempotency · Multi-timezone awareness',
     },
   },
+
+  // 5. Terminal Agent
   {
-    id: 'karya',
-    index: '03',
+    id: 'terminal-agent',
+    index: '05',
     tier: 'featured',
-    category: 'AI / Education (Multilingual)',
+    category: 'AI Agents / CLI Tools',
     filterTag: 'AI & Agents',
-    icon: BookOpen,
-    title: 'Karya',
-    headline: 'Offline-first multilingual AI learning platform.',
+    icon: Terminal,
+    title: 'Terminal Agent',
+    headline: 'Verify-first autonomous software engineering agent.',
     cardDescription:
-      'An offline AI education platform combining quantized on-device LLM inference, multilingual RAG (22+ languages), document OCR, and interactive whiteboard tools.',
-    techStack: ['React', 'Node.js', 'MongoDB', 'ChromaDB', 'llama.cpp'],
+      'An autonomous AI coding agent that plans, modifies, tests, and independently verifies real-world codebases with sandboxed isolation and automatic rollback.',
+    techStack: ['Python', 'Docker', 'SQLite', 'Git', 'Pytest'],
     highlights: [
-      'Local LLM-powered tutoring: Quantized 1.5B model running on consumer 4–8GB hardware',
-      'Multilingual RAG search: Neural machine translation across 22+ languages with local ChromaDB',
-      'AI-generated study materials: Instant automated summaries, notes, flashcards, MCQs & diagrams',
-    ],
-    metrics: 'Vector ~68ms · Chat ~1.1s',
-    recruiterHighlight:
-      'Implemented an offline-first AI architecture by quantizing a 1.5B LLM for low-RAM devices, enabling advanced NLP features without cloud dependence.',
-    github: 'https://github.com/kaap10',
-    demo: null,
-    tags: ['AI / ML', 'RAG', 'Multilingual', 'Offline-First', 'llama.cpp', 'ChromaDB', 'EdTech'],
-    details: {
-      description:
-        'Karya is an offline-first AI education platform designed for low-resource and multilingual environments. It integrates on-device LLM inference (using Distill Qwen-1.5B) with neural machine translation (NLLB-200), enabling tutoring and content generation in 22+ languages. Users can upload documents or images (via OCR) and audio (via speech-to-text), and Karya semantically indexes this content for search and retrieval.\n\nThe platform builds a knowledge tree from documents and generates AI-crafted study materials: summaries, notes, flashcards, and multiple-choice questions. There is also an AI-assisted whiteboard (Excalidraw) that can create flowcharts and diagrams algorithmically.\n\nAll processing is optimized for limited hardware: Karya uses a quantized 1.5B LLM to run on 4–8GB devices, and stores embeddings in a local ChromaDB. The web UI (React + Tailwind) supports rich interactions, and a mobile app (React Native) allows on-device learning with SQLite fallback when offline.',
-      allTech: ['React', 'TypeScript', 'Vite', 'Tailwind CSS', 'React Native', 'Expo', 'Node.js', 'Express', 'MongoDB', 'Mongoose', 'ChromaDB', 'llama.cpp', 'NLLB-200', 'Tesseract.js', 'Whisper', 'Excalidraw', 'PyTorch', 'onnxruntime', 'SQLite'],
-      fullHighlights: [
-        'Local multilingual LLM tutoring on low-spec hardware',
-        'RAG-enabled semantic search across 22+ languages',
-        'AI-generated educational notes, flashcards, and quizzes',
-        'On-device OCR and speech transcription (Whisper)',
-        'Interactive AI whiteboard with algorithmic flowchart creation',
-        'Complete offline-first architecture with SQLite caching',
-      ],
-      metricsDetail: 'Vector retrieval ~68ms · Chat latency ~1.1s · Flowchart gen ~24s · 10-page PDF indexing ~4.2s · OCR CER ~1.1%',
-    },
-  },
-  {
-    id: 'code-with-buddy',
-    index: '04',
-    tier: 'standard',
-    category: 'Full-Stack / Collaboration',
-    filterTag: 'Full-Stack',
-    icon: Code2,
-    title: 'Code with Buddy',
-    headline: 'Real-time collaborative code editor with live execution.',
-    cardDescription:
-      'A browser-based pair programming tool featuring real-time multi-user code editing synchronized via WebSockets, multi-language execution, and integrated chat.',
-    techStack: ['React', 'Node.js', 'Socket.IO', 'Express', 'CodeMirror'],
-    highlights: [
-      'WebSocket-based real-time editing: Low-latency multi-cursor synchronization',
-      'Late-joiner state sync: Fast one-time handshake without replaying full edit history',
-      'Multi-language execution: Remote code compilation across 20+ languages via Judge0 API',
+      'Autonomous agent loop: LLM planning, controlled CLI execution & test verification',
+      'Sandboxed test verification: Changes accepted only when independent test runner passes',
+      'Automatic rollback & recovery: Classifies failures across 12 categories with SQLite checkpoints',
     ],
     metrics: null,
     recruiterHighlight:
-      'Engineered low-latency sync by filtering update events and using targeted handshakes for late-joiners.',
+      'Implements a verify-first workflow by executing an independent test suite in an isolated sandbox for each code modification.',
     github: 'https://github.com/kaap10',
     demo: null,
-    tags: ['Full-Stack', 'React', 'WebSockets', 'Collaboration', 'Node.js', 'CodeMirror'],
+    tags: ['Python', 'AI Agents', 'CLI', 'Testing', 'DevTools', 'Docker', 'SQLite'],
     details: {
       description:
-        'Code with Buddy is a browser-based collaborative coding environment for pair programming and technical interviews. Multiple users can join a session via a shared URL and edit code in a CodeMirror editor simultaneously. Changes are propagated in real-time using Socket.IO, and the interface shows live collaborator cursors and an integrated chat panel.\n\nTo handle concurrency, the system filters out local change events triggered by remote updates, preventing infinite broadcast loops. Late-joiners receive the current code state through a one-time synchronization handshake instead of replaying the entire edit history.\n\nUsers can switch programming languages on the fly; the app integrates with the Judge0 API to compile and run code (supporting JavaScript, Python, Java, C/C++, C#, Ruby, etc.). The backend (Express) handles execution and returns output. The UI, built with React and Tailwind CSS, includes custom themes and a shareable room UUID mechanism.',
-      allTech: ['React', 'TypeScript', 'Vite', 'Tailwind CSS', 'Node.js', 'Express', 'Socket.IO', 'CodeMirror', 'Judge0 API'],
+        'Terminal Agent is an autonomous coding agent that executes development tasks end-to-end. It translates natural-language tasks into structured plans, applies code changes using controlled CLI tools, and immediately runs the project\'s test suite. It follows a verify-first approach: changes are only accepted when an independent verifier (an LLM-based test runner) confirms all tests pass in a sandboxed environment.\n\nThe agent maintains context by ranking repository information and supports multiple LLM providers (OpenAI, Anthropic, Gemini, Ollama). It enforces strict security policies by performing secret detection and redaction. All tool commands execute inside isolated Docker or local sandboxes to avoid system contamination.\n\nTerminal Agent includes 12 specialized developer tools (for file editing, shell commands, etc.) and uses a SQLite database for session persistence and checkpoints. If failures occur, it classifies the error and automatically rolls back to the last stable state.',
+      allTech: ['Python', 'Typer', 'Rich', 'Pydantic', 'HTTPX', 'GitPython', 'psutil', 'SQLite', 'Docker', 'Ollama', 'OpenAI API', 'Anthropic API', 'Gemini API', 'Pytest'],
       fullHighlights: [
-        'WebSocket-based real-time synchronized code editing',
-        'Room UUID collaboration and live user presence',
-        'Late-joiner state handshake minimizing network overhead',
-        'Multi-language code compilation and live terminal output',
-        'In-room live chat with collaborator presence indicators',
+        'Autonomous LLM planning and execution loop',
+        'Deterministic context ranking over repository files',
+        'Multi-LLM provider architecture (OpenAI, Anthropic, Gemini, Ollama)',
+        'Secret detection and redaction engine',
+        'Independent sandboxed test verification',
+        '12-category failure classification and automatic rollback',
+        'SQLite checkpoint persistence across sessions',
       ],
-      metricsDetail: 'Multi-user real-time state sync · Sub-50ms WebSocket latency · 20+ language compilers',
+      metricsDetail: '12 specialized CLI tools · Zero-contamination sandboxes · Multi-LLM provider support',
     },
   },
+
+  // 6. Agent Bench
   {
     id: 'agent-bench',
-    index: '05',
+    index: '06',
     tier: 'standard',
     category: 'AI / Benchmarking',
     filterTag: 'AI & Agents',
@@ -217,9 +265,11 @@ const PROJECTS = [
       metricsDetail: '40+ tasks · 100% deterministic evaluation · JSON execution traces',
     },
   },
+
+  // 7. Model Router
   {
     id: 'model-router',
-    index: '06',
+    index: '07',
     tier: 'standard',
     category: 'AI / LLM Orchestration',
     filterTag: 'AI & Agents',
@@ -252,43 +302,6 @@ const PROJECTS = [
         'Self-hosted gateway ensuring complete data privacy',
       ],
       metricsDetail: '40–70% cost reduction · Sub-10ms routing overhead · Multi-provider failover',
-    },
-  },
-  {
-    id: 'auranow',
-    index: '07',
-    tier: 'standard',
-    category: 'Full-Stack / Video Conferencing',
-    filterTag: 'Full-Stack',
-    icon: Video,
-    title: 'Auranow',
-    headline: 'AI-native video conferencing platform with semantic search.',
-    cardDescription:
-      'An open-source video conferencing app built with Next.js and LiveKit WebRTC, featuring real-time automated meeting summarization and semantic transcript Q&A.',
-    techStack: ['React', 'TypeScript', 'LiveKit', 'Next.js', 'MongoDB'],
-    highlights: [
-      'LiveKit WebRTC conferencing: Multi-party low-latency video, audio, and screen sharing',
-      'AI meeting assistant: Real-time live transcript generation, action items, and executive summaries',
-      'Semantic transcript Q&A: Vector search (Pinecone) over meeting archives for instant retrieval',
-    ],
-    metrics: null,
-    recruiterHighlight:
-      'Built an AI-enhanced video conferencing platform combining LiveKit WebRTC with real-time meeting transcription and semantic search.',
-    github: 'https://github.com/kaap10',
-    demo: null,
-    tags: ['Full-Stack', 'LiveKit', 'Next.js', 'React', 'WebRTC', 'AI', 'MongoDB'],
-    details: {
-      description:
-        'Auranow (also known as Aura) is an advanced video conferencing platform combining LiveKit\'s WebRTC infrastructure with AI enhancements. It allows multiple participants to join video calls with chat and screen sharing. The frontend is built with Next.js and React, ensuring a smooth user experience.\n\nIts key differentiator is the built-in AI assistant. During a call, an LLM listens and produces live transcripts, summaries, and action items. After the meeting, users can ask questions about the content: the system uses embeddings and semantic search (OpenAI/Pinecone) to retrieve relevant sections of the transcript.\n\nThe app uses Clerk for authentication and MongoDB for storage. It supports serverless deployment on Vercel, making it scalable. Auranow demonstrates a combination of real-time communication and NLP: it is literally an "AI-powered Zoom" designed for modern remote teams.',
-      allTech: ['React', 'Next.js', 'TypeScript', 'LiveKit', 'MongoDB', 'Clerk', 'Stripe', 'Anthropic API', 'OpenAI API', 'Pinecone', 'Tailwind CSS'],
-      fullHighlights: [
-        'LiveKit-based multi-party WebRTC video and audio streams',
-        'Real-time LLM meeting transcription and action-item synthesis',
-        'Semantic transcript Q&A powered by vector embeddings',
-        'Scalable Next.js and React full-stack architecture',
-        'Secure Clerk authentication and MongoDB persistence',
-      ],
-      metricsDetail: 'Low-latency WebRTC video · Real-time AI transcription · Vector archive retrieval',
     },
   },
 ];
@@ -336,7 +349,7 @@ export default function ProjectsPage() {
           <header className={styles.pageHeader}>
             <div className={styles.headerTopRow}>
               <span className={styles.headerEyebrow}>Engineering Portfolio · 7 Systems</span>
-              <span className={styles.tierCountBadge}>3 Tier-1 Featured</span>
+              <span className={styles.tierCountBadge}>Top Systems</span>
             </div>
             <h1 className={styles.pageTitle}>Featured Projects</h1>
             <p className={styles.pageSubtitle}>

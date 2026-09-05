@@ -138,63 +138,11 @@ export default function Home() {
             </div>
 
             <div className={styles.projectCardsGrid}>
-              {/* Project 01: Terminal Agent */}
+              {/* Project 01: Karya */}
               <article className={`${styles.projectCard} ${styles.staggerItem}`}>
                 <div className={styles.projectCardTop}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                     <span className={styles.projectIndexBadge}>01</span>
-                    <span className={styles.projectCategoryTag}>AI Agents &amp; CLI</span>
-                  </div>
-                  <span className={styles.projectTierBadge}>Featured</span>
-                </div>
-
-                <div className={styles.projectCardBody}>
-                  <h3 className={styles.projectCardTitle}>Terminal Agent</h3>
-                  <p className={styles.projectCardDesc}>
-                    Autonomous AI coding agent that plans, modifies, and independently verifies real-world codebases with sandboxed test execution and automatic rollback.
-                  </p>
-                </div>
-
-                <div className={styles.projectTechRow}>
-                  <span className={styles.techTag}>Python</span>
-                  <span className={styles.techTag}>Docker</span>
-                  <span className={styles.techTag}>SQLite</span>
-                  <span className={styles.techTag}>Git</span>
-                  <span className={styles.techTag}>Pytest</span>
-                </div>
-              </article>
-
-              {/* Project 02: IncidentFlow */}
-              <article className={`${styles.projectCard} ${styles.staggerItem}`}>
-                <div className={styles.projectCardTop}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                    <span className={styles.projectIndexBadge}>02</span>
-                    <span className={styles.projectCategoryTag}>Full-Stack &amp; DevOps</span>
-                  </div>
-                  <span className={styles.projectMetricTag}>29/29 Tests</span>
-                </div>
-
-                <div className={styles.projectCardBody}>
-                  <h3 className={styles.projectCardTitle}>IncidentFlow</h3>
-                  <p className={styles.projectCardDesc}>
-                    Mission-critical incident response platform with automated SLA deadline monitoring, Celery async alerts, RBAC, and immutable audit logs.
-                  </p>
-                </div>
-
-                <div className={styles.projectTechRow}>
-                  <span className={styles.techTag}>FastAPI</span>
-                  <span className={styles.techTag}>React</span>
-                  <span className={styles.techTag}>PostgreSQL</span>
-                  <span className={styles.techTag}>Celery</span>
-                  <span className={styles.techTag}>Redis</span>
-                </div>
-              </article>
-
-              {/* Project 03: Karya */}
-              <article className={`${styles.projectCard} ${styles.staggerItem}`}>
-                <div className={styles.projectCardTop}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                    <span className={styles.projectIndexBadge}>03</span>
                     <span className={styles.projectCategoryTag}>Offline AI &amp; RAG</span>
                   </div>
                   <span className={styles.projectTierBadge}>Featured</span>
@@ -216,29 +164,81 @@ export default function Home() {
                 </div>
               </article>
 
-              {/* Project 04: Model Router */}
+              {/* Project 02: AuraNow */}
               <article className={`${styles.projectCard} ${styles.staggerItem}`}>
                 <div className={styles.projectCardTop}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                    <span className={styles.projectIndexBadge}>04</span>
-                    <span className={styles.projectCategoryTag}>LLM Orchestration</span>
+                    <span className={styles.projectIndexBadge}>02</span>
+                    <span className={styles.projectCategoryTag}>Video &amp; WebRTC</span>
                   </div>
-                  <span className={styles.projectMetricTag}>40–70% Savings</span>
+                  <span className={styles.projectTierBadge}>Featured</span>
                 </div>
 
                 <div className={styles.projectCardBody}>
-                  <h3 className={styles.projectCardTitle}>Model Router</h3>
+                  <h3 className={styles.projectCardTitle}>AuraNow</h3>
                   <p className={styles.projectCardDesc}>
-                    Adaptive LLM proxy gateway dynamically routing queries based on complexity—dispatching simple prompts to local models and complex queries to flagship APIs.
+                    AI-native video conferencing platform with LiveKit WebRTC, real-time automated meeting transcription, action-item synthesis, and semantic archive search.
                   </p>
                 </div>
 
                 <div className={styles.projectTechRow}>
-                  <span className={styles.techTag}>Python</span>
+                  <span className={styles.techTag}>LiveKit</span>
+                  <span className={styles.techTag}>Next.js</span>
+                  <span className={styles.techTag}>TypeScript</span>
+                  <span className={styles.techTag}>React</span>
+                  <span className={styles.techTag}>MongoDB</span>
+                </div>
+              </article>
+
+              {/* Project 03: Code with Buddy */}
+              <article className={`${styles.projectCard} ${styles.staggerItem}`}>
+                <div className={styles.projectCardTop}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <span className={styles.projectIndexBadge}>03</span>
+                    <span className={styles.projectCategoryTag}>Realtime Collaboration</span>
+                  </div>
+                  <span className={styles.projectTierBadge}>Featured</span>
+                </div>
+
+                <div className={styles.projectCardBody}>
+                  <h3 className={styles.projectCardTitle}>Code with Buddy</h3>
+                  <p className={styles.projectCardDesc}>
+                    Realtime collaborative code editor supporting multi-cursor live synchronization via WebSockets, in-room chat, and remote code execution across 20+ languages.
+                  </p>
+                </div>
+
+                <div className={styles.projectTechRow}>
+                  <span className={styles.techTag}>React</span>
+                  <span className={styles.techTag}>CodeMirror</span>
+                  <span className={styles.techTag}>Node.js</span>
+                  <span className={styles.techTag}>Socket.IO</span>
+                  <span className={styles.techTag}>Express</span>
+                </div>
+              </article>
+
+              {/* Project 04: IncidentFlow */}
+              <article className={`${styles.projectCard} ${styles.staggerItem}`}>
+                <div className={styles.projectCardTop}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <span className={styles.projectIndexBadge}>04</span>
+                    <span className={styles.projectCategoryTag}>Full-Stack &amp; DevOps</span>
+                  </div>
+                  <span className={styles.projectMetricTag}>29/29 Tests</span>
+                </div>
+
+                <div className={styles.projectCardBody}>
+                  <h3 className={styles.projectCardTitle}>IncidentFlow</h3>
+                  <p className={styles.projectCardDesc}>
+                    Mission-critical incident response platform with automated SLA deadline monitoring, Celery async alerts, RBAC, and immutable audit logs.
+                  </p>
+                </div>
+
+                <div className={styles.projectTechRow}>
                   <span className={styles.techTag}>FastAPI</span>
-                  <span className={styles.techTag}>OpenAI</span>
-                  <span className={styles.techTag}>Anthropic</span>
-                  <span className={styles.techTag}>Docker</span>
+                  <span className={styles.techTag}>React</span>
+                  <span className={styles.techTag}>PostgreSQL</span>
+                  <span className={styles.techTag}>Celery</span>
+                  <span className={styles.techTag}>Redis</span>
                 </div>
               </article>
             </div>
