@@ -142,7 +142,6 @@ export default function Home() {
           >
             <div className={styles.sectionHeader}>
               <div className={styles.sectionTitleGroup}>
-                <span className={styles.sectionEyebrow}>Public Tooling &amp; Contributions</span>
                 <h2 className={styles.sectionTitle}>Open Source</h2>
               </div>
               <Link to="/opensource" className={styles.viewAllLink}>
@@ -272,7 +271,6 @@ export default function Home() {
           >
             <div className={styles.sectionHeader}>
               <div className={styles.sectionTitleGroup}>
-                <span className={styles.sectionEyebrow}>Selected Engineering</span>
                 <h2 className={styles.sectionTitle}>Projects</h2>
               </div>
               <Link to="/projects" className={styles.viewAllLink}>
@@ -471,7 +469,6 @@ export default function Home() {
           >
             <div className={styles.sectionHeader}>
               <div className={styles.sectionTitleGroup}>
-                <span className={styles.sectionEyebrow}>Living Workstation</span>
                 <h2 className={styles.sectionTitle}>Tool Kit</h2>
               </div>
               <span className={styles.sectionSubtitle}>Built for Daily Engineering</span>
@@ -663,7 +660,6 @@ export default function Home() {
           >
             <div className={styles.sectionHeader}>
               <div className={styles.sectionTitleGroup}>
-                <span className={styles.sectionEyebrow}>Core Capabilities</span>
                 <h2 className={styles.sectionTitle}>Techstack</h2>
               </div>
               <span className={styles.sectionSubtitle}>5 Domains</span>

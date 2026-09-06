@@ -31,7 +31,6 @@ export default function ToolsPage() {
 
   return (
     <Layout
-      title="Engineering Tools & Living Workstation"
       title="Engineering Tools"
       description="Integrated productivity suite, whiteboard, markdown scratchpad, and spotlight search designed by Vardhman Gupta."
     >
@@ -40,7 +39,6 @@ export default function ToolsPage() {
           
           {/* Header */}
           <header className={styles.pageHeader}>
-            <span className={styles.headerEyebrow}>Living Workstation</span>
             <h1 className={styles.pageTitle}>Engineering Tools</h1>
             <p className={styles.pageSubtitle}>
               A cohesive suite of personal productivity tools, architectural design canvases, floating scratchpads, and keyboard-first command palettes.

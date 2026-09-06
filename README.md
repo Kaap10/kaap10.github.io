@@ -1,156 +1,120 @@
 # Vardhman Gupta â€” Developer Ecosystem & Portfolio
 
 [![Deploy to GitHub Pages](https://github.com/kaap10/kaap10.github.io/actions/workflows/deploy.yml/badge.svg)](https://github.com/kaap10/kaap10.github.io/actions/workflows/deploy.yml)
-[![Docusaurus v3](https://img.shields.io/badge/Docusaurus-v3.10.1-3ECC5F?logo=docusaurus)](https://docusaurus.io/)
+[![Docusaurus v3](https://img.shields.io/badge/Docusaurus-v3.10.1-3EGC5F?logo=docusaurus)](https://docusaurus.io/)
 [![React 19](https://img.shields.io/badge/React-19.0.0-61DAFB?logo=react)](https://react.dev/)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15-336791?logo=postgresql)](https://www.postgresql.org/)
 [![Supabase](https://img.shields.io/badge/Supabase-Auth%20%26%20RLS-3ECF8E?logo=supabase)](https://supabase.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-> Personal portfolio, computer science technical blogs, interactive architectural whiteboard, and full-stack productivity operating system with multi-tenant cloud persistence.
-
+>
+ Personal portfolio, computer science technical blogs, open-source tooling, interactive whiteboard, and full-stack productivity operating system with multi-tenant cloud persistence.
 **Live Site:** [https://kaap10.github.io/](https://kaap10.github.io/)
 
 ---
 
 ## Overview
 
-This repository houses an integrated developer ecosystem built on a hybrid **Static Site Generation (SSG) and Dynamic Single Page Application (SPA)** architecture. It consolidates engineering documentation, system design sketching, portfolio showcases, and daily execution workflows into a single cohesive platform.
+This repository houses an integrated developer ecosystem built on a hybrid **Static Site Generation (SSG) and Dynamic Single Page Application (SPA)** architecture. It consolidates engineering documentation, system design sketching, open-source repositories, project showcases, and daily execution workflows into a single cohesive platform.
 
 ```
-+----------------------------------------------------------------------------------------------------+
-|                                    KAAP10 DEVELOPER ECOSYSTEM                                      |
-+----------------------------------------------------------------------------------------------------+
-|  [Portfolio]       |  [Projects]       |  [Tool Kit]       |  [Technical Blogs]|  [Global Layer]   |
-|  /                 |  /projects        |  /tools           |  /blogs/intro     |  theme/Root.js    |
-|  â€¢ Minimal hero    |  â€¢ 7 Systems      |  â€¢ Whiteboard     |  â€¢ 100+ Articles  |  â€¢ Command Palette|
-|  â€¢ Quick CTAs      |  â€¢ Tier-1 Showcase|  â€¢ Tracker App    |  â€¢ DSA, Systems   |  â€¢ Scratchpad     |
-|  â€¢ Techstack grid  |  â€¢ GitHub links   |  â€¢ Notebook       |  â€¢ Algolia Search |  â€¢ Floating Timer |
-+----------------------------------------------------------------------------------------------------+
++----------------------------------------------------------------------------------------------------------+
+|                                    KAAP10 DEVELOPER ECOSYSTEM                                    |
++----------------------------------------------------------------------------------------------------------+
+|  [Portfolio]       |  [Projects]       |  [Open Source]    |  [Tool Kit]       |  [Technical Blogs]           |
+|  /                 |  /projects        |  /opensource      |  /tools           |  /blogs/intro                |
+|  â€¢ Minimal hero    |  â€¢ 7 Core Systems |  â€¢ build-with-ai  |  â€¢ Whiteboard     |  â€¢ 100+ Articles             |
+|  â€¢ Open Source Hub |  â€¢ AI, Fullstack  |  â€¢ dynavec (5 PRs)|  â€¢ Tracker App    |  â€¢ Core Python, DSG,          |
+|  â€¢ Techstack grid  |  â€¢ Architecture   |  â€¢ Deep Dives     |  â€¢ Notebook       |  â€¢ Algolia Search & Notes    |
++----------------------------------------------------------------------------------------------------------+
 ```
 
 ---
 
 ## Key Features
 
-### 1. Portfolio & Dynamic Projects Showcase
-- **Home (`/`)**: Minimal editorial layout featuring AI Engineer header, direct CTAs (`Explore Project`, `Explore Tools`, `Resume`), Tier-1 Featured Projects (**Terminal Agent**, **IncidentFlow**, **Karya**, **Model Router**), interactive Tool Kit, dedicated Technical Blogs, and structured 5-domain Techstack.
-- **Projects Showcase (`/projects`)**: Dedicated directory highlighting 7 production-grade systems (**Terminal Agent**, **IncidentFlow**, **Karya**, **Code with Buddy**, **Agent Bench**, **Model Router**, **Auranow**) with category filtering (`All (7)`, `Featured (3)`, `AI & Agents (4)`, `Full-Stack (3)`), architecture highlights, metric chips, recruiter callouts, and expandable deep-dive panels.
+### 1. Portfolio & Flagship Projects (`/projects`)
+- **Home (`/`)`**: Minimal editorial layout featuring AI Engineer profile, Open Source showcase (**build-with-ai**, **dynavec**), flagship systems (**Karya**, **AuraNow**, **Code with Buddy**, **IncidentFlow**, **Terminal Agent**, **Agent Bench**, **Model Router**), interactive Tool Kit, and 5-domain Techstack.
+- **Projects Directory (`/projects`)**: Dedicated catalog highlighting 7 production-grade systems with category filters (**`*All (7)**`, **`AI (2)*``, **`Fullstack (2)*``, **`Agents (3)*``), architecture highlights, metric chips, recruiter callouts, and expandable deep-dive panels:
+  1. **01 Â· Karya (AI)**: Offline-first multilingual AI education platform with quantized 1.5B on-device LLM inference (llama.cpp) and RAG across 22 Indian languages + English.
+  2. **02 Â· AuraNow (AI)**: AI-powered YouTube video comment intelligence platform clustering discussions into hierarchical RAPTER topic trees with UMAP and IDBSCAN.
+  3. **03 Â· Code with Buddy (Fullstack)**: Real-time collaborative code editor with WebSocket state synchronization and Judge0 remote multi-language compilation.
+  4. **04 Â· IncidentFlow (Fullstack)**: Mission-critical incident management system with idempotent Celery SLA monitoring, RBAC, and mandatory postmortems.
+  5. **e4 Â· Terminal Agent (Agents)**: Verify-first autonomous coding agent with sandboxed CLI test execution and 12-category SQLite rollback checkpoints.
+  6. **e5 Â· Agent Bench (Agents)**: Command-line benchmarking harness for AI coding agents across 40+ tasks using deterministic rule-based evaluation.
+  7. **07 Â· Model Router (Agents)**: Intelligent LLM proxy gateway analyzing prompt complexity to optimize API inference costs by 40â€’70%.
 
-### 2. Tool Kit & Productivity Suite (`/tools`)
-- **Whiteboard (`/board`)**: Architectural sketching canvas powered by `@excalidraw/excalidraw` with local drawing persistence.
-- **Tracker (`/tracker`)**: Full-stack productivity operating system with Pomodoro deep work, atomic habits, goals roadmap, and activity heatmap.
-- **Notebook & Notepad (`/tracker?tab=notebook`)**: Distraction-free personal notepad with multi-notebook collections, zero typing lag (local state buffering + 400ms debounced auto-save), tag filtering, word/character counter, and `.txt` export.
-- **Global Quick Scratchpad (`Ctrl+J` / `Cmd+J`)**: Floating quick-capture scratchpad with multi-sheet tabs, live syntax preview toggle, code copy, and `.md` file export.
-- **Global Command Palette (`Ctrl+K` / `Cmd+K` / `Ctrl+H`)**: Keyboard-first spotlight search for instant route switching, system tools, and timer sessions.
+3## 2. Dedicated Open Source Hub (`/opensource`)
+- **`build-with-ai` (Creator & Maintainer)**: Open-source, zero-API developer CLI that guides engineers through 10â€“23 phase structured software workflows (`npx build-with-ai`) with local-first context persistence (`.buildwithai/context.json`).
+- **`dynavec` (Core Contributor)**: Serverless hybrid vector database on DynamoDB and AWS S3 with 5 merged PRs spanning Python 3.9 compatibility, ingestion SHA-256 deduplication, and large-batch retrieval regression suites.
 
-### 3. Technical Blogs (`/blogs/intro`)
-- 100+ structured engineering guides covering Data Structures & Algorithms, System Design, Database Management Systems (DBMS), Machine Learning, OOPs, and Full-Stack Web Development.
-- Sub-millisecond full-text document discovery powered by **Algolia DocSearch**.
+### 3. Technical Blogs & Interactive Reading (`/blogs/intro`)
+- 100+ structured engineering articles covering Core Python, Data Structures & Algorithms, System Design, Database Internals (DBMS), Machine Learning, and OOPs.
+- sub-millisecond Search**: Full-text document search powered by **Algolia DocSearch**, scoped exclusively to `/blogs`  routes.
+- **Slide-Over Quick Scratchpad (`Ctrl+J`)**: Dedicated multi-sheet markdown notepad active while reading technical blogs with instant copy and `.md` export.
 
-### 4. Tracker Deep Dive (`/tracker`)
-- **Dashboard**: Real-time overview of daily deliverables, active goal progress, and habit consistency.
-- **Tasks Pipeline**: Priority triage (`High`, `Medium`, `Low`), due date scheduling, and nested JSONB checklist items with optimistic state toggling.
-- **Goals & Milestones**: Multi-tiered roadmap decomposing high-level objectives into hierarchical milestone trees with automated percentage rollups.
-- **Deep Work Focus Timer**: Wall-clock delta engine (`requestAnimationFrame` + `Date.now()`) with 25m, 50m, 90m intervals, continuous stopwatch, and draggable floating widget.
-- **Document Picture-in-Picture (PiP)**: Chrome 116+ OS-level detached always-on-top timer window via `window.documentPictureInPicture`.
-- **Habits Engine**: Atomic habit tracking with streak calculus engine computing current and lifetime best streaks.
-- **Resource Library**: Bookmarking library with category filters (`GitHub`, `YouTube`, `PDF`, `Course`, `Book`, `Website`) and notes.
-- **Notebook Workspace**: Fixed-viewport locked layout with independent internal scrolling and local-first Supabase persistence.
-- **Collapsible Sidebar**: Desktop collapsible navigation sidebar with persistent state and `[` / `Ctrl+\` keyboard shortcut.
-- **Telemetry & Heatmap**: 52-week GitHub-style contribution graph, interactive Recharts velocity bars, and focus duration area curves.
-- **Cadence Retrospectives**: Weekly and monthly structured reviews with automated metric rollups and PostgreSQL UPSERT idempotency.
-- **Zero-Cost Insights Engine**: Deterministic client-side heuristic engine discovering peak productivity days and overdue pacing with $0 API overhead.
+### 4. Tool Kit & Productivity Suite (`/tools`)
+- **Whiteboard (`/board`)**: Infinite architectural sketching canvas powered by `Y^Ø[Y˜]ËÙ^Ø[Y˜]ØÚ]ØØ[˜]Ú[™È\œÚ\İ[˜ÙK‚‹H
+Š•˜XÚÙ\ˆ
+İ˜XÚÙ\˜
+JŠˆÛÛœÛÛY]YK\[\ˆ›ÙXİ]š]HİZ]H˜XÚÙYHİ\X˜\ÙN‚ˆH
+Š‘\Ú›Ø\™
+Šˆ™X[][YHİ™\šY]ÈÙˆZ[H[]™\˜X›\ËXİ]™HÛØ[›ÙÜ™\ÜË[™Xš]ÛÛœÚ\İ[˜ŞK‚ˆH
+Š•\ÚÜÈ\[[™JŠˆš[Üš]HšXYÙH
+YÚYY][XİØ
+KYH]HØÚY[[™Ë[™™\İY”ÓÓˆÚXÚÛ\İ][\Ë‚ˆH
+Š‘ÛØ[È	ˆZ[\İÛ™\ÊŠˆ][K]Y\™Y›ØYX\]\›Z[š[™ÈYÚ[]™[Øš™Xİ]™\È[ÈY\˜\˜ÚXØ[Z[\İÛ™H™Y\ÈÚ]]]ÛX]Y›Û\Ë‚ˆH
+Š‘Y\ÛÜšÈ›Øİ\È[Y\ŠŠˆØ[XÛØÚÈ[H[™Ú[™H
+™\]Y\İ[š[X][Û‘œ˜[YX
+È]K››İÊ
+X
+HÚ][KÍLHÛ[ÙÜ›È[\˜[È[™›Ø][™ÈTØ\İ[K‚ˆH
+Š‘Øİ[Y[Xİ\™KZ[‹TXİ\™H
+T
+JŠˆÚ›ÛYHLMŠÈÔË[]™[]XÚY[Ø^\Ë[Û‹]Ü[Y\ˆÚ[™İÈšXHÙ][Ë™Øİ[Y[Xİ\™R[”Xİ\™X‚ˆH
+Š’Xš]È[™Ú[™JŠˆ]ÛZXÈXš]˜XÚÚ[™ÈÚ]İ™XZÈØ[İ[\È[™Ú[™HÛÛ\][™Èİ\œ™[[™Y™][YHİ™XZÜË‚ˆH
+Š•[[Y]H	ˆX]X\
+ŠˆL‹]ÙYZÈÚ]X‹\İ[HÛÛšX][ÛˆÜ˜\[™[\˜Xİ]™H™XÚ\È™[ØÚ]Hİ\™\Ë‚ˆH
+Š“›İX›ÛÚÈÛÜšÜÜXÙH
+İ˜XÚÙ\İX[›İX›ÛÚØ
+JŠˆ\İ˜Xİ[Û‹Yœ™YH\œÛÛ˜[›İ\YÚ]][K[›İX›ÛÚÈÛÛXİ[ÛœË™\›È\[™ÈYËYÈš[\š[™Ë[™^Ü‚‚‹KKB‚ˆÈÈXÚ›ÛÙŞHİXÚÂ‚Ÿ^Y\ˆXÚ›ÛÙÚY\ÈŸKK_KK_ŠŸ
+Š‘œ˜[Y]ÛÜšÈ	ˆÔÑÊŠˆØİ\Ø]\\ÈŒËŒLŒK™XXİNKÙXœXÚÈHŸ
+Š”İ[[™È	ˆ[Z[™ÊŠˆÔÔÈ[Ù[\ËÔÔÈİ\İÛH˜\šXX›\È
+K]™ËJ˜
+K\šÈ[ÙHŸ
+ŠÛİY˜XÚÙ[™	ˆŠŠˆİ\X˜\ÙKÜİÜ™TÔSMKÜİÔ‘TÕTHØ]]Ø^HŸ
+Š]][XØ][Ûˆ	ˆÙXİ\š]JŠŸİ\X˜\ÙHÛÕYH]]
+•Õ
+KÜİÜ™TÔS›İÈ]™[ÙXİ\š]H
+“ÊHŸ
+ŠØ[˜\È	ˆÚÙ]Ú[™ÊŠˆ^Ø[Y˜]ÈŒŒNŒHŸ
+Š•š\İX[^˜][ÛœÈ	ˆÚ\ÊŠˆ™XÚ\ÈŒËŒLŒHŸ
+Š”ÙX\˜Ú[™Ú[™JŠˆ[ÛÛXHØÔÙX\˜Ú
+ØÛÜYÈØ›ÙÜØ
+HŸ
+Š“˜]]™HÙXˆT\ÊŠˆØİ[Y[Xİ\™KZ[‹TXİ\™HTKÙXˆİÜ˜YÙHTK™\]Y\İ[š[X][Û‘œ˜[YXŠŸ
+Š’Üİ[™È	ˆÒKĞÑ
+ŠˆÚ]XˆYÙ\ËÚ]XˆXİ[ÛœÈ‚‹KKB‚ˆÈÈÙ][™Èİ\Y‚ˆÈÈÈ™\™\]Z\Ú]\Â‹H›ÙKšœÈHŒŒŒ‹HœHHLŒŒ‚ˆÈÈÈ[œİ[][Ûˆ	ˆØØ[[‚˜˜\ÚˆÈKˆÛÛ™H™\ÜÚ]ÜB™Ú]ÛÛ™HÎ‹ËÙÚ]X‹˜ÛÛKÒØX\LÚØX\L™Ú]X‹š[Ë™Ú]˜ÙØX\L™Ú]X‹š[Â‚ˆÈ‹ˆ[œİ[\[™[˜ÚY\Â›œH[œİ[K[YØXŞK\Y\‹Y\Â‚ˆÈËˆİ\ØØ[]™[ÜY[Ù\™\‚›œH[ˆİ\‚ˆÈ\XØ][ÛˆÚ[™HXØÙ\ÜÚX›H]‹ËÛØØ[ÜİŒÌ˜‚ˆÈÈÈ›ÙXİ[ÛˆZ[	ˆ™]šY]Â˜˜\ÚˆÈZ[Ü[Z^™Yİ]XÈ[™B›œH[ˆZ[‚ˆÈ™]šY]È›ÙXİ[ÛˆZ[ØØ[B›œH[ˆÙ\™B˜‚‹KKB‚ˆÈÈ]X˜\ÙHÛÛ™šYİ\˜][Ûˆ
+İ\X˜\ÙJB‚•È[˜X›HÛİYŞ[˜Ú›Ûš^˜][Ûˆ›ÜˆH˜XÚÙ\‚‚ŒKˆÜ™X]HH›Ú™Xİ]Üİ\X˜\ÙK˜ÛÛWJÎ‹ËÜİ\X˜\ÙK˜ÛÛKÊBŒ‹ˆ[ˆH]X˜\ÙHØÚ[X\ÈØØ]Y[ˆİ\X˜\ÙKØ‚ˆÜ[ˆKH[ˆØÚ[XHZYÜ˜][ÛœÂˆİ\X˜\ÙKÜØÚ[XKœÜ[ˆŒËˆÛÛ›™Xİ[İ\ˆİ\X˜\ÙH›Ú™XİT“[™X›XÈ[›ÛˆÙ^H[ˆØİ\Ø]\\Ë˜ÛÛ™šYËšœØÜˆ™[˜‚ˆ[]X˜\ÙHX›\ÈİšXİH[™›Ü˜ÙH›İÈ]™[ÙXİ\š]H
+]]ZY
 
----
-
-## Technology Stack
-
-| Layer | Technologies |
-|---|---|
-| **Framework & SSG** | Docusaurus v3.10.1, React 19, Webpack 5 |
-| **Styling & Theming** | CSS Modules, CSS Custom Variables (`--vg-*`), Dark Mode |
-| **Cloud Backend & DB** | Supabase, PostgreSQL 15, PostgREST API Gateway |
-| **Authentication & Security**| Supabase GoTrue Auth (JWT), PostgreSQL Row Level Security (RLS) |
-| **Canvas & Sketching** | Excalidraw v0.18.1 |
-| **Visualizations & Charts** | Recharts v3.10.1 |
-| **Search Engine** | Algolia DocSearch |
-| **Native Web APIs** | Document Picture-in-Picture API, Web Storage API, `requestAnimationFrame` |
-| **Hosting & CI/CD** | GitHub Pages, GitHub Actions |
-
----
-
-## Getting Started
-
-### Prerequisites
-- Node.js `>= 20.0.0`
-- npm `>= 10.0.0`
-
-### Installation & Local Run
-```bash
-# 1. Clone repository
-git clone https://github.com/Kaap10/kaap10.github.io.git
-cd kaap10.github.io
-
-# 2. Install dependencies
-npm install --legacy-peer-deps
-
-# 3. Start local development server
-npm run start
-
-# Application will be accessible at http://localhost:3000
-```
-
-### Production Build & Preview
-```bash
-# Build optimized static bundle
-npm run build
-
-# Preview production build locally
-npm run serve
-```
-
----
-
-## Database Configuration (Supabase)
-
-To enable cloud synchronization for the Tracker:
-
-1. Create a project at [supabase.com](https://supabase.com/).
-2. Run the database schemas located in `supabase/`:
-   ```sql
-   -- Run schema migrations
-   supabase/schema.sql
-   ```
-3. Connect your Supabase project URL and public anon key in `src/components/Tracker/services/supabase.js`.
-4. All database tables strictly enforce Row Level Security (`auth.uid() = user_id`) to ensure complete user isolation.
-
----
-
-## Repository Structure
-
-```
-.
-â”œâ”€â”€ docs/                             # Engineering wiki articles (MDX)
-â”‚   â”œâ”€â”€ DSA/                          # Data structures and algorithms
-â”‚   â”œâ”€â”€ System Design/                # Distributed systems architectures
-â”‚   â”œâ”€â”€ DBMS/                         # Database internals and SQL
-â”‚   â””â”€â”€ ...                           # Machine learning, OOPs, etc.
-â”œâ”€â”€ src/
-â”‚   â”œâ”€â”€ components/
-â”‚   â”‚   â”œâ”€â”€ Common/                   # GlobalCommandPalette, GlobalScratchpad, GlobalIcons
-â”‚   â”‚   â”œâ”€â”€ ExcalidrawBoard/          # Whiteboard canvas integration
-â”‚   â”‚   â””â”€â”€ Tracker/                  # Tracker application
-â”‚   â”‚       â”œâ”€â”€ components/           # Views: Dashboard, Tasks, Focus, Habits, Notebook...
-â”‚   â”‚       â”œâ”€â”€ context/              # AuthContext and TrackerContext
-â”‚   â”‚       â”œâ”€â”€ services/             # Supabase client and insightsEngine
-â”‚   â”‚       â””â”€â”€ styles/               # Modular CSS system
-â”‚   â”œâ”€â”€ css/                          # Global theme tokens and typography
-â”‚   â”œâ”€â”€ pages/                        # Routes: /, /projects, /tools, /board, /tracker
-â”‚   â””â”€â”€ theme/                        # Root.js (Global UI injection layer)
-â”œâ”€â”€ static/                           # Static assets, PDFs, and favicon
-â”œâ”€â”€ supabase/                         # PostgreSQL SQL schemas and migrations
-â””â”€â”€ docusaurus.config.js              # Core Docusaurus site configuration
+HH\Ù\—ÚY
+HÈ[œİ\™HÛÛ\]H\Ù\ˆ\ÛÛ][Û‹‚‚‹KKB‚ˆÈÈ™\ÜÚ]ÜHİXİ\™B‚˜‹‚¸¥%8¥  docs/                              # Technical wiki articles (MDX)
+Ô—   â”â”€ DSA/                          # Data structures and algorithms
+Ô—   â”â”€ Python/                      # Core Python syntax, execution, GIL
+”—   â”â”€ System Design/                # Distributed systems architectures
+Ô—   â”œâ”€ DBMS/                        # Database internals andÔQ
+Ô—   â”â”€ src/
+â””â”€   â”â”€ components/
+Ô—   â””â”€   â”â”€ Common/                   # GlobalCommandPalette, GlobalScratchpad, GlobalIcons
+â””â”€   â””â”€   â”â”€ ExcalidrawBoard/          # Whiteboard canvas integration
+â”“â”€   â”“â”€   â”œâ”€ Tracker/                  # Tracker application (Tasks, Goals, Focus, Habits, Notebook)
+Ô—   â”â”€ css/                          # Global theme tokens and typography
+â”“â”€   â”œâ”€ pages,                       # Routes: /, /projects, /opensource, /tools, /board, /tracker
+Ô—   â”œâ”€ theme/                         # Theme wrappers: Root.js, SearchBar/index.js
+â””â”€ static/                          # Static assets and favicon
+â”“â”€ supabase/                         # PostgreSQL SQL schemas and migrations
+â”œâ”€ docusaurus.config.js              # Core Docusaurus site configuration
 ```
 
 ---
@@ -159,16 +123,16 @@ To enable cloud synchronization for the Tracker:
 
 | Shortcut | Action | Description |
 |---|---|---|
-| `Ctrl+K` / `Cmd+K` | Spotlight Command Palette | Search and jump anywhere instantly |
+*| `Ctrl+K` / `Cmd+K` | Spotlight Command Palette | Search and jump anywhere instantly |
 | `Ctrl+H` / `Cmd+H` | Command Palette (Alt) | Secondary spotlight trigger |
-| `Ctrl+J` / `Cmd+J` | Quick Scratchpad | Open global floating markdown notepad |
-| `[` or `Ctrl+\` | Toggle Tracker Sidebar | Collapse or expand sidebar in Tracker |
+| `Ctrl+J` / `Cmd+J` | Quick Scratchpad | Open slide-over markdown notepad (active in `/blogs`) |
+*| `[` or `Ctrl+\` | Toggle Tracker Sidebar | Collapse or expand sidebar in Tracker |
 
 ---
 
 ## Author
 
-**Vardhman Gupta**  
+Š–ardhman Gupta**  
 AI Engineer Â· Systems Builder Â· Lifelong Learner  
 - Website: [kaap10.github.io](https://kaap10.github.io/)  
 - GitHub: [@kaap10](https://github.com/kaap10)  
