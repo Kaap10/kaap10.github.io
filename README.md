@@ -4,18 +4,18 @@
 
 ---
 
-## 👨‍💻 About Me
+## About Me
 
 I'm **Vardhman Gupta** — an AI & Systems Engineer focused on agentic workflows, distributed platforms, and high-performance developer tooling. This repository serves as my personal workstation, technical documentation wiki, and interactive portfolio showcasing open source packages, fullstack systems, and live engineering utilities.
 
-- 🌐 **Live Site:** [kaap10.github.io](https://kaap10.github.io)
-- 🐙 **GitHub:** [@Kaap10](https://github.com/Kaap10)
-- 💼 **LinkedIn:** [vardhman-gupta](https://linkedin.com/in/vardhman-gupta)
-- 📧 **Contact:** [vardhmangupta108@gmail.com](mailto:vardhmangupta108@gmail.com)
+- **Live Site:** [kaap10.github.io](https://kaap10.github.io)
+- **GitHub:** [@Kaap10](https://github.com/Kaap10)
+- **LinkedIn:** [vardhman-gupta](https://linkedin.com/in/vardhman-gupta)
+- **Contact:** [vardhmangupta108@gmail.com](mailto:vardhmangupta108@gmail.com)
 
 ---
 
-## 🏛️ Architecture
+## Architecture
 
 ```mermaid
 graph TD
@@ -24,26 +24,26 @@ graph TD
     classDef comp fill:#1C1917,stroke:#F59E0B,stroke-width:1px,color:#E4E4E7
     classDef storage fill:#09090B,stroke:#3B82F6,stroke-width:1.5px,color:#93C5FD
 
-    Client["🌐 kaap10.github.io (Docusaurus v3 Core)"]:::client
+    Client["kaap10.github.io (Docusaurus v3 Core)"]:::client
 
     subgraph Routes ["Navigation & Route Clusters"]
-        R1["🏠 / (Homepage & Showcase)"]:::route
-        R2["📦 /opensource (dynavec & build-with-ai)"]:::route
-        R3["🚀 /projects (7 Flagship Systems)"]:::route
-        R4["🛠️ /tools (Live Engineering Suite)"]:::route
-        R5["📚 /blogs (Knowledge & Technical Articles)"]:::route
+        R1["/ (Homepage & Showcase)"]:::route
+        R2["/opensource (dynavec & build-with-ai)"]:::route
+        R3["/projects (7 Flagship Systems)"]:::route
+        R4["/tools (Live Engineering Suite)"]:::route
+        R5["/blogs (Knowledge & Technical Articles)"]:::route
     end
 
     subgraph BlogTools ["Blog-Scoped Interactive Tools"]
-        T1["🔍 Algolia / Local Search (Ctrl+K)"]:::comp
-        T2["📝 Quick Floating Scratchpad (Ctrl+J)"]:::comp
+        T1["Algolia / Local Search (Ctrl+K)"]:::comp
+        T2["Quick Floating Scratchpad (Ctrl+J)"]:::comp
     end
 
     subgraph Workstation ["Engineering Workstation Tools"]
-        W1["📊 Life & Sprint Tracker (Supabase Auth/DB)"]:::comp
-        W2["📐 System Architecture Whiteboard"]:::comp
-        W3["📑 Markdown Live Pad & Formatter"]:::comp
-        W4["⌨️ Global Spotlight Palette"]:::comp
+        W1["Life & Sprint Tracker (Supabase Auth/DB)"]:::comp
+        W2["System Architecture Whiteboard"]:::comp
+        W3["Markdown Live Pad & Formatter"]:::comp
+        W4["Global Spotlight Palette"]:::comp
     end
 
     subgraph DataLayer ["Data & Persistence Layer"]
@@ -62,7 +62,7 @@ graph TD
 
 ---
 
-## ⚡ Features
+## Features
 
 - **Personal Knowledge Wiki & Blogs**: In-depth articles covering AI orchestration, distributed backend systems, and frontend performance, equipped with scoped **Instant Search (`Ctrl+K`)** and a **Quick Scratchpad (`Ctrl+J`)**.
 - **Open Source Tooling (`/opensource`)**: Dedicated showcase for developer utilities including `dynavec` (dynamic vector DB client) and `build-with-ai` (agent template accelerator).
@@ -72,7 +72,7 @@ graph TD
 
 ---
 
-## 🛠️ Techstack
+## Techstack
 
 | Domain | Technologies & Libraries |
 | :--- | :--- |
