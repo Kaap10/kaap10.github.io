@@ -6,7 +6,7 @@
 
 ## About Me
 
-I'm **Vardhman Gupta** — an AI & Systems Engineer focused on agentic workflows, distributed platforms, and high-performance developer tooling. This repository serves as my personal workstation, technical documentation wiki, and interactive portfolio showcasing open source packages, fullstack systems, and live engineering utilities.
+I'm **Vardhman Gupta** - an AI & Systems Engineer focused on agentic workflows, distributed platforms, and high-performance developer tooling. This repository serves as my personal workstation, technical documentation wiki, and interactive portfolio showcasing open source packages, fullstack systems, and live engineering utilities.
 
 - **Live Site:** [kaap10.github.io](https://kaap10.github.io)
 - **GitHub:** [@Kaap10](https://github.com/Kaap10)
