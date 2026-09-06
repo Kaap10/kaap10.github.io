@@ -1,4 +1,4 @@
-# Vardhman Gupta | Engineering Portfolio & Knowledge Base
+# Vardhman Gupta | Portfolio
 
 > An integrated digital workstation, knowledge wiki, and portfolio built for daily software engineering, system design, and AI explorations.
 
