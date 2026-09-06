@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
+import { useLocation } from '@docusaurus/router';
 import {
   IconEdit,
   IconEye,
@@ -22,7 +23,14 @@ const DEFAULT_SHEETS = [
   },
 ];
 
+function isBlogPath(pathname) {
+  if (!pathname) return false;
+  const clean = pathname.replace(/\/+$/, '') || '/';
+  return clean === '/blogs' || clean.startsWith('/blogs/') || clean === '/blog' || clean.startsWith('/blog/');
+}
+
 export default function GlobalScratchpad() {
+  const location = useLocation();
   const [mounted, setMounted] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [sheets, setSheets] = useState(() => {
@@ -36,12 +44,23 @@ export default function GlobalScratchpad() {
   const [isPreview, setIsPreview] = useState(false);
   const [copied, setCopied] = useState(false);
 
+  const isBlogs = isBlogPath(location?.pathname);
+
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  // Global Ctrl+J / Cmd+J Listener
+  // Close drawer if user navigates away from blogs
   useEffect(() => {
+    if (!isBlogs) {
+      setIsOpen(false);
+    }
+  }, [isBlogs]);
+
+  // Ctrl+J / Cmd+J Listener (active ONLY when on /blogs)
+  useEffect(() => {
+    if (!isBlogs) return;
+
     const handleKeyDown = (e) => {
       if ((e.metaKey || e.ctrlKey) && (e.key === 'j' || e.key === 'J')) {
         e.preventDefault();
@@ -57,7 +76,7 @@ export default function GlobalScratchpad() {
       window.removeEventListener('keydown', handleKeyDown);
       window.removeEventListener('scratchpad:toggle', handleToggleEvent);
     };
-  }, []);
+  }, [isBlogs]);
 
   // Save to localStorage
   useEffect(() => {
@@ -130,7 +149,7 @@ export default function GlobalScratchpad() {
     );
   };
 
-  if (!mounted || typeof document === 'undefined') return null;
+  if (!mounted || typeof document === 'undefined' || !isBlogs) return null;
 
   return ReactDOM.createPortal(
     <>

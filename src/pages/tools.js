@@ -32,6 +32,7 @@ export default function ToolsPage() {
   return (
     <Layout
       title="Engineering Tools & Living Workstation"
+      title="Engineering Tools"
       description="Integrated productivity suite, whiteboard, markdown scratchpad, and spotlight search designed by Vardhman Gupta."
     >
       <main className={styles.pageContainer}>
@@ -169,20 +170,20 @@ export default function ToolsPage() {
               </div>
             </article>
 
-            {/* Tool 4: Floating Quick Scratchpad */}
+            {/* Tool 4: Blogs Quick Scratchpad */}
             <article className={styles.toolCard}>
               <div className={styles.toolTop}>
                 <div className={styles.toolIconTitle}>
                   <div className={styles.toolIconWrap}>
                     <FileText size={20} />
                   </div>
-                  <h2 className={styles.toolTitle}>Floating Quick Scratchpad</h2>
+                  <h2 className={styles.toolTitle}>Blogs Scratchpad</h2>
                 </div>
-                <span className={styles.shortcutBadge}>Ctrl + J / Cmd + J</span>
+                <span className={styles.shortcutBadge}>/blogs (Ctrl + J)</span>
               </div>
 
               <p className={styles.toolDesc}>
-                A global slide-over markdown notepad accessible across every route on the site. Jot down quick thoughts, code snippets, or system architecture ideas while reading blogs without leaving the page.
+                A dedicated slide-over markdown notepad accessible while reading technical blogs. Jot down quick thoughts, code snippets, or system architecture ideas without leaving your reading flow.
               </p>
 
               <ul className={styles.featureList}>
@@ -201,12 +202,12 @@ export default function ToolsPage() {
               </ul>
 
               <div className={styles.cardBottom}>
-                <button type="button" onClick={triggerScratchpad} className={styles.actionBtn}>
-                  <span>Try Scratchpad Now</span>
+                <Link to="/blogs/intro" className={styles.actionBtn}>
+                  <span>Open in Technical Blogs</span>
                   <ArrowRight size={15} />
-                </button>
+                </Link>
                 <span className={styles.shortcutHint}>
-                  Shortcut: <kbd className={styles.shortcutBadge}>Ctrl+J</kbd>
+                  Active on /blogs: <kbd className={styles.shortcutBadge}>Ctrl+J</kbd>
                 </span>
               </div>
             </article>

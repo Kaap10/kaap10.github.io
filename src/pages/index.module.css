@@ -380,8 +380,14 @@
 }
 
 /* ==========================================================================
-   2b. Open Source Section Card
+   2b. Open Source Section Cards
    ========================================================================== */
+
+.openSourceList {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
 
 .openSourceCard {
   background: var(--vg-bg-elevated, #262628);

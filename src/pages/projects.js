@@ -12,9 +12,7 @@ import {
   Code2, 
   Gauge, 
   Cpu, 
-  Video, 
-  ShieldCheck,
-  Package
+  ShieldCheck
 } from 'lucide-react';
 import styles from './projects.module.css';
 
@@ -24,65 +22,11 @@ const IconGithub = ({ size = 15 }) => (
   </svg>
 );
 
-const IconNpm = ({ size = 15 }) => (
-  <svg viewBox="0 0 24 24" width={size} height={size} fill="currentColor" aria-hidden="true">
-    <path d="M1.763 0C.786 0 0 .786 0 1.763v20.474C0 23.214.786 24 1.763 24h20.474c.977 0 1.763-.786 1.763-1.763V1.763C24 .786 23.214 0 22.237 0zM5.13 5.13h13.74v13.74h-3.435V8.565h-3.435v10.305H5.13z" />
-  </svg>
-);
-
 const PROJECTS = [
-  // 1. build-with-ai (Open Source)
-  {
-    id: 'build-with-ai',
-    index: '01',
-    category: 'Open Source',
-    filterTag: 'Open Source',
-    icon: Terminal,
-    title: 'build-with-ai',
-    headline: 'Zero-API, local-first CLI for structured AI-assisted software development.',
-    cardDescription:
-      'Open-source CLI that turns AI-assisted development into a structured engineering workflow. Generates context-aware prompts, preserves architectural decisions locally, and guides developers from discovery to deployment — with zero API keys or telemetry.',
-    license: 'MIT License',
-    techStack: ['Node.js', 'JavaScript', 'CLI', 'npm', 'JSON', 'AI Prompt Engineering'],
-    highlights: [
-      '10–23 phase structured workflows across different project templates',
-      'Automatic architectural context injection across steps',
-      'Works with ChatGPT, Claude, Gemini, Cursor, Copilot, DeepSeek & Ollama',
-      'Local .buildwithai/ state and decision management',
-      '6 built-in production-oriented templates',
-      'Deterministic README.md, BUILD_LOG.md & CONTEXT.md generation',
-      'Zero API keys, accounts, telemetry, or vendor lock-in',
-      'Custom community templates via local JSON or HTTPS',
-    ],
-    metrics: null,
-    recruiterHighlight:
-      'Architected a deterministic, local-first CLI workflow engine that orchestrates multi-phase software delivery across multiple AI assistants and models without cloud storage or telemetry.',
-    github: 'https://github.com/Kaap10/build-with-ai',
-    npm: 'https://www.npmjs.com/package/build-with-ai',
-    tags: ['Open Source', 'Node.js', 'CLI', 'Developer Tools', 'AI'],
-    details: {
-      description:
-        'build-with-ai is an open-source CLI that guides developers through complete software projects using structured, sequential engineering workflows. It generates context-aware prompts for each development phase while maintaining architectural decisions locally to prevent context drift between AI sessions.\n\nBy keeping state within a local `.buildwithai/` directory and utilizing reproducible prompts, developers can seamlessly switch between multiple AI assistants and models (ChatGPT, Claude, Gemini, DeepSeek, Cursor, Copilot, Ollama) while ensuring strict architectural continuity without vendor lock-in.',
-      allTech: ['Node.js', 'JavaScript', 'CLI', 'npm', 'JSON', 'Markdown', 'Git', 'Prompt Engineering'],
-      fullHighlights: [
-        '10–23 phase sequential development workflows tailored per project template',
-        'Automatic architectural context injection across phases',
-        'Prompt generation compatible with all major AI assistants and models',
-        'Local .buildwithai/ state and architectural decision records',
-        '6 built-in templates (Full-Stack, CLI, Agent, API, Library, Mobile)',
-        'Deterministic README.md, BUILD_LOG.md & CONTEXT.md generation',
-        'Zero API keys, accounts, telemetry, or vendor lock-in',
-        'Custom community template ingestion via local JSON or HTTPS',
-        'Open-source under the MIT License',
-      ],
-      metricsDetail: 'Zero API keys required · 100% Local-first · 6 Production Templates · MIT License',
-    },
-  },
-
-  // 2. Karya (AI)
+  // 1. Karya (AI)
   {
     id: 'karya',
-    index: '02',
+    index: '01',
     category: 'AI',
     filterTag: 'AI',
     icon: BookOpen,
@@ -118,10 +62,10 @@ const PROJECTS = [
     },
   },
 
-  // 3. AuraNow (AI)
+  // 2. AuraNow (AI)
   {
     id: 'auranow',
-    index: '03',
+    index: '02',
     category: 'AI',
     filterTag: 'AI',
     icon: Activity,
@@ -177,10 +121,10 @@ const PROJECTS = [
     },
   },
 
-  // 4. Code with Buddy (Fullstack)
+  // 3. Code with Buddy (Fullstack)
   {
     id: 'code-with-buddy',
-    index: '04',
+    index: '03',
     category: 'Fullstack',
     filterTag: 'Fullstack',
     icon: Code2,
@@ -215,10 +159,10 @@ const PROJECTS = [
     },
   },
 
-  // 5. IncidentFlow (Fullstack)
+  // 4. IncidentFlow (Fullstack)
   {
     id: 'incidentflow',
-    index: '05',
+    index: '04',
     category: 'Fullstack',
     filterTag: 'Fullstack',
     icon: Activity,
@@ -255,10 +199,10 @@ const PROJECTS = [
     },
   },
 
-  // 6. Terminal Agent (Agents)
+  // 5. Terminal Agent (Agents)
   {
     id: 'terminal-agent',
-    index: '06',
+    index: '05',
     category: 'Agents',
     filterTag: 'Agents',
     icon: Terminal,
@@ -294,10 +238,10 @@ const PROJECTS = [
     },
   },
 
-  // 7. Agent Bench (Agents)
+  // 6. Agent Bench (Agents)
   {
     id: 'agent-bench',
-    index: '07',
+    index: '06',
     category: 'Agents',
     filterTag: 'Agents',
     icon: Gauge,
@@ -332,10 +276,10 @@ const PROJECTS = [
     },
   },
 
-  // 8. Model Router (Agents)
+  // 7. Model Router (Agents)
   {
     id: 'model-router',
-    index: '08',
+    index: '07',
     category: 'Agents',
     filterTag: 'Agents',
     icon: Cpu,
@@ -390,7 +334,6 @@ export default function ProjectsPage() {
   const counts = useMemo(() => {
     return {
       all: PROJECTS.length,
-      openSource: PROJECTS.filter((p) => p.filterTag === 'Open Source').length,
       ai: PROJECTS.filter((p) => p.filterTag === 'AI').length,
       fullstack: PROJECTS.filter((p) => p.filterTag === 'Fullstack').length,
       agents: PROJECTS.filter((p) => p.filterTag === 'Agents').length,
@@ -400,7 +343,7 @@ export default function ProjectsPage() {
   return (
     <Layout
       title="Projects"
-      description="Production-oriented systems, autonomous AI agents, open-source software, and full-stack platforms built by Vardhman Gupta."
+      description="Production-oriented systems, autonomous AI agents, and full-stack platforms built by Vardhman Gupta."
     >
       <main className={styles.pageContainer}>
         {/* Subtle Ambient Glow */}
@@ -414,15 +357,14 @@ export default function ProjectsPage() {
           <header className={styles.pageHeader}>
             <h1 className={styles.pageTitle}>Projects</h1>
             <p className={styles.pageSubtitle}>
-              Production-oriented systems, autonomous AI agents, open-source developer tooling, and full-stack platforms built around real engineering challenges.
+              Production-oriented systems, autonomous AI agents, and full-stack platforms built around real engineering challenges.
             </p>
           </header>
 
-          {/* Filter Pills: All, Open Source, AI, Fullstack, Agents */}
+          {/* Filter Pills: All, AI, Fullstack, Agents */}
           <div className={styles.filterRow}>
             {[
               { id: 'All', label: `All (${counts.all})` },
-              { id: 'Open Source', label: `Open Source (${counts.openSource})` },
               { id: 'AI', label: `AI (${counts.ai})` },
               { id: 'Fullstack', label: `Fullstack (${counts.fullstack})` },
               { id: 'Agents', label: `Agents (${counts.agents})` },
@@ -557,6 +499,19 @@ export default function ProjectsPage() {
                           <ArrowUpRight size={13} />
                         </a>
                       )}
+                      {project.prsUrl && (
+                        <a
+                          href={project.prsUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={styles.actionBtn}
+                          title="View Merged Pull Requests"
+                        >
+                          <GitPullRequest size={14} />
+                          <span>Merged PRs</span>
+                          <ArrowUpRight size={13} />
+                        </a>
+                      )}
                     </div>
                   </div>
 
@@ -591,6 +546,48 @@ export default function ProjectsPage() {
                             ))}
                           </div>
                         </div>
+
+                        {project.details.prList && (
+                          <div className={styles.deepDiveSection}>
+                            <h5 className={styles.deepDiveSubheading}>Merged Pull Requests &amp; Contributions</h5>
+                            <div className={styles.prTableWrap}>
+                              <table className={styles.prTable}>
+                                <thead>
+                                  <tr>
+                                    <th>PR</th>
+                                    <th>Issue</th>
+                                    <th>What Was Fixed</th>
+                                    <th>How It Was Fixed</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {project.details.prList.map((prItem, prIdx) => (
+                                    <tr key={prIdx}>
+                                      <td>
+                                        <a href={prItem.url} target="_blank" rel="noopener noreferrer" className={styles.prLink}>
+                                          {prItem.pr}
+                                          <ArrowUpRight size={11} />
+                                        </a>
+                                      </td>
+                                      <td>
+                                        {prItem.issue ? (
+                                          <a href={prItem.issueUrl} target="_blank" rel="noopener noreferrer" className={styles.prLink}>
+                                            {prItem.issue}
+                                            <ArrowUpRight size={11} />
+                                          </a>
+                                        ) : (
+                                          <span style={{ opacity: 0.5 }}>—</span>
+                                        )}
+                                      </td>
+                                      <td>{prItem.fixed}</td>
+                                      <td>{prItem.how}</td>
+                                    </tr>
+                                  ))}
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        )}
 
                         <div className={styles.deepDiveSection}>
                           <h5 className={styles.deepDiveSubheading}>Complete Architectural Highlights</h5>

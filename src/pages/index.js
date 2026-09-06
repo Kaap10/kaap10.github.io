@@ -14,7 +14,8 @@ import {
   PenTool,
   Activity,
   Command,
-  Edit3
+  Edit3,
+  GitPullRequest
 } from 'lucide-react';
 import styles from './index.module.css';
 
@@ -119,10 +120,10 @@ export default function Home() {
               </Link>
 
               <a 
-                href="/Vardhman_Gupta%20(Resume).pdf" 
-                target="_blank" 
-                rel="noopener noreferrer"
+                href="#" 
+                onClick={(e) => e.preventDefault()}
                 className={styles.heroLink}
+                title="Resume (Connecting soon)"
               >
                 <FileText size={15} />
                 <span>Resume</span>
@@ -132,7 +133,137 @@ export default function Home() {
           </section>
 
           {/* ============================================================
-              2. Selected Work / Projects (Minimalist Cards)
+              2. Open Source Section (build-with-ai & dynavec)
+              ============================================================ */}
+          <section 
+            ref={openSourceRef} 
+            id="open-source"
+            className={`${styles.section} ${styles.revealSection} ${openSourceRevealed ? styles.isRevealed : ''}`}
+          >
+            <div className={styles.sectionHeader}>
+              <div className={styles.sectionTitleGroup}>
+                <span className={styles.sectionEyebrow}>Public Tooling &amp; Contributions</span>
+                <h2 className={styles.sectionTitle}>Open Source</h2>
+              </div>
+              <Link to="/opensource" className={styles.viewAllLink}>
+                <span>View All Details</span>
+                <ArrowRight size={14} />
+              </Link>
+            </div>
+
+            <div className={styles.openSourceList}>
+              {/* Card 1: build-with-ai (Creator & Maintainer) */}
+              <div className={styles.openSourceCard}>
+                <div className={styles.openSourceCardTop}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', flexWrap: 'wrap' }}>
+                    <span className={styles.projectCategoryTag}>Open Source</span>
+                    <span className={styles.projectMetricTag}>MIT License</span>
+                    <span className={styles.projectMetricTag}>npm package</span>
+                  </div>
+                  <div className={styles.openSourceCardActions}>
+                    <a 
+                      href="https://github.com/Kaap10/build-with-ai" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className={styles.openSourceBtn}
+                      aria-label="GitHub Repository"
+                    >
+                      <IconGithub size={14} />
+                      <span>GitHub</span>
+                      <ArrowUpRight size={12} />
+                    </a>
+                    <a 
+                      href="https://www.npmjs.com/package/build-with-ai" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className={styles.openSourceBtn}
+                      aria-label="npm package"
+                    >
+                      <IconNpm size={14} />
+                      <span>npm</span>
+                      <ArrowUpRight size={12} />
+                    </a>
+                  </div>
+                </div>
+
+                <div className={styles.openSourceCardBody}>
+                  <h3 className={styles.openSourceCardTitle}>build-with-ai</h3>
+                  <p className={styles.openSourceCardTagline}>
+                    OpenSource Project Creator &amp; Maintainer · Zero-API Developer CLI
+                  </p>
+                  <p className={styles.openSourceCardDesc}>
+                    Built an open-source, zero-API developer CLI that guides engineers through structured, end-to-end software development phases using any AI model (ChatGPT, Claude, Cursor, Gemini, local LLMs). Designed with a local-first memory architecture (.buildwithai/context.json), prerequisite validation, automated clipboard synchronization, and 6 production templates.
+                  </p>
+                </div>
+
+                <div className={styles.projectTechRow}>
+                  <span className={styles.techTag}>Node.js</span>
+                  <span className={styles.techTag}>JavaScript</span>
+                  <span className={styles.techTag}>CLI</span>
+                  <span className={styles.techTag}>npm</span>
+                  <span className={styles.techTag}>JSON</span>
+                  <span className={styles.techTag}>AI Prompt Engineering</span>
+                </div>
+              </div>
+
+              {/* Card 2: dynavec (Open Source Contributor) */}
+              <div className={styles.openSourceCard}>
+                <div className={styles.openSourceCardTop}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', flexWrap: 'wrap' }}>
+                    <span className={styles.projectCategoryTag}>Open Source</span>
+                    <span className={styles.projectMetricTag}>Contributor</span>
+                    <span className={styles.projectMetricTag}>5 Merged PRs</span>
+                  </div>
+                  <div className={styles.openSourceCardActions}>
+                    <a 
+                      href="https://github.com/codeforstartups/dynavec" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className={styles.openSourceBtn}
+                      aria-label="GitHub Repository"
+                    >
+                      <IconGithub size={14} />
+                      <span>GitHub</span>
+                      <ArrowUpRight size={12} />
+                    </a>
+                    <a 
+                      href="https://github.com/codeforstartups/dynavec/pulls?q=is%3Apr+is%3Amerged+author%3AKaap10" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className={styles.openSourceBtn}
+                      aria-label="Merged Pull Requests"
+                    >
+                      <GitPullRequest size={14} />
+                      <span>Merged PRs</span>
+                      <ArrowUpRight size={12} />
+                    </a>
+                  </div>
+                </div>
+
+                <div className={styles.openSourceCardBody}>
+                  <h3 className={styles.openSourceCardTitle}>dynavec</h3>
+                  <p className={styles.openSourceCardTagline}>
+                    Open Source Contributor · Serverless Hybrid Vector Database
+                  </p>
+                  <p className={styles.openSourceCardDesc}>
+                    Contributed to dynavec, a serverless hybrid vector database built on DynamoDB and Amazon S3 Vectors. Improved Python 3.9 dependency compatibility, expanded chunking and retrieval test coverage, validated large get_vectors batching, added embedder dimension-mismatch coverage, and implemented content-hash deduplication for ingestion.
+                  </p>
+                </div>
+
+                <div className={styles.projectTechRow}>
+                  <span className={styles.techTag}>Python</span>
+                  <span className={styles.techTag}>DynamoDB</span>
+                  <span className={styles.techTag}>AWS S3</span>
+                  <span className={styles.techTag}>Vector DB</span>
+                  <span className={styles.techTag}>pytest</span>
+                  <span className={styles.techTag}>Ruff</span>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* ============================================================
+              3. Selected Work / Projects (Minimalist Cards)
               ============================================================ */}
           <section 
             ref={projectsRef} 
@@ -331,77 +462,7 @@ export default function Home() {
           </section>
 
           {/* ============================================================
-              3. Open Source Section (build-with-ai)
-              ============================================================ */}
-          <section 
-            ref={openSourceRef} 
-            id="open-source"
-            className={`${styles.section} ${styles.revealSection} ${openSourceRevealed ? styles.isRevealed : ''}`}
-          >
-            <div className={styles.sectionHeader}>
-              <div className={styles.sectionTitleGroup}>
-                <span className={styles.sectionEyebrow}>Public Tooling & Packages</span>
-                <h2 className={styles.sectionTitle}>Open Source</h2>
-              </div>
-              <span className={styles.sectionSubtitle}>MIT Licensed · npm Registry</span>
-            </div>
-
-            <div className={styles.openSourceCard}>
-              <div className={styles.openSourceCardTop}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', flexWrap: 'wrap' }}>
-                  <span className={styles.projectCategoryTag}>Open Source</span>
-                  <span className={styles.projectMetricTag}>MIT License</span>
-                  <span className={styles.projectMetricTag}>npm package</span>
-                </div>
-                <div className={styles.openSourceCardActions}>
-                  <a 
-                    href="https://github.com/Kaap10/build-with-ai" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className={styles.openSourceBtn}
-                    aria-label="GitHub Repository"
-                  >
-                    <IconGithub size={14} />
-                    <span>GitHub</span>
-                    <ArrowUpRight size={12} />
-                  </a>
-                  <a 
-                    href="https://www.npmjs.com/package/build-with-ai" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className={styles.openSourceBtn}
-                    aria-label="npm package"
-                  >
-                    <IconNpm size={14} />
-                    <span>npm</span>
-                    <ArrowUpRight size={12} />
-                  </a>
-                </div>
-              </div>
-
-              <div className={styles.openSourceCardBody}>
-                <h3 className={styles.openSourceCardTitle}>build-with-ai</h3>
-                <p className={styles.openSourceCardTagline}>
-                  Zero-API, local-first CLI for structured AI-assisted software development.
-                </p>
-                <p className={styles.openSourceCardDesc}>
-                  Open-source CLI that turns AI-assisted development into a structured engineering workflow. Generates context-aware prompts, preserves architectural decisions locally, and guides developers from discovery to deployment — with zero API keys or telemetry.
-                </p>
-              </div>
-
-              <div className={styles.projectTechRow}>
-                <span className={styles.techTag}>Node.js</span>
-                <span className={styles.techTag}>JavaScript</span>
-                <span className={styles.techTag}>CLI</span>
-                <span className={styles.techTag}>npm</span>
-                <span className={styles.techTag}>JSON</span>
-                <span className={styles.techTag}>AI Prompt Engineering</span>
-              </div>
-            </div>
-          </section>
-
-          {/* ============================================================
-              3. Tool Kit Section (Developer Productivity Tools)
+              4. Tool Kit Section (Developer Productivity Tools)
               ============================================================ */}
           <section 
             ref={ecoRef} 
@@ -465,38 +526,24 @@ export default function Home() {
                 </div>
               </Link>
 
-              {/* Tool 4: Quick Scratchpad */}
-              <div
-                role="button"
-                tabIndex={0}
-                onClick={() => {
-                  if (typeof window !== 'undefined') {
-                    window.dispatchEvent(new CustomEvent('scratchpad:toggle'));
-                  }
-                }}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    if (typeof window !== 'undefined') {
-                      window.dispatchEvent(new CustomEvent('scratchpad:toggle'));
-                    }
-                  }
-                }}
+              {/* Tool 4: Blogs Scratchpad */}
+              <Link
+                to="/blogs/intro"
                 className={`${styles.ecoCard} ${styles.staggerItem}`}
-                style={{ cursor: 'pointer' }}
               >
                 <div className={styles.ecoIconWrap}>
                   <Edit3 size={20} />
                 </div>
                 <div className={styles.ecoCardBody}>
-                  <h3 className={styles.ecoCardTitle}>Scratchpad</h3>
+                  <h3 className={styles.ecoCardTitle}>Blogs Scratchpad</h3>
                   <p className={styles.ecoCardDesc}>
-                    Global floating quick-capture scratchpad with multi-sheet tabs and instant export. Accessible everywhere with Ctrl+J.
+                    Dedicated quick-capture markdown scratchpad with multi-sheet tabs and instant export. Accessible while reading technical blogs.
                   </p>
                 </div>
                 <div className={styles.ecoArrow}>
                   <ArrowRight size={16} />
                 </div>
-              </div>
+              </Link>
 
               {/* Tool 5: Command Palette */}
               <div
@@ -534,7 +581,7 @@ export default function Home() {
           </section>
 
           {/* ============================================================
-              4. Technical Blogs Section
+              5. Technical Blogs Section
               ============================================================ */}
           <section 
             ref={blogsRef} 
@@ -607,7 +654,7 @@ export default function Home() {
           </section>
 
           {/* ============================================================
-              5. Core Engineering Techstack (Minimal Structured Grid)
+              6. Core Engineering Techstack (Minimal Structured Grid)
               ============================================================ */}
           <section 
             ref={toolkitRef} 
@@ -706,7 +753,7 @@ export default function Home() {
           </section>
 
           {/* ============================================================
-              6. Minimal Clean Footer
+              7. Minimal Clean Footer
               ============================================================ */}
           <footer className={styles.editorialFooter}>
             <div className={styles.footerTop}>
@@ -717,8 +764,9 @@ export default function Home() {
               <div className={styles.footerLinks}>
                 <Link to="/blogs/intro" className={styles.footerLink}>Blogs</Link>
                 <Link to="/projects" className={styles.footerLink}>Projects</Link>
+                <Link to="/opensource" className={styles.footerLink}>Open Source</Link>
                 <Link to="/tools" className={styles.footerLink}>Tools</Link>
-                <a href="/Vardhman_Gupta%20(Resume).pdf" target="_blank" rel="noopener noreferrer" className={styles.footerLink}>Resume</a>
+                <a href="#" onClick={(e) => e.preventDefault()} className={styles.footerLink} title="Resume (Connecting soon)">Resume</a>
                 <a href="https://github.com/kaap10" target="_blank" rel="noopener noreferrer" className={styles.footerLink}>GitHub</a>
                 <a href="https://linkedin.com/in/vardhman-gupta" target="_blank" rel="noopener noreferrer" className={styles.footerLink}>LinkedIn</a>
               </div>

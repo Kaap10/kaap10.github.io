@@ -203,11 +203,18 @@ const COMMANDS = [
   {
     id: 'tool-scratchpad',
     section: 'Developer Tools',
-    title: 'Toggle Quick Scratchpad (Markdown)',
-    shortcut: 'Ctrl+J',
+    title: 'Open Scratchpad (Technical Blogs)',
+    shortcut: 'Ctrl+J (in Blogs)',
     icon: <IconEdit size={16} />,
     action: () => {
-      window.dispatchEvent(new CustomEvent('scratchpad:toggle'));
+      if (typeof window !== 'undefined') {
+        const isBlog = window.location.pathname.startsWith('/blogs') || window.location.pathname.startsWith('/blog');
+        if (isBlog) {
+          window.dispatchEvent(new CustomEvent('scratchpad:toggle'));
+        } else {
+          window.location.href = '/blogs/intro';
+        }
+      }
     },
   },
 ];

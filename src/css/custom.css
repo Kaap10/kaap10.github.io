@@ -1076,3 +1076,11 @@ kbd {
   color: var(--vg-text) !important;
   box-shadow: 0 1px 0 var(--vg-border-hover) !important;
 }
+
+/* Navbar Search Container visibility handling */
+.navbar__search:empty,
+.navbarSearchContainer:empty,
+.navbar__item:has(> .navbar__search:empty) {
+  display: none !important;
+}
+
