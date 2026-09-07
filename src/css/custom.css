@@ -450,74 +450,121 @@ h1, h2, h3, h4, h5, h6 {
    Classic Full-Width Navbar for /blogs (Documentation Pages)
    ========================================================================== */
 
-html.plugin-docs {
-  --ifm-navbar-height: 60px;
+html.plugin-docs,
+html.is-blog-page {
+  --ifm-navbar-height: 64px;
 }
 
-html.plugin-docs .navbar {
+html.plugin-docs .navbar,
+html.is-blog-page .navbar {
   position: fixed !important;
   top: 0 !important;
   left: 0 !important;
   right: 0 !important;
   margin: 0 !important;
-  transform: translateZ(0) !important;
+  transform: none !important;
   width: 100% !important;
   max-width: 100% !important;
-  height: 60px !important;
-  min-height: 60px !important;
+  height: 64px !important;
+  min-height: 64px !important;
   padding: 0 1.5rem !important;
   border-radius: 0 !important;
-  border: none !important;
+  border-top: none !important;
+  border-left: none !important;
+  border-right: none !important;
   border-bottom: 1px solid var(--vg-border) !important;
-  background-color: var(--vg-navbar-bg, rgba(30, 30, 30, 0.75)) !important;
+  background-color: var(--vg-navbar-bg, rgba(30, 30, 30, 0.88)) !important;
   backdrop-filter: blur(16px) saturate(180%) !important;
   -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
-  box-shadow: none !important;
+  box-shadow: 0 1px 0 0 var(--vg-border) !important;
   z-index: 1000 !important;
 }
 
-html.plugin-docs[data-theme='light'] .navbar {
-  background-color: var(--vg-navbar-bg, rgba(250, 250, 249, 0.82)) !important;
+html.plugin-docs[data-theme='light'] .navbar,
+html.is-blog-page[data-theme='light'] .navbar {
+  background-color: var(--vg-navbar-bg, rgba(250, 250, 249, 0.92)) !important;
   border-bottom: 1px solid var(--vg-border) !important;
-  box-shadow: none !important;
+  box-shadow: 0 1px 0 0 var(--vg-border) !important;
 }
 
-html.plugin-docs .navbar__inner {
-  max-width: var(--vg-page-max-width, 1320px) !important;
+html.plugin-docs .navbar__inner,
+html.is-blog-page .navbar__inner {
+  max-width: 1400px !important;
   margin: 0 auto !important;
   width: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
 }
 
-html.plugin-docs .navbar__link {
-  border-radius: var(--vg-radius-sm);
-  padding: 0.35rem 0.75rem;
+html.plugin-docs .navbar__items,
+html.is-blog-page .navbar__items {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.35rem !important;
+  flex-shrink: 0 !important;
+}
+
+html.plugin-docs .navbar__items--right,
+html.is-blog-page .navbar__items--right {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.35rem !important;
+  flex-shrink: 0 !important;
+}
+
+html.plugin-docs .navbar__link,
+html.is-blog-page .navbar__link {
+  border-radius: var(--vg-radius-sm) !important;
+  padding: 0.35rem 0.75rem !important;
 }
 
 /* ==========================================================================
-   Documentation / Blogs Section Layout
+   Documentation / Blogs Section Layout & Offset Fixing
    ========================================================================== */
 
-.main-wrapper {
+html.plugin-docs .main-wrapper,
+html.is-blog-page .main-wrapper {
   background: var(--vg-bg);
-  min-height: calc(100vh - var(--ifm-navbar-height));
+  min-height: calc(100vh - 64px);
+  padding-top: 64px !important;
+}
+
+html.plugin-docs [class*='docsWrapper'],
+html.is-blog-page [class*='docsWrapper'] {
+  padding-top: 0 !important;
+}
+
+html.plugin-docs [class*='docMainContainer'],
+html.is-blog-page [class*='docMainContainer'] {
+  padding-top: 0.75rem !important;
+}
+
+html.plugin-docs .theme-doc-breadcrumbs,
+html.is-blog-page .theme-doc-breadcrumbs {
+  margin-top: 0.25rem !important;
+  margin-bottom: 1rem !important;
 }
 
 /* Technical Minimalist Sidebar for Blogs */
 @media (min-width: 997px) {
-  html.plugin-docs .theme-doc-sidebar-container {
+  html.plugin-docs .theme-doc-sidebar-container,
+  html.is-blog-page .theme-doc-sidebar-container {
     position: sticky !important;
     background: var(--vg-bg-elevated) !important;
     border-right: 1px solid var(--vg-border) !important;
-    top: var(--ifm-navbar-height) !important;
-    height: calc(100vh - var(--ifm-navbar-height)) !important;
-    max-height: calc(100vh - var(--ifm-navbar-height)) !important;
+    top: 64px !important;
+    height: calc(100vh - 64px) !important;
+    max-height: calc(100vh - 64px) !important;
   }
 
-  html.plugin-docs [class*='sidebar_'] {
+  html.plugin-docs [class*='sidebar_'],
+  html.is-blog-page [class*='sidebar_'] {
     padding-top: 0 !important;
   }
 
-  html.plugin-docs .sidebarViewport {
+  html.plugin-docs .sidebarViewport,
+  html.is-blog-page .sidebarViewport {
     position: relative !important;
     top: 0 !important;
     height: 100% !important;
@@ -525,12 +572,23 @@ html.plugin-docs .navbar__link {
     overflow-y: auto !important;
   }
 
-  html.plugin-docs .theme-doc-toc-desktop {
+  html.plugin-docs .theme-doc-toc-desktop,
+  html.is-blog-page .theme-doc-toc-desktop {
     position: sticky !important;
-    top: var(--ifm-navbar-height) !important;
-    height: calc(100vh - var(--ifm-navbar-height)) !important;
-    max-height: calc(100vh - var(--ifm-navbar-height)) !important;
+    top: 64px !important;
+    height: calc(100vh - 64px) !important;
+    max-height: calc(100vh - 64px) !important;
     overflow-y: auto !important;
+  }
+}
+
+/* Secondary icons collapse on smaller desktop widths to keep search bar roomy */
+@media (min-width: 997px) and (max-width: 1180px) {
+  html.plugin-docs .navbar__item:has(img[alt="Medium"]),
+  html.plugin-docs .navbar__item:has(img[alt="LeetCode"]),
+  html.is-blog-page .navbar__item:has(img[alt="Medium"]),
+  html.is-blog-page .navbar__item:has(img[alt="LeetCode"]) {
+    display: none !important;
   }
 }
 

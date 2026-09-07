@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import ReactDOM from 'react-dom';
+import { useLocation } from '@docusaurus/router';
 import GlobalCommandPalette from '../components/Common/GlobalCommandPalette';
 import GlobalScratchpad from '../components/Common/GlobalScratchpad';
 
@@ -785,6 +786,21 @@ function GlobalTimerWidget() {
 }
 
 export default function Root({ children }) {
+  const location = useLocation();
+
+  useEffect(() => {
+    if (typeof document === 'undefined') return;
+    const path = location?.pathname || '';
+    const clean = path.replace(/\/+$/, '') || '/';
+    const isBlogs = clean === '/blogs' || clean.startsWith('/blogs/') || clean === '/blog' || clean.startsWith('/blog/');
+
+    if (isBlogs) {
+      document.documentElement.classList.add('plugin-docs', 'is-blog-page');
+    } else {
+      document.documentElement.classList.remove('plugin-docs', 'is-blog-page');
+    }
+  }, [location?.pathname]);
+
   return (
     <>
       {children}
