@@ -19,15 +19,9 @@ const DEFAULT_SHEETS = [
   {
     id: 'sheet_1',
     title: 'Quick Notes',
-    content: `# Quick Scratchpad (Ctrl+J / Cmd+J)\n\nJot down thoughts, code snippets, or system architecture ideas while reading blogs and docs.\n\n\`\`\`python\n# Fast memoization example\nfrom functools import lru_cache\n\n@lru_cache(maxsize=None)\ndef fib(n):\n    return n if n < 2 else fib(n-1) + fib(n-2)\n\`\`\`\n\n- [x] Auto-saved in browser\n- [ ] Exportable to Markdown\n`,
+    content: `# Quick Scratchpad (Ctrl+J / Cmd+J)\n\nJot down thoughts, code snippets, system architecture ideas, or meeting notes across the entire website.\n\n\`\`\`python\n# Fast memoization example\nfrom functools import lru_cache\n\n@lru_cache(maxsize=None)\ndef fib(n):\n    return n if n < 2 else fib(n-1) + fib(n-2)\n\`\`\`\n\n- [x] Auto-saved in browser localStorage\n- [x] Multi-sheet tab organization\n- [x] Exportable to Markdown\n- [x] Keyboard-accessible via Ctrl+J / Cmd+J\n`,
   },
 ];
-
-function isBlogPath(pathname) {
-  if (!pathname) return false;
-  const clean = pathname.replace(/\/+$/, '') || '/';
-  return clean === '/blogs' || clean.startsWith('/blogs/') || clean === '/blog' || clean.startsWith('/blog/');
-}
 
 export default function GlobalScratchpad() {
   const location = useLocation();
@@ -44,39 +38,35 @@ export default function GlobalScratchpad() {
   const [isPreview, setIsPreview] = useState(false);
   const [copied, setCopied] = useState(false);
 
-  const isBlogs = isBlogPath(location?.pathname);
-
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  // Close drawer if user navigates away from blogs
+  // Global Ctrl+J / Cmd+J & Custom Event Listeners
   useEffect(() => {
-    if (!isBlogs) {
-      setIsOpen(false);
-    }
-  }, [isBlogs]);
-
-  // Ctrl+J / Cmd+J Listener (active ONLY when on /blogs)
-  useEffect(() => {
-    if (!isBlogs) return;
-
     const handleKeyDown = (e) => {
       if ((e.metaKey || e.ctrlKey) && (e.key === 'j' || e.key === 'J')) {
         e.preventDefault();
         setIsOpen((prev) => !prev);
       }
     };
+
     const handleToggleEvent = () => setIsOpen((prev) => !prev);
+    const handleOpenEvent = () => setIsOpen(true);
+    const handleCloseEvent = () => setIsOpen(false);
 
     window.addEventListener('keydown', handleKeyDown);
     window.addEventListener('scratchpad:toggle', handleToggleEvent);
+    window.addEventListener('scratchpad:open', handleOpenEvent);
+    window.addEventListener('scratchpad:close', handleCloseEvent);
 
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
       window.removeEventListener('scratchpad:toggle', handleToggleEvent);
+      window.removeEventListener('scratchpad:open', handleOpenEvent);
+      window.removeEventListener('scratchpad:close', handleCloseEvent);
     };
-  }, [isBlogs]);
+  }, []);
 
   // Save to localStorage
   useEffect(() => {
@@ -138,18 +128,18 @@ export default function GlobalScratchpad() {
       <div>
         {lines.map((line, idx) => {
           if (line.startsWith('# ')) return <h2 key={idx} style={{ fontSize: '1.2rem', margin: '0.5rem 0', color: 'var(--vg-text, #F5F5F7)' }}>{line.slice(2)}</h2>;
-          if (line.startsWith('## ')) return <h3 key={idx} style={{ fontSize: '1rem', margin: '0.4rem 0', color: 'var(--vg-text, #F5F5F7)' }}>{line.slice(3)}</h3>;
-          if (line.startsWith('- [x] ')) return <div key={idx} style={{ color: '#52c41a', display: 'flex', alignItems: 'center', gap: '0.35rem' }}><IconCheck size={12} /> {line.slice(6)}</div>;
-          if (line.startsWith('- [ ] ')) return <div key={idx} style={{ color: 'var(--vg-text-muted, #A6A6AC)' }}>◻ {line.slice(6)}</div>;
-          if (line.startsWith('- ')) return <div key={idx} style={{ color: 'var(--vg-text, #F5F5F7)' }}>• {line.slice(2)}</div>;
-          if (line.startsWith('```')) return <pre key={idx} style={{ margin: '0.35rem 0' }}><code>{line}</code></pre>;
+          if (line.startsWith('## ')) return <h3 key={idx} style={{ fontSize: '1.05rem', margin: '0.4rem 0', color: 'var(--vg-accent, #FF4D4F)' }}>{line.slice(3)}</h3>;
+          if (line.startsWith('- [x] ')) return <div key={idx} style={{ color: '#52c41a', margin: '0.2rem 0' }}>[x] {line.slice(6)}</div>;
+          if (line.startsWith('- [ ] ')) return <div key={idx} style={{ color: 'var(--vg-text-muted, #A6A6AC)', margin: '0.2rem 0' }}>[ ] {line.slice(6)}</div>;
+          if (line.startsWith('- ')) return <li key={idx} style={{ marginLeft: '1rem', color: 'var(--vg-text-muted, #A6A6AC)' }}>{line.slice(2)}</li>;
+          if (line.startsWith('```')) return <div key={idx} style={{ background: '#1c1c1e', padding: '0.2rem 0.5rem', borderRadius: '4px', fontSize: '0.75rem', fontFamily: 'monospace', color: '#ff7875', margin: '0.3rem 0' }}>{line}</div>;
           return <p key={idx} style={{ margin: '0.2rem 0', color: 'var(--vg-text, #F5F5F7)' }}>{line}</p>;
         })}
       </div>
     );
   };
 
-  if (!mounted || typeof document === 'undefined' || !isBlogs) return null;
+  if (!mounted || typeof document === 'undefined') return null;
 
   return ReactDOM.createPortal(
     <>
@@ -168,7 +158,12 @@ export default function GlobalScratchpad() {
             className={styles.launcherIcon}
             width="26"
             height="26"
+            onError={(e) => {
+              // Fallback to vector icon if image isn't loaded
+              e.currentTarget.style.display = 'none';
+            }}
           />
+          <span style={{ fontSize: '12px', fontWeight: 700, color: '#ff4d4f' }}>J</span>
         </button>
       )}
 

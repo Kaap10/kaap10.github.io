@@ -152,8 +152,20 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* ==========================================================================
-   Header & Navbar: Floating Cylindrical Island (Default: Home & Board)
+   Header & Navbar: Floating Cylindrical Island (Default: Projects, OS, Tools)
    ========================================================================== */
+
+/* Hide Navbar and Footer completely on Home Page (Clean Dedicated Workstation) */
+.is-home-page .navbar,
+.is-home-page .footer,
+.is-home-page footer,
+body:has(.homepage-wrapper) .navbar,
+body:has(.homepage-wrapper) .footer,
+body:has(.homepage-wrapper) footer,
+html.is-home-page .navbar,
+html.is-home-page .footer {
+  display: none !important;
+}
 
 .navbar {
   position: fixed !important;
@@ -163,38 +175,40 @@ h1, h2, h3, h4, h5, h6 {
   margin-left: auto !important;
   margin-right: auto !important;
   transform: translateZ(0) !important;
-  width: calc(100% - 2.5rem) !important;
-  max-width: 960px !important;
-  height: 52px !important;
-  min-height: 52px !important;
-  padding: 0 1rem 0 1.25rem !important;
+  width: -moz-fit-content !important;
+  width: fit-content !important;
+  max-width: min(920px, calc(100% - 2rem)) !important;
+  height: 48px !important;
+  min-height: 48px !important;
+  padding: 0 0.6rem 0 1rem !important;
   border-radius: 9999px !important;
   border: 1px solid var(--vg-border) !important;
-  background-color: var(--vg-navbar-bg, rgba(30, 30, 30, 0.72)) !important;
-  backdrop-filter: blur(20px) saturate(180%) !important;
-  -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+  background-color: var(--vg-navbar-bg, rgba(28, 28, 30, 0.85)) !important;
+  backdrop-filter: blur(24px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
   box-shadow: 
-    0 16px 36px -10px rgba(0, 0, 0, 0.5),
-    0 4px 16px -2px rgba(0, 0, 0, 0.25),
+    0 16px 36px -8px rgba(0, 0, 0, 0.6),
+    0 4px 12px -2px rgba(0, 0, 0, 0.3),
     inset 0 1px 0 0 rgba(255, 255, 255, 0.08) !important;
   transition: border-color var(--vg-transition-fast), background-color var(--vg-transition-fast), box-shadow var(--vg-transition-fast) !important;
   z-index: 1000 !important;
 }
 
 [data-theme='light'] .navbar {
-  background-color: var(--vg-navbar-bg, rgba(255, 255, 255, 0.78)) !important;
+  background-color: var(--vg-navbar-bg, rgba(255, 255, 255, 0.9)) !important;
   border: 1px solid rgba(24, 24, 27, 0.1) !important;
   box-shadow: 
-    0 16px 36px -10px rgba(0, 0, 0, 0.08),
-    0 4px 16px -2px rgba(0, 0, 0, 0.04),
+    0 16px 36px -8px rgba(0, 0, 0, 0.08),
+    0 4px 12px -2px rgba(0, 0, 0, 0.04),
     inset 0 1px 0 0 rgba(255, 255, 255, 0.9) !important;
 }
 
 .navbar__inner {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  width: 100%;
+  justify-content: center;
+  gap: 0.65rem;
+  width: auto;
   height: 100%;
   max-width: 100%;
   margin: 0;
@@ -204,10 +218,10 @@ h1, h2, h3, h4, h5, h6 {
 .navbar__brand {
   font-family: var(--ifm-font-family-base);
   font-weight: 600;
-  font-size: 0.92rem;
-  letter-spacing: -0.02em;
+  font-size: 0.88rem;
+  letter-spacing: -0.015em;
   color: var(--vg-text);
-  margin-right: 1.25rem;
+  margin-right: 0.5rem;
   padding: 0;
   display: inline-flex;
   align-items: center;
@@ -222,19 +236,31 @@ h1, h2, h3, h4, h5, h6 {
 .navbar__items {
   display: flex;
   align-items: center;
-  gap: 0.2rem;
+  gap: 0.12rem;
 }
 
 .navbar__items--right {
-  gap: 0.35rem;
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.navbar__items--right::before {
+  content: '';
+  display: inline-block;
+  width: 1px;
+  height: 16px;
+  background: var(--vg-border);
+  margin: 0 0.35rem 0 0.15rem;
+  opacity: 0.75;
 }
 
 .navbar__link {
   font-family: var(--ifm-font-family-base);
-  font-size: 0.85rem;
+  font-size: 0.84rem;
   font-weight: 500;
   color: var(--vg-text-muted);
-  padding: 0.32rem 0.8rem;
+  padding: 0.26rem 0.65rem;
   border-radius: 9999px;
   transition: color var(--vg-transition-fast), background-color var(--vg-transition-fast);
 }
@@ -257,7 +283,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .navbar__item:hover svg {
-  opacity: 0.8;
+  opacity: 0.85;
   transform: translateY(-1px);
 }
 
@@ -292,15 +318,15 @@ h1, h2, h3, h4, h5, h6 {
   display: inline-flex !important;
   align-items: center;
   justify-content: center;
-  margin-left: 0.25rem;
+  margin-left: 0.15rem;
 }
 
 .navbar [class*='colorModeToggle'] button {
   display: inline-flex !important;
   align-items: center;
   justify-content: center;
-  width: 32px !important;
-  height: 32px !important;
+  width: 30px !important;
+  height: 30px !important;
   padding: 0 !important;
   border-radius: 50% !important;
   border: 1px solid transparent !important;
@@ -318,8 +344,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .navbar [class*='colorModeToggle'] svg {
-  width: 18px !important;
-  height: 18px !important;
+  width: 17px !important;
+  height: 17px !important;
   fill: currentColor !important;
 }
 
@@ -339,6 +365,15 @@ h1, h2, h3, h4, h5, h6 {
     border-right: none !important;
     border-bottom: 1px solid var(--vg-border) !important;
     transform: none !important;
+  }
+
+  .navbar__inner {
+    justify-content: space-between !important;
+    width: 100% !important;
+  }
+
+  .navbar__items--right::before {
+    display: none !important;
   }
 
   .navbar__toggle {

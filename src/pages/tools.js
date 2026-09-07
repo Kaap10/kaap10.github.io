@@ -10,7 +10,8 @@ import {
   Sparkles,
   Command,
   Maximize2,
-  BookOpen
+  BookOpen,
+  Terminal
 } from 'lucide-react';
 import styles from './tools.module.css';
 
@@ -248,6 +249,48 @@ export default function ToolsPage() {
                 </button>
                 <span className={styles.shortcutHint}>
                   Shortcut: <kbd className={styles.shortcutBadge}>Ctrl+H</kbd>
+                </span>
+              </div>
+            </article>
+
+            {/* Tool 5: Workstation Terminal */}
+            <article className={styles.toolCard}>
+              <div className={styles.toolTop}>
+                <div className={styles.toolIconTitle}>
+                  <div className={styles.toolIconWrap}>
+                    <Terminal size={20} />
+                  </div>
+                  <h2 className={styles.toolTitle}>Workstation Terminal</h2>
+                </div>
+                <span className={styles.shortcutBadge}>/ (Home)</span>
+              </div>
+
+              <p className={styles.toolDesc}>
+                An interactive, web-based Unix-style developer terminal integrated into the home workstation. Features rich bash emulation, command history, tab auto-completion, live particle physics canvas, and keyboard shortcuts.
+              </p>
+
+              <ul className={styles.featureList}>
+                <li className={styles.featureItem}>
+                  <span className={styles.featureDot}>•</span>
+                  <span>Full command execution: help, portfolio, tracker, neofetch, skills, git, cat, and curl</span>
+                </li>
+                <li className={styles.featureItem}>
+                  <span className={styles.featureDot}>•</span>
+                  <span>Keyboard navigation with command history (Up/Down arrows) and Tab auto-completion</span>
+                </li>
+                <li className={styles.featureItem}>
+                  <span className={styles.featureDot}>•</span>
+                  <span>Direct file system inspection with clickable new-tab navigation and formatted outputs</span>
+                </li>
+              </ul>
+
+              <div className={styles.cardBottom}>
+                <Link to="/" className={styles.actionBtn}>
+                  <span>Launch Terminal</span>
+                  <ArrowRight size={15} />
+                </Link>
+                <span className={styles.shortcutHint}>
+                  Workstation: <kbd className={styles.shortcutBadge}>/</kbd>
                 </span>
               </div>
             </article>

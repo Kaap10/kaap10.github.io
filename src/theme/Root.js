@@ -793,11 +793,18 @@ export default function Root({ children }) {
     const path = location?.pathname || '';
     const clean = path.replace(/\/+$/, '') || '/';
     const isBlogs = clean === '/blogs' || clean.startsWith('/blogs/') || clean === '/blog' || clean.startsWith('/blog/');
+    const isHome = clean === '/' || clean === '';
 
     if (isBlogs) {
       document.documentElement.classList.add('plugin-docs', 'is-blog-page');
     } else {
       document.documentElement.classList.remove('plugin-docs', 'is-blog-page');
+    }
+
+    if (isHome) {
+      document.documentElement.classList.add('is-home-page');
+    } else {
+      document.documentElement.classList.remove('is-home-page');
     }
   }, [location?.pathname]);
 

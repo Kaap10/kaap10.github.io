@@ -139,12 +139,12 @@ const config = {
         },
       },
       navbar: {
-        title: 'Vardhman Gupta',
+        title: 'Home',
         hideOnScroll: false,
         items: [
-          { to: '/blogs/intro', label: 'Blogs', position: 'left' },
-          { to: '/projects', label: 'Projects', position: 'left' },
           { to: '/opensource', label: 'Open Source', position: 'left' },
+          { to: '/projects', label: 'Projects', position: 'left' },
+          { to: '/blogs/intro', label: 'Blogs', position: 'left' },
           {
             type: 'dropdown',
             label: 'Tools',
