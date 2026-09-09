@@ -24,7 +24,7 @@ import styles from './index.module.css';
 
 const COMMAND_LIST = [
   'help', 'ls', 'cd', 'cat', 'portfolio', 'projects', 'tools', 
-  'opensource', 'board', 'tracker', 'blogs', 'scratchpad', 'resume', 
+  'opensource', 'build-with-ai', 'bwa', 'board', 'tracker', 'blogs', 'scratchpad', 'resume', 
   'cv', 'explore', 'neofetch', 'fastfetch', 'whoami', 'pwd', 'clear', 
   'cls', 'history', 'uname', 'date', 'uptime', 'echo', 'sudo', 
   'github', 'linkedin', 'email', 'open', 'goto', 'about', 'skills', 
@@ -36,6 +36,7 @@ const FILE_SYSTEM = {
   'projects': { type: 'dir', route: '/projects', desc: 'Production Systems & Repositories' },
   'tools': { type: 'dir', route: '/tools', desc: 'Developer Utilities & Sandboxes' },
   'opensource': { type: 'dir', route: '/opensource', desc: 'Open Source Projects & Contributions' },
+  'build-with-ai': { type: 'dir', route: '/build-with-ai', desc: 'Zero-API Software Architect CLI Showcase' },
   'board': { type: 'dir', route: '/board', desc: 'Architecture Whiteboard & Visual Canvas' },
   'tracker': { type: 'dir', route: '/tracker', desc: 'Productivity & Focus Tracker' },
   'blogs': { type: 'dir', route: '/blogs/intro', desc: 'Technical Articles & Guides' },
@@ -496,6 +497,7 @@ export default function Home() {
               { name: 'projects', route: '/projects', desc: 'View Full Projects Catalog & Repositories' },
               { name: 'tools', route: '/tools', desc: 'Access Developer Tools Suite & Utilities' },
               { name: 'opensource', route: '/opensource', desc: 'Explore Open Source Projects (MIT/npm)' },
+              { name: 'build-with-ai', route: '/build-with-ai', desc: 'Zero-API Software Architect CLI Showcase' },
               { name: 'board', route: '/board', desc: 'Open Interactive Architecture Whiteboard' },
               { name: 'tracker', route: '/tracker', desc: 'Open Focus & Productivity Tracker' },
               { name: 'blogs', route: '/blogs/intro', desc: 'Read Engineering Articles & Blogs' },
@@ -554,6 +556,13 @@ export default function Home() {
       case 'open-source':
       case 'open_source':
         navigateTo('/opensource', 'Open Source Hub');
+        break;
+
+      case 'build-with-ai':
+      case 'buildwithai':
+      case 'bwa':
+      case 'ai-architect':
+        navigateTo('/build-with-ai', 'build-with-ai Showcase');
         break;
 
       case 'board':
@@ -635,6 +644,7 @@ export default function Home() {
                     { name: 'explore tools', route: '/tools', desc: 'Interactive developer tools & sandboxes' },
                     { name: 'explore portfolio', route: '/portfolio', desc: 'Complete engineering background & credentials' },
                     { name: 'explore opensource', route: '/opensource', desc: 'Open-source packages & contributions' },
+                    { name: 'explore build-with-ai', route: '/build-with-ai', desc: 'Zero-API Software Architect CLI Showcase' },
                     { name: 'explore board', route: '/board', desc: 'System architecture visual whiteboard' },
                     { name: 'explore tracker', route: '/tracker', desc: 'Daily productivity, tasks, and focus timer' },
                     { name: 'explore blogs', route: '/blogs/intro', desc: 'In-depth engineering articles and notes' },
@@ -655,6 +665,8 @@ export default function Home() {
             navigateTo('/portfolio', 'Portfolio');
           } else if (target === 'opensource' || target === 'os' || target === 'open source' || target === 'open-source') {
             navigateTo('/opensource', 'Open Source Hub');
+          } else if (target === 'build-with-ai' || target === 'buildwithai' || target === 'bwa') {
+            navigateTo('/build-with-ai', 'build-with-ai Showcase');
           } else if (target === 'board' || target === 'whiteboard') {
             navigateTo('/board', 'Interactive Whiteboard');
           } else if (target === 'tracker' || target === 'habits' || target === 'focus') {

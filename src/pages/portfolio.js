@@ -156,7 +156,7 @@ export default function PortfolioPage() {
                 <div className={styles.openSourceCardTop}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', flexWrap: 'wrap' }}>
                     <span className={styles.projectCategoryTag}>Open Source</span>
-                    <span className={styles.projectMetricTag}>MIT License</span>
+                    <span className={styles.projectMetricTag}>Apache 2.0 License</span>
                     <span className={styles.projectMetricTag}>npm package</span>
                   </div>
                   <div className={styles.openSourceCardActions}>

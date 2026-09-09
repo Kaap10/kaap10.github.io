@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Layout from '@theme/Layout';
+import Link from '@docusaurus/Link';
 import { 
   ArrowUpRight, 
   CheckCircle2, 
@@ -9,7 +10,8 @@ import {
   Terminal, 
   ShieldCheck,
   Package,
-  GitPullRequest
+  GitPullRequest,
+  Sparkles
 } from 'lucide-react';
 import styles from './opensource.module.css';
 
@@ -36,7 +38,7 @@ const OPEN_SOURCE_PROJECTS = [
     headline: 'OpenSource Project Creator & Maintainer · Zero-API Developer CLI',
     cardDescription:
       'Built an open-source, zero-API developer CLI that guides engineers through structured, end-to-end software development phases using any AI model (ChatGPT, Claude, Cursor, Gemini, local LLMs).',
-    license: 'MIT License',
+    license: 'Apache 2.0 License',
     techStack: ['Node.js', 'JavaScript', 'CLI', 'npm', 'JSON', 'AI Prompt Engineering'],
     highlights: [
       'Built an open-source, zero-API developer CLI guiding engineers through structured, end-to-end development phases using any AI model (ChatGPT, Claude, Cursor, Gemini, local LLMs)',
@@ -49,6 +51,7 @@ const OPEN_SOURCE_PROJECTS = [
       'Built an open-source, zero-API developer CLI with a local-first memory architecture (.buildwithai/context.json), prompt interpolation engine, 6 production workflow templates, and multi-OS CI pipeline.',
     github: 'https://github.com/Kaap10/build-with-ai',
     npm: 'https://www.npmjs.com/package/build-with-ai',
+    showcaseUrl: '/build-with-ai',
     tags: ['Open Source', 'Node.js', 'CLI', 'Developer Tools', 'AI'],
     details: {
       description:
@@ -61,7 +64,7 @@ const OPEN_SOURCE_PROJECTS = [
         'Shipped 6 production workflow templates spanning SaaS MVPs, REST APIs, React Native (Expo), AI Agent & RAG Pipelines, and Chrome Extensions, with custom JSON/HTTPS template loading support',
         'Published as an open-source npm package (npx build-with-ai) with 100% test coverage, a multi-OS CI pipeline (Ubuntu, macOS, Windows), and zero external cloud or telemetry dependencies',
       ],
-      metricsDetail: 'npx build-with-ai · 100% Test Coverage · Multi-OS CI (Ubuntu, macOS, Windows) · 6 Production Templates · MIT License',
+      metricsDetail: 'npx build-with-ai · 626+ Downloads · 100% Test Coverage · Multi-OS CI · Apache 2.0 License',
     },
   },
 
@@ -228,14 +231,26 @@ export default function OpenSourcePage() {
                       </button>
                     </div>
 
-                    <div className={styles.footerRight}>
+                    <div className={styles.cardActions}>
+                      {project.showcaseUrl && (
+                        <Link
+                          to={project.showcaseUrl}
+                          className={styles.actionBtn}
+                          style={{ borderColor: 'var(--vg-accent)', color: 'var(--vg-accent)', background: 'var(--vg-accent-subtle)' }}
+                          title="View Dedicated Interactive Showcase Page"
+                        >
+                          <Sparkles size={14} />
+                          <span>Showcase</span>
+                          <ArrowUpRight size={13} />
+                        </Link>
+                      )}
                       {project.github && (
                         <a
                           href={project.github}
                           target="_blank"
                           rel="noopener noreferrer"
                           className={styles.actionBtn}
-                          title="View Source on GitHub"
+                          title="View Repository on GitHub"
                         >
                           <IconGithub size={14} />
                           <span>GitHub</span>
