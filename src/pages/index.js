@@ -24,7 +24,6 @@ import styles from './index.module.css';
 
 const COMMAND_LIST = [
   'help', 'ls', 'cd', 'cat', 'portfolio', 'projects', 'tools', 
-  'opensource', 'build-with-ai', 'bwa', 'board', 'tracker', 'blogs', 'scratchpad', 'resume', 
   'opensource', 'build-with-ai', 'bwa', 'dynavec', 'board', 'tracker', 'blogs', 'scratchpad', 'resume', 
   'cv', 'explore', 'neofetch', 'fastfetch', 'whoami', 'pwd', 'clear', 
   'cls', 'history', 'uname', 'date', 'uptime', 'echo', 'sudo', 

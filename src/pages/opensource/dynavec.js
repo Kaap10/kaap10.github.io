@@ -211,7 +211,7 @@ export default function DynavecShowcasePage() {
 
   return (
     <Layout
-      title="dynavec Contributions Master Showcase"
+      title="dynavec"
       description="11 Merged Pull Requests across Distributed Vector Systems, GraphRAG FastMCP Server, and AWS Diagnostic Tooling for dynavec."
     >
       <main className={styles.pageContainer}>
@@ -241,7 +241,7 @@ export default function DynavecShowcasePage() {
               </span>
             </div>
 
-            <h1 className={styles.heroTitle}>dynavec · Master Contributions Breakdown</h1>
+            <h1 className={styles.heroTitle}>dynavec</h1>
             <p className={styles.heroSubtitle}>
               Technical deep dive into 11 merged pull requests on dynavec, an open-source serverless hybrid vector database built on Amazon DynamoDB and Amazon S3 Vectors.
             </p>
