@@ -539,6 +539,52 @@
   text-decoration: underline !important;
 }
 
+.foundationalBadge {
+  font-size: 0.72rem;
+  color: var(--vg-text-subtle, #787880);
+  font-style: italic;
+  white-space: nowrap;
+}
+
+.prTitleText {
+  font-weight: 600;
+  color: var(--vg-text, #F5F5F7);
+  margin-bottom: 0.35rem;
+  line-height: 1.4;
+  font-size: 0.84rem;
+}
+
+.prProblemText {
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: var(--vg-text-muted, #A6A6AC);
+  margin: 0;
+}
+
+.prSolutionList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  margin: 0;
+  padding: 0;
+}
+
+.prSolutionPoint {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.45rem;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: var(--vg-text-muted, #A6A6AC);
+}
+
+.prBullet {
+  color: var(--vg-accent, #FF4D4F);
+  font-weight: 700;
+  flex-shrink: 0;
+  line-height: 1.4;
+}
+
 @media (max-width: 768px) {
   .pageTitle {
     font-size: 2.1rem;

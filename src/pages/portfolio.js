@@ -211,7 +211,7 @@ export default function PortfolioPage() {
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', flexWrap: 'wrap' }}>
                     <span className={styles.projectCategoryTag}>Open Source</span>
                     <span className={styles.projectMetricTag}>Contributor</span>
-                    <span className={styles.projectMetricTag}>5 Merged PRs</span>
+                    <span className={styles.projectMetricTag}>11 Merged PRs</span>
                   </div>
                   <div className={styles.openSourceCardActions}>
                     <a 
@@ -245,17 +245,19 @@ export default function PortfolioPage() {
                     Open Source Contributor · Serverless Hybrid Vector Database
                   </p>
                   <p className={styles.openSourceCardDesc}>
-                    Contributed to dynavec, a serverless hybrid vector database built on DynamoDB and Amazon S3 Vectors. Improved Python 3.9 dependency compatibility, expanded chunking and retrieval test coverage, validated large get_vectors batching, added embedder dimension-mismatch coverage, and implemented content-hash deduplication for ingestion.
+                    Engineered core vector database algorithms, in-memory SPFresh dynamic partitioning, FastMCP server for GraphRAG, AWS pre-flight diagnostic CLI (dynavec doctor), SHA-256 ingestion deduplication, PEP 561 typing compliance, and distributed multi-OS regression suites across 11 merged PRs.
                   </p>
                 </div>
 
                 <div className={styles.projectTechRow}>
                   <span className={styles.techTag}>Python</span>
                   <span className={styles.techTag}>DynamoDB</span>
-                  <span className={styles.techTag}>AWS S3</span>
-                  <span className={styles.techTag}>Vector DB</span>
+                  <span className={styles.techTag}>AWS S3 Vectors</span>
+                  <span className={styles.techTag}>SPFresh</span>
+                  <span className={styles.techTag}>FastMCP</span>
+                  <span className={styles.techTag}>GraphRAG</span>
                   <span className={styles.techTag}>pytest</span>
-                  <span className={styles.techTag}>Ruff</span>
+                  <span className={styles.techTag}>PEP 561</span>
                 </div>
               </div>
             </div>
