@@ -25,6 +25,7 @@ import styles from './index.module.css';
 const COMMAND_LIST = [
   'help', 'ls', 'cd', 'cat', 'portfolio', 'projects', 'tools', 
   'opensource', 'build-with-ai', 'bwa', 'board', 'tracker', 'blogs', 'scratchpad', 'resume', 
+  'opensource', 'build-with-ai', 'bwa', 'dynavec', 'board', 'tracker', 'blogs', 'scratchpad', 'resume', 
   'cv', 'explore', 'neofetch', 'fastfetch', 'whoami', 'pwd', 'clear', 
   'cls', 'history', 'uname', 'date', 'uptime', 'echo', 'sudo', 
   'github', 'linkedin', 'email', 'open', 'goto', 'about', 'skills', 
@@ -37,6 +38,7 @@ const FILE_SYSTEM = {
   'tools': { type: 'dir', route: '/tools', desc: 'Developer Utilities & Sandboxes' },
   'opensource': { type: 'dir', route: '/opensource', desc: 'Open Source Projects & Contributions' },
   'build-with-ai': { type: 'dir', route: '/build-with-ai', desc: 'Zero-API Software Architect CLI Showcase' },
+  'dynavec': { type: 'dir', route: '/opensource/dynavec', desc: 'Serverless Hybrid Vector DB Contributions' },
   'board': { type: 'dir', route: '/board', desc: 'Architecture Whiteboard & Visual Canvas' },
   'tracker': { type: 'dir', route: '/tracker', desc: 'Productivity & Focus Tracker' },
   'blogs': { type: 'dir', route: '/blogs/intro', desc: 'Technical Articles & Guides' },
@@ -563,6 +565,11 @@ export default function Home() {
       case 'bwa':
       case 'ai-architect':
         navigateTo('/build-with-ai', 'build-with-ai Showcase');
+        break;
+
+      case 'dynavec':
+      case 'dyna-vec':
+        navigateTo('/opensource/dynavec', 'dynavec Contributions Showcase');
         break;
 
       case 'board':

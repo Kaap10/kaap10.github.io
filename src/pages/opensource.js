@@ -89,6 +89,7 @@ const OPEN_SOURCE_PROJECTS = [
       'Engineered in-memory SPFresh dynamic vector rebalancing, FastMCP server for GraphRAG, AWS pre-flight diagnostic health check CLI, and ingestion deduplication algorithms across 11 merged PRs.',
     github: 'https://github.com/codeforstartups/dynavec',
     prsUrl: 'https://github.com/codeforstartups/dynavec/pulls?q=is%3Apr+is%3Amerged+author%3AKaap10',
+    showcaseUrl: '/opensource/dynavec',
     tags: ['Open Source', 'Vector Database', 'Python', 'SPFresh', 'FastMCP', 'GraphRAG', 'DynamoDB', 'AWS S3'],
     details: {
       description:

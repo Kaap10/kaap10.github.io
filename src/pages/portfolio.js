@@ -160,6 +160,16 @@ export default function PortfolioPage() {
                     <span className={styles.projectMetricTag}>npm package</span>
                   </div>
                   <div className={styles.openSourceCardActions}>
+                    <Link 
+                      to="/build-with-ai"
+                      className={styles.openSourceBtn}
+                      style={{ borderColor: 'var(--vg-accent, #FF4D4F)', color: 'var(--vg-accent, #FF4D4F)' }}
+                      aria-label="Showcase"
+                    >
+                      <Sparkles size={14} />
+                      <span>Showcase</span>
+                      <ArrowUpRight size={12} />
+                    </Link>
                     <a 
                       href="https://github.com/Kaap10/build-with-ai" 
                       target="_blank" 
@@ -214,6 +224,16 @@ export default function PortfolioPage() {
                     <span className={styles.projectMetricTag}>11 Merged PRs</span>
                   </div>
                   <div className={styles.openSourceCardActions}>
+                    <Link 
+                      to="/opensource/dynavec"
+                      className={styles.openSourceBtn}
+                      style={{ borderColor: 'var(--vg-accent, #FF4D4F)', color: 'var(--vg-accent, #FF4D4F)' }}
+                      aria-label="Showcase"
+                    >
+                      <Sparkles size={14} />
+                      <span>Showcase</span>
+                      <ArrowUpRight size={12} />
+                    </Link>
                     <a 
                       href="https://github.com/codeforstartups/dynavec" 
                       target="_blank" 
