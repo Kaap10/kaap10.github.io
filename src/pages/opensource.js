@@ -35,20 +35,25 @@ const OPEN_SOURCE_PROJECTS = [
     roleTag: 'Creator & Maintainer',
     icon: Terminal,
     title: 'build-with-ai',
-    headline: 'OpenSource Project Creator & Maintainer · Zero-API Developer CLI',
+    headline: 'Zero-API Developer CLI & AI Workflow Engine',
     cardDescription:
-      'Built an open-source, zero-API developer CLI that guides engineers through structured, end-to-end software development phases using any AI model (ChatGPT, Claude, Cursor, Gemini, local LLMs).',
-    license: 'Apache 2.0 License',
-    techStack: ['Node.js', 'JavaScript', 'CLI', 'npm', 'JSON', 'AI Prompt Engineering'],
+      'Open-source developer CLI guiding engineers through structured development phases with zero-API overhead and persistent local context across any AI model.',
+    license: 'Apache 2.0',
+    techStack: ['Node.js', 'JavaScript', 'CLI Engine', 'npm', 'AI Prompts'],
     highlights: [
-      'Built an open-source, zero-API developer CLI guiding engineers through structured, end-to-end development phases using any AI model (ChatGPT, Claude, Cursor, Gemini, local LLMs)',
-      'Designed a local-first memory architecture (.buildwithai/context.json) preserving technical choices across sessions and eliminating AI context drift',
-      'Implemented an extensible prompt interpolation engine with prerequisite validation (requires/writes), automated clipboard sync, and deterministic docs (README, BUILD_LOG, CONTEXT.md)',
-      'Shipped 6 production workflow templates spanning SaaS MVPs, REST APIs, React Native (Expo), AI Agent & RAG Pipelines, and Chrome Extensions with custom JSON/HTTPS loading',
-      'Published as an open-source npm package (npx build-with-ai) with 100% test coverage, multi-OS CI pipeline (Ubuntu, macOS, Windows), and zero telemetry dependencies',
+      {
+        label: 'Local-First Memory',
+        text: 'Preserves architectural choices across sessions (.buildwithai/context.json) to eliminate AI context drift.'
+      },
+      {
+        label: 'Workflow Blueprints',
+        text: '6 production templates spanning SaaS MVPs, REST APIs, Expo, AI Agents/RAG, and Chrome extensions.'
+      },
+      {
+        label: 'Interpolation Engine',
+        text: 'Dynamic prompt variable injection with strict prerequisite checks and automated clipboard sync.'
+      }
     ],
-    recruiterHighlight:
-      'Built an open-source, zero-API developer CLI with a local-first memory architecture (.buildwithai/context.json), prompt interpolation engine, 6 production workflow templates, and multi-OS CI pipeline.',
     github: 'https://github.com/Kaap10/build-with-ai',
     npm: 'https://www.npmjs.com/package/build-with-ai',
     showcaseUrl: '/build-with-ai',
@@ -72,21 +77,28 @@ const OPEN_SOURCE_PROJECTS = [
   {
     id: 'dynavec',
     index: '02',
-    roleTag: 'Contributor (11 Merged PRs)',
+    roleTag: 'Contributor · 11 Merged PRs',
     icon: Package,
     title: 'dynavec',
-    headline: 'Open Source Contributor · Serverless Hybrid Vector Database',
+    headline: 'Serverless Hybrid Vector Database on DynamoDB & S3',
     cardDescription:
-      'Engineered core vector database algorithms, in-memory SPFresh dynamic partitioning, FastMCP server for GraphRAG, AWS pre-flight diagnostic CLI (dynavec doctor), SHA-256 ingestion deduplication, PEP 561 typing compliance, and distributed multi-OS regression suites for dynavec.',
-    license: '11 PRs Merged',
+      'Serverless vector database engine. Authored 11 merged PRs spanning dynamic SPFresh partitioning, FastMCP GraphRAG server, and cloud diagnostic CLI.',
+    license: '11 Merged PRs',
     techStack: ['Python', 'DynamoDB', 'AWS S3 Vectors', 'SPFresh Indexing', 'FastMCP', 'GraphRAG', 'pytest', 'PEP 561'],
     highlights: [
-      'Distributed Systems & Core Database Algorithms (PR #170, #144, #116): Designed in-memory vector partitioning engines (SPFresh) with dynamic 2-means split/merge, drift tracking, and validated AWS S3 Vectors/DynamoDB chunking mechanics',
-      'AI & Ecosystem Integration (PR #165, #120, #119): Built production Model Context Protocol (FastMCP) server connecting vector search and Knowledge Graph traversal to LLM agent runtimes, and engineered SHA-256 ingestion content-hashing',
-      'Production Reliability & Packaging (PR #163, #154, #155, #2, #1): Enforced strict PEP 561 typing compliance, cycle-safe graph traversals, and multi-version Python environment resolution',
+      {
+        label: 'SPFresh Rebalancer (PR #170, #144, #116)',
+        text: 'Dynamic spherical 2-means bipartitioning, nearest-centroid merges, and non-blocking RLock buffers.'
+      },
+      {
+        label: 'FastMCP & GraphRAG (PR #165, #120, #119)',
+        text: 'Model Context Protocol server for agent vector search / GraphRAG, and SHA-256 ingestion deduplication.'
+      },
+      {
+        label: 'Packaging & Diagnostics (PR #163, #154, #155, #2, #1)',
+        text: 'PEP 561 typing compliance, dynavec doctor AWS pre-flight diagnostic CLI, and cycle-safe graph traversals.'
+      }
     ],
-    recruiterHighlight:
-      'Engineered in-memory SPFresh dynamic vector rebalancing, FastMCP server for GraphRAG, AWS pre-flight diagnostic health check CLI, and ingestion deduplication algorithms across 11 merged PRs.',
     github: 'https://github.com/codeforstartups/dynavec',
     prsUrl: 'https://github.com/codeforstartups/dynavec/pulls?q=is%3Apr+is%3Amerged+author%3AKaap10',
     showcaseUrl: '/opensource/dynavec',
@@ -356,12 +368,25 @@ export default function OpenSourcePage() {
                   <div className={styles.highlightsContainer}>
                     <span className={styles.highlightsHeader}>Key Engineering Deliverables</span>
                     <ul className={styles.highlightsList}>
-                      {project.highlights.map((h, i) => (
-                        <li key={i} className={styles.highlightItem}>
-                          <span className={styles.highlightDot}>•</span>
-                          <span>{h}</span>
-                        </li>
-                      ))}
+                      {project.highlights.map((h, i) => {
+                        if (typeof h === 'object' && h.label) {
+                          return (
+                            <li key={i} className={styles.highlightItem}>
+                              <span className={styles.highlightDot}>•</span>
+                              <span>
+                                <strong className={styles.highlightLabel}>{h.label}: </strong>
+                                <span className={styles.highlightText}>{h.text}</span>
+                              </span>
+                            </li>
+                          );
+                        }
+                        return (
+                          <li key={i} className={styles.highlightItem}>
+                            <span className={styles.highlightDot}>•</span>
+                            <span>{h}</span>
+                          </li>
+                        );
+                      })}
                     </ul>
                   </div>
 
@@ -517,12 +542,28 @@ export default function OpenSourcePage() {
                                       <td>
                                         {Array.isArray(prItem.how) ? (
                                           <div className={styles.prSolutionList}>
-                                            {prItem.how.map((point, ptIdx) => (
-                                              <div key={ptIdx} className={styles.prSolutionPoint}>
-                                                <span className={styles.prBullet}>•</span>
-                                                <span>{point}</span>
-                                              </div>
-                                            ))}
+                                            {prItem.how.map((point, ptIdx) => {
+                                              const colonIdx = point.indexOf(': ');
+                                              if (colonIdx !== -1) {
+                                                const term = point.substring(0, colonIdx);
+                                                const detail = point.substring(colonIdx + 2);
+                                                return (
+                                                  <div key={ptIdx} className={styles.prSolutionPoint}>
+                                                    <span className={styles.prBullet}>•</span>
+                                                    <div>
+                                                      <strong style={{ color: '#FFFFFF', fontWeight: 700 }}>{term}:</strong>{' '}
+                                                      <span style={{ color: '#CBD5E1' }}>{detail}</span>
+                                                    </div>
+                                                  </div>
+                                                );
+                                              }
+                                              return (
+                                                <div key={ptIdx} className={styles.prSolutionPoint}>
+                                                  <span className={styles.prBullet}>•</span>
+                                                  <span style={{ color: '#CBD5E1' }}>{point}</span>
+                                                </div>
+                                              );
+                                            })}
                                           </div>
                                         ) : (
                                           <p className={styles.prProblemText}>{prItem.how}</p>

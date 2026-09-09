@@ -370,7 +370,15 @@ export default function DynavecShowcasePage() {
                       </td>
 
                       <td className={styles.categoryCol}>
-                        <span className={styles.categoryTag}>{prItem.category}</span>
+                        <span className={
+                          prItem.categoryId === 'distributed'
+                            ? styles.categoryTagDistributed
+                            : prItem.categoryId === 'ai'
+                            ? styles.categoryTagAi
+                            : styles.categoryTagReliability
+                        }>
+                          {prItem.category}
+                        </span>
                       </td>
 
                       <td className={styles.problemCol}>
@@ -380,12 +388,28 @@ export default function DynavecShowcasePage() {
 
                       <td className={styles.solutionCol}>
                         <div className={styles.prSolutionList}>
-                          {prItem.how.map((point, ptIdx) => (
-                            <div key={ptIdx} className={styles.prSolutionPoint}>
-                              <span className={styles.prBullet}>•</span>
-                              <span>{point}</span>
-                            </div>
-                          ))}
+                          {prItem.how.map((point, ptIdx) => {
+                            const colonIdx = point.indexOf(': ');
+                            if (colonIdx !== -1) {
+                              const term = point.substring(0, colonIdx);
+                              const detail = point.substring(colonIdx + 2);
+                              return (
+                                <div key={ptIdx} className={styles.prSolutionPoint}>
+                                  <span className={styles.prBullet}>•</span>
+                                  <div className={styles.pointTextWrap}>
+                                    <strong className={styles.techTerm}>{term}:</strong>{' '}
+                                    <span className={styles.techDetail}>{detail}</span>
+                                  </div>
+                                </div>
+                              );
+                            }
+                            return (
+                              <div key={ptIdx} className={styles.prSolutionPoint}>
+                                <span className={styles.prBullet}>•</span>
+                                <span className={styles.techDetail}>{point}</span>
+                              </div>
+                            );
+                          })}
                         </div>
                       </td>
                     </tr>
