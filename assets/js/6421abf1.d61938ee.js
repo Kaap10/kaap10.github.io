@@ -229,9 +229,9 @@ Happy coding!`,tags:["getting-started","guide"],is_pinned:!0,is_favorite:!1,crea
     <header class="doc-header">
       <h1 class="doc-title">${ej(e||"Untitled Note")}</h1>
       <div class="doc-meta">
-        ${n.notebook?`<span class="meta-badge">\u{1F4C1} ${ej(n.notebook)}</span>`:""}
-        ${n.date?`<span class="meta-badge">\u{1F5D3}\u{FE0F} ${ej(n.date)}</span>`:""}
-        ${n.wordCount?`<span class="meta-badge">\u{1F4DD} ${n.wordCount} words</span>`:""}
+        ${n.notebook?`<span class="meta-badge">${ej(n.notebook)}</span>`:""}
+        ${n.date?`<span class="meta-badge">${ej(n.date)}</span>`:""}
+        ${n.wordCount?`<span class="meta-badge">${n.wordCount} words</span>`:""}
         ${Array.isArray(n.tags)&&n.tags.length>0?n.tags.map(e=>`<span class="tag-badge">#${ej(e)}</span>`).join(" "):""}
       </div>
     </header>
@@ -269,8 +269,8 @@ ${r||"// write code here"}
           <h1 class="doc-title">${ej(e.title||"Untitled Note")}</h1>
           <div class="doc-meta">
             <span class="meta-badge">Page ${t+1} of ${a.length}</span>
-            <span class="meta-badge">\u{1F5D3}\u{FE0F} ${ej(n)}</span>
-            <span class="meta-badge">\u{1F4DD} ${r} words</span>
+            <span class="meta-badge">${ej(n)}</span>
+            <span class="meta-badge">${r} words</span>
             ${Array.isArray(e.tags)&&e.tags.length>0?e.tags.map(e=>`<span class="tag-badge">#${ej(e)}</span>`).join(" "):""}
           </div>
         </header>
