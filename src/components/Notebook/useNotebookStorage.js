@@ -295,12 +295,10 @@ export function useNotebookStorage(passedUser = null) {
           notesMap.set(validNoteId, noteObj);
           notesToUpsert.push(noteObj);
         } else {
-          // Exists in both -> compare updated_at
           // Exists in both -> compare updated_at and content completeness
           const cloudNote = notesMap.get(validNoteId);
           const locTime = new Date(noteObj.updated_at || noteObj.created_at || 0).getTime();
           const cldTime = new Date(cloudNote.updated_at || cloudNote.created_at || 0).getTime();
-          if (locTime > cldTime) {
           const hasLocalData = (noteObj.content && noteObj.content.trim().length > 0) || (noteObj.title && noteObj.title !== 'Untitled Note');
           const isCloudBlank = (!cloudNote.content || cloudNote.content.trim().length === 0) && (!cloudNote.title || cloudNote.title === 'Untitled Note');
 
@@ -522,7 +520,6 @@ export function useNotebookStorage(passedUser = null) {
         return updated;
       });
 
-      // Debounced Cloud Sync
       // Debounced Cloud Sync using FULL NOTE UPSERT
       const client = getSupabase();
       const user = activeUserRef.current;
@@ -533,7 +530,6 @@ export function useNotebookStorage(passedUser = null) {
         }
         pendingSaveTimeouts.current[id] = setTimeout(async () => {
           try {
-            const { error } = await client.from('notes').update(payload).eq('id', id);
             const currentNoteObj = notesRef.current.find((n) => n.id === id) || { id, ...payload };
             const fullNoteToSave = {
               id: currentNoteObj.id || id,
@@ -550,7 +546,6 @@ export function useNotebookStorage(passedUser = null) {
 
             const { error } = await client.from('notes').upsert([fullNoteToSave]);
             if (error) {
-              console.warn('Cloud update note error:', error);
               console.warn('Cloud upsert note error:', error);
               setSyncStatus('offline');
             } else {
@@ -561,7 +556,6 @@ export function useNotebookStorage(passedUser = null) {
             setSyncStatus('offline');
           }
           delete pendingSaveTimeouts.current[id];
-        }, 350);
         }, 300);
       }
     },

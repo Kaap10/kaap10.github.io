@@ -149,7 +149,7 @@ export default function NotebookView({
   const textareaRef = useRef(null);
   const saveTimeoutRef = useRef(null);
   const exportMenuRef = useRef(null);
-  const currentNoteIdRef = useRef(activeNoteId);
+  const currentNoteIdRef = useRef(null);
 
   // Close export dropdown when clicking outside
   useEffect(() => {
@@ -229,11 +229,9 @@ export default function NotebookView({
 
   // Flush any pending unsaved buffer immediately to onUpdateNote
   const flushLocalEdits = useCallback(() => {
-    if (saveTimeoutRef.current) {
+    if (saveTimeoutRef.current && currentNoteIdRef.current) {
       clearTimeout(saveTimeoutRef.current);
       saveTimeoutRef.current = null;
-    }
-    if (currentNoteIdRef.current) {
       onUpdateNote(currentNoteIdRef.current, {
         title: localTitleRef.current,
         content: localContentRef.current,
@@ -247,7 +245,7 @@ export default function NotebookView({
     if (currentNote) {
       if (currentNoteIdRef.current !== currentNote.id) {
         // Flush changes for previous note before switching
-        if (currentNoteIdRef.current) {
+        if (currentNoteIdRef.current && saveTimeoutRef.current) {
           flushLocalEdits();
         }
         currentNoteIdRef.current = currentNote.id;
@@ -255,9 +253,19 @@ export default function NotebookView({
         localContentRef.current = currentNote.content || '';
         setLocalTitle(currentNote.title || '');
         setLocalContent(currentNote.content || '');
+      } else if (!saveTimeoutRef.current) {
+        // Only sync if content actually changed in state and user is not actively typing
+        if (localTitleRef.current !== (currentNote.title || '')) {
+          localTitleRef.current = currentNote.title || '';
+          setLocalTitle(currentNote.title || '');
+        }
+        if (localContentRef.current !== (currentNote.content || '')) {
+          localContentRef.current = currentNote.content || '';
+          setLocalContent(currentNote.content || '');
+        }
       }
     } else {
-      if (currentNoteIdRef.current) {
+      if (currentNoteIdRef.current && saveTimeoutRef.current) {
         flushLocalEdits();
       }
       currentNoteIdRef.current = null;
@@ -266,7 +274,7 @@ export default function NotebookView({
       setLocalTitle('');
       setLocalContent('');
     }
-  }, [currentNote?.id, flushLocalEdits]);
+  }, [currentNote, flushLocalEdits]);
 
   // Debounced auto-save handler (350ms)
   const triggerDebouncedSave = useCallback(
@@ -308,7 +316,6 @@ export default function NotebookView({
     localTitleRef.current = val;
     setLocalTitle(val);
     if (currentNote) {
-      triggerDebouncedSave(currentNote.id, { title: val });
       triggerDebouncedSave(currentNote.id, {
         title: val,
         content: localContentRef.current,
@@ -321,7 +328,6 @@ export default function NotebookView({
     localContentRef.current = val;
     setLocalContent(val);
     if (currentNote) {
-      triggerDebouncedSave(currentNote.id, { content: val });
       triggerDebouncedSave(currentNote.id, {
         title: localTitleRef.current,
         content: val,
