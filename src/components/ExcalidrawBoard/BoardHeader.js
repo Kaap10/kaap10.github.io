@@ -10,7 +10,9 @@ import {
   Edit3, 
   Check, 
   X,
-  LayoutGrid
+  LayoutGrid,
+  User,
+  LogIn
 } from 'lucide-react';
 import styles from './styles.module.css';
 
@@ -23,6 +25,7 @@ export default function BoardHeader({
   onCreateBoard,
   onRenameBoard,
   onOpenDrawer,
+  onOpenAuthModal,
 }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [isEditingTitle, setIsEditingTitle] = useState(false);
@@ -243,6 +246,35 @@ export default function BoardHeader({
         <FolderOpen size={13} />
         <span>Boards</span>
       </button>
+
+      {/* 4. Auth / Cloud Sync Status Button */}
+      {onOpenAuthModal && (
+        <>
+          <span className={styles.headerDivider} />
+          <button
+            type="button"
+            className={`${styles.quickActionBtn} ${currentUser ? styles.authPillConnected : ''}`}
+            onClick={onOpenAuthModal}
+            title={currentUser ? `Logged in as ${currentUser.email} (Click for Account)` : 'Sign in to sync whiteboards across devices'}
+          >
+            {currentUser ? (
+              <>
+                <span className={styles.userInitialBadge}>
+                  {currentUser.user_metadata?.full_name
+                    ? currentUser.user_metadata.full_name.charAt(0).toUpperCase()
+                    : currentUser.email?.charAt(0).toUpperCase() || 'U'}
+                </span>
+                <span className={styles.authBtnText}>Account</span>
+              </>
+            ) : (
+              <>
+                <LogIn size={13} style={{ color: 'var(--vg-accent, #FF4D4F)' }} />
+                <span className={styles.authBtnText}>Sign In</span>
+              </>
+            )}
+          </button>
+        </>
+      )}
     </header>
   );
 }

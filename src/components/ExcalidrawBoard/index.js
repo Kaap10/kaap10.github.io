@@ -4,12 +4,15 @@ import '@excalidraw/excalidraw/index.css';
 import { useBoardStorage } from './useBoardStorage';
 import BoardHeader from './BoardHeader';
 import BoardDrawer from './BoardDrawer';
+import AuthModal from '../Common/AuthModal';
+import { LogIn, User } from 'lucide-react';
 import styles from './styles.module.css';
 
 export default function ExcalidrawBoard() {
   const [ExcalidrawComp, setExcalidrawComp] = useState(null);
   const [excalidrawAPI, setExcalidrawAPI] = useState(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const { colorMode } = useColorMode();
 
   const currentSceneRef = useRef({ elements: [], appState: {}, files: {} });
@@ -207,6 +210,41 @@ export default function ExcalidrawBoard() {
         onCreateBoard={handleCreateBoard}
         onRenameBoard={renameBoard}
         onOpenDrawer={() => setIsDrawerOpen(true)}
+      />
+
+      {/* Top-Right Floating Auth / Cloud Sync Status Button */}
+      <div className={styles.topRightAuthWidget}>
+        <button
+          type="button"
+          className={`${styles.topRightAuthBtn} ${currentUser ? styles.topRightAuthConnected : ''}`}
+          onClick={() => setIsAuthModalOpen(true)}
+          title={currentUser ? `Logged in as ${currentUser.email} (Click for Account)` : 'Sign in to sync whiteboards across devices'}
+        >
+          {currentUser ? (
+            <>
+              <span className={styles.topRightUserAvatar}>
+                {currentUser.user_metadata?.full_name
+                  ? currentUser.user_metadata.full_name.charAt(0).toUpperCase()
+                  : currentUser.email?.charAt(0).toUpperCase() || 'U'}
+              </span>
+              <span className={styles.topRightUserText}>
+                {currentUser.user_metadata?.full_name || currentUser.email?.split('@')[0] || 'Account'}
+              </span>
+            </>
+          ) : (
+            <>
+              <LogIn size={13} style={{ color: 'var(--vg-accent, #FF4D4F)' }} />
+              <span className={styles.topRightUserText}>Sign In</span>
+            </>
+          )}
+        </button>
+      </div>
+
+      {/* Cross-Device Auth & Account Modal */}
+      <AuthModal
+        isOpen={isAuthModalOpen}
+        onClose={() => setIsAuthModalOpen(false)}
+        currentUser={currentUser}
       />
 
       {/* Board Management Drawer / Modal */}

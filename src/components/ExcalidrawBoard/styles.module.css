@@ -439,6 +439,79 @@
   color: #ffffff;
 }
 
+/* ==========================================================================
+   Top-Right Floating Auth Widget
+   ========================================================================== */
+.topRightAuthWidget {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 10;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.topRightAuthBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  height: 44px;
+  padding: 0 0.85rem;
+  background: var(--vg-header-bg, rgba(30, 30, 30, 0.85));
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid var(--vg-border, rgba(255, 255, 255, 0.1));
+  border-radius: 8px;
+  box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  color: var(--vg-text, #f5f5f7);
+  font-family: var(--ifm-font-family-base, sans-serif);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--vg-transition-fast, 0.15s ease);
+  box-sizing: border-box;
+}
+
+.topRightAuthBtn:hover {
+  background: var(--vg-surface-strong, #38383c);
+  border-color: var(--vg-border-hover, rgba(255, 255, 255, 0.22));
+}
+
+.topRightAuthConnected {
+  background: var(--vg-header-bg, rgba(30, 30, 30, 0.85));
+}
+
+.topRightAuthConnected:hover {
+  background: var(--vg-surface-strong, #38383c);
+  border-color: var(--vg-border-hover, rgba(255, 255, 255, 0.22));
+}
+
+.topRightUserAvatar {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--vg-accent, #ff4d4f);
+  color: #ffffff;
+  font-size: 0.72rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(255, 77, 79, 0.4);
+}
+
+.topRightUserText {
+  font-size: 0.8rem;
+  font-weight: 600;
+  max-width: 140px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .savedDot {
   width: 6px;
   height: 6px;
