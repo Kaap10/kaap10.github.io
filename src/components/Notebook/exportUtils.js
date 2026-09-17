@@ -413,9 +413,9 @@ function getPrintableHTMLDoc({ title, subtitle, metadata, contentHtml, isMultiPa
     <header class="doc-header">
       <h1 class="doc-title">${escapeHtml(title || 'Untitled Note')}</h1>
       <div class="doc-meta">
-        ${metadata.notebook ? `<span class="meta-badge">📁 ${escapeHtml(metadata.notebook)}</span>` : ''}
-        ${metadata.date ? `<span class="meta-badge">🗓️ ${escapeHtml(metadata.date)}</span>` : ''}
-        ${metadata.wordCount ? `<span class="meta-badge">📝 ${metadata.wordCount} words</span>` : ''}
+        ${metadata.notebook ? `<span class="meta-badge">${escapeHtml(metadata.notebook)}</span>` : ''}
+        ${metadata.date ? `<span class="meta-badge">${escapeHtml(metadata.date)}</span>` : ''}
+        ${metadata.wordCount ? `<span class="meta-badge">${metadata.wordCount} words</span>` : ''}
         ${
           Array.isArray(metadata.tags) && metadata.tags.length > 0
             ? metadata.tags.map((t) => `<span class="tag-badge">#${escapeHtml(t)}</span>`).join(' ')
@@ -502,8 +502,8 @@ export function exportNotebookAsPDF(notebook, notes = []) {
           <h1 class="doc-title">${escapeHtml(n.title || 'Untitled Note')}</h1>
           <div class="doc-meta">
             <span class="meta-badge">Page ${idx + 1} of ${nbNotes.length}</span>
-            <span class="meta-badge">🗓️ ${escapeHtml(nDate)}</span>
-            <span class="meta-badge">📝 ${nWordCount} words</span>
+            <span class="meta-badge">${escapeHtml(nDate)}</span>
+            <span class="meta-badge">${nWordCount} words</span>
             ${Array.isArray(n.tags) && n.tags.length > 0 ? n.tags.map((t) => `<span class="tag-badge">#${escapeHtml(t)}</span>`).join(' ') : ''}
           </div>
         </header>
