@@ -200,27 +200,6 @@ export default function NotebookHeader({
               <ChevronDown size={13} style={{ color: 'var(--vg-text-muted)', marginLeft: '2px' }} />
             </button>
 
-            {/* Quick direct Settings button */}
-            <button
-              type="button"
-              className={styles.iconBtn}
-              onClick={onOpenSettings}
-              title="Supabase Settings & Credentials"
-            >
-              <Settings size={15} />
-            </button>
-
-            {/* Quick direct Sign Out button */}
-            <button
-              type="button"
-              className={styles.iconBtn}
-              onClick={onSignOut}
-              title="Sign Out"
-              style={{ color: 'var(--vg-accent, #FF4D4F)' }}
-            >
-              <LogOut size={15} />
-            </button>
-
             {/* Dropdown Menu */}
             {userMenuOpen && (
               <div className={styles.accountDropdown}>

@@ -67,7 +67,6 @@ export default function NotebookView({
 
   // Editor View Mode & Fullscreen Mode
   const [viewMode, setViewMode] = useState('split'); // 'edit' | 'split' | 'preview'
-  const [isFocusMode, setIsFocusMode] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const editorPaneRef = useRef(null);
 
@@ -547,11 +546,11 @@ export default function NotebookView({
   };
 
   return (
-    <div className={`${styles.mainWorkspace} ${isFocusMode ? styles.focusModeWorkspace : ''}`}>
+    <div className={styles.mainWorkspace}>
       {/* ================================================================
           Column 1: Notebook Stacks & Section Navigation (OneNote style)
           ================================================================ */}
-      {isNotebooksOpen && !isFocusMode && (
+      {isNotebooksOpen && (
         <aside className={styles.notebooksColumn}>
           {/* Quick Views */}
           <div className={styles.sidebarSectionHeader}>
@@ -716,7 +715,7 @@ export default function NotebookView({
       {/* ================================================================
           Column 2: Page List / Note Index (OneNote Page Browser)
           ================================================================ */}
-      {isPagesOpen && !isFocusMode && (
+      {isPagesOpen && (
         <aside className={styles.pagesColumn}>
           {/* Header & New Page Button */}
           <div className={styles.pagesHeader}>
@@ -910,16 +909,6 @@ export default function NotebookView({
                   style={{ color: currentNote.is_favorite ? '#FAAD14' : 'var(--vg-text-muted)' }}
                 >
                   <Star size={15} />
-                </button>
-
-                {/* Direct Notion PDF Export Button */}
-                <button
-                  type="button"
-                  className={styles.iconBtn}
-                  onClick={handleExportPDF}
-                  title="Export Page as PDF (Notion-style)"
-                >
-                  <Printer size={15} />
                 </button>
 
                 {/* Export Options Menu Dropdown */}
@@ -1170,15 +1159,6 @@ export default function NotebookView({
                 <span style={{ color: isSaving ? 'var(--vg-text-muted)' : '#22C55E', display: 'inline-flex', alignItems: 'center', gap: '3px' }}>
                   <Check size={12} /> {isSaving ? 'Saving...' : 'Auto-saved'}
                 </span>
-                {isFocusMode && (
-                  <button
-                    type="button"
-                    className={styles.exitFocusBtn}
-                    onClick={() => setIsFocusMode(false)}
-                  >
-                    Exit Focus
-                  </button>
-                )}
               </div>
             </footer>
           </>
