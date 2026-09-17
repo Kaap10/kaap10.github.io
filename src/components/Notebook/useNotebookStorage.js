@@ -195,37 +195,149 @@ export function useNotebookStorage(passedUser = null) {
       if (nbsRes.error) throw nbsRes.error;
       if (notesRes.error) throw notesRes.error;
 
-      let cloudNbs = nbsRes.data || [];
-      let cloudNotes = notesRes.data || [];
+      const cloudNbs = nbsRes.data || [];
+      const cloudNotes = notesRes.data || [];
 
-      // If user has zero cloud notebooks, push default/local
-      if (cloudNbs.length === 0) {
-        const defaultNbWithUser = { ...DEFAULT_NOTEBOOK, id: generateUUID(), user_id: userId };
-        const defaultNoteWithUser = {
-          ...DEFAULT_NOTE,
+      // Read current local state from localStorage for safe merging
+      let localNbs = [];
+      let localNotes = [];
+      try {
+        const rawNbs = localStorage.getItem(STORAGE_KEYS.NOTEBOOKS);
+        const rawNotes = localStorage.getItem(STORAGE_KEYS.NOTES);
+        if (rawNbs) localNbs = JSON.parse(rawNbs);
+        if (rawNotes) localNotes = JSON.parse(rawNotes);
+      } catch (e) {
+        console.warn('Error reading local cache during merge:', e);
+      }
+
+      // --- 1. Merge Notebooks ---
+      const nbMap = new Map();
+      cloudNbs.forEach((nb) => nbMap.set(nb.id, nb));
+
+      const nbsToUpsert = [];
+      localNbs.forEach((locNb) => {
+        if (!locNb || !locNb.id) return;
+        const validId = isValidUUID(locNb.id) ? locNb.id : generateUUID();
+        const nbObj = { ...locNb, id: validId, user_id: userId };
+
+        if (!nbMap.has(validId)) {
+          // Local notebook not in cloud -> keep and push to cloud
+          nbMap.set(validId, nbObj);
+          nbsToUpsert.push(nbObj);
+        } else {
+          // Exists in both -> compare updated_at
+          const cloudNb = nbMap.get(validId);
+          const locTime = new Date(nbObj.updated_at || nbObj.created_at || 0).getTime();
+          const cldTime = new Date(cloudNb.updated_at || cloudNb.created_at || 0).getTime();
+          if (locTime > cldTime) {
+            nbMap.set(validId, nbObj);
+            nbsToUpsert.push(nbObj);
+          }
+        }
+      });
+
+      let mergedNbs = Array.from(nbMap.values());
+
+      // If user has zero notebooks anywhere, initialize a default notebook
+      if (mergedNbs.length === 0) {
+        const defaultNbWithUser = {
+          ...DEFAULT_NOTEBOOK,
           id: generateUUID(),
-          notebook_id: defaultNbWithUser.id,
+          user_id: userId,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+        };
+        mergedNbs = [defaultNbWithUser];
+        nbsToUpsert.push(defaultNbWithUser);
+      }
+
+      // Upsert any missing/updated notebooks to cloud
+      if (nbsToUpsert.length > 0) {
+        client.from('notebooks').upsert(nbsToUpsert).catch((err) => {
+          console.warn('Background upsert notebooks failed:', err);
+        });
+      }
+
+      const validNbIds = new Set(mergedNbs.map((nb) => nb.id));
+      const fallbackNbId = mergedNbs[0].id;
+
+      // --- 2. Merge Notes ---
+      const notesMap = new Map();
+      cloudNotes.forEach((n) => notesMap.set(n.id, n));
+
+      const notesToUpsert = [];
+      localNotes.forEach((locNote) => {
+        if (!locNote || !locNote.id) return;
+        const validNoteId = isValidUUID(locNote.id) ? locNote.id : generateUUID();
+        const targetNbId = isValidUUID(locNote.notebook_id) && validNbIds.has(locNote.notebook_id)
+          ? locNote.notebook_id
+          : fallbackNbId;
+
+        const noteObj = {
+          ...locNote,
+          id: validNoteId,
+          notebook_id: targetNbId,
           user_id: userId,
         };
 
-        await Promise.all([
-          client.from('notebooks').insert([defaultNbWithUser]),
-          client.from('notes').insert([defaultNoteWithUser]),
-        ]);
+        if (!notesMap.has(validNoteId)) {
+          // Local note not in cloud -> keep and push to cloud
+          notesMap.set(validNoteId, noteObj);
+          notesToUpsert.push(noteObj);
+        } else {
+          // Exists in both -> compare updated_at
+          const cloudNote = notesMap.get(validNoteId);
+          const locTime = new Date(noteObj.updated_at || noteObj.created_at || 0).getTime();
+          const cldTime = new Date(cloudNote.updated_at || cloudNote.created_at || 0).getTime();
+          if (locTime > cldTime) {
+            notesMap.set(validNoteId, noteObj);
+            notesToUpsert.push(noteObj);
+          }
+        }
+      });
 
-        cloudNbs = [defaultNbWithUser];
-        cloudNotes = [defaultNoteWithUser];
+      let mergedNotes = Array.from(notesMap.values());
+
+      // If user has zero notes anywhere, initialize a default note
+      if (mergedNotes.length === 0) {
+        const defaultNoteWithUser = {
+          ...DEFAULT_NOTE,
+          id: generateUUID(),
+          notebook_id: fallbackNbId,
+          user_id: userId,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+        };
+        mergedNotes = [defaultNoteWithUser];
+        notesToUpsert.push(defaultNoteWithUser);
       }
 
-      setNotebooks(cloudNbs);
-      setNotes(cloudNotes);
-      persistToLocal(cloudNbs, cloudNotes);
-
-      if (!activeNotebookId && cloudNbs.length > 0) {
-        selectNotebook(cloudNbs[0].id);
+      // Upsert any missing/updated notes to cloud
+      if (notesToUpsert.length > 0) {
+        client.from('notes').upsert(notesToUpsert).catch((err) => {
+          console.warn('Background upsert notes failed:', err);
+        });
       }
-      if (!activeNoteId && cloudNotes.length > 0) {
-        selectNote(cloudNotes[0].id);
+
+      // Update state and write to localStorage
+      setNotebooks(mergedNbs);
+      setNotes(mergedNotes);
+      persistToLocal(mergedNbs, mergedNotes);
+
+      // Verify active selection
+      const savedNbId = localStorage.getItem(STORAGE_KEYS.ACTIVE_NB);
+      const savedNoteId = localStorage.getItem(STORAGE_KEYS.ACTIVE_NOTE);
+
+      if (savedNbId && validNbIds.has(savedNbId)) {
+        setActiveNotebookId(savedNbId);
+      } else if (mergedNbs.length > 0) {
+        selectNotebook(mergedNbs[0].id);
+      }
+
+      if (savedNoteId && mergedNotes.some((n) => n.id === savedNoteId)) {
+        setActiveNoteId(savedNoteId);
+      } else if (mergedNotes.length > 0) {
+        selectNote(mergedNotes[0].id);
       }
 
       setSyncStatus('synced');
@@ -328,19 +440,20 @@ export function useNotebookStorage(passedUser = null) {
 
   // Create Note
   const createNote = useCallback(
-    async ({ notebook_id, title, content, tags }) => {
+    async ({ notebook_id, title, content, tags } = {}) => {
+      const user = activeUserRef.current;
       const targetNbId = notebook_id || activeNotebookId || notebooks[0]?.id;
       const newNote = {
         id: generateUUID(),
         notebook_id: targetNbId,
-        title: title?.trim() || 'Untitled Note',
+        title: title !== undefined ? title : 'Untitled Note',
         content: content || '',
         tags: Array.isArray(tags) ? tags : [],
         is_pinned: false,
         is_favorite: false,
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
-        user_id: activeUserRef.current?.id || null,
+        user_id: user?.id || null,
       };
 
       setNotes((prev) => {
@@ -352,13 +465,18 @@ export function useNotebookStorage(passedUser = null) {
       selectNote(newNote.id);
 
       const client = getSupabase();
-      if (client && activeUserRef.current) {
+      if (client && user?.id) {
         setSyncStatus('saving');
         try {
-          await client.from('notes').insert([newNote]);
-          setSyncStatus('synced');
+          const { error } = await client.from('notes').upsert([newNote]);
+          if (error) {
+            console.warn('Cloud upsert note failed:', error);
+            setSyncStatus('offline');
+          } else {
+            setSyncStatus('synced');
+          }
         } catch (e) {
-          console.warn('Cloud insert note failed:', e);
+          console.warn('Cloud upsert note exception:', e);
           setSyncStatus('offline');
         }
       }

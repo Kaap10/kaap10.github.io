@@ -145,6 +145,8 @@ export default function NotebookView({
   const [localContent, setLocalContent] = useState('');
   const [isSaving, setIsSaving] = useState(false);
 
+  const localTitleRef = useRef('');
+  const localContentRef = useRef('');
   const textareaRef = useRef(null);
   const saveTimeoutRef = useRef(null);
   const exportMenuRef = useRef(null);
@@ -226,24 +228,46 @@ export default function NotebookView({
     return filteredNotes.length > 0 ? filteredNotes[0] : null;
   }, [notes, activeNoteId, filteredNotes]);
 
+  // Flush any pending unsaved buffer immediately to onUpdateNote
+  const flushLocalEdits = useCallback(() => {
+    if (saveTimeoutRef.current) {
+      clearTimeout(saveTimeoutRef.current);
+      saveTimeoutRef.current = null;
+    }
+    if (currentNoteIdRef.current) {
+      onUpdateNote(currentNoteIdRef.current, {
+        title: localTitleRef.current,
+        content: localContentRef.current,
+      });
+    }
+    setIsSaving(false);
+  }, [onUpdateNote]);
+
   // Synchronize local input state whenever the selected note ID changes
   useEffect(() => {
     if (currentNote) {
       if (currentNoteIdRef.current !== currentNote.id) {
-        if (saveTimeoutRef.current) {
-          clearTimeout(saveTimeoutRef.current);
-          saveTimeoutRef.current = null;
+        // Flush changes for previous note before switching
+        if (currentNoteIdRef.current) {
+          flushLocalEdits();
         }
         currentNoteIdRef.current = currentNote.id;
+        localTitleRef.current = currentNote.title || '';
+        localContentRef.current = currentNote.content || '';
         setLocalTitle(currentNote.title || '');
         setLocalContent(currentNote.content || '');
       }
     } else {
+      if (currentNoteIdRef.current) {
+        flushLocalEdits();
+      }
       currentNoteIdRef.current = null;
+      localTitleRef.current = '';
+      localContentRef.current = '';
       setLocalTitle('');
       setLocalContent('');
     }
-  }, [currentNote?.id]);
+  }, [currentNote?.id, flushLocalEdits]);
 
   // Debounced auto-save handler (350ms)
   const triggerDebouncedSave = useCallback(
@@ -261,17 +285,28 @@ export default function NotebookView({
     [onUpdateNote]
   );
 
-  // Clean up on unmount
+  // Guarantee persistence on page unload, tab switch, and component unmount
   useEffect(() => {
-    return () => {
-      if (saveTimeoutRef.current) {
-        clearTimeout(saveTimeoutRef.current);
+    const handleBeforeUnload = () => {
+      flushLocalEdits();
+    };
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'hidden') {
+        flushLocalEdits();
       }
     };
-  }, []);
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => {
+      flushLocalEdits();
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, [flushLocalEdits]);
 
   // Title change
   const handleTitleChange = (val) => {
+    localTitleRef.current = val;
     setLocalTitle(val);
     if (currentNote) {
       triggerDebouncedSave(currentNote.id, { title: val });
@@ -280,6 +315,7 @@ export default function NotebookView({
 
   // Content change
   const handleContentChange = (val) => {
+    localContentRef.current = val;
     setLocalContent(val);
     if (currentNote) {
       triggerDebouncedSave(currentNote.id, { content: val });
@@ -849,6 +885,7 @@ export default function NotebookView({
                   value={localTitle}
                   placeholder="Untitled Note"
                   onChange={(e) => handleTitleChange(e.target.value)}
+                  onBlur={flushLocalEdits}
                 />
               </div>
 
@@ -1098,6 +1135,7 @@ export default function NotebookView({
                     value={localContent}
                     placeholder="Write your notes, code snippets, and architecture diagrams here..."
                     onChange={(e) => handleContentChange(e.target.value)}
+                    onBlur={flushLocalEdits}
                     onKeyDown={handleKeyDown}
                     spellCheck="false"
                   />
