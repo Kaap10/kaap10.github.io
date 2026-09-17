@@ -309,6 +309,10 @@ export default function NotebookView({
     setLocalTitle(val);
     if (currentNote) {
       triggerDebouncedSave(currentNote.id, { title: val });
+      triggerDebouncedSave(currentNote.id, {
+        title: val,
+        content: localContentRef.current,
+      });
     }
   };
 
@@ -318,6 +322,10 @@ export default function NotebookView({
     setLocalContent(val);
     if (currentNote) {
       triggerDebouncedSave(currentNote.id, { content: val });
+      triggerDebouncedSave(currentNote.id, {
+        title: localTitleRef.current,
+        content: val,
+      });
     }
   };
 

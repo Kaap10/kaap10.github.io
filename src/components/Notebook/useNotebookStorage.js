@@ -59,6 +59,16 @@ export function useNotebookStorage(passedUser = null) {
 
   const activeUserRef = useRef(passedUser || null);
   const pendingSaveTimeouts = useRef({});
+  const notesRef = useRef([]);
+  const notebooksRef = useRef([]);
+
+  useEffect(() => {
+    notesRef.current = notes;
+  }, [notes]);
+
+  useEffect(() => {
+    notebooksRef.current = notebooks;
+  }, [notebooks]);
 
   // Synchronize when passedUser changes
   useEffect(() => {
@@ -286,10 +296,15 @@ export function useNotebookStorage(passedUser = null) {
           notesToUpsert.push(noteObj);
         } else {
           // Exists in both -> compare updated_at
+          // Exists in both -> compare updated_at and content completeness
           const cloudNote = notesMap.get(validNoteId);
           const locTime = new Date(noteObj.updated_at || noteObj.created_at || 0).getTime();
           const cldTime = new Date(cloudNote.updated_at || cloudNote.created_at || 0).getTime();
           if (locTime > cldTime) {
+          const hasLocalData = (noteObj.content && noteObj.content.trim().length > 0) || (noteObj.title && noteObj.title !== 'Untitled Note');
+          const isCloudBlank = (!cloudNote.content || cloudNote.content.trim().length === 0) && (!cloudNote.title || cloudNote.title === 'Untitled Note');
+
+          if (locTime > cldTime || (hasLocalData && isCloudBlank)) {
             notesMap.set(validNoteId, noteObj);
             notesToUpsert.push(noteObj);
           }
@@ -502,11 +517,13 @@ export function useNotebookStorage(passedUser = null) {
       // Instant optimistic local update
       setNotes((prev) => {
         const updated = prev.map((n) => (n.id === id ? { ...n, ...payload } : n));
+        notesRef.current = updated;
         persistToLocal(null, updated);
         return updated;
       });
 
       // Debounced Cloud Sync
+      // Debounced Cloud Sync using FULL NOTE UPSERT
       const client = getSupabase();
       const user = activeUserRef.current;
       if (client && user?.id) {
@@ -517,8 +534,24 @@ export function useNotebookStorage(passedUser = null) {
         pendingSaveTimeouts.current[id] = setTimeout(async () => {
           try {
             const { error } = await client.from('notes').update(payload).eq('id', id);
+            const currentNoteObj = notesRef.current.find((n) => n.id === id) || { id, ...payload };
+            const fullNoteToSave = {
+              id: currentNoteObj.id || id,
+              notebook_id: currentNoteObj.notebook_id || notebooksRef.current[0]?.id,
+              title: currentNoteObj.title || 'Untitled Note',
+              content: currentNoteObj.content || '',
+              tags: Array.isArray(currentNoteObj.tags) ? currentNoteObj.tags : [],
+              is_pinned: Boolean(currentNoteObj.is_pinned),
+              is_favorite: Boolean(currentNoteObj.is_favorite),
+              created_at: currentNoteObj.created_at || timestamp,
+              updated_at: timestamp,
+              user_id: user.id,
+            };
+
+            const { error } = await client.from('notes').upsert([fullNoteToSave]);
             if (error) {
               console.warn('Cloud update note error:', error);
+              console.warn('Cloud upsert note error:', error);
               setSyncStatus('offline');
             } else {
               setSyncStatus('synced');
@@ -529,6 +562,7 @@ export function useNotebookStorage(passedUser = null) {
           }
           delete pendingSaveTimeouts.current[id];
         }, 350);
+        }, 300);
       }
     },
     [persistToLocal]
