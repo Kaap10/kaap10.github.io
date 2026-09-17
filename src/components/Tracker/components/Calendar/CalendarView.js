@@ -204,24 +204,24 @@ export default function CalendarView() {
     <div className={styles.viewContainer}>
       {/* Header & Controls */}
       <div className={styles.viewHeader}>
-        <div>
+        <div className={styles.viewHeaderTitleGroup}>
           <h1 className={styles.viewTitle}>Productivity Calendar</h1>
           <p className={styles.viewSubtitle}>
             Unified view of task deadlines, milestone dates, deep work sessions, and habits.
           </p>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+        <div className={styles.viewHeaderActions}>
           <button type="button" className={styles.btnSecondary} onClick={handleToday}>
             Today
           </button>
-          <button type="button" className={styles.iconBtn} onClick={handlePrev}>
+          <button type="button" className={styles.iconBtn} onClick={handlePrev} title="Previous Month">
             <IconChevronLeft size={16} />
           </button>
-          <span style={{ fontSize: '0.95rem', fontWeight: 600, color: 'var(--vg-text)', minWidth: '140px', textAlign: 'center' }}>
+          <span style={{ fontSize: '0.92rem', fontVariantNumeric: 'tabular-nums', fontWeight: 600, color: 'var(--vg-text)', minWidth: '130px', textAlign: 'center' }}>
             {monthName}
           </span>
-          <button type="button" className={styles.iconBtn} onClick={handleNext}>
+          <button type="button" className={styles.iconBtn} onClick={handleNext} title="Next Month">
             <IconChevronRight size={16} />
           </button>
         </div>

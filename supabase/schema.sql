@@ -181,6 +181,21 @@ CREATE TABLE IF NOT EXISTS public.notes (
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
+-- 13. Whiteboards Table (Multi-Board Whiteboard Management & System Design)
+CREATE TABLE IF NOT EXISTS public.whiteboards (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  title TEXT NOT NULL DEFAULT 'Untitled Whiteboard',
+  description TEXT,
+  elements JSONB DEFAULT '[]'::jsonb NOT NULL,
+  app_state JSONB DEFAULT '{}'::jsonb NOT NULL,
+  files JSONB DEFAULT '{}'::jsonb NOT NULL,
+  is_favorite BOOLEAN NOT NULL DEFAULT FALSE,
+  order_index INTEGER NOT NULL DEFAULT 0,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
 -- ==============================================================================
 -- Enable Row Level Security (RLS)
 -- ==============================================================================
@@ -196,6 +211,7 @@ ALTER TABLE public.weekly_reviews ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.monthly_reviews ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.notebooks ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.notes ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.whiteboards ENABLE ROW LEVEL SECURITY;
 
 -- ==============================================================================
 -- RLS Policies — DROP IF EXISTS then CREATE for safe idempotent re-runs
@@ -261,6 +277,11 @@ CREATE POLICY "Users can manage their own notes"
   ON public.notes FOR ALL TO authenticated
   USING (auth.uid() = user_id) WITH CHECK (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can manage their own whiteboards" ON public.whiteboards;
+CREATE POLICY "Users can manage their own whiteboards"
+  ON public.whiteboards FOR ALL TO authenticated
+  USING (auth.uid() = user_id) WITH CHECK (auth.uid() = user_id);
+
 -- ==============================================================================
 -- Profile Trigger (auto-create profile on user sign-up)
 -- SET search_path = public prevents search_path injection attacks
@@ -299,6 +320,7 @@ CREATE INDEX IF NOT EXISTS idx_habit_logs_user_id_date ON public.habit_logs(user
 CREATE INDEX IF NOT EXISTS idx_notebooks_user_id ON public.notebooks(user_id);
 CREATE INDEX IF NOT EXISTS idx_notes_user_id ON public.notes(user_id);
 CREATE INDEX IF NOT EXISTS idx_notes_notebook_id ON public.notes(notebook_id);
+CREATE INDEX IF NOT EXISTS idx_whiteboards_user_id ON public.whiteboards(user_id);
 
 -- ==============================================================================
 -- Schema Privileges for Supabase Roles (authenticated & anon)

@@ -52,24 +52,26 @@ export default function HabitsView() {
     <div className={styles.viewContainer}>
       {/* Header */}
       <div className={styles.viewHeader}>
-        <div>
+        <div className={styles.viewHeaderTitleGroup}>
           <h1 className={styles.viewTitle}>Habit Tracker & Consistency</h1>
           <p className={styles.viewSubtitle}>
             Build atomic engineering routines, track daily streaks, and measure discipline.
           </p>
         </div>
 
-        <button
-          type="button"
-          className={styles.btnPrimary}
-          onClick={() => {
-            setEditingHabit(null);
-            setHabitModalOpen(true);
-          }}
-        >
-          <IconPlus size={16} />
-          <span>New Habit</span>
-        </button>
+        <div className={styles.viewHeaderActions}>
+          <button
+            type="button"
+            className={styles.btnPrimary}
+            onClick={() => {
+              setEditingHabit(null);
+              setHabitModalOpen(true);
+            }}
+          >
+            <IconPlus size={15} />
+            <span>New Habit</span>
+          </button>
+        </div>
       </div>
 
       {activeHabits.length === 0 ? (

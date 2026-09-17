@@ -4,7 +4,7 @@ import BrowserOnly from '@docusaurus/BrowserOnly';
 import ExcalidrawBoard from '@site/src/components/ExcalidrawBoard';
 import styles from '@site/src/components/ExcalidrawBoard/styles.module.css';
 
-export default function BoardPage() {
+export default function WhiteboardPage() {
   return (
     <Layout
       title="Whiteboard"

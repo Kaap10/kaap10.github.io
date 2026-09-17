@@ -145,17 +145,7 @@ const config = {
           { to: '/opensource', label: 'Open Source', position: 'left' },
           { to: '/projects', label: 'Projects', position: 'left' },
           { to: '/blogs/intro', label: 'Blogs', position: 'left' },
-          {
-            type: 'dropdown',
-            label: 'Tools',
-            position: 'left',
-            items: [
-              { to: '/tools', label: 'Tools Overview' },
-              { to: '/board', label: 'Whiteboard' },
-              { to: '/tracker', label: 'Tracker' },
-              { to: '/tracker?tab=notebook', label: 'Notebook' },
-            ],
-          },
+          { to: '/workspace', label: 'DevWorkspace', position: 'left' },
           { type: 'search', position: 'right' },
           {
             href: 'https://github.com/kaap10',

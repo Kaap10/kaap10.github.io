@@ -22,3 +22,14 @@ yarn-error.log*
 
 # Ignore PDFs (e.g., Resume)
 *.pdf
+
+# Design system documentation
+design_system.md
+DESIGN_SYSTEM.md
+
+# Project documentation
+project.md
+PROJECT.md
+projects.md
+
+

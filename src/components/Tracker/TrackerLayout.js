@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Link from '@docusaurus/Link';
 import { useAuth } from './context/AuthContext';
 import { useTracker } from './context/TrackerContext';
 import {
@@ -8,12 +9,12 @@ import {
   IconFocus,
   IconHabit,
   IconProgress,
-  IconNotebook,
   IconLogOut,
   IconUser,
   IconSearch,
   IconSidebarCollapse,
   IconSidebarExpand,
+  IconArrowLeft,
 } from './components/Common/Icons';
 import styles from './styles/tracker.module.css';
 
@@ -55,7 +56,6 @@ export default function TrackerLayout({ children }) {
     { id: 'dashboard', label: 'Today', icon: IconDashboard },
     { id: 'tasks', label: 'Tasks', icon: IconTasks },
     { id: 'goals', label: 'Goals', icon: IconGoals },
-    { id: 'notebook', label: 'Notebook', icon: IconNotebook },
     { id: 'habits', label: 'Habits', icon: IconHabit },
     { id: 'focus', label: 'Focus', icon: IconFocus },
     { id: 'progress', label: 'Insights', icon: IconProgress },
@@ -69,20 +69,12 @@ export default function TrackerLayout({ children }) {
       {/* Desktop Sticky Sidebar */}
       <aside className={`${styles.sidebar} ${sidebarCollapsed ? styles.sidebarCollapsed : ''}`}>
         <div>
-          {/* Workspace Brand / Header */}
+          {/* Top Bar: Back to Workspace & Sidebar Toggle */}
           <div className={styles.sidebarHeader}>
-            <div className={styles.brandTitle}>
-              <div
-                style={{
-                  width: '8px',
-                  height: '8px',
-                  borderRadius: '50%',
-                  background: 'var(--vg-accent)',
-                  boxShadow: '0 0 10px var(--vg-accent)',
-                }}
-              />
-              <span>Tracker</span>
-            </div>
+            <Link to="/workspace" className={styles.backBtn} title="Return to DevWorkspace Hub">
+              <IconArrowLeft size={14} />
+              <span>Workspace</span>
+            </Link>
             <button
               type="button"
               className={styles.iconBtn}
@@ -94,33 +86,10 @@ export default function TrackerLayout({ children }) {
             </button>
           </div>
 
-          {/* Quick Search Trigger */}
-          <div style={{ padding: '0 0.85rem 0.65rem 0.85rem' }}>
-            <button
-              type="button"
-              onClick={() => setSearchModalOpen(true)}
-              style={{
-                width: '100%',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                padding: '0.45rem 0.75rem',
-                borderRadius: 'var(--vg-radius-sm)',
-                background: 'var(--vg-surface-strong)',
-                border: '1px solid var(--vg-border)',
-                color: 'var(--vg-text-muted)',
-                fontSize: '0.78rem',
-                cursor: 'pointer',
-              }}
-            >
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem' }}>
-                <IconSearch size={14} />
-                <span>Quick search...</span>
-              </div>
-              <kbd style={{ fontSize: '0.68rem', padding: '0.1rem 0.35rem', background: 'var(--vg-surface)', borderRadius: '3px', border: '1px solid var(--vg-border)' }}>
-                {typeof navigator !== 'undefined' && /Mac/i.test(navigator.platform) ? '⌘K' : 'Ctrl+K'}
-              </kbd>
-            </button>
+          {/* Workspace Brand Header */}
+          <div className={styles.brandTitle} style={{ padding: '0 0.5rem 0.85rem' }}>
+            <IconDashboard size={16} style={{ color: 'var(--vg-accent, #FF4D4F)' }} />
+            <span>Tracker</span>
           </div>
 
           {/* Navigation Links */}
@@ -183,17 +152,15 @@ export default function TrackerLayout({ children }) {
 
       {/* Mobile Top Header Bar */}
       <header className={styles.mobileHeader}>
-        <div className={styles.brandTitle}>
-          <div
-            style={{
-              width: '8px',
-              height: '8px',
-              borderRadius: '50%',
-              background: 'var(--vg-accent)',
-              boxShadow: '0 0 10px var(--vg-accent)',
-            }}
-          />
-          <span style={{ fontSize: '0.88rem', fontWeight: 600 }}>Tracker</span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+          <Link to="/workspace" className={styles.backBtn} title="Return to DevWorkspace Hub">
+            <IconArrowLeft size={14} />
+            <span>Workspace</span>
+          </Link>
+          <div className={styles.brandTitle} style={{ fontSize: '0.88rem', fontWeight: 600 }}>
+            <IconDashboard size={16} style={{ color: 'var(--vg-accent, #FF4D4F)' }} />
+            <span>Tracker</span>
+          </div>
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
@@ -220,18 +187,25 @@ export default function TrackerLayout({ children }) {
       </header>
 
       {/* Main View Area */}
-      <main className={`${styles.mainContent} ${activeTab === 'notebook' ? styles.mainContentNotebook : ''}`}>
+      <main className={styles.mainContent}>
         {sidebarCollapsed && (
-          <button
-            type="button"
-            className={styles.sidebarExpandBtn}
-            onClick={toggleSidebar}
-            title="Expand Sidebar ([)"
-            aria-label="Expand Sidebar"
-          >
-            <IconSidebarExpand size={15} />
-            <span>Sidebar</span>
-          </button>
+          <div style={{ position: 'fixed', top: '16px', left: '16px', display: 'flex', alignItems: 'center', gap: '8px', zIndex: 30 }}>
+            <Link to="/workspace" className={styles.sidebarExpandBtn} style={{ position: 'static' }} title="Return to DevWorkspace Hub">
+              <IconArrowLeft size={14} />
+              <span>Workspace</span>
+            </Link>
+            <button
+              type="button"
+              className={styles.sidebarExpandBtn}
+              style={{ position: 'static' }}
+              onClick={toggleSidebar}
+              title="Expand Sidebar ([)"
+              aria-label="Expand Sidebar"
+            >
+              <IconSidebarExpand size={15} />
+              <span>Sidebar</span>
+            </button>
+          </div>
         )}
         {error && (
           <div

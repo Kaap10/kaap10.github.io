@@ -65,7 +65,12 @@ import {
   PanelLeftOpen,
   PanelLeft,
   Menu,
+  ArrowLeft,
 } from 'lucide-react';
+
+export function IconArrowLeft({ size = 16, className = '' }) {
+  return <ArrowLeft size={size} className={className} />;
+}
 
 export function IconNotebook({ size = 18, className = '' }) {
   return <BookOpen size={size} className={className} />;

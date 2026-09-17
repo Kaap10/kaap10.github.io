@@ -155,13 +155,29 @@ h1, h2, h3, h4, h5, h6 {
    Header & Navbar: Floating Cylindrical Island (Default: Projects, OS, Tools)
    ========================================================================== */
 
-/* Hide Navbar and Footer completely on Home Page (Clean Dedicated Workstation) */
+/* Hide Navbar and Footer completely on Home Page and DevWorkspace Tools (Workspace, Whiteboard, Tracker, Notebook) */
 .is-home-page .navbar,
 .is-home-page .footer,
 .is-home-page footer,
 body:has(.homepage-wrapper) .navbar,
 body:has(.homepage-wrapper) .footer,
 body:has(.homepage-wrapper) footer,
+body:has(.workspace-wrapper) .navbar,
+body:has(.workspace-wrapper) .footer,
+body:has(.workspace-wrapper) footer,
+body:has(.board-wrapper) .navbar,
+body:has(.board-wrapper) .footer,
+body:has(.board-wrapper) footer,
+body:has(.tracker-wrapper) .navbar,
+body:has(.tracker-wrapper) .footer,
+body:has(.tracker-wrapper) footer,
+body:has(.notebook-wrapper) .navbar,
+body:has(.notebook-wrapper) .footer,
+body:has(.notebook-wrapper) footer,
+body:has(.workspace-wrapper) [class*='quickLauncherBtn'],
+body:has(.board-wrapper) [class*='quickLauncherBtn'],
+body:has(.tracker-wrapper) [class*='quickLauncherBtn'],
+body:has(.notebook-wrapper) [class*='quickLauncherBtn'],
 html.is-home-page .navbar,
 html.is-home-page .footer {
   display: none !important;

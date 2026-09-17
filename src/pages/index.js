@@ -18,20 +18,24 @@ import {
   ExternalLink,
   ArrowUpRight,
   PenTool,
-  Sparkles
+  Sparkles,
+  LayoutGrid,
+  Timer
 } from 'lucide-react';
 import styles from './index.module.css';
 
 const COMMAND_LIST = [
-  'help', 'ls', 'cd', 'cat', 'portfolio', 'projects', 'tools', 
-  'opensource', 'build-with-ai', 'bwa', 'dynavec', 'board', 'tracker', 'blogs', 'scratchpad', 'resume', 
+  'help', 'ls', 'cd', 'cat', 'portfolio', 'workspace', 'projects', 'tools', 
+  'opensource', 'build-with-ai', 'bwa', 'dynavec', 'whiteboard', 'board', 'notebook', 'tracker', 
+  'blogs', 'focus', 'pomodoro', 'palette', 'spotlight', 'scratchpad', 'resume', 
   'cv', 'explore', 'neofetch', 'fastfetch', 'whoami', 'pwd', 'clear', 
   'cls', 'history', 'uname', 'date', 'uptime', 'echo', 'sudo', 
-  'github', 'linkedin', 'email', 'open', 'goto', 'about', 'skills', 
-  'contact', 'git', 'curl', 'ping', 'top', 'htop', 'man'
+  'github', 'linkedin', 'leetcode', 'medium', 'apache', 'magpie', 'email', 'open', 'goto', 'about', 'skills', 
+  'contact', 'recent', 'git', 'curl', 'ping', 'top', 'htop', 'man'
 ];
 
 const FILE_SYSTEM = {
+  'workspace': { type: 'dir', route: '/workspace', desc: 'Developer Workspace & Central Tools Hub' },
   'portfolio': { type: 'dir', route: '/portfolio', desc: 'Interactive Engineering Portfolio' },
   'projects': { type: 'dir', route: '/projects', desc: 'Production Systems & Repositories' },
   'tools': { type: 'dir', route: '/tools', desc: 'Developer Utilities & Sandboxes' },
@@ -39,12 +43,20 @@ const FILE_SYSTEM = {
   'build-with-ai': { type: 'dir', route: '/build-with-ai', desc: 'Zero-API Software Architect CLI Showcase' },
   'dynavec': { type: 'dir', route: '/opensource/dynavec', desc: 'Serverless Hybrid Vector DB Contributions' },
   'board': { type: 'dir', route: '/board', desc: 'Architecture Whiteboard & Visual Canvas' },
+  'whiteboard': { type: 'dir', route: '/board', desc: 'Architecture Whiteboard & Visual Canvas' },
+  'notebook': { type: 'dir', route: '/notebook', desc: 'Interactive OneNote & Markdown Workspace' },
   'tracker': { type: 'dir', route: '/tracker', desc: 'Productivity & Focus Tracker' },
-  'blogs': { type: 'dir', route: '/blogs/intro', desc: 'Technical Articles & Guides' },
+  'blogs': { type: 'dir', route: '/blogs/intro', desc: 'Technical Articles & Engineering Deep Dives' },
   'about.txt': { type: 'file', content: `Vardhman Gupta
 AI & Distributed Systems Engineer | Open Source Enthusiast
 Passionate about low-latency architectures, autonomous agent workflows, and clean developer tooling.
 Building high-impact software systems with Go, Python, Rust, React, and Kubernetes.` },
+  'recent-work.txt': { type: 'file', content: `[RECENT WORK & CONTRIBUTIONS]
+• 3 Pull Requests Merged in Apache / magpie (Apache Software Foundation)
+  URL: https://github.com/search?q=org%3AApache+is%3Apr+is%3Amerged+author%3AKaap10&type=pullrequests
+• dynavec: Serverless Hybrid Vector DB with dual HNSW + BM25 engine & quantized embeddings
+• build-with-ai: Zero-API autonomous terminal software architect CLI
+• DevWorkspace: Unified suite with Architecture Whiteboard, Standalone Notebook & Pomodoro Focus Engine` },
   'skills.json': { type: 'file', content: `{
   "languages": ["Go", "Python", "Rust", "TypeScript", "C++", "SQL"],
   "systems": ["Kubernetes", "Docker", "Kafka", "Redis", "gRPC", "PostgreSQL", "Supabase"],
@@ -56,6 +68,8 @@ Building high-impact software systems with Go, Python, Rust, React, and Kubernet
 EMAIL="vardhmangupta2004@gmail.com"
 GITHUB="https://github.com/Kaap10"
 LINKEDIN="https://linkedin.com/in/vardhman-gupta"
+LEETCODE="https://leetcode.com/u/kap10/"
+MEDIUM="https://medium.com/@kap10"
 STATUS="Open to high-impact engineering opportunities & open source collaboration."` },
   'resume.pdf': { type: 'file', content: `[RESUME] Detailed resume available in the Portfolio section.
 Run 'portfolio' or 'cd portfolio' to explore complete experience, projects, and credentials.` }
@@ -63,14 +77,18 @@ Run 'portfolio' or 'cd portfolio' to explore complete experience, projects, and 
 
 const SUGGESTIONS = [
   { label: 'help', cmd: 'help', Icon: HelpCircle, isRoute: false },
+  { label: 'workspace', cmd: 'workspace', route: '/workspace', Icon: LayoutGrid, isRoute: true },
   { label: 'portfolio', cmd: 'portfolio', route: '/portfolio', Icon: Compass, isRoute: true },
   { label: 'projects', cmd: 'projects', route: '/projects', Icon: Code, isRoute: true },
   { label: 'tools', cmd: 'tools', route: '/tools', Icon: Wrench, isRoute: true },
   { label: 'opensource', cmd: 'opensource', route: '/opensource', Icon: Code2, isRoute: true },
   { label: 'board', cmd: 'board', route: '/board', Icon: PenTool, isRoute: true },
+  { label: 'whiteboard', cmd: 'whiteboard', route: '/board', Icon: PenTool, isRoute: true },
+  { label: 'notebook', cmd: 'notebook', route: '/notebook', Icon: FileText, isRoute: true },
   { label: 'tracker', cmd: 'tracker', route: '/tracker', Icon: Target, isRoute: true },
   { label: 'blogs', cmd: 'blogs', route: '/blogs/intro', Icon: BookOpen, isRoute: true },
   { label: 'ls', cmd: 'ls', Icon: Folder, isRoute: false },
+  { label: 'palette', cmd: 'palette', Icon: Sparkles, isRoute: false },
   { label: 'clear', cmd: 'clear', Icon: RotateCcw, isRoute: false }
 ];
 
@@ -414,6 +432,17 @@ export default function Home() {
 
     // Check multi-word natural phrases
     if (
+      normalized === 'explore workspace' ||
+      normalized === 'view workspace' ||
+      normalized === 'show workspace' ||
+      normalized === 'devworkspace' ||
+      normalized === 'explore devworkspace'
+    ) {
+      navigateTo('/workspace', 'DevWorkspace Hub');
+      return;
+    }
+
+    if (
       normalized === 'explore project' ||
       normalized === 'explore projects' ||
       normalized === 'view project' ||
@@ -458,15 +487,27 @@ export default function Home() {
     if (
       normalized === 'explore board' ||
       normalized === 'explore whiteboard' ||
-      normalized === 'view board'
+      normalized === 'view board' ||
+      normalized === 'view whiteboard'
     ) {
       navigateTo('/board', 'Interactive Whiteboard');
       return;
     }
 
     if (
+      normalized === 'explore notebook' ||
+      normalized === 'view notebook' ||
+      normalized === 'show notebook' ||
+      normalized === 'explore notes'
+    ) {
+      navigateTo('/notebook', 'Interactive Notebook');
+      return;
+    }
+
+    if (
       normalized === 'explore tracker' ||
-      normalized === 'view tracker'
+      normalized === 'view tracker' ||
+      normalized === 'show tracker'
     ) {
       navigateTo('/tracker', 'Focus & Habits Tracker');
       return;
@@ -478,6 +519,23 @@ export default function Home() {
       normalized === 'view blogs'
     ) {
       navigateTo('/blogs/intro', 'Engineering Blogs');
+      return;
+    }
+
+    if (
+      normalized === 'explore bwa' ||
+      normalized === 'explore build-with-ai' ||
+      normalized === 'explore build with ai'
+    ) {
+      navigateTo('/build-with-ai', 'build-with-ai Showcase');
+      return;
+    }
+
+    if (
+      normalized === 'explore dynavec' ||
+      normalized === 'view dynavec'
+    ) {
+      navigateTo('/opensource/dynavec', 'dynavec Contributions Showcase');
       return;
     }
 
@@ -493,25 +551,37 @@ export default function Home() {
         newOutputs.push({
           type: 'help',
           content: [
-            { category: 'NAVIGATION (OPENS IN NEW TAB)', items: [
-              { name: 'portfolio', route: '/portfolio', desc: 'Open interactive Engineering Portfolio' },
-              { name: 'projects', route: '/projects', desc: 'View Full Projects Catalog & Repositories' },
-              { name: 'tools', route: '/tools', desc: 'Access Developer Tools Suite & Utilities' },
-              { name: 'opensource', route: '/opensource', desc: 'Explore Open Source Projects (MIT/npm)' },
-              { name: 'build-with-ai', route: '/build-with-ai', desc: 'Zero-API Software Architect CLI Showcase' },
-              { name: 'board', route: '/board', desc: 'Open Interactive Architecture Whiteboard' },
-              { name: 'tracker', route: '/tracker', desc: 'Open Focus & Productivity Tracker' },
-              { name: 'blogs', route: '/blogs/intro', desc: 'Read Engineering Articles & Blogs' },
-              { name: 'resume', route: '/portfolio', desc: 'View complete resume and experience profile' },
-              { name: 'explore <target>', desc: 'Explore specific section (e.g. explore projects, explore tools)' },
-              { name: 'scratchpad', desc: 'Open global Markdown Scratchpad drawer (Ctrl+J)' },
-              { name: 'cd <target>', desc: 'Change directory / open target in new tab' },
-              { name: 'open <target>', desc: 'Launch specified application in new tab' },
-              { name: 'goto <target>', desc: 'Jump directly to page or URL in new tab' }
+            { category: 'CORE WORKSPACE & TOOLS (OPENS IN NEW TAB)', items: [
+              { name: 'workspace', route: '/workspace', desc: 'Open Developer Workspace & Central Tools Hub' },
+              { name: 'portfolio', route: '/portfolio', desc: 'Open interactive Engineering Portfolio & Bio' },
+              { name: 'projects', route: '/projects', desc: 'View Full Production Projects & Systems Catalog' },
+              { name: 'whiteboard', route: '/board', desc: 'Open Interactive Architecture Whiteboard Canvas' },
+              { name: 'notebook', route: '/notebook', desc: 'Open Standalone Engineering Notebook (OneNote-style)' },
+              { name: 'tracker', route: '/tracker', desc: 'Open Focus, Habits, Goals & Productivity Tracker' },
+              { name: 'opensource', route: '/opensource', desc: 'Explore Open Source Projects & Contributions' },
+              { name: 'build-with-ai', route: '/build-with-ai', desc: 'Zero-API Autonomous Software Architect CLI' },
+              { name: 'dynavec', route: '/opensource/dynavec', desc: 'Serverless Hybrid Vector DB Contributions' },
+              { name: 'blogs', route: '/blogs/intro', desc: 'Read In-Depth Technical Articles & Architecture Posts' },
+              { name: 'tools', route: '/tools', desc: 'Access Developer Tools Suite & Sandboxes' }
             ]},
-            { category: 'FILE SYSTEM & INSPECTION', items: [
-              { name: 'ls [-la]', desc: 'List files and directories' },
-              { name: 'cat <file>', desc: 'Read file contents (e.g. cat about.txt, cat skills.json)' },
+            { category: 'FOCUS & WORKFLOW CONTROLS', items: [
+              { name: 'focus [25|50]', desc: 'Start a Pomodoro focus timer session & launch Capsule widget' },
+              { name: 'palette', desc: 'Open Global Command Palette (Ctrl+K / Cmd+K)' },
+              { name: 'scratchpad', desc: 'Open Global Markdown Scratchpad drawer (Ctrl+J)' },
+              { name: 'resume', route: '/portfolio', desc: 'View complete resume and engineering credentials' },
+              { name: 'recent', desc: 'Show recent work & Apache Software Foundation PRs' }
+            ]},
+            { category: 'EXTERNAL PROFILES & COMMUNITY', items: [
+              { name: 'apache', route: 'https://github.com/search?q=org%3AApache+is%3Apr+is%3Amerged+author%3AKaap10&type=pullrequests', desc: 'View 3 merged PRs in Apache / magpie' },
+              { name: 'github', route: 'https://github.com/Kaap10', desc: 'Open GitHub profile (Kaap10)' },
+              { name: 'linkedin', route: 'https://linkedin.com/in/vardhman-gupta', desc: 'Open LinkedIn profile' },
+              { name: 'leetcode', route: 'https://leetcode.com/u/kap10/', desc: 'Open LeetCode profile (kap10)' },
+              { name: 'medium', route: 'https://medium.com/@kap10', desc: 'Open Medium blog profile' },
+              { name: 'email', desc: 'Send an email to Vardhman Gupta' }
+            ]},
+            { category: 'FILE SYSTEM & SYSTEM INSPECTION', items: [
+              { name: 'ls [-la]', desc: 'List files, routes, and workspace directories' },
+              { name: 'cat <file>', desc: 'Read file contents (e.g. cat about.txt, cat skills.json, cat recent-work.txt)' },
               { name: 'pwd', desc: 'Print working directory path' },
               { name: 'whoami', desc: 'Display active user identity and role' },
               { name: 'neofetch', desc: 'Display system telemetry & developer specs' },
@@ -519,20 +589,25 @@ export default function Home() {
               { name: 'date', desc: 'Display current system timestamp' },
               { name: 'uptime', desc: 'Display workstation system uptime' }
             ]},
-            { category: 'UTILITIES & SOCIAL', items: [
-              { name: 'clear', desc: 'Clear terminal screen' },
+            { category: 'SHELL & UTILITIES', items: [
+              { name: 'explore <target>', desc: 'Explore specific section (e.g. explore workspace, explore projects)' },
+              { name: 'cd <target>', desc: 'Navigate to target directory in new tab' },
+              { name: 'clear', desc: 'Clear terminal output buffer (Ctrl+L)' },
               { name: 'history', desc: 'Show session command history' },
               { name: 'echo <text>', desc: 'Print arguments to stdout' },
               { name: 'git status', desc: 'Show working tree status and branch info' },
               { name: 'curl <url>', desc: 'Fetch URL or inspect API endpoints' },
               { name: 'top', desc: 'Display active system processes & resource usage' },
-              { name: 'sudo <cmd>', desc: 'Execute command with elevated privileges' },
-              { name: 'github', route: 'https://github.com/Kaap10', desc: 'Open GitHub profile (Kaap10)' },
-              { name: 'linkedin', route: 'https://linkedin.com/in/vardhman-gupta', desc: 'Open LinkedIn profile' },
-              { name: 'email', desc: 'Send an email to Vardhman Gupta' }
+              { name: 'sudo <cmd>', desc: 'Execute command with elevated privileges' }
             ]}
           ]
         });
+        break;
+
+      case 'workspace':
+      case 'devworkspace':
+      case 'hub':
+        navigateTo('/workspace', 'DevWorkspace Hub');
         break;
 
       case 'portfolio':
@@ -575,7 +650,15 @@ export default function Home() {
       case 'whiteboard':
       case 'draw':
       case 'canvas':
+      case 'excalidraw':
         navigateTo('/board', 'Interactive Whiteboard');
+        break;
+
+      case 'notebook':
+      case 'notes':
+      case 'notepad':
+      case 'onenote':
+        navigateTo('/notebook', 'Interactive Notebook');
         break;
 
       case 'tracker':
@@ -584,6 +667,35 @@ export default function Home() {
       case 'focus':
       case 'tasks':
         navigateTo('/tracker', 'Focus & Habits Tracker');
+        break;
+
+      case 'focus':
+      case 'pomodoro':
+      case 'timer': {
+        const mins = parseInt(args[0], 10) || 25;
+        const durationSec = mins * 60;
+        if (typeof window !== 'undefined') {
+          window.dispatchEvent(new CustomEvent('focusTimer:start', { detail: { duration: durationSec } }));
+          window.dispatchEvent(new CustomEvent('focusCapsule:open'));
+        }
+        newOutputs.push({
+          type: 'success',
+          content: `Started ${mins}-minute Focus Timer! Focus Capsule widget is active in bottom-right.`
+        });
+        break;
+      }
+
+      case 'palette':
+      case 'spotlight':
+      case 'cmd':
+      case 'command-palette':
+        if (typeof window !== 'undefined') {
+          window.dispatchEvent(new CustomEvent('commandPalette:open'));
+        }
+        newOutputs.push({
+          type: 'success',
+          content: 'Opening Global Command Palette (Ctrl+K / Cmd+K)...'
+        });
         break;
 
       case 'blogs':
@@ -646,14 +758,20 @@ export default function Home() {
                 {
                   category: 'EXPLORE TARGETS (Type command or click to open)',
                   items: [
+                    { name: 'explore workspace', route: '/workspace', desc: 'Central developer workspace & unified tools hub' },
+                    { name: 'explore portfolio', route: '/portfolio', desc: 'Complete engineering background & credentials' },
                     { name: 'explore projects', route: '/projects', desc: 'Production systems & AI repositories' },
                     { name: 'explore tools', route: '/tools', desc: 'Interactive developer tools & sandboxes' },
-                    { name: 'explore portfolio', route: '/portfolio', desc: 'Complete engineering background & credentials' },
+                    { name: 'explore whiteboard', route: '/board', desc: 'Architecture visual whiteboard & canvas' },
+                    { name: 'explore notebook', route: '/notebook', desc: 'Interactive OneNote & markdown workspace' },
+                    { name: 'explore tracker', route: '/tracker', desc: 'Daily productivity, tasks, and focus timer' },
                     { name: 'explore opensource', route: '/opensource', desc: 'Open-source packages & contributions' },
                     { name: 'explore build-with-ai', route: '/build-with-ai', desc: 'Zero-API Software Architect CLI Showcase' },
-                    { name: 'explore board', route: '/board', desc: 'System architecture visual whiteboard' },
-                    { name: 'explore tracker', route: '/tracker', desc: 'Daily productivity, tasks, and focus timer' },
+                    { name: 'explore dynavec', route: '/opensource/dynavec', desc: 'Serverless Vector DB contribution showcase' },
                     { name: 'explore blogs', route: '/blogs/intro', desc: 'In-depth engineering articles and notes' },
+                    { name: 'explore apache', route: 'https://github.com/search?q=org%3AApache+is%3Apr+is%3Amerged+author%3AKaap10&type=pullrequests', desc: '3 merged PRs in Apache / magpie' },
+                    { name: 'explore leetcode', route: 'https://leetcode.com/u/kap10/', desc: 'LeetCode profile & algorithmic problems' },
+                    { name: 'explore medium', route: 'https://medium.com/@kap10', desc: 'Medium articles & tech blog' }
                   ]
                 }
               ]
@@ -663,7 +781,9 @@ export default function Home() {
           }
         } else {
           const target = argStr.replace(/^\//, '').replace(/\/$/, '');
-          if (target === 'projects' || target === 'project' || target === 'proj') {
+          if (target === 'workspace' || target === 'devworkspace' || target === 'hub') {
+            navigateTo('/workspace', 'DevWorkspace Hub');
+          } else if (target === 'projects' || target === 'project' || target === 'proj') {
             navigateTo('/projects', 'Projects Showcase');
           } else if (target === 'tools' || target === 'tool') {
             navigateTo('/tools', 'Developer Tools');
@@ -673,14 +793,20 @@ export default function Home() {
             navigateTo('/opensource', 'Open Source Hub');
           } else if (target === 'build-with-ai' || target === 'buildwithai' || target === 'bwa') {
             navigateTo('/build-with-ai', 'build-with-ai Showcase');
-          } else if (target === 'board' || target === 'whiteboard') {
+          } else if (target === 'dynavec' || target === 'dyna-vec') {
+            navigateTo('/opensource/dynavec', 'dynavec Showcase');
+          } else if (target === 'board' || target === 'whiteboard' || target === 'draw' || target === 'canvas') {
             navigateTo('/board', 'Interactive Whiteboard');
+          } else if (target === 'notebook' || target === 'notes' || target === 'notepad' || target === 'onenote') {
+            navigateTo('/notebook', 'Interactive Notebook');
           } else if (target === 'tracker' || target === 'habits' || target === 'focus') {
             navigateTo('/tracker', 'Focus & Habits Tracker');
           } else if (target === 'blogs' || target === 'blog' || target === 'articles') {
             navigateTo('/blogs/intro', 'Engineering Blogs');
           } else if (target === 'about' || target === 'about.txt') {
             newOutputs.push({ type: 'file_content', content: FILE_SYSTEM['about.txt'].content });
+          } else if (target === 'recent' || target === 'recent-work' || target === 'recent-work.txt' || target === 'recentwork') {
+            newOutputs.push({ type: 'file_content', content: FILE_SYSTEM['recent-work.txt'].content });
           } else if (target === 'skills' || target === 'skills.json') {
             newOutputs.push({ type: 'file_content', content: FILE_SYSTEM['skills.json'].content });
           } else if (target === 'contact' || target === 'contact.sh' || target === './contact.sh') {
@@ -694,6 +820,14 @@ export default function Home() {
             newOutputs.push({
               type: 'success',
               content: 'Opened Global Scratchpad drawer (Markdown Editor). Shortcut: Ctrl+J / Cmd+J'
+            });
+          } else if (target === 'palette' || target === 'spotlight' || target === 'cmd') {
+            if (typeof window !== 'undefined') {
+              window.dispatchEvent(new CustomEvent('commandPalette:open'));
+            }
+            newOutputs.push({
+              type: 'success',
+              content: 'Opening Global Command Palette (Ctrl+K / Cmd+K)...'
             });
           } else if (target === 'github') {
             openInNewTab('https://github.com/Kaap10');
@@ -710,6 +844,31 @@ export default function Home() {
               label: 'LinkedIn Profile', 
               route: 'https://linkedin.com/in/vardhman-gupta',
               url: 'https://linkedin.com/in/vardhman-gupta'
+            });
+          } else if (target === 'leetcode' || target === 'lc') {
+            openInNewTab('https://leetcode.com/u/kap10/');
+            newOutputs.push({ 
+              type: 'nav_launch', 
+              label: 'LeetCode Profile', 
+              route: 'https://leetcode.com/u/kap10/',
+              url: 'https://leetcode.com/u/kap10/'
+            });
+          } else if (target === 'medium') {
+            openInNewTab('https://medium.com/@kap10');
+            newOutputs.push({ 
+              type: 'nav_launch', 
+              label: 'Medium Profile', 
+              route: 'https://medium.com/@kap10',
+              url: 'https://medium.com/@kap10'
+            });
+          } else if (target === 'apache' || target === 'magpie' || target === 'prs') {
+            const apacheUrl = 'https://github.com/search?q=org%3AApache+is%3Apr+is%3Amerged+author%3AKaap10&type=pullrequests';
+            openInNewTab(apacheUrl);
+            newOutputs.push({ 
+              type: 'nav_launch', 
+              label: 'Apache / magpie Merged PRs', 
+              route: apacheUrl,
+              url: apacheUrl
             });
           } else if (target === 'email' || target === 'mail') {
             window.location.href = 'mailto:vardhmangupta2004@gmail.com';
@@ -739,6 +898,8 @@ export default function Home() {
           const target = argStr.replace(/^\//, '').replace(/\/$/, '').toLowerCase();
           if (FILE_SYSTEM[target] && FILE_SYSTEM[target].type === 'dir') {
             navigateTo(FILE_SYSTEM[target].route, target);
+          } else if (target === 'workspace' || target === 'devworkspace' || target === 'hub') {
+            navigateTo('/workspace', 'DevWorkspace Hub');
           } else if (target === 'projects' || target === 'project' || target === 'proj') {
             navigateTo('/projects', 'Projects Showcase');
           } else if (target === 'tools' || target === 'tool') {
@@ -747,8 +908,14 @@ export default function Home() {
             navigateTo('/portfolio', 'Portfolio');
           } else if (target === 'opensource' || target === 'os' || target === 'open source' || target === 'open-source') {
             navigateTo('/opensource', 'Open Source Hub');
-          } else if (target === 'board' || target === 'whiteboard') {
+          } else if (target === 'build-with-ai' || target === 'buildwithai' || target === 'bwa') {
+            navigateTo('/build-with-ai', 'build-with-ai Showcase');
+          } else if (target === 'dynavec' || target === 'dyna-vec') {
+            navigateTo('/opensource/dynavec', 'dynavec Showcase');
+          } else if (target === 'board' || target === 'whiteboard' || target === 'draw' || target === 'canvas') {
             navigateTo('/board', 'Interactive Whiteboard');
+          } else if (target === 'notebook' || target === 'notes' || target === 'notepad' || target === 'onenote') {
+            navigateTo('/notebook', 'Interactive Notebook');
           } else if (target === 'tracker' || target === 'habits' || target === 'focus') {
             navigateTo('/tracker', 'Focus & Habits Tracker');
           } else if (target === 'blogs' || target === 'blog' || target === 'articles') {
@@ -923,6 +1090,51 @@ export default function Home() {
           });
           setTimeout(() => executeCommand(argStr), 100);
         }
+        break;
+
+      case 'recent':
+      case 'recent-work':
+      case 'recentwork':
+        newOutputs.push({ type: 'file_content', content: FILE_SYSTEM['recent-work.txt'].content });
+        break;
+
+      case 'apache':
+      case 'magpie':
+      case 'prs': {
+        const apacheUrl = 'https://github.com/search?q=org%3AApache+is%3Apr+is%3Amerged+author%3AKaap10&type=pullrequests';
+        openInNewTab(apacheUrl);
+        newOutputs.push({
+          type: 'success',
+          content: 'Found 3 Merged Pull Requests in Apache / magpie (Apache Software Foundation).'
+        });
+        newOutputs.push({ 
+          type: 'nav_launch', 
+          label: 'Apache / magpie Merged PRs', 
+          route: apacheUrl,
+          url: apacheUrl
+        });
+        break;
+      }
+
+      case 'leetcode':
+      case 'lc':
+        openInNewTab('https://leetcode.com/u/kap10/');
+        newOutputs.push({ 
+          type: 'nav_launch', 
+          label: 'LeetCode Profile (@kap10)', 
+          route: 'https://leetcode.com/u/kap10/',
+          url: 'https://leetcode.com/u/kap10/'
+        });
+        break;
+
+      case 'medium':
+        openInNewTab('https://medium.com/@kap10');
+        newOutputs.push({ 
+          type: 'nav_launch', 
+          label: 'Medium Profile (@kap10)', 
+          route: 'https://medium.com/@kap10',
+          url: 'https://medium.com/@kap10'
+        });
         break;
 
       case 'github':

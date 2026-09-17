@@ -11,7 +11,7 @@ export const formatLocalDate = (d) => {
   return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
 };
 
-export function TrackerProvider({ children }) {
+export function TrackerProvider({ children, initialTab }) {
 
   const { user } = useAuth();
 
@@ -36,7 +36,7 @@ export function TrackerProvider({ children }) {
   const [editingNotebook, setEditingNotebook] = useState(null);
 
   // UI State
-  const [activeTab, setActiveTabState] = useState('dashboard');
+  const [activeTab, setActiveTabState] = useState(initialTab || 'dashboard');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -45,11 +45,17 @@ export function TrackerProvider({ children }) {
     if (typeof window !== 'undefined') {
       const urlParams = new URLSearchParams(window.location.search);
       const tabParam = urlParams.get('tab');
+      if (tabParam === 'notebook' || initialTab === 'notebook') {
+        window.location.replace('/workspace/notebook');
+        return;
+      }
       if (tabParam) {
         setActiveTabState(tabParam);
+      } else if (initialTab) {
+        setActiveTabState(initialTab);
       }
     }
-  }, []);
+  }, [initialTab]);
 
   const setActiveTab = useCallback((tab) => {
     setActiveTabState(tab);

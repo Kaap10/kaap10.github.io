@@ -397,7 +397,7 @@ export default function FocusView() {
     <div className={styles.viewContainer}>
       {/* Header */}
       <div className={styles.viewHeader}>
-        <div>
+        <div className={styles.viewHeaderTitleGroup}>
           <h1 className={styles.viewTitle}>Deep Work Focus Mode</h1>
           <p className={styles.viewSubtitle}>
             Eliminate distractions with interval timers, stopwatch flow tracking, and task linkage.

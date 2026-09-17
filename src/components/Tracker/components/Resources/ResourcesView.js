@@ -71,29 +71,31 @@ export default function ResourcesView() {
     <div className={styles.viewContainer}>
       {/* Header */}
       <div className={styles.viewHeader}>
-        <div>
+        <div className={styles.viewHeaderTitleGroup}>
           <h1 className={styles.viewTitle}>Resources & References</h1>
           <p className={styles.viewSubtitle}>
             Curate technical papers, video courses, documentation repos, and learning notes.
           </p>
         </div>
 
-        <button
-          type="button"
-          className={styles.btnPrimary}
-          onClick={() => {
-            setEditingResource(null);
-            setResourceModalOpen(true);
-          }}
-        >
-          <IconPlus size={16} />
-          <span>Add Resource</span>
-        </button>
+        <div className={styles.viewHeaderActions}>
+          <button
+            type="button"
+            className={styles.btnPrimary}
+            onClick={() => {
+              setEditingResource(null);
+              setResourceModalOpen(true);
+            }}
+          >
+            <IconPlus size={15} />
+            <span>Add Resource</span>
+          </button>
+        </div>
       </div>
 
       {/* Filter Tabs & Search */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '0.75rem', flexWrap: 'wrap' }}>
+        <div className={styles.searchFilterRow}>
           <div className={styles.filterTabs}>
             {[
               { id: 'all', label: `All (${resources.length})` },
@@ -112,18 +114,17 @@ export default function ResourcesView() {
             ))}
           </div>
 
-          <div style={{ position: 'relative', width: '240px' }}>
+          <div className={styles.searchBoxWrapper}>
+            <span className={styles.searchBoxIcon}>
+              <IconSearch size={14} />
+            </span>
             <input
               type="text"
               placeholder="Search resources & notes..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className={styles.input}
-              style={{ paddingLeft: '2rem', height: '34px', fontSize: '0.82rem' }}
+              className={styles.searchBoxInput}
             />
-            <span style={{ position: 'absolute', left: '0.65rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--vg-text-muted)', display: 'flex' }}>
-              <IconSearch size={14} />
-            </span>
           </div>
         </div>
 

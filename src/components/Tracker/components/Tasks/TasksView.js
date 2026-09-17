@@ -1,4 +1,4 @@
-﻿import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useTracker } from '../../context/TrackerContext';
 import EmptyState from '../Common/EmptyState';
 import {
@@ -103,24 +103,26 @@ export default function TasksView() {
     <div className={styles.viewContainer}>
       {/* Header */}
       <div className={styles.viewHeader}>
-        <div>
+        <div className={styles.viewHeaderTitleGroup}>
           <h1 className={styles.viewTitle}>Tasks</h1>
           <p className={styles.viewSubtitle}>
             Capture, prioritize, and execute engineering action items with clarity.
           </p>
         </div>
 
-        <button
-          type="button"
-          className={styles.btnPrimary}
-          onClick={() => {
-            setEditingTask(null);
-            setTaskModalOpen(true);
-          }}
-        >
-          <IconPlus size={16} />
-          <span>New Task</span>
-        </button>
+        <div className={styles.viewHeaderActions}>
+          <button
+            type="button"
+            className={styles.btnPrimary}
+            onClick={() => {
+              setEditingTask(null);
+              setTaskModalOpen(true);
+            }}
+          >
+            <IconPlus size={15} />
+            <span>New Task</span>
+          </button>
+        </div>
       </div>
 
       {/* Filter Tabs */}
@@ -145,27 +147,18 @@ export default function TasksView() {
       </div>
 
       {/* Search & Select Bars */}
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          flexWrap: 'wrap',
-          gap: '0.75rem',
-        }}
-      >
+      <div className={styles.searchFilterRow}>
         {/* Search */}
-        <div style={{ position: 'relative', flex: '1 1 240px', maxWidth: '380px' }}>
-          <span style={{ position: 'absolute', left: '0.75rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--vg-text-muted)', display: 'flex' }}>
-            <IconSearch size={15} />
+        <div className={styles.searchBoxWrapper}>
+          <span className={styles.searchBoxIcon}>
+            <IconSearch size={14} />
           </span>
           <input
             type="text"
             placeholder="Search tasks..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className={styles.input}
-            style={{ paddingLeft: '2.2rem' }}
+            className={styles.searchBoxInput}
           />
         </div>
 

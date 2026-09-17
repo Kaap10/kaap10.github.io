@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { useTracker } from '../../context/TrackerContext';
 import EmptyState from '../Common/EmptyState';
 import { DashboardSkeleton } from '../Common/LoadingSkeleton';
@@ -62,18 +62,17 @@ export default function DashboardView() {
     <div className={styles.viewContainer}>
       {/* Header & Quick Action Bar */}
       <div className={styles.viewHeader}>
-        <div>
+        <div className={styles.viewHeaderTitleGroup}>
           <h1 className={styles.viewTitle}>Today</h1>
           <p className={styles.viewSubtitle}>
             {formattedTodayDate} · Focus on priority execution, deep work, and discipline.
           </p>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', flexWrap: 'wrap' }}>
+        <div className={styles.viewHeaderActions}>
           <button
             type="button"
             className={styles.btnSecondary}
             onClick={() => setActiveTab('progress')}
-            style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}
           >
             <IconCheck size={14} />
             <span>Log Done</span>
@@ -82,7 +81,6 @@ export default function DashboardView() {
             type="button"
             className={styles.btnSecondary}
             onClick={() => setActiveTab('focus')}
-            style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}
           >
             <IconPlay size={14} />
             <span>Focus Mode</span>
@@ -95,7 +93,7 @@ export default function DashboardView() {
               setTaskModalOpen(true);
             }}
           >
-            <IconPlus size={16} />
+            <IconPlus size={15} />
             <span>New Task</span>
           </button>
         </div>

@@ -224,14 +224,14 @@ export default function ReviewsView() {
     <div className={styles.viewContainer}>
       {/* Header */}
       <div className={styles.viewHeader}>
-        <div>
+        <div className={styles.viewHeaderTitleGroup}>
           <h1 className={styles.viewTitle}>Cadence Reviews & Retrospectives</h1>
           <p className={styles.viewSubtitle}>
             Conduct structured weekly & monthly reviews to compound engineering progress.
           </p>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+        <div className={styles.viewHeaderActions}>
           <button
             type="button"
             className={`${styles.filterTab} ${reviewType === 'weekly' ? styles.filterTabActive : ''}`}

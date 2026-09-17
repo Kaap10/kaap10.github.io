@@ -116,7 +116,7 @@ export default function ProgressView() {
     <div className={styles.viewContainer}>
       {/* Header */}
       <div className={styles.viewHeader}>
-        <div>
+        <div className={styles.viewHeaderTitleGroup}>
           <h1 className={styles.viewTitle}>Analytics & Insights</h1>
           <p className={styles.viewSubtitle}>
             Track multi-year consistency, log retrospective accomplishments, and measure execution volume.

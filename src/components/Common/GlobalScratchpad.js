@@ -139,12 +139,17 @@ export default function GlobalScratchpad() {
     );
   };
 
+  const path = location?.pathname || '';
+  const cleanPath = path.replace(/\/+$/, '') || '/';
+  const isWorkspaceRoute = cleanPath === '/workspace' || cleanPath.startsWith('/workspace');
+
   if (!mounted || typeof document === 'undefined') return null;
+  if (!isWorkspaceRoute && !isOpen) return null;
 
   return ReactDOM.createPortal(
     <>
-      {/* Floating Circular Launcher Button (Bottom Right) */}
-      {!isOpen && (
+      {/* Floating Circular Launcher Button (Bottom Right - only on /workspace) */}
+      {!isOpen && isWorkspaceRoute && (
         <button
           type="button"
           className={styles.quickLauncherBtn}

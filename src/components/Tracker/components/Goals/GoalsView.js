@@ -172,17 +172,15 @@ export default function GoalsView() {
   return (
     <div className={styles.viewContainer}>
       {/* Header - Fixed with glass blur effect when scrolling */}
-      <div
-        className={styles.viewHeader}
-      >
-        <div>
+      <div className={styles.viewHeader}>
+        <div className={styles.viewHeaderTitleGroup}>
           <h1 className={styles.viewTitle}>Strategic Goals & Milestones</h1>
           <p className={styles.viewSubtitle}>
             Break down ambitious multi-year visions into concrete milestones, sub-milestones, and actionable tasks.
           </p>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+        <div className={styles.viewHeaderActions}>
           {goals.length > 0 && (
             <button
               type="button"
@@ -194,7 +192,7 @@ export default function GoalsView() {
                 setMilestoneModalOpen(true);
               }}
             >
-              <IconPlus size={15} />
+              <IconPlus size={14} />
               <span>Add Milestone</span>
             </button>
           )}
@@ -207,7 +205,7 @@ export default function GoalsView() {
               setGoalModalOpen(true);
             }}
           >
-            <IconPlus size={16} />
+            <IconPlus size={15} />
             <span>New Goal</span>
           </button>
         </div>

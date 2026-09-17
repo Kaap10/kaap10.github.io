@@ -3,7 +3,7 @@ import Layout from '@theme/Layout';
 import BrowserOnly from '@docusaurus/BrowserOnly';
 import TrackerApp from '@site/src/components/Tracker/TrackerApp';
 
-export default function TrackerPage() {
+export default function WorkspaceTrackerPage() {
   return (
     <Layout
       title="Tracker"
@@ -30,3 +30,4 @@ export default function TrackerPage() {
     </Layout>
   );
 }
+

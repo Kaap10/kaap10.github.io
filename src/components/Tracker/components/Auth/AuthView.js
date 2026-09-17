@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
+import Link from '@docusaurus/Link';
 import { useAuth } from '../../context/AuthContext';
-import { IconLock, IconUser, IconSettings, IconAlertCircle, IconCheck, IconChevronLeft } from '../Common/Icons';
+import { IconLock, IconUser, IconSettings, IconAlertCircle, IconCheck, IconChevronLeft, IconArrowLeft } from '../Common/Icons';
 import ConfigModal from './ConfigModal';
 import styles from '../../styles/tracker.module.css';
 
@@ -67,6 +68,14 @@ export default function AuthView() {
           position: 'relative',
         }}
       >
+        {/* Workspace Hub Return */}
+        <div style={{ marginBottom: '1.25rem' }}>
+          <Link to="/workspace" className={styles.backBtn} title="Return to DevWorkspace Hub">
+            <IconArrowLeft size={14} />
+            <span>Workspace</span>
+          </Link>
+        </div>
+
         {/* Top Header */}
         <div style={{ textAlign: 'center', marginBottom: '1.75rem' }}>
           <div
