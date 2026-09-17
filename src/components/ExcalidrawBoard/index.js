@@ -30,6 +30,7 @@ export default function ExcalidrawBoard() {
     renameBoard,
     duplicateBoard,
     deleteBoard,
+    cleanDuplicates,
   } = useBoardStorage();
 
   // Dynamic import of Excalidraw for SSR compatibility
@@ -219,6 +220,7 @@ export default function ExcalidrawBoard() {
         onRenameBoard={renameBoard}
         onDuplicateBoard={duplicateBoard}
         onDeleteBoard={deleteBoard}
+        onCleanDuplicates={cleanDuplicates}
         onExportBoard={handleExportBoard}
         onImportBoard={handleImportBoard}
       />

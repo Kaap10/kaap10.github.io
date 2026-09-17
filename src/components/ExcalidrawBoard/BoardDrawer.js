@@ -11,7 +11,8 @@ import {
   Check, 
   PenTool, 
   Layers, 
-  Calendar
+  Calendar,
+  Sparkles
 } from 'lucide-react';
 import styles from './styles.module.css';
 
@@ -25,6 +26,7 @@ export default function BoardDrawer({
   onRenameBoard,
   onDuplicateBoard,
   onDeleteBoard,
+  onCleanDuplicates,
   onExportBoard,
   onImportBoard,
 }) {
@@ -98,6 +100,19 @@ export default function BoardDrawer({
     e.target.value = ''; // Reset input
   };
 
+  const handleCleanDuplicates = async () => {
+    if (onCleanDuplicates) {
+      const removedCount = await onCleanDuplicates();
+      if (removedCount > 0) {
+        setImportStatus({ type: 'success', text: `Cleaned ${removedCount} duplicate whiteboard${removedCount > 1 ? 's' : ''}!` });
+        setTimeout(() => setImportStatus(null), 3000);
+      } else {
+        setImportStatus({ type: 'success', text: 'All whiteboards are clean and unique.' });
+        setTimeout(() => setImportStatus(null), 2500);
+      }
+    }
+  };
+
   return (
     <div className={styles.drawerOverlay} onClick={onClose}>
       <div className={styles.drawerModal} onClick={(e) => e.stopPropagation()}>
@@ -110,6 +125,17 @@ export default function BoardDrawer({
           </div>
 
           <div className={styles.drawerHeaderRight}>
+            {/* Clean Duplicates Button */}
+            <button
+              type="button"
+              className={styles.importTopBtn}
+              onClick={handleCleanDuplicates}
+              title="Clean redundant duplicate whiteboards"
+            >
+              <Sparkles size={13} style={{ color: '#fbbf24' }} />
+              <span>Clean Duplicates</span>
+            </button>
+
             {/* Hidden File Input for Import */}
             <input
               ref={fileInputRef}
