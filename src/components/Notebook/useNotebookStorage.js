@@ -350,13 +350,15 @@ export function useNotebookStorage(passedUser = null) {
   // Create Notebook
   const createNotebook = useCallback(
     async ({ title, description, color }) => {
+      const user = activeUserRef.current;
       const newNb = {
         id: generateUUID(),
         title: title?.trim() || 'Untitled Notebook',
         description: description?.trim() || '',
         color: color || '#FF4D4F',
         created_at: new Date().toISOString(),
-        user_id: activeUserRef.current?.id || null,
+        updated_at: new Date().toISOString(),
+        user_id: user?.id || null,
       };
 
       setNotebooks((prev) => {
@@ -369,13 +371,18 @@ export function useNotebookStorage(passedUser = null) {
 
       // Cloud sync
       const client = getSupabase();
-      if (client && activeUserRef.current) {
+      if (client && user?.id) {
         setSyncStatus('saving');
         try {
-          await client.from('notebooks').insert([newNb]);
-          setSyncStatus('synced');
+          const { error } = await client.from('notebooks').upsert([newNb]);
+          if (error) {
+            console.warn('Cloud upsert notebook failed:', error);
+            setSyncStatus('offline');
+          } else {
+            setSyncStatus('synced');
+          }
         } catch (e) {
-          console.warn('Cloud insert notebook failed:', e);
+          console.warn('Cloud insert notebook exception:', e);
           setSyncStatus('offline');
         }
       }
@@ -501,21 +508,27 @@ export function useNotebookStorage(passedUser = null) {
 
       // Debounced Cloud Sync
       const client = getSupabase();
-      if (client && activeUserRef.current) {
+      const user = activeUserRef.current;
+      if (client && user?.id) {
         setSyncStatus('saving');
         if (pendingSaveTimeouts.current[id]) {
           clearTimeout(pendingSaveTimeouts.current[id]);
         }
         pendingSaveTimeouts.current[id] = setTimeout(async () => {
           try {
-            await client.from('notes').update(payload).eq('id', id);
-            setSyncStatus('synced');
+            const { error } = await client.from('notes').update(payload).eq('id', id);
+            if (error) {
+              console.warn('Cloud update note error:', error);
+              setSyncStatus('offline');
+            } else {
+              setSyncStatus('synced');
+            }
           } catch (e) {
             console.warn('Cloud update note failed:', e);
             setSyncStatus('offline');
           }
           delete pendingSaveTimeouts.current[id];
-        }, 400);
+        }, 350);
       }
     },
     [persistToLocal]
