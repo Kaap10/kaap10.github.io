@@ -5,7 +5,6 @@ import { useBoardStorage } from './useBoardStorage';
 import BoardHeader from './BoardHeader';
 import BoardDrawer from './BoardDrawer';
 import AuthModal from '../Common/AuthModal';
-import { LogIn, User } from 'lucide-react';
 import styles from './styles.module.css';
 
 export default function ExcalidrawBoard() {
@@ -200,7 +199,7 @@ export default function ExcalidrawBoard() {
 
   return (
     <div className={styles.boardWrapper}>
-      {/* Floating Header Toolbar */}
+      {/* Top Header Bar */}
       <BoardHeader
         boards={boards}
         activeBoardMeta={activeBoardMeta}
@@ -210,35 +209,8 @@ export default function ExcalidrawBoard() {
         onCreateBoard={handleCreateBoard}
         onRenameBoard={renameBoard}
         onOpenDrawer={() => setIsDrawerOpen(true)}
+        onOpenAuthModal={() => setIsAuthModalOpen(true)}
       />
-
-      {/* Top-Right Floating Auth / Cloud Sync Status Button */}
-      <div className={styles.topRightAuthWidget}>
-        <button
-          type="button"
-          className={`${styles.topRightAuthBtn} ${currentUser ? styles.topRightAuthConnected : ''}`}
-          onClick={() => setIsAuthModalOpen(true)}
-          title={currentUser ? `Logged in as ${currentUser.email} (Click for Account)` : 'Sign in to sync whiteboards across devices'}
-        >
-          {currentUser ? (
-            <>
-              <span className={styles.topRightUserAvatar}>
-                {currentUser.user_metadata?.full_name
-                  ? currentUser.user_metadata.full_name.charAt(0).toUpperCase()
-                  : currentUser.email?.charAt(0).toUpperCase() || 'U'}
-              </span>
-              <span className={styles.topRightUserText}>
-                {currentUser.user_metadata?.full_name || currentUser.email?.split('@')[0] || 'Account'}
-              </span>
-            </>
-          ) : (
-            <>
-              <LogIn size={13} style={{ color: 'var(--vg-accent, #FF4D4F)' }} />
-              <span className={styles.topRightUserText}>Sign In</span>
-            </>
-          )}
-        </button>
-      </div>
 
       {/* Cross-Device Auth & Account Modal */}
       <AuthModal
@@ -264,20 +236,22 @@ export default function ExcalidrawBoard() {
       />
 
       {/* Excalidraw Vector Canvas */}
-      <ExcalidrawComp
-        excalidrawAPI={(api) => setExcalidrawAPI(api)}
-        theme={colorMode === 'dark' ? 'dark' : 'light'}
-        initialData={initialData}
-        onChange={handleChange}
-        UIOptions={{
-          canvasActions: {
-            loadScene: true,
-            saveToActiveFile: true,
-            export: { saveFileToDisk: true },
-            saveAsImage: true,
-          },
-        }}
-      />
+      <div className={styles.canvasContainer}>
+        <ExcalidrawComp
+          excalidrawAPI={(api) => setExcalidrawAPI(api)}
+          theme={colorMode === 'dark' ? 'dark' : 'light'}
+          initialData={initialData}
+          onChange={handleChange}
+          UIOptions={{
+            canvasActions: {
+              loadScene: true,
+              saveToActiveFile: true,
+              export: { saveFileToDisk: true },
+              saveAsImage: true,
+            },
+          }}
+        />
+      </div>
     </div>
   );
 }

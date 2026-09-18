@@ -140,8 +140,10 @@ const config = {
       },
       navbar: {
         title: 'Home',
+        title: '',
         hideOnScroll: false,
         items: [
+          { to: '/portfolio', label: 'Home', position: 'left' },
           { to: '/opensource', label: 'Open Source', position: 'left' },
           { to: '/projects', label: 'Projects', position: 'left' },
           { to: '/blogs/intro', label: 'Blogs', position: 'left' },

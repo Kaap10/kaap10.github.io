@@ -138,7 +138,7 @@
 .paletteFooter {
   padding: 0.65rem 1.25rem;
   border-top: 1px solid var(--vg-border, rgba(255, 255, 255, 0.08));
-  background: var(--vg-bg, #1E1E1E);
+  background: var(--vg-bg, #121216);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -264,7 +264,7 @@
   justify-content: space-between;
   padding: 0.6rem 1rem;
   border-top: 1px solid var(--vg-border, rgba(255, 255, 255, 0.08));
-  background: var(--vg-bg, #1E1E1E);
+  background: var(--vg-bg, #121216);
   font-size: 0.75rem;
   color: var(--vg-text-muted, #A6A6AC);
 }

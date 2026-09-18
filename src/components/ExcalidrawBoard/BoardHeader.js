@@ -79,181 +79,182 @@ export default function BoardHeader({
   };
 
   return (
-    <header className={styles.boardHeaderFloating}>
-      {/* 1. Hub Navigation */}
-      <Link to="/workspace" className={styles.hubLink} title="Return to DevWorkspace Hub">
-        <Layers size={14} style={{ color: 'var(--vg-accent, #FF4D4F)' }} />
-        <span className={styles.hubLinkText}>Workspace</span>
-      </Link>
+    <header className={styles.boardHeaderBar}>
+      <div className={styles.boardHeaderLeft}>
+        {/* 1. Hub Navigation */}
+        <Link to="/workspace" className={styles.hubLink} title="Return to DevWorkspace Hub">
+          <Layers size={14} style={{ color: 'var(--vg-accent, #FF4D4F)' }} />
+          <span className={styles.hubLinkText}>Workspace</span>
+        </Link>
 
-      <span className={styles.headerDivider} />
+        <span className={styles.headerDivider} />
 
-      {/* 2. Board Selector Dropdown */}
-      <div className={styles.boardDropdownWrapper} ref={dropdownRef}>
-        {isEditingTitle ? (
-          <div className={styles.inlineRenameForm}>
-            <input
-              ref={inputRef}
-              type="text"
-              className={styles.inlineRenameInput}
-              value={tempTitle}
-              onChange={(e) => setTempTitle(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') handleTitleSubmit();
-                if (e.key === 'Escape') setIsEditingTitle(false);
-              }}
-              maxLength={40}
-            />
-            <button className={styles.inlineRenameBtn} onClick={handleTitleSubmit} title="Save">
-              <Check size={12} />
-            </button>
-            <button className={styles.inlineRenameBtn} onClick={() => setIsEditingTitle(false)} title="Cancel">
-              <X size={12} />
-            </button>
-          </div>
-        ) : (
-          <button
-            type="button"
-            className={styles.activeBoardPill}
-            onClick={() => setDropdownOpen((prev) => !prev)}
-            title="Click to switch or manage whiteboards"
-          >
-            {/* Sync Dot Status indicator inside pill */}
-            {syncStatus === 'saving' ? (
-              <RefreshCw size={10} className={styles.spinIcon} title="Saving changes..." />
-            ) : syncStatus === 'synced' ? (
-              <Cloud size={11} style={{ color: '#4ade80' }} title="Synced to Supabase Cloud" />
-            ) : (
-              <span className={styles.savedDot} title="Saved in local browser cache" />
-            )}
-
-            <span className={styles.activeBoardTitle}>
-              {activeBoardMeta?.title || 'Main Whiteboard'}
-            </span>
-
-            <ChevronDown 
-              size={12} 
-              className={`${styles.dropdownChevron} ${dropdownOpen ? styles.dropdownChevronOpen : ''}`} 
-            />
-          </button>
-        )}
-
-        {/* Dropdown Menu */}
-        {dropdownOpen && (
-          <div className={styles.boardDropdownMenu}>
-            <div className={styles.dropdownHeader}>
-              <span>Your Whiteboards ({boards.length})</span>
-              <button
-                type="button"
-                className={styles.dropdownManageBtn}
-                onClick={() => {
-                  setDropdownOpen(false);
-                  onOpenDrawer();
+        {/* 2. Board Selector Dropdown */}
+        <div className={styles.boardDropdownWrapper} ref={dropdownRef}>
+          {isEditingTitle ? (
+            <div className={styles.inlineRenameForm}>
+              <input
+                ref={inputRef}
+                type="text"
+                className={styles.inlineRenameInput}
+                value={tempTitle}
+                onChange={(e) => setTempTitle(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') handleTitleSubmit();
+                  if (e.key === 'Escape') setIsEditingTitle(false);
                 }}
-              >
-                <LayoutGrid size={11} />
-                <span>All Boards</span>
+                maxLength={40}
+              />
+              <button className={styles.inlineRenameBtn} onClick={handleTitleSubmit} title="Save">
+                <Check size={12} />
+              </button>
+              <button className={styles.inlineRenameBtn} onClick={() => setIsEditingTitle(false)} title="Cancel">
+                <X size={12} />
               </button>
             </div>
+          ) : (
+            <button
+              type="button"
+              className={styles.activeBoardPill}
+              onClick={() => setDropdownOpen((prev) => !prev)}
+              title="Click to switch or manage whiteboards"
+            >
+              {/* Sync Dot Status indicator inside pill */}
+              {syncStatus === 'saving' ? (
+                <RefreshCw size={10} className={styles.spinIcon} title="Saving changes..." />
+              ) : syncStatus === 'synced' ? (
+                <Cloud size={11} style={{ color: '#4ade80' }} title="Synced to Supabase Cloud" />
+              ) : (
+                <span className={styles.savedDot} title="Saved in local browser cache" />
+              )}
 
-            <div className={styles.dropdownList}>
-              {boards.map((b) => {
-                const isActive = b.id === activeBoardMeta?.id;
-                return (
-                  <button
-                    key={b.id}
-                    type="button"
-                    className={`${styles.dropdownItem} ${isActive ? styles.dropdownItemActive : ''}`}
-                    onClick={() => {
-                      onSwitchBoard(b.id);
-                      setDropdownOpen(false);
-                    }}
-                  >
-                    <div className={styles.dropdownItemLeft}>
-                      <span className={styles.dropdownItemTitle}>{b.title}</span>
-                      <span className={styles.dropdownItemMeta}>
-                        {b.elementCount || 0} items • {new Date(b.updatedAt).toLocaleDateString([], { month: 'short', day: 'numeric' })}
-                      </span>
-                    </div>
-                    {isActive && <Check size={13} className={styles.activeCheckIcon} />}
-                  </button>
-                );
-              })}
-            </div>
+              <span className={styles.activeBoardTitle}>
+                {activeBoardMeta?.title || 'Main Whiteboard'}
+              </span>
 
-            {isQuickCreateOpen ? (
-              <form className={styles.dropdownCreateForm} onSubmit={handleQuickCreate}>
-                <input
-                  type="text"
-                  placeholder="Board name (e.g. DSA, System Design)..."
-                  className={styles.dropdownCreateInput}
-                  value={newBoardName}
-                  onChange={(e) => setNewBoardName(e.target.value)}
-                  autoFocus
-                />
-                <div className={styles.dropdownCreateActions}>
-                  <button type="submit" className={styles.dropdownCreateSubmit}>Create</button>
-                  <button type="button" className={styles.dropdownCreateCancel} onClick={() => setIsQuickCreateOpen(false)}>Cancel</button>
-                </div>
-              </form>
-            ) : (
-              <div className={styles.dropdownBottomActions}>
+              <ChevronDown 
+                size={12} 
+                className={`${styles.dropdownChevron} ${dropdownOpen ? styles.dropdownChevronOpen : ''}`} 
+              />
+            </button>
+          )}
+
+          {/* Dropdown Menu */}
+          {dropdownOpen && (
+            <div className={styles.boardDropdownMenu}>
+              <div className={styles.dropdownHeader}>
+                <span>Your Whiteboards ({boards.length})</span>
                 <button
                   type="button"
-                  className={styles.dropdownNewBtn}
-                  onClick={() => setIsQuickCreateOpen(true)}
-                >
-                  <Plus size={13} />
-                  <span>New Board</span>
-                </button>
-                <button
-                  type="button"
-                  className={styles.dropdownRenameBtn}
+                  className={styles.dropdownManageBtn}
                   onClick={() => {
                     setDropdownOpen(false);
-                    setIsEditingTitle(true);
+                    onOpenDrawer();
                   }}
-                  title="Rename active board"
                 >
-                  <Edit3 size={12} />
-                  <span>Rename</span>
+                  <LayoutGrid size={11} />
+                  <span>All Boards</span>
                 </button>
               </div>
-            )}
-          </div>
-        )}
+
+              <div className={styles.dropdownList}>
+                {boards.map((b) => {
+                  const isActive = b.id === activeBoardMeta?.id;
+                  return (
+                    <button
+                      key={b.id}
+                      type="button"
+                      className={`${styles.dropdownItem} ${isActive ? styles.dropdownItemActive : ''}`}
+                      onClick={() => {
+                        onSwitchBoard(b.id);
+                        setDropdownOpen(false);
+                      }}
+                    >
+                      <div className={styles.dropdownItemLeft}>
+                        <span className={styles.dropdownItemTitle}>{b.title}</span>
+                        <span className={styles.dropdownItemMeta}>
+                          {b.elementCount || 0} items • {new Date(b.updatedAt).toLocaleDateString([], { month: 'short', day: 'numeric' })}
+                        </span>
+                      </div>
+                      {isActive && <Check size={13} className={styles.activeCheckIcon} />}
+                    </button>
+                  );
+                })}
+              </div>
+
+              {isQuickCreateOpen ? (
+                <form className={styles.dropdownCreateForm} onSubmit={handleQuickCreate}>
+                  <input
+                    type="text"
+                    placeholder="Board name (e.g. DSA, System Design)..."
+                    className={styles.dropdownCreateInput}
+                    value={newBoardName}
+                    onChange={(e) => setNewBoardName(e.target.value)}
+                    autoFocus
+                  />
+                  <div className={styles.dropdownCreateActions}>
+                    <button type="submit" className={styles.dropdownCreateSubmit}>Create</button>
+                    <button type="button" className={styles.dropdownCreateCancel} onClick={() => setIsQuickCreateOpen(false)}>Cancel</button>
+                  </div>
+                </form>
+              ) : (
+                <div className={styles.dropdownBottomActions}>
+                  <button
+                    type="button"
+                    className={styles.dropdownNewBtn}
+                    onClick={() => setIsQuickCreateOpen(true)}
+                  >
+                    <Plus size={13} />
+                    <span>New Board</span>
+                  </button>
+                  <button
+                    type="button"
+                    className={styles.dropdownRenameBtn}
+                    onClick={() => {
+                      setDropdownOpen(false);
+                      setIsEditingTitle(true);
+                    }}
+                    title="Rename active board"
+                  >
+                    <Edit3 size={12} />
+                    <span>Rename</span>
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+
+        <span className={styles.headerDivider} />
+
+        {/* 3. Action Buttons */}
+        <button
+          type="button"
+          className={styles.quickActionBtn}
+          onClick={() => onCreateBoard('Untitled Whiteboard')}
+          title="Create new whiteboard"
+        >
+          <Plus size={13} />
+          <span className={styles.btnText}>New</span>
+        </button>
+
+        <button
+          type="button"
+          className={styles.quickActionBtn}
+          onClick={onOpenDrawer}
+          title="Open Whiteboard Manager"
+        >
+          <FolderOpen size={13} />
+          <span className={styles.btnText}>Boards</span>
+        </button>
       </div>
 
-      <span className={styles.headerDivider} />
-
-      {/* 3. Action Buttons */}
-      <button
-        type="button"
-        className={styles.quickActionBtn}
-        onClick={() => onCreateBoard('Untitled Whiteboard')}
-        title="Create new whiteboard"
-      >
-        <Plus size={13} />
-        <span>New</span>
-      </button>
-
-      <button
-        type="button"
-        className={styles.quickActionBtn}
-        onClick={onOpenDrawer}
-        title="Open Whiteboard Manager"
-      >
-        <FolderOpen size={13} />
-        <span>Boards</span>
-      </button>
-
       {/* 4. Auth / Cloud Sync Status Button */}
-      {onOpenAuthModal && (
-        <>
-          <span className={styles.headerDivider} />
+      <div className={styles.boardHeaderRight}>
+        {onOpenAuthModal && (
           <button
             type="button"
-            className={`${styles.quickActionBtn} ${currentUser ? styles.authPillConnected : ''}`}
+            className={`${styles.authHeaderBtn} ${currentUser ? styles.authHeaderConnected : ''}`}
             onClick={onOpenAuthModal}
             title={currentUser ? `Logged in as ${currentUser.email} (Click for Account)` : 'Sign in to sync whiteboards across devices'}
           >
@@ -264,7 +265,9 @@ export default function BoardHeader({
                     ? currentUser.user_metadata.full_name.charAt(0).toUpperCase()
                     : currentUser.email?.charAt(0).toUpperCase() || 'U'}
                 </span>
-                <span className={styles.authBtnText}>Account</span>
+                <span className={styles.authBtnText}>
+                  {currentUser.user_metadata?.full_name || currentUser.email?.split('@')[0] || 'Account'}
+                </span>
               </>
             ) : (
               <>
@@ -273,8 +276,8 @@ export default function BoardHeader({
               </>
             )}
           </button>
-        </>
-      )}
+        )}
+      </div>
     </header>
   );
 }

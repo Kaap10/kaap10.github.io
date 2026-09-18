@@ -3,8 +3,6 @@ import Link from '@docusaurus/Link';
 import Layout from '@theme/Layout';
 import { 
   ArrowRight, 
-  Sparkles, 
-  FileText, 
   ArrowUpRight, 
   Layers, 
   BookOpen, 
@@ -14,12 +12,14 @@ import {
   GitPullRequest
 } from 'lucide-react';
 import styles from './portfolio.module.css';
+import ParticleCanvas from '@site/src/components/ParticleCanvas';
 
 export default function PortfolioPage() {
   return (
     <Layout
       title="Portfolio"
       description="Portfolio of Vardhman Gupta — AI Engineer."
+      noFooter
     >
       <main className={styles.pageContainer}>
         {/* Ambient Subtle Glow & Grid Backdrop */}
@@ -27,6 +27,7 @@ export default function PortfolioPage() {
           <div className={styles.glowOrb1} />
           <div className={styles.glowOrb2} />
           <div className={styles.gridOverlay} />
+          <ParticleCanvas />
         </div>
 
         <div className={styles.contentWrapper}>
@@ -41,47 +42,40 @@ export default function PortfolioPage() {
             </p>
 
             {/* Action Buttons */}
-            <div className={styles.heroActions}>
-              <Link to="/projects" className={styles.primaryHeroLink}>
-                <Code2 size={15} />
-                <span>Explore Projects</span>
-                <ArrowRight size={15} />
-              </Link>
+            <div className={styles.heroActionsContainer}>
+              <div className={styles.heroActionRow}>
+                <Link to="/opensource" className={styles.primaryHeroLink}>
+                  <GitPullRequest size={15} />
+                  <span>Open Source</span>
+                  <ArrowRight size={15} />
+                </Link>
 
-              <Link to="/workspace" className={styles.heroLink}>
-                <Layers size={15} style={{ color: 'var(--vg-accent, #FF4D4F)' }} />
-                <span>Explore DevWorkspace</span>
-                <ArrowRight size={14} />
-              </Link>
+                <Link to="/projects" className={styles.heroLink}>
+                  <Code2 size={15} style={{ color: '#38BDF8' }} />
+                  <span>Projects</span>
+                  <ArrowRight size={14} />
+                </Link>
+              </div>
 
-              <Link to="/blogs/intro" className={styles.heroLink}>
-                <BookOpen size={15} style={{ color: '#3B82F6' }} />
-                <span>Explore Blogs</span>
-                <ArrowRight size={14} />
-              </Link>
+              <div className={styles.heroActionRow}>
+                <Link to="/" className={styles.heroLink}>
+                  <Terminal size={15} style={{ color: '#22C55E' }} />
+                  <span>Terminal</span>
+                  <ArrowRight size={14} />
+                </Link>
 
-              <Link to="/" className={styles.heroLink}>
-                <Terminal size={15} style={{ color: '#22C55E' }} />
-                <span>Explore Terminal</span>
-                <ArrowRight size={14} />
-              </Link>
+                <Link to="/blogs/intro" className={styles.heroLink}>
+                  <BookOpen size={15} style={{ color: '#3B82F6' }} />
+                  <span>Blogs</span>
+                  <ArrowRight size={14} />
+                </Link>
 
-              <Link to="/tools" className={styles.heroLink}>
-                <Sparkles size={15} style={{ color: '#FAAD14' }} />
-                <span>Explore Tools</span>
-                <ArrowRight size={14} />
-              </Link>
-
-              <a 
-                href="#" 
-                onClick={(e) => e.preventDefault()}
-                className={styles.heroLink}
-                title="Resume (Connecting soon)"
-              >
-                <FileText size={15} />
-                <span>Resume</span>
-                <ArrowUpRight size={14} />
-              </a>
+                <Link to="/workspace" className={styles.heroLink}>
+                  <Layers size={15} style={{ color: 'var(--vg-accent, #FF4D4F)' }} />
+                  <span>DevWorkspace</span>
+                  <ArrowRight size={14} />
+                </Link>
+              </div>
             </div>
 
             {/* Command Palette Exploration Hint */}

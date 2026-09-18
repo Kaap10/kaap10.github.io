@@ -136,7 +136,7 @@ function NotebookContent() {
   // If not logged in and auth finished loading, show login screen
   if (!user && !authLoading) {
     return (
-      <div style={{ minHeight: '100vh', background: 'var(--vg-bg, #1E1E1E)', padding: '2rem 1rem' }}>
+      <div style={{ minHeight: '100vh', background: 'var(--vg-bg, #121216)', padding: '2rem 1rem' }}>
         <AuthView />
       </div>
     );

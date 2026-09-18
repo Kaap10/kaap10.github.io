@@ -1,21 +1,19 @@
 .pageContainer {
   display: flex;
+  flex-direction: column;
   justify-content: center;
-  padding: 5.5rem 1.5rem 5rem;
-  background-color: var(--vg-bg);
-  min-height: calc(100vh - var(--ifm-navbar-height));
+  align-items: center;
+  min-height: 100vh;
+  padding: 5.5rem 1.5rem 4rem;
+  background-color: var(--vg-bg, #121216);
   position: relative;
   overflow: hidden;
+  box-sizing: border-box;
 }
 
 .bgGlowWrapper {
   position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100%;
-  max-width: 1200px;
-  height: 400px;
+  inset: 0;
   pointer-events: none;
   z-index: 0;
   overflow: hidden;
@@ -23,45 +21,132 @@
 
 .glowOrb {
   position: absolute;
-  top: -150px;
+  top: 50%;
   left: 50%;
-  transform: translateX(-50%);
-  width: 600px;
-  height: 350px;
-  background: radial-gradient(circle, rgba(255, 77, 79, 0.08) 0%, rgba(255, 77, 79, 0) 70%);
-  filter: blur(50px);
+  transform: translate(-50%, -50%);
+  width: 700px;
+  height: 450px;
+  background: radial-gradient(circle, rgba(255, 77, 79, 0.09) 0%, rgba(255, 77, 79, 0) 70%);
+  filter: blur(60px);
 }
 
 .contentWrapper {
-  max-width: 860px;
+  max-width: 920px;
   width: 100%;
   position: relative;
   z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: auto 0;
+  padding-top: 1.5rem;
 }
 
 /* Header */
 .pageHeader {
-  margin-bottom: 2.5rem;
+  margin-bottom: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  align-items: center;
+  text-align: center;
+  gap: 0.75rem;
+  width: 100%;
 }
 
 .pageTitle {
-  font-size: 2.6rem;
+  font-size: 3rem;
   font-weight: 700;
   letter-spacing: -0.04em;
   color: var(--vg-text, #F5F5F7);
   margin: 0;
   line-height: 1.15;
+  text-align: center;
 }
 
 .pageSubtitle {
-  font-size: 1.02rem;
+  font-size: 1.08rem;
   line-height: 1.6;
   color: var(--vg-text-muted, #A6A6AC);
-  margin: 0;
+  margin: 0 auto;
   max-width: 680px;
+  text-align: center;
+}
+
+.buttonsContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 2rem;
+  width: 100%;
+}
+
+.buttonRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.85rem;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.headerActions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+
+.headerLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1.1rem;
+  border-radius: var(--vg-radius-sm, 6px);
+  background-color: var(--vg-surface, #2E2E31);
+  border: 1px solid var(--vg-border, rgba(255, 255, 255, 0.08));
+  background-color: #1C1C22;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--vg-text, #F5F5F7) !important;
+  font-size: 0.86rem;
+  font-weight: 500;
+  text-decoration: none !important;
+  transition: all var(--vg-transition-fast, 0.15s ease);
+}
+
+.headerLink:hover {
+  background-color: var(--vg-surface-strong, #38383C);
+  border-color: var(--vg-border-hover, rgba(255, 255, 255, 0.16));
+  background-color: #26262E;
+  border-color: rgba(255, 255, 255, 0.18);
+  transform: translateY(-2px);
+  color: #ffffff !important;
+}
+
+.ownerBadge {
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0.14rem 0.55rem;
+  border-radius: 4px;
+  background: rgba(255, 77, 79, 0.18);
+  color: #ffffff;
+  border: 1px solid rgba(255, 77, 79, 0.35);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.contributorBadge {
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0.14rem 0.55rem;
+  border-radius: 4px;
+  background: rgba(59, 130, 246, 0.12);
+  color: #93C5FD;
+  border: 1px solid rgba(59, 130, 246, 0.25);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
 }
 
 /* List & Cards */

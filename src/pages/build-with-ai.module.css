@@ -5,7 +5,7 @@
 
 .pageContainer {
   min-height: 100vh;
-  background-color: var(--vg-bg, #1E1E1E);
+  background-color: var(--vg-bg, #121216);
   color: var(--vg-text, #F5F5F7);
   position: relative;
   overflow-x: hidden;

@@ -1,17 +1,20 @@
 import React from 'react';
 import Layout from '@theme/Layout';
+import Head from '@docusaurus/Head';
 import BrowserOnly from '@docusaurus/BrowserOnly';
 import TrackerApp from '@site/src/components/Tracker/TrackerApp';
 
 export default function WorkspaceTrackerPage() {
   return (
     <Layout
-      title="Tracker"
       description="Private productivity dashboard with tasks, milestones, resources, and progress analytics."
       wrapperClassName="tracker-wrapper"
       noNavbar
       noFooter
     >
+      <Head>
+        <title>Tracker | DevWorkspace</title>
+      </Head>
       <BrowserOnly
         fallback={
           <div
