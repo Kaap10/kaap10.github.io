@@ -1,11 +1,14 @@
 .pageContainer {
   display: flex;
+  flex-direction: column;
   justify-content: center;
-  padding: 5.5rem 1.5rem 6rem;
-  background-color: var(--vg-bg, #121216);
+  align-items: center;
   min-height: 100vh;
+  padding: 5.5rem 1.5rem 4rem;
+  background-color: var(--vg-bg, #121216);
   position: relative;
   overflow: hidden;
+  box-sizing: border-box;
 }
 
 .contentWrapper {
@@ -13,6 +16,8 @@
   width: 100%;
   position: relative;
   z-index: 1;
+  margin: auto 0;
+  padding-top: 1.5rem;
 }
 
 /* ==========================================================================
@@ -88,7 +93,7 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  padding: 1.5rem 0 0.25rem;
+  padding: 0 0 0.25rem;
 }
 
 .heroTitle {
