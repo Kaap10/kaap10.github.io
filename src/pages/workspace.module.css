@@ -470,18 +470,48 @@
 }
 
 @media (max-width: 768px) {
-  .pageTitle {
-    font-size: 2.1rem;
+  .pageContainer {
+    padding: 4rem 1rem 3rem;
   }
+
+  .pageTitle {
+    font-size: clamp(1.9rem, 7vw, 2.3rem);
+  }
+
+  .pageSubtitle {
+    font-size: 0.95rem;
+  }
+
   .toolsGrid {
     grid-template-columns: 1fr;
+    gap: 1rem;
   }
+
   .toolCard {
-    padding: 1.5rem;
+    padding: 1.25rem;
     min-height: auto;
   }
+
   .shortcutsGrid {
     grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+
+  .suiteStatsBar {
+    gap: 0.45rem;
+  }
+
+  .statPill {
+    font-size: 0.72rem;
+    padding: 0.25rem 0.55rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .headerTopRow {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
   }
 }
 

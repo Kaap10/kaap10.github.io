@@ -15,6 +15,28 @@ import styles from './portfolio.module.css';
 import ParticleCanvas from '@site/src/components/ParticleCanvas';
 
 export default function PortfolioPage() {
+  const [headerWidth, setHeaderWidth] = React.useState(null);
+
+  React.useEffect(() => {
+    const syncHeaderWidth = () => {
+      const navbar = document.querySelector('.navbar');
+      if (navbar) {
+        const width = navbar.getBoundingClientRect().width;
+        if (width > 0) {
+          setHeaderWidth(Math.round(width));
+        }
+      }
+    };
+
+    syncHeaderWidth();
+    const timer = setTimeout(syncHeaderWidth, 120);
+    window.addEventListener('resize', syncHeaderWidth);
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('resize', syncHeaderWidth);
+    };
+  }, []);
+
   return (
     <Layout
       title="Portfolio"
@@ -94,7 +116,10 @@ export default function PortfolioPage() {
           </section>
 
           {/* Recent Work Section */}
-          <section className={styles.recentWorkSection}>
+          <section 
+            className={styles.recentWorkSection}
+            style={headerWidth ? { maxWidth: `min(${headerWidth}px, 100%)` } : undefined}
+          >
             <div className={styles.sectionHeader}>
               <div className={styles.sectionTitleWrap}>
                 <Clock size={16} style={{ color: 'var(--vg-accent, #FF4D4F)' }} />

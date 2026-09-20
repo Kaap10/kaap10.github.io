@@ -13,10 +13,10 @@ import {
   ChevronDown,
   ChevronUp,
   CheckCircle2,
-  Cpu,
-  Lock,
+  Server,
   Activity,
-  Zap,
+  Cpu,
+  Boxes,
   MessageSquareQuote
 } from 'lucide-react';
 import styles from './dynavec.module.css';
@@ -29,150 +29,129 @@ const IconGithub = ({ size = 15 }) => (
   </svg>
 );
 
-const PYRIT_CARD = {
-  id: 'pyrit',
-  index: '02',
-  roleTag: 'Contributor · Microsoft AI Red Team',
-  icon: Zap,
-  title: 'microsoft/PyRIT',
-  headline: 'Greedy Coordinate Gradient (GCG) Adversarial Jailbreak Optimization Engine',
+const LAYER5_CARD = {
+  id: 'layer5io',
+  index: '03',
+  roleTag: 'Contributor · CNCF Ecosystem',
+  icon: Boxes,
+  title: 'layer5io / layer5-academy',
+  headline: 'Cloud Native, Kubernetes, Containerization & Observability Learning Platform',
   cardDescription:
-    'Refactored the core Greedy Coordinate Gradient (GCG) adversarial jailbreak attack engine in Microsoft\'s Python Risk Identification Tool (PyRIT) into typed, deterministic, and VRAM-bounded components.',
-  license: 'Microsoft AI Red Team',
-  techStack: ['Python', 'PyTorch', 'CUDA Memory Management', 'Transformers', 'GCG Adversarial Attacks', 'Dataclasses', 'pytest', 'Ruff', 'ty'],
+    'Modernized Kubernetes, Containerization (Podman/Docker), and Observability (Prometheus/Grafana) interactive curriculum across 4 pull requests.',
+  license: '4 PRs Authored',
+  techStack: ['Kubernetes', 'Docker', 'Podman', 'Prometheus', 'PromQL', 'Grafana', 'Meshery', 'Hugo', 'Markdown', 'GitHub Actions'],
   highlights: [
     {
-      label: 'Candidate Proposal Phase (PR #2671, Issue #2665)',
-      text: 'Extracted GCGCandidateProposer with immutable CandidateProposalBatch, preserving shape-grouping invariants and cross-device gradient tensor migration.'
+      label: 'Observability Lab Decoupling (PR #280, Issue #279)',
+      text: 'Pruned fragile systemd Linux dependencies, decoupled Node Exporter, and aligned Grafana metric builder UI with PromQL up query.'
     },
     {
-      label: 'VRAM-Bounded Evaluation Phase (PR #2700, Issue #2665)',
-      text: 'Engineered prompt-level tensor cleanup (del logits, ids) and sequential candidate evaluation to strictly eliminate GPU Out-Of-Memory spikes.'
+      label: 'KinD Multi-Node Cluster Lab (PR #278, Issue #277)',
+      text: 'Streamlined multi-node Kubernetes lab instructions and eliminated legacy pinned KinD version bottlenecks.'
     },
     {
-      label: 'Progressive Schedule Controller (PR #2720, Issue #2665)',
-      text: 'Modeled state transitions and control-weight ratcheting, guarding against exact-budget boundary edge cases and dangling inf loss resets.'
+      label: 'Podman Prerequisites & Meshery Docs (PR #276, #274, Issues #275, #273)',
+      text: 'Replaced failing 404 binary download commands with upstream docs, and repaired broken canonical playground hyperlinks.'
     }
   ],
-  github: 'https://github.com/microsoft/PyRIT',
-  prsUrl: 'https://github.com/microsoft/PyRIT/pulls?q=is%3Apr+author%3AKaap10',
-  tags: ['Open Source', 'Microsoft', 'AI Safety', 'PyTorch', 'Red Teaming', 'Adversarial AI'],
+  github: 'https://github.com/layer5io/layer5-academy',
+  prsUrl: 'https://github.com/layer5io/layer5-academy/pulls?q=is%3Apr+author%3AKaap10',
+  tags: ['Open Source', 'CNCF', 'Layer5', 'Kubernetes', 'Prometheus', 'Grafana', 'Podman'],
   details: {
     description:
-      'Microsoft PyRIT (Python Risk Identification Tool) is Microsoft\'s open-source framework for AI Red Teams and security engineers to assess the robustness and safety boundaries of foundation models.\n\nUnder umbrella issue #2665, decoupled the monolithic 2,000+ LOC Greedy Coordinate Gradient (GCG) attack loop into modular, testable, and memory-bounded phases. Worked directly with Microsoft maintainer Roman Lutz (@romanlutz) to ensure zero regression across the 309+ GCG test suite.\n\nArchitected strict GPU VRAM memory management with prompt-level tensor deallocation, cross-device loss aggregation on main_device, and state-machine-driven schedule controllers. Authored 45+ deterministic unit tests with 100% pass rates, zero typing errors (ty), and zero linter warnings (Ruff).',
+      'Layer5 Academy is the open-source learning platform for Cloud Native, Kubernetes, Service Mesh, and Observability under the Layer5 and CNCF ecosystems.\n\nAs an open-source contributor, authored and resolved 4 end-to-end GitHub issues spanning interactive labs for Containerization (Podman), Kubernetes Clusters (KinD), and Cloud Observability (Prometheus & Grafana).\n\nEliminated brittle platform-specific setup scripts, migrating prerequisites to official vendor documentation for seamless Linux, macOS, and Windows execution. Received direct review, praise, and approvals from Layer5 Founder & CNCF Member Lee Calcote and project maintainers.',
     allTech: [
-      'Python 3.11+',
-      'PyTorch Tensors & CUDA',
-      'Transformers Tokenization',
-      'Device Placement & Memory Deallocation',
-      'Dataclasses (slots=True, frozen=True)',
-      'State Machine Controllers',
-      'SamplingStrategy Protocols',
-      'CandidateFilter Protocols',
-      'pytest',
-      'Ruff Linting & Formatting',
-      'ty Static Typing'
+      'Kubernetes',
+      'KinD (Kubernetes in Docker)',
+      'Docker Desktop & Podman',
+      'Prometheus Monitoring',
+      'PromQL Query Language',
+      'Grafana Dashboards',
+      'Meshery Playground',
+      'Hugo Static Site Engine',
+      'GitHub Actions CI/CD',
+      'DCO & CodeRabbit Automated Reviews'
     ],
     architectureFlow: {
-      title: 'Microsoft PyRIT GCG Adversarial Optimization Pipeline Architecture Flow',
+      title: 'Meshery Cloud Native Playground & Lab Engine Architecture Flow',
       mentalModel: {
-        input: 'Foundation Model Jailbreak Targets & Attack Configurations',
-        process: 'Progressive Schedule Machine + L2 Normalized Candidate Proposer',
-        output: 'Prompt-Level VRAM Deallocation (del logits, ids) & 0 OOM Spikes'
+        input: 'Learners & Cloud Engineers on Linux / macOS / Windows WSL2',
+        process: 'Rootless Podman Runtime + KinD Multi-Node K8s Cluster Orchestration',
+        output: 'Interactive Browser Labs + Real-Time PromQL / Grafana Observability'
       },
       layers: [
         {
-          stage: 'Stage 1: Dynamic Attack Scheduling & Budget Machine',
+          stage: 'Stage 1: Container Runtime & Local Node Provisioning',
           connectorLabel: null,
           cards: [
             {
-              title: 'Progressive Schedule Controller',
-              pr: 'PR #2720',
-              prUrl: 'https://github.com/microsoft/PyRIT/pull/2720',
-              impact: 'Boundary Lock • Dynamic Weight Transitions',
+              title: 'Podman Container Runtime Layer',
+              pr: 'PR #276',
+              prUrl: 'https://github.com/layer5io/layer5-academy/pull/276',
+              impact: 'Rootless Daemonless Security • Cross-OS Packaging',
               isContributed: true,
               points: [
-                'ScheduleTransitionAction typed state machine controller',
-                'Exact-budget boundary lock preventing max_steps iteration overflow',
-                'Dynamic ratcheted control weights across iterative optimization rounds'
-              ]
-            }
-          ]
-        },
-        {
-          stage: 'Stage 2: Candidate Generation & Cross-Device Migration',
-          connectorLabel: 'Candidate Generation & Cross-Device Tensor Migration',
-          cards: [
-            {
-              title: 'GCGCandidateProposer Phase',
-              pr: 'PR #2671',
-              prUrl: 'https://github.com/microsoft/PyRIT/pull/2671',
-              impact: 'L2 Norm Stability • Extensible Protocols',
-              isContributed: true,
-              points: [
-                'Immutable CandidateProposalBatch dataclass with shape preservation',
-                'L2 gradient normalization per worker ensuring numerical stability',
-                'SamplingStrategy & CandidateFilter extensible protocols'
+                'Rootless daemonless container runtime configuration',
+                'Native Podman socket bridge emulation across WSL2 & macOS',
+                'Modernized package repository installation removing brittle binaries'
               ]
             },
             {
-              title: 'Cross-Device Gradient Synchronization',
-              pr: 'PR #2671',
-              prUrl: 'https://github.com/microsoft/PyRIT/pull/2671',
-              impact: 'Main Device Aggregation • Zero Tensor Mismatches',
+              title: 'KinD Multi-Node K8s Lab Cluster',
+              pr: 'PR #278',
+              prUrl: 'https://github.com/layer5io/layer5-academy/pull/278',
+              impact: 'Declarative K8s YAML • Standardized Multi-Node Runtime',
               isContributed: true,
               points: [
-                'Per-worker gradient normalization and main_device tensor aggregation',
-                'Eliminates cross-GPU shape mismatch during loss calculations',
-                'Device-safe tensor placement across distributed worker instances'
+                'Declarative multi-node Kubernetes cluster configuration',
+                'Standardized runtime terminology across control-plane nodes',
+                'Automated lifecycle hooks for local Docker cluster bootstrapping'
               ]
             }
           ]
         },
         {
-          stage: 'Stage 3: VRAM-Bounded Evaluation Phase',
-          connectorLabel: 'VRAM-Bounded Evaluation Phase',
+          stage: 'Stage 2: Observability Mesh & Interactive Tooling',
+          connectorLabel: 'Observability & Portability Layer',
           cards: [
             {
-              title: 'Prompt-Level VRAM Cleanup Guard',
-              pr: 'PR #2700',
-              prUrl: 'https://github.com/microsoft/PyRIT/pull/2700',
-              impact: 'del logits, ids • Zero CUDA OOM Spikes',
+              title: 'Prometheus & Grafana Observability Mesh',
+              pr: 'PR #280',
+              prUrl: 'https://github.com/layer5io/layer5-academy/pull/280',
+              impact: 'Decoupled Systemd • Live PromQL Telemetry Alignment',
               isContributed: true,
               points: [
-                'Explicit prompt-level tensor deallocation (del logits, ids)',
-                'Sequential candidate scoring loops strictly capping GPU usage',
-                'Guarantees zero CUDA Out-Of-Memory spikes under large batches'
+                'Decoupled rigid Linux systemd services for containerized telemetry',
+                'Real-time PromQL query alignment across telemetry dashboards',
+                'Pre-configured Grafana metric sync for service mesh latency tracking'
               ]
             },
             {
-              title: 'GCGCandidateEvaluator Phase',
-              pr: 'PR #2700',
-              prUrl: 'https://github.com/microsoft/PyRIT/pull/2700',
-              impact: 'Frozen Batch Scoring • Loss Minimization',
+              title: 'Cross-Platform Shell Execution Harness',
+              pr: 'PR #274',
+              prUrl: 'https://github.com/layer5io/layer5-academy/pull/274',
+              impact: 'Zero Broken Links • Multi-OS Shell Portability',
               isContributed: true,
               points: [
-                'Frozen evaluation batch validation and score tracking',
-                '_loss_is_measured non-finite (inf/nan) state preservation',
-                'Strict best-candidate loss minimization selection'
+                'Cross-platform bash and PowerShell shell execution compatibility',
+                'Canonical documentation routing for Ambassador, Postgres & MySQL',
+                'Zero broken links across cloud native interactive curricula'
               ]
             }
           ]
         },
         {
-          stage: 'Stage 4: AI Red Team Verification & Compliance',
-          connectorLabel: 'AI Red Team Verification & Compliance',
+          stage: 'Stage 3: Interactive Cloud Native Learning Experience',
+          connectorLabel: 'Interactive Student Learning Experience',
           cards: [
             {
-              title: 'Microsoft AI Red Team Deterministic Test Suite',
-              pr: '45+ Tests',
-              prUrl: 'https://github.com/microsoft/PyRIT/pulls?q=is%3Apr+author%3AKaap10',
-              impact: '45+ Offline Unit Tests • 100% Pass Rate',
-              isContributed: true,
+              title: 'Interactive Cloud Native Academy Playground',
+              impact: 'Zero-Install Browser Labs • CNCF Ecosystem',
+              isContributed: false,
               points: [
-                '45+ deterministic unit tests with mock tensor queues and stubs',
-                '100% pass rate across the full 309+ PyRIT GCG test suite',
-                'Zero Ruff lint errors and zero ty static typing warnings'
+                'Browser-based interactive terminal learning environments',
+                'Hands-on Istio, Linkerd & Envoy service mesh orchestrations',
+                'Instant curriculum feedback and step-by-step verification'
               ]
             }
           ]
@@ -180,91 +159,106 @@ const PYRIT_CARD = {
       ]
     },
     fullHighlights: [
-      'Modularized Attack Loop Decomposition: Decoupled 2,000+ LOC monolithic loop into immutable, testable components (GCGCandidateProposer, GCGCandidateEvaluator, ProgressiveScheduleController).',
-      'VRAM-Bounded Memory Management: Engineered prompt-level tensor deallocation (del logits, ids) in evaluation loops to eliminate GPU memory spikes and Out-Of-Memory crashes.',
-      'Cross-Device Gradient Migration: Safely synchronized multi-worker tensor distributions by migrating per-worker gradients to main_device before candidate scoring.',
-      'Progressive State Machine Controller: Modeled schedule transitions with typed ScheduleTransitionAction enums, defending against exact-budget boundary edge cases.',
-      'Robust Non-Finite Loss Preservation: Introduced boolean _loss_is_measured tracking preserving valid non-finite (inf/nan) loss states without false assertion failures.',
-      'Deterministic Test Engineering: Authored 45+ deterministic unit tests with mock queues, tensor stubs, and 100% pass rates across Microsoft PyRIT test suites.'
+      'Decoupled Observability Architecture: Pruned rigid systemd Linux services from Prometheus and Grafana labs, establishing portable container-driven telemetry pipelines.',
+      'KinD Multi-Node Kubernetes Orchestration: Modernized multi-node cluster provisioning with reproducible declarative YAML definitions and standardized runtime terminology.',
+      'Resilient Container Prerequisites: Modernized container tooling instructions across Linux, macOS, and Windows WSL2, replacing brittle static binary URLs with native package managers.',
+      'Canonical Playground Hyperlink Routing: Audited and resolved broken documentation routing across Ambassador Edge Stack, WordPress/MySQL, and CloudNativePG Postgres curricula.',
+      'PromQL Query & UI Synchronization: Verified end-to-end synchronization between active PromQL telemetry queries and step-by-step graphical dashboard walkthrough assets.'
     ],
-    metricsDetail: '3 Modularized Phases · 45+ Deterministic Unit Tests · 100% Test Pass Rate · Zero VRAM Spikes · Microsoft AI Red Team',
+    metricsDetail: '4 PRs Authored · 4 Issues Solved · CNCF Ecosystem · Cross-Platform Linux/macOS/Windows · Zero Dead Links',
   },
 };
 
 const MASTER_PR_CONTRIBUTIONS = [
   {
-    pr: 'PR #2671',
-    url: 'https://github.com/microsoft/PyRIT/pull/2671',
-    issue: 'Issue #2665',
-    issueUrl: 'https://github.com/microsoft/PyRIT/issues/2665',
-    category: 'Architecture',
-    categoryId: 'architecture',
-    title: 'Extract Candidate Proposal Phase (GCGCandidateProposer)',
-    problem: 'GCGMultiPromptAttack.step() had a monolithic loop tightly coupling gradient dispatch, per-worker L2 gradient normalization, shape-group grouping, token sampling, and device transfers, making candidate generation untestable in isolation.',
+    pr: 'PR #280',
+    url: 'https://github.com/layer5io/layer5-academy/pull/280',
+    issue: 'Issue #279',
+    issueUrl: 'https://github.com/layer5io/layer5-academy/issues/279',
+    category: 'Observability',
+    categoryId: 'observability',
+    title: 'Prometheus & Grafana Observability Lab Decoupling',
+    problem: 'The Observability lab contained 240+ lines of bloated setup instructions requiring rigid Linux systemd services for both Prometheus and Node Exporter, blocking Docker, macOS, and Windows learners while quizzing them on deleted install scripts.',
     how: [
-      'Extracted Candidate Proposal Engine: Built GCGCandidateProposer returning an immutable @dataclass(frozen=True, slots=True) CandidateProposalBatch.',
-      'Preserved Worker Invariants: Maintained exact worker ordering and shape-group grouping behavior across multi-model deployments.',
-      'Cross-Device Migration: Safely migrated per-worker gradient tensors to main_device before candidate token scoring.',
-      'Protocol Compliance: Enforced complete compliance with SamplingStrategy and CandidateFilter extension protocols.',
-      'Deterministic Test Suite: Authored 14 deterministic unit tests in test_gcg_proposal.py using mock queues and tensor stubs.'
+      'Decoupled Architecture: Pruned Node Exporter from prerequisites, keeping the lab lean and centered on core Prometheus and Grafana integration.',
+      'Cross-Platform Guidance: Added Docker container network guidance (host.docker.internal:9090) and scoped systemd service configurations specifically to Linux hosts.',
+      'Assessment Alignment: Rewrote questions Q1, Q2, Q4, and Q5 in test.md to evaluate core observability concepts and universal Prometheus scraping metrics (up).',
+      'Visual Asset Polish: Updated grafana4.png so the Grafana Metric Builder UI reflects the exact up PromQL query, eliminating cognitive dissonance.'
     ],
     feedback: {
-      text: 'Merged into microsoft:main with 0 changes requested after comprehensive code review and automated test verification.',
-      author: 'Roman Lutz (@romanlutz) — Microsoft AI Red Team'
+      text: 'Good catch on pruning unnecessary services! Thoroughly reviewed and validated across multiple iterations; 100% CI pass.',
+      author: 'Suryansh Garg & Parth — Layer5 Maintainers'
     }
   },
   {
-    pr: 'PR #2700',
-    url: 'https://github.com/microsoft/PyRIT/pull/2700',
-    issue: 'Issue #2665',
-    issueUrl: 'https://github.com/microsoft/PyRIT/issues/2665',
-    category: 'GPU & Memory',
-    categoryId: 'gpu',
-    title: 'Extract VRAM-Bounded Candidate Evaluation Phase (GCGCandidateEvaluator)',
-    problem: 'Logits evaluation and loss accumulation were intertwined with attack orchestration. Evaluating thousands of candidate tokens across multiple models caused severe GPU VRAM memory spikes and Out-Of-Memory (OOM) crashes.',
+    pr: 'PR #278',
+    url: 'https://github.com/layer5io/layer5-academy/pull/278',
+    issue: 'Issue #277',
+    issueUrl: 'https://github.com/layer5io/layer5-academy/issues/277',
+    category: 'Kubernetes',
+    categoryId: 'k8s',
+    title: 'Streamlining KinD (Kubernetes in Docker) Lab',
+    problem: 'Students were failing during multi-node cluster setup due to broken multi-line kubectl download commands and a pinned legacy KinD version (v0.20.0), alongside ambiguous runtime cluster configuration phrasing.',
     how: [
-      'Extracted Evaluator Engine: Created GCGCandidateEvaluator paired with @dataclass(frozen=True, slots=True) CandidateEvaluationBatch.',
-      'Prompt-Level VRAM Cleanup: Engineered sequential candidate evaluation loops with explicit prompt-level tensor deallocation (del logits, ids) to strictly bound GPU memory.',
-      'Loss Accumulation: Migrated and accumulated cross-worker logits losses directly on main_device.',
-      'Backward Compatibility: Maintained 100% backward compatibility for _select_best_candidate and return signatures.',
-      'Unit Test Suite: Added 15 deterministic unit tests in test_gcg_evaluation.py verifying device placement, sequential offsets, tqdm progress tracking, and non-finite loss safety.'
+      'Decoupled Installation: Decoupled tool installation from the exercise by linking directly to official KinD and Docker guides.',
+      'Focused Lab Objectives: Streamlined instructions to focus purely on provisioning, configuring, and inspecting multi-node clusters with YAML definitions.',
+      'Terminology Standardization: Standardized technical phrasing to "at runtime" and "the default configuration".',
+      'Runtime Validation: Validated multi-node cluster spin-up across local Docker daemons.'
     ],
     feedback: {
-      text: 'Appreciate all the rapid iterations :-)',
-      author: 'Roman Lutz (@romanlutz) — Microsoft AI Red Team'
+      text: 'LGTM, thanks @Kaap10 — verified against KinD and Docker multi-node cluster provisioning requirements.',
+      author: 'Parth & Maanvi — Layer5 Maintainers'
     }
   },
   {
-    pr: 'PR #2720',
-    url: 'https://github.com/microsoft/PyRIT/pull/2720',
-    issue: 'Issue #2665',
-    issueUrl: 'https://github.com/microsoft/PyRIT/issues/2665',
-    category: 'State Machine',
-    categoryId: 'state',
-    title: 'Model Progressive Admission Transitions (ProgressiveScheduleController)',
-    problem: 'ProgressiveMultiPromptAttack.run() mixed high-level inner attack execution with complex state transition rules (progressive goal vs worker admission order, remaining step budgeting, control-weight ratcheting, and sentinel loss resets).',
+    pr: 'PR #276',
+    url: 'https://github.com/layer5io/layer5-academy/pull/276',
+    issue: 'Issue #275',
+    issueUrl: 'https://github.com/layer5io/layer5-academy/issues/275',
+    category: 'Containers',
+    categoryId: 'k8s',
+    title: 'Modernizing Podman Lab Prerequisites',
+    problem: 'The existing Podman lab had outdated hardcoded commands attempting to download static binaries from external URLs returning 404 errors, coupled with broken shell syntax.',
     how: [
-      'Schedule Controller: Extracted ProgressiveScheduleController alongside ScheduleTransitionAction(Enum).',
-      'Exact-Budget Boundary Protection: Guarded against edge cases where the step budget is exhausted at exact admission boundaries, preventing dangling inf loss resets.',
-      'Explicit Loss Measurement State: Introduced explicit boolean _loss_is_measured tracking to safely preserve legitimate non-finite model losses (inf/nan) without tripping assertions.',
-      'Control-Weight Ratcheting: Extracted scheduling and ratcheting logic (+0.01 increments up to 0.09 threshold).',
-      'Comprehensive Coverage: Created 16 unit tests in test_progressive_schedule.py verifying all admission sequences and boundary transitions.'
+      'Pruned Fragile Downloads: Removed fragile manual download and system extraction commands.',
+      'Upstream Documentation Linking: Updated prerequisites to reference official Podman installation documentation, making the lab resilient to upstream version changes.',
+      'Cross-Platform Parity: Verified installation instructions across macOS, Linux, and Windows with WSL2.'
     ],
     feedback: {
-      text: '16 comprehensive unit tests covering all progressive admission transitions, control-weight ratcheting, and exact budget exhaustion with 100% pass rate.',
-      author: 'Microsoft AI Red Team Code Review'
+      text: 'Excellent. This looks great, Vardhman.',
+      author: 'Lee Calcote — Founder, Layer5; Member, CNCF'
+    }
+  },
+  {
+    pr: 'PR #274',
+    url: 'https://github.com/layer5io/layer5-academy/pull/274',
+    issue: 'Issue #273',
+    issueUrl: 'https://github.com/layer5io/layer5-academy/issues/273',
+    category: 'Infrastructure',
+    categoryId: 'infrastructure',
+    title: 'Fixing Broken Meshery Playground Documentation Hyperlinks',
+    problem: 'Multiple Kubernetes learning modules (Ambassador Edge Stack, WordPress/MySQL, Scalable Postgres) contained dead hyperlinks pointing to 404 pages on the Meshery Playground docs.',
+    how: [
+      'Curriculum Link Audit: Audited all occurrences of broken links across the entire Kubernetes curriculum.',
+      'Canonical Target Resolution: Updated hyperlinks to the active canonical URL (https://docs.meshery.io/installation/playground).',
+      'Anchor Text Refactoring: Refactored anchor text across all 3 modules to accurately describe the interactive cloud playground environment.',
+      'Documentation Verification: Audited and verified all external playground hyperlinks across interactive learning modules.'
+    ],
+    feedback: {
+      text: 'Yes, it is ready to merge. I ran the changes locally and everything looks good to go. LGTM, thanks @Kaap10.',
+      author: 'Suryansh Garg & Parth — Layer5 Maintainers'
     }
   }
 ];
 
 const CATEGORY_FILTERS = [
   { id: 'all', label: 'All Contributions' },
-  { id: 'architecture', label: 'Attack Architecture' },
-  { id: 'gpu', label: 'GPU VRAM Optimization' },
-  { id: 'state', label: 'State Machine' }
+  { id: 'observability', label: 'Observability & Metrics' },
+  { id: 'k8s', label: 'Kubernetes & Containers' },
+  { id: 'infrastructure', label: 'Docs & Infrastructure' }
 ];
 
-export default function PyRITShowcasePage() {
+export default function Layer5ShowcasePage() {
   const [activeCategory, setActiveCategory] = useState('all');
   const [isCardExpanded, setIsCardExpanded] = useState(false);
 
@@ -281,13 +275,13 @@ export default function PyRITShowcasePage() {
     return counts;
   }, []);
 
-  const card = PYRIT_CARD;
+  const card = LAYER5_CARD;
   const CardIcon = card.icon;
 
   return (
     <Layout
-      title="microsoft/PyRIT"
-      description="Modularizing Microsoft PyRIT's Greedy Coordinate Gradient (GCG) Adversarial Jailbreak Optimization Engine."
+      title="layer5io"
+      description="4 Pull Requests across Kubernetes, Containerization, Prometheus Observability, and Grafana Metrics for Layer5 Academy."
     >
       <main className={styles.pageContainer}>
         <div className={styles.bgGlowWrapper} aria-hidden="true">
@@ -301,26 +295,26 @@ export default function PyRITShowcasePage() {
               <span>Open Source</span>
             </Link>
             <span>/</span>
-            <span className={styles.breadcrumbCurrent}>microsoft/PyRIT Showcase</span>
+            <span className={styles.breadcrumbCurrent}>layer5io Showcase</span>
           </nav>
 
           <header className={styles.heroHeader}>
             <div className={styles.eyebrowWrap}>
-              <span className={styles.eyebrowBadge}>Microsoft AI Red Team</span>
+              <span className={styles.eyebrowBadge}>Layer5 &amp; CNCF Ecosystem</span>
               <span className={styles.licenseBadge}>
                 <ShieldCheck size={13} />
-                <span>3 GCG Phases</span>
+                <span>4 Pull Requests</span>
               </span>
             </div>
 
-            <h1 className={styles.heroTitle}>microsoft/PyRIT</h1>
+            <h1 className={styles.heroTitle}>layer5io / layer5-academy</h1>
             <p className={styles.heroSubtitle}>
-              Technical deep dive into refactoring the Greedy Coordinate Gradient (GCG) adversarial jailbreak attack engine in Microsoft's open-source AI Red Teaming framework.
+              Technical overview of open-source contributions to Layer5 Academy, modernizing Kubernetes, containerization, and Prometheus/Grafana observability curriculum.
             </p>
 
             <div className={styles.heroActionGroup}>
               <a
-                href="https://github.com/microsoft/PyRIT/pulls?q=is%3Apr+author%3AKaap10"
+                href="https://github.com/layer5io/layer5-academy/pulls?q=is%3Apr+author%3AKaap10"
                 target="_blank"
                 rel="noopener noreferrer"
                 className={styles.primaryBtn}
@@ -331,7 +325,7 @@ export default function PyRITShowcasePage() {
               </a>
 
               <a
-                href="https://github.com/microsoft/PyRIT"
+                href="https://github.com/layer5io/layer5-academy"
                 target="_blank"
                 rel="noopener noreferrer"
                 className={styles.secondaryBtn}
@@ -352,20 +346,20 @@ export default function PyRITShowcasePage() {
 
           <div className={styles.metricsGrid}>
             <div className={styles.metricCard}>
-              <div className={styles.metricValue}>3</div>
-              <div className={styles.metricLabel}>GCG Architectural Phases</div>
+              <div className={styles.metricValue}>4</div>
+              <div className={styles.metricLabel}>Pull Requests</div>
             </div>
             <div className={styles.metricCard}>
-              <div className={styles.metricValue}>45+</div>
-              <div className={styles.metricLabel}>Deterministic Unit Tests</div>
+              <div className={styles.metricValue}>4</div>
+              <div className={styles.metricLabel}>Issues Solved</div>
             </div>
             <div className={styles.metricCard}>
-              <div className={styles.metricValue}>100%</div>
-              <div className={styles.metricLabel}>309+ Suite Pass Rate</div>
+              <div className={styles.metricValue}>CNCF</div>
+              <div className={styles.metricLabel}>Cloud Native Ecosystem</div>
             </div>
             <div className={styles.metricCard}>
-              <div className={styles.metricValue}>Zero OOM</div>
-              <div className={styles.metricLabel}>GPU VRAM Bounded</div>
+              <div className={styles.metricValue}>Lee Calcote</div>
+              <div className={styles.metricLabel}>Founder Commendation</div>
             </div>
           </div>
 
@@ -580,9 +574,9 @@ export default function PyRITShowcasePage() {
 
                       <td className={styles.categoryCol}>
                         <span className={
-                          prItem.categoryId === 'gpu'
+                          prItem.categoryId === 'observability'
                             ? styles.categoryTagDistributed
-                            : prItem.categoryId === 'state'
+                            : prItem.categoryId === 'k8s'
                             ? styles.categoryTagAi
                             : styles.categoryTagReliability
                         }>

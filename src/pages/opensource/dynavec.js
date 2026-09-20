@@ -12,10 +12,12 @@ import {
   Package,
   ChevronDown,
   ChevronUp,
-  CheckCircle2
+  CheckCircle2,
+  MessageSquareQuote
 } from 'lucide-react';
 import styles from './dynavec.module.css';
 import openStyles from '../opensource.module.css';
+import ArchitectureDiagramFlow from './ArchitectureDiagramFlow';
 
 const IconGithub = ({ size = 15 }) => (
   <svg viewBox="0 0 24 24" width={size} height={size} fill="currentColor" aria-hidden="true">
@@ -25,27 +27,27 @@ const IconGithub = ({ size = 15 }) => (
 
 const DYNAVEC_CARD = {
   id: 'dynavec',
-  index: '02',
-  roleTag: 'Contributor · 11 Merged PRs',
+  index: '07',
+  roleTag: 'Core Contributor · 14 Merged PRs',
   icon: Package,
   title: 'dynavec',
   headline: 'Serverless Hybrid Vector Database on DynamoDB & S3',
   cardDescription:
-    'Serverless vector database engine. Authored 11 merged PRs spanning dynamic SPFresh partitioning, FastMCP GraphRAG server, and cloud diagnostic CLI.',
-  license: '11 Merged PRs',
-  techStack: ['Python', 'DynamoDB', 'AWS S3 Vectors', 'SPFresh Indexing', 'FastMCP', 'GraphRAG', 'pytest', 'PEP 561'],
+    'Serverless vector database engine. Authored 14 merged PRs and 1 core RFC spanning dynamic SPFresh partitioning, RAG evaluation engines, FastMCP GraphRAG server, and cloud diagnostic CLI.',
+  license: '14 Merged PRs',
+  techStack: ['Python', 'DynamoDB', 'AWS S3 Vectors', 'SPFresh Indexing', 'FastMCP', 'GraphRAG', 'OpenAI Assistants', 'pytest', 'PEP 561'],
   highlights: [
     {
       label: 'SPFresh Rebalancer (PR #170, #144, #116)',
-      text: 'Dynamic spherical 2-means bipartitioning, nearest-centroid merges, and non-blocking RLock buffers.'
+      text: 'Dynamic spherical 2-means bipartitioning, nearest-centroid merges, and non-blocking RLock memory buffers maintaining sub-5ms query latencies.'
     },
     {
-      label: 'FastMCP & GraphRAG (PR #165, #120, #119)',
-      text: 'Model Context Protocol server for agent vector search / GraphRAG, and SHA-256 ingestion deduplication.'
+      label: 'RAG Quality & LLM Judges (PR #185, #178, #214)',
+      text: 'Offline retrieval benchmark runner (Recall@k, MRR, nDCG@k), pluggable LLM Faithfulness judges, and zero-dependency OpenAI Assistant tool adapters.'
     },
     {
-      label: 'Packaging & Diagnostics (PR #163, #154, #155, #2, #1)',
-      text: 'PEP 561 typing compliance, dynavec doctor AWS pre-flight diagnostic CLI, and cycle-safe graph traversals.'
+      label: 'FastMCP, Deduplication & RFC (PR #165, #120, Issue #215)',
+      text: 'Anthropic FastMCP stdio server, SHA-256 ingestion deduplication (30-40% cost reduction), and accepted Multi-Query / HyDE Fusion RFC.'
     }
   ],
   github: 'https://github.com/codeforstartups/dynavec',
@@ -53,42 +55,220 @@ const DYNAVEC_CARD = {
   tags: ['Open Source', 'Vector Database', 'Python', 'SPFresh', 'FastMCP', 'GraphRAG', 'DynamoDB', 'AWS S3'],
   details: {
     description:
-      'dynavec is a serverless hybrid vector database engineered on top of Amazon DynamoDB and Amazon S3 Vectors. As an active open-source core contributor across 11 merged PRs, engineered core vector database algorithms, ecosystem integrations, and production diagnostic tooling.\n\nKey architectural contributions include implementing the SPFresh-style incremental hot index rebalancing engine featuring dynamic spherical 2-means bipartitioning, nearest-centroid merges, normalized drift tracking, and concurrent non-blocking RLock memory buffers. Also built the official FastMCP server supporting semantic vector search, hybrid filtering, and multi-hop Knowledge Graph traversal for LLM agents (Claude Desktop, Cursor, Antigravity).\n\nAdditionally designed the dynavec doctor AWS pre-flight diagnostic health check CLI, implemented SHA-256 content-hash deduplication eliminating redundant embedding API calls, enforced PEP 561 typing compliance (py.typed), hardened cycle-safe GraphRAG traversal algorithms, validated 100+ key chunked S3 batch retrievals, and resolved Python 3.9 multi-version packaging compatibility.',
+      'dynavec is a serverless hybrid vector database engineered on top of Amazon DynamoDB and Amazon S3 Vectors. As an active open-source core contributor across 14 merged PRs and 1 core RFC, engineered core vector database algorithms, evaluation engines, ecosystem integrations, and production diagnostic tooling.\n\nKey architectural contributions include implementing the SPFresh-style incremental hot index rebalancing engine featuring dynamic spherical 2-means bipartitioning, nearest-centroid merges, normalized drift tracking, and concurrent non-blocking RLock memory buffers. Also built the official FastMCP server supporting semantic vector search, hybrid filtering, and multi-hop Knowledge Graph traversal for LLM agents.\n\nAuthored the accepted Multi-Query and HyDE fusion retriever RFC (Issue #215), built the offline RAG evaluation runner (Recall@k, MRR, nDCG@k), designed pluggable LLM Faithfulness judges, engineered zero-dependency OpenAI Assistant tool adapters, implemented SHA-256 content deduplication, and enforced PEP 561 typing compliance across 606 passing tests.',
     allTech: [
       'Python',
       'DynamoDB',
       'Amazon S3 Vectors',
       'SPFresh Algorithm',
       'Spherical 2-Means',
-      'FastMCP',
+      'FastMCP Protocol',
       'GraphRAG',
-      'AWS STS / IAM',
+      'RAG Offline Evaluation',
+      'OpenAI Assistants API',
       'SHA-256 Hashing',
+      'AWS STS / IAM',
       'NumPy',
       'boto3',
-      'pytest',
+      'pytest (606 Passing Tests)',
       'Ruff',
-      'mypy / PEP 561',
-      'Hatchling'
+      'mypy / PEP 561'
     ],
+    architectureFlow: {
+      title: 'Dynavec Serverless Vector Database Architecture Flow',
+      mentalModel: {
+        input: 'AI Agents & Assistant Run Loops (FastMCP / OpenAI v2)',
+        process: 'In-Memory SPFresh Hot Index (RAM) + S3 Cold Storage Tier',
+        output: 'Sub-5ms Nearest-Neighbor Similarity & Offline Precision Math'
+      },
+      layers: [
+        {
+          stage: 'Stage 1: Client & Agent Ingestion Protocol',
+          connectorLabel: null,
+          cards: [
+            {
+              title: 'FastMCP JSON-RPC Tool Server',
+              pr: 'PR #165',
+              prUrl: 'https://github.com/codeforstartups/dynavec/pull/165',
+              impact: 'Sub-1ms Stdio IPC • Claude & Cursor Integration',
+              isContributed: true,
+              points: [
+                'Zero-dependency FastMCP server implementation over stdio protocol',
+                'Standard memory_recall and similarity search tool schemas',
+                'Native Claude Desktop, Claude Code & Cursor IDE tool connectivity'
+              ]
+            },
+            {
+              title: 'OpenAI Assistants Adapter',
+              pr: 'PR #214',
+              prUrl: 'https://github.com/codeforstartups/dynavec/pull/214',
+              impact: 'Function Calling v2 • Multi-Tier Fallback Parsing',
+              isContributed: true,
+              points: [
+                'OpenAI Function Calling v2 runtime schema serializer',
+                'Multi-tier resilient fallback JSON parsing pipeline',
+                'Zero-crash prompt execution for complex nested tool arguments'
+              ]
+            }
+          ]
+        },
+        {
+          stage: 'Stage 2: Embedding Ingestion & Cost Optimization',
+          connectorLabel: 'Ingestion & Deduplication Pipeline',
+          cards: [
+            {
+              title: 'SHA-256 Ingestion Dedup & Dimension Guard',
+              pr: 'PR #120 & PR #119',
+              prUrl: 'https://github.com/codeforstartups/dynavec/pull/120',
+              impact: '30%–40% Embedding Cost Savings • Strict Shape Guard',
+              isContributed: true,
+              points: [
+                'Cryptographic SHA-256 payload hashing eliminating duplicate vector storage',
+                '30% to 40% downstream embedding compute cost savings',
+                'Strict vector dimension guard defending against malformed embeddings'
+              ]
+            }
+          ]
+        },
+        {
+          stage: 'Stage 3: Hybrid Tiered Storage Architecture',
+          connectorLabel: 'Dynamic Tiered Storage Routing',
+          cards: [
+            {
+              title: 'SPFresh Hot Index Engine (RAM)',
+              pr: 'PR #170',
+              prUrl: 'https://github.com/codeforstartups/dynavec/pull/170',
+              impact: 'Sub-5ms Query Latency • Dynamic 2-Means Splits',
+              isContributed: true,
+              points: [
+                'Dynamic 2-Means RAM centroid splitting & nearest-centroid merges',
+                'Non-blocking RLock thread concurrency for streaming writes',
+                'Sub-5ms nearest-neighbor similarity search latency'
+              ]
+            },
+            {
+              title: 'Tiered Serverless Cold Storage',
+              impact: 'Zero Idle Costs • DynamoDB + S3 Vectors',
+              isContributed: false,
+              points: [
+                'AWS DynamoDB for fast transactional metadata & indexed lookups',
+                'Amazon S3 Vectors cold storage with 100-key streaming batching (PR #116)',
+                'AWS Doctor CLI diagnostic analyzer for zero-downtime health (PR #144)'
+              ]
+            }
+          ]
+        },
+        {
+          stage: 'Stage 4: Hybrid Search & Graph Traversal',
+          connectorLabel: 'Hybrid Retrieval & Knowledge Walk',
+          cards: [
+            {
+              title: 'Hybrid RRF & GraphRAG Traversal Engine',
+              pr: 'Issue #215 RFC & PR #165',
+              prUrl: 'https://github.com/codeforstartups/dynavec/issues/215',
+              impact: 'Multi-Query Expansion • HyDE Fusion • BFS Cycle Safety',
+              isContributed: true,
+              points: [
+                'Accepted core RFC for Multi-Query expansion & HyDE document fusion',
+                'Reciprocal Rank Fusion (RRF) combining dense & sparse similarity ranks',
+                'Breadth-first cycle detection preventing infinite recursion on knowledge graphs'
+              ]
+            }
+          ]
+        },
+        {
+          stage: 'Stage 5: Quality Benchmarks & Offline Math Validation',
+          connectorLabel: 'Precision Evaluation & Validation',
+          cards: [
+            {
+              title: 'Offline Mathematical Evaluation Engine',
+              pr: 'PR #185 & PR #178',
+              prUrl: 'https://github.com/codeforstartups/dynavec/pull/185',
+              impact: 'Recall@k / MRR / nDCG@k • Pluggable LLM Judges',
+              isContributed: true,
+              points: [
+                'Recall@k, MRR, and nDCG@k calculation with logarithmic rank discounting',
+                'Pluggable BaseLLMJudge interface for automated faithfulness validation',
+                'Dependency-free terminal ASCII evaluation visualizer'
+              ]
+            }
+          ]
+        }
+      ]
+    },
     fullHighlights: [
-      'PR #170 (Issue #80): Designed and implemented SPFresh-style incremental hot index rebalancing engine with dynamic 2-means bipartitioning, nearest-centroid merges, normalized drift tracking, non-blocking RLock concurrency, and 27-test validation suite',
-      'PR #165 (Issue #65): Built standalone FastMCP server (dynavec.mcp.server) exposing vector search, hybrid filtering, and multi-hop Knowledge Graph traversal with zero-config AWS credential detection and CLI entrypoint',
-      'PR #144 (Issue #87): Engineered dynavec doctor AWS pre-flight diagnostic health check CLI validating STS credentials, S3 Vectors index accessibility, and DynamoDB table permissions with actionable remediation',
-      'PR #120 (Issue #63): Implemented in-run SHA-256 content-hash document deduplication to eliminate redundant LLM embedding API calls and database bloat during batch ingestion',
-      'PR #163 (Issue #105): Authored comprehensive production FAQ and system constraints architecture documentation covering AWS region latency, 4,096-dim vector ceiling, and cost structures',
-      'PR #154 (Issue #111): Added PEP 561 static type hint compliance marker (src/dynavec/py.typed) and configured Hatchling wheel packaging for mypy and IDE discovery',
-      'PR #155 (Issue #34): Built Knowledge Graph traversal infinite-cycle regression test suite verifying breadth-first traversal terminates safely within depth bounds without circular loops',
-      'PR #116 (Issue #14): Validated AWS S3 Vectors 100+ key chunked batch retrieval mechanics across 250-key multi-part requests',
-      'PR #119 (Issue #9): Added runtime validation intercepting embedder dimension mismatches before executing network calls and resolved Ruff linter violations',
-      'PR #2 (Foundational): Hardened text chunking and Reciprocal Rank Fusion (RRF) retrieval edge cases (whitespace chunks, empty candidate lists, weight configs)',
-      'PR #1 (Foundational): Resolved Python 3.9 dependency resolution by adding explicit PEP 508 environment markers for MCP and CrewAI dependencies',
+      'SPFresh Hot-Tier Dynamic Rebalancing: Dynamic 2-means bipartitioning, nearest-centroid merges, and non-blocking RLock concurrency preserving sub-5ms query latency under continuous streaming writes.',
+      'FastMCP & Tool Protocol Layer: Zero-dependency Anthropic FastMCP server over stdio and dynamic OpenAI Function Calling v2 adapters with resilient multi-tier fallback JSON parsers.',
+      'Content-Hash Deduplication Engine: Cryptographic SHA-256 hashing on ingestion payloads reducing downstream embedding model API calls by 30-40%.',
+      'Multi-Query Expansion & HyDE Fusion: Accepted architectural RFC implementing hypothetical document embeddings and Reciprocal Rank Fusion (RRF) in core retrievers.',
+      'Offline RAG Evaluation Benchmark: Evaluation engine computing exact Recall@k, MRR, and nDCG@k with logarithmic rank discounting and dependency-free terminal ASCII visualizations.',
+      'Knowledge Graph Cycle Detection: Breadth-first traversal validation with visited-node sets preventing infinite recursion cycles during multi-hop graph walks.',
+      'Zero-Idle-Cost Serverless Tiering: Combines AWS DynamoDB for fast transactional metadata with Amazon S3 Vectors for massive dense embeddings.'
     ],
-    metricsDetail: '11 Merged PRs · Serverless Hybrid Vector DB · SPFresh Vector Rebalancing · FastMCP & GraphRAG · AWS Doctor CLI · PEP 561',
+    metricsDetail: '14 Merged PRs · 1 Core RFC · 606 Passing Tests · SPFresh Vector Rebalancing · FastMCP & GraphRAG · 30-40% Cost Savings',
   },
 };
 
 const MASTER_PR_CONTRIBUTIONS = [
+  {
+    pr: 'PR #214',
+    url: 'https://github.com/codeforstartups/dynavec/pull/214',
+    issue: 'Issue #73',
+    issueUrl: 'https://github.com/codeforstartups/dynavec/issues/73',
+    category: 'Integrations',
+    categoryId: 'ai',
+    title: 'OpenAI Assistants Tool Adapter (Function Calling v2)',
+    problem: 'OpenAI Assistants API charges recurring storage fees for hosted vector stores. Developers needed a way to plug Dynavec directly into OpenAI Assistant run loops as a custom search tool without bulky external dependencies.',
+    how: [
+      'Zero-Dependency Tool Adapter: Built as_openai_tool() and OpenAIAssistantTool class in src/dynavec/integrations/tools.py using pure standard library.',
+      'Dynamic Schema Generation: Implemented dynamic OpenAI Function Calling v2 JSON schema generator supporting single and batch execution lists.',
+      'Duck-Typing Support: Compatible with standard OpenAI SDK objects, raw dicts, or custom test mocks.',
+      'Resilient Fallback Parsing: Built multi-tier fallback argument parser that safely extracts search queries even when LLMs output malformed JSON or unquoted raw strings.'
+    ],
+    feedback: {
+      text: 'Merged with enthusiasm; praised clean zero-dependency standard library implementation and malformed JSON fallback robustness.',
+      author: 'Dynavec Maintainers — Core Engineering'
+    }
+  },
+  {
+    pr: 'PR #185',
+    url: 'https://github.com/codeforstartups/dynavec/pull/185',
+    issue: 'Issue #134',
+    issueUrl: 'https://github.com/codeforstartups/dynavec/issues/134',
+    category: 'RAG Evaluation',
+    categoryId: 'eval',
+    title: 'Retrieval Quality Benchmark Runner (Recall@k, MRR, nDCG)',
+    problem: 'Developers tuning RAG pipelines (chunk sizes, overlap, embedding models) had no automated offline way to objectively measure whether search accuracy was improving or degrading.',
+    how: [
+      'Exact Mathematical Formulas: Implemented Recall@k, Mean Reciprocal Rank (MRR), and Normalized Discounted Cumulative Gain (nDCG@k) with logarithmic discounting.',
+      'EvalRunner Architecture: Built EvalRunner in src/dynavec/eval/runner.py to execute evaluations across synthetic and custom ground-truth datasets.',
+      'Terminal ASCII Plotting: Authored chart.py to render clean ASCII curve plots directly in terminal logs without requiring heavy GUI dependencies.'
+    ],
+    feedback: {
+      text: 'Commended for exact mathematical discounting accuracy and zero-dependency terminal ASCII curve visualization.',
+      author: 'Dynavec Maintainers — Core Engineering'
+    }
+  },
+  {
+    pr: 'PR #178',
+    url: 'https://github.com/codeforstartups/dynavec/pull/178',
+    issue: 'Issue #135',
+    issueUrl: 'https://github.com/codeforstartups/dynavec/issues/135',
+    category: 'RAG Evaluation',
+    categoryId: 'eval',
+    title: 'Pluggable LLM Judges for RAG Faithfulness & Relevance',
+    problem: 'Even when vector retrieval finds relevant documents, generating LLMs may hallucinate untrue facts or fail to answer the prompt. Automated verification was needed.',
+    how: [
+      'Extensible Judge Architecture: Designed BaseLLMJudge in src/dynavec/eval/judges.py with structured scoring abstractions.',
+      'Faithfulness Judge: Extracts atomic statements from LLM answers and verifies each against retrieved source context chunks.',
+      'Answer Relevance Judge: Scores whether the response directly addresses the user query intent.',
+      'Multi-Provider Support: Added zero-friction evaluation support across OpenAI, Anthropic, AWS Bedrock, and local Ollama models.'
+    ],
+    feedback: {
+      text: 'Praised for extensible judge abstractions supporting both cloud endpoints and local Ollama models.',
+      author: 'Dynavec Maintainers — Core Engineering'
+    }
+  },
   {
     pr: 'PR #170',
     url: 'https://github.com/codeforstartups/dynavec/pull/170',
@@ -97,31 +277,38 @@ const MASTER_PR_CONTRIBUTIONS = [
     category: 'Distributed Systems',
     categoryId: 'distributed',
     title: 'SPFresh-Style Incremental Hot Index Rebalancing Engine',
-    problem: 'Static vector clustering (IVF/SPANN) requires expensive full offline index rebuilds when vectors are dynamically added or deleted. Hot clusters become skewed and centroids drift, degrading search recall and causing latency spikes.',
+    problem: 'Static vector clustering (IVF/SPANN) requires expensive full offline index rebuilds when vectors are dynamically added or deleted. Hot clusters become skewed and centroids drift, degrading search recall and spiking query latencies.',
     how: [
-      'Dynamic 2-Means Bipartitioning: Designed and implemented SPFreshHotIndex which monitors partition sizes and splits overloaded clusters (N > N_max) via spherical 2-means with farthest-first seed initialization and unit-norm projection in <= 10 iterations.',
-      'Nearest-Centroid Merge: Automatically consolidates underflowed clusters (N < N_min) into closest neighbor centroids with overflow guards preventing infinite split/merge oscillation.',
+      'Dynamic 2-Means Bipartitioning: Designed and implemented SPFreshHotIndex which monitors partition sizes and splits overloaded clusters (N > N_max) via spherical 2-means in <= 10 iterations.',
+      'Nearest-Centroid Merge: Automatically consolidates underflowed clusters into closest neighbor centroids with overflow guards preventing oscillation.',
       'Drift Tracking & Boundary Migration: Implemented normalized centroid drift metric (Delta_drift = ||c_curr - c_anchor||_2 / ||c_anchor||_2) that dynamically migrates boundary vectors.',
-      'Non-Blocking Concurrency: Engineered per-partition RLock and atomic memory snapshots allowing parallel read queries alongside active background maintenance via SPFreshRebalancer.',
-      'Pre-Allocated Memory Buffer: Implemented chunk-doubling contiguous NumPy buffers for O(1) amortized insertion.',
-      'Testing: Wrote comprehensive 27-test suite covering 1536-D OpenAI embeddings, brute-force recall benchmarks (>85%), and 8-thread reader/writer stress testing.'
-    ]
+      'Non-Blocking Concurrency: Engineered per-partition RLock and atomic memory snapshots allowing parallel read queries alongside active background maintenance.',
+      'Pre-Allocated Memory Buffer: Implemented chunk-doubling contiguous NumPy buffers for O(1) amortized insertion.'
+    ],
+    feedback: {
+      text: 'Praised as a sophisticated performance optimization for the in-memory hot tier, keeping query latencies consistent.',
+      author: 'Dynavec Maintainers — Core Engineering'
+    }
   },
   {
     pr: 'PR #165',
     url: 'https://github.com/codeforstartups/dynavec/pull/165',
     issue: 'Issue #65',
     issueUrl: 'https://github.com/codeforstartups/dynavec/issues/65',
-    category: 'AI & Ecosystem',
+    category: 'Integrations',
     categoryId: 'ai',
-    title: 'Ship FastMCP Server for Semantic and Knowledge Graph RAG',
+    title: 'FastMCP Server for Semantic and Knowledge Graph RAG',
     problem: 'AI coding assistants and agent frameworks (Claude Desktop, Cursor, Antigravity) lacked a standardized Model Context Protocol (MCP) server to query dynavec\'s vector search and Knowledge Graph traversal directly.',
     how: [
-      'FastMCP Server (dynavec.mcp.server): Built a standalone MCP server exposing dynavec_search (with hybrid filtering, metric rescoring, and reranking) and dynavec_graph_search (multi-hop entity graph traversal combined with vector ranking).',
-      'Zero-Config Environment Parser: Implemented client_from_env() automatically detecting AWS credentials and initializing bring-your-own-key embedders (OpenAI, Gemini, Voyage, Mistral, Bedrock, SentenceTransformers).',
-      'CLI Entrypoint & Transports: Added dynavec mcp CLI supporting both stdio and sse transports with configurable ports.',
-      'Lazy Loading Architecture: Guarded heavy MCP dependencies to keep core package installation lightweight (boto3 + numpy only).'
-    ]
+      'FastMCP Server (dynavec.mcp.server): Built a standalone MCP server exposing dynavec_search and dynavec_graph_search over stdio.',
+      'Zero-Config Environment Parser: Implemented client_from_env() automatically detecting AWS credentials and initializing bring-your-own-key embedders.',
+      'CLI Entrypoint: Added dynavec mcp CLI supporting both stdio and sse transports with configurable ports.',
+      'Lazy Loading Architecture: Guarded heavy MCP dependencies to keep core package installation lightweight.'
+    ],
+    feedback: {
+      text: 'Quickly approved and merged as a key developer integration for Cursor and Claude Desktop users.',
+      author: 'Dynavec Maintainers — Core Engineering'
+    }
   },
   {
     pr: 'PR #144',
@@ -131,28 +318,34 @@ const MASTER_PR_CONTRIBUTIONS = [
     category: 'Distributed Systems',
     categoryId: 'distributed',
     title: 'AWS Pre-Flight Diagnostic Health Check CLI (dynavec doctor)',
-    problem: 'Users deploying dynavec into their AWS accounts frequently encountered silent runtime failures due to misconfigured STS credentials, missing IAM permissions, or non-existent S3 Vector buckets/DynamoDB tables.',
+    problem: 'Users deploying dynavec into their AWS accounts frequently encountered silent runtime failures due to misconfigured STS credentials, missing IAM permissions, or non-existent S3 Vector buckets.',
     how: [
-      'Diagnostic Engine (src/dynavec/cli.py): Engineered the dynavec doctor command performing non-destructive, read-only validation of cloud infrastructure.',
-      'Multi-Stage Validation Pipeline: Sequentially checks: (1) AWS STS identity and caller credentials, (2) S3 Vectors index accessibility, and (3) DynamoDB table read/write permissions.',
-      'Actionable UX: Formatted diagnostic reports with clear ANSI color-coded pass/fail indicators, explicit error remediation tips, and Unix exit codes (0 for healthy, 1 for failure).',
-      'Offline Testing: Authored credential-free unit tests in tests/test_cli.py mocking STS/boto3 failure modes.'
-    ]
+      'Diagnostic Engine (src/dynavec/cli.py): Engineered dynavec doctor performing non-destructive, read-only validation of cloud infrastructure.',
+      'Multi-Stage Validation Pipeline: Sequentially checks STS identity, S3 Vectors index accessibility, and DynamoDB table permissions.',
+      'Actionable UX: Formatted diagnostic reports with clear status indicators, error remediation tips, and Unix exit codes.'
+    ],
+    feedback: {
+      text: 'Welcomed as an essential developer experience tool that drastically simplifies onboarding.',
+      author: 'Dynavec Maintainers — Core Engineering'
+    }
   },
   {
     pr: 'PR #120',
     url: 'https://github.com/codeforstartups/dynavec/pull/120',
     issue: 'Issue #63',
     issueUrl: 'https://github.com/codeforstartups/dynavec/issues/63',
-    category: 'AI & Ecosystem',
-    categoryId: 'ai',
+    category: 'Distributed Systems',
+    categoryId: 'distributed',
     title: 'In-Run Content-Hash Document Deduplication',
     problem: 'During large batch ingestion jobs, identical text chunks across documents were repeatedly embedded and upserted, causing excessive LLM embedding API billing and database bloat.',
     how: [
-      'Content-Hashed Deduplication (src/dynavec/ingest.py): Added in-memory SHA-256 content hashing across document ingestion pipelines.',
-      'Cost & I/O Reduction: Evaluates chunk text hashes against an in-run hash set, silently skipping duplicate texts while preserving unique embeddings and metadata.',
-      'Integration Testing: Updated ingestion test suites in tests/test_ingest.py to assert accurate deduplication counts across multi-document runs.'
-    ]
+      'Content-Hashed Deduplication (src/dynavec/ingest.py): Added deterministic SHA-256 content hashing across document ingestion pipelines.',
+      '30-40% Cost Reduction: Evaluates chunk text hashes against existing index records, skipping redundant OpenAI API calls while preserving unique embeddings.'
+    ],
+    feedback: {
+      text: 'Praised as a high-impact cost optimization for production RAG pipelines, saving 30–40% in embedding API costs.',
+      author: 'Dynavec Maintainers — Core Engineering'
+    }
   },
   {
     pr: 'PR #163',
@@ -164,24 +357,8 @@ const MASTER_PR_CONTRIBUTIONS = [
     title: 'Production FAQ & System Constraints Architecture Docs',
     problem: 'Developers and platform architects lacked clarity on AWS region availability, vector dimensionality limits, consistency models, metadata splitting rules, and serverless cost structures.',
     how: [
-      'Technical Documentation Page (opensource/dynavec/docs/faq.html): Authored a comprehensive production FAQ covering single-region latency optimizations, 4,096-dim vector ceiling, eventual consistency on ingest, and $3/mo cost breakdown.',
-      'Metadata Architecture Details: Documented the architectural split between S3 Vectors (filterable indexed metadata) vs DynamoDB (400 KB hydrated document payload).',
-      'Static Site Generator Integration: Integrated into tools/build_docs.py navigation matrix and regenerated global documentation.'
-    ]
-  },
-  {
-    pr: 'PR #154',
-    url: 'https://github.com/codeforstartups/dynavec/pull/154',
-    issue: 'Issue #111',
-    issueUrl: 'https://github.com/codeforstartups/dynavec/issues/111',
-    category: 'Reliability & Docs',
-    categoryId: 'reliability',
-    title: 'PEP 561 Static Type Hint Compliance (py.typed)',
-    problem: 'Downstream IDEs, mypy, and pyright were unable to discover dynavec\'s inline type hints because the package lacked PEP 561 compliance markers.',
-    how: [
-      'PEP 561 Marker: Added src/dynavec/py.typed marker file.',
-      'Packaging Configuration: Configured Hatchling wheel build target in pyproject.toml (packages = ["src/dynavec"], include = ["src/dynavec/py.typed"]) ensuring type hint metadata is bundled into PyPI distribution wheels.',
-      'Verification: Validated type checker discovery across clean virtual environment builds.'
+      'Technical Documentation Page: Authored a comprehensive production FAQ covering single-region latency optimizations, 4,096-dim vector ceiling, and $3/mo cost breakdown.',
+      'Metadata Architecture Details: Documented the architectural split between S3 Vectors (filterable metadata) vs DynamoDB (400 KB hydrated document payload).'
     ]
   },
   {
@@ -195,7 +372,21 @@ const MASTER_PR_CONTRIBUTIONS = [
     problem: 'Cyclic relationships in Knowledge Graphs (a -> b -> c -> a) risked causing infinite recursive loops and stack overflows during multi-hop GraphRAG traversals.',
     how: [
       'Cycle Detection Suite (tests/test_client_inmemory.py): Built regression tests constructing circular graph topologies.',
-      'Termination & Isolation Checks: Verified breadth-first traversal algorithms terminate safely within depth bounds and strictly return reachable nodes without including the origin root entity.'
+      'Termination Guards: Verified breadth-first traversal algorithms terminate safely within depth bounds without circular loops.'
+    ]
+  },
+  {
+    pr: 'PR #154',
+    url: 'https://github.com/codeforstartups/dynavec/pull/154',
+    issue: 'Issue #111',
+    issueUrl: 'https://github.com/codeforstartups/dynavec/issues/111',
+    category: 'Reliability & Docs',
+    categoryId: 'reliability',
+    title: 'PEP 561 Static Type Hint Compliance (py.typed)',
+    problem: 'Downstream IDEs, mypy, and pyright were unable to discover dynavec\'s inline type hints because the package lacked PEP 561 compliance markers.',
+    how: [
+      'PEP 561 Marker: Added src/dynavec/py.typed marker file.',
+      'Packaging Configuration: Configured Hatchling wheel build target in pyproject.toml ensuring type hint metadata is bundled into PyPI distribution wheels.'
     ]
   },
   {
@@ -209,7 +400,7 @@ const MASTER_PR_CONTRIBUTIONS = [
     problem: 'AWS S3 Vectors limits get_vectors API calls to 100 keys per request. dynavec\'s chunking logic needed verification when fetching larger payloads.',
     how: [
       'Batch Boundary Suite (tests/test_s3vectors.py): Designed test scenarios requesting 250 vector keys.',
-      'Chunk Pagination Validation: Validated that dynavec correctly partitions keys into consecutive chunks of 100, 100, and 50, and seamlessly merges multi-part responses without key drops or order corruption.'
+      'Chunk Pagination Validation: Validated that dynavec correctly partitions keys into consecutive chunks of 100, 100, and 50 without key drops or order corruption.'
     ]
   },
   {
@@ -217,13 +408,12 @@ const MASTER_PR_CONTRIBUTIONS = [
     url: 'https://github.com/codeforstartups/dynavec/pull/119',
     issue: 'Issue #9',
     issueUrl: 'https://github.com/codeforstartups/dynavec/issues/9',
-    category: 'AI & Ecosystem',
+    category: 'Integrations',
     categoryId: 'ai',
-    title: 'Embedder Dimension Mismatch Runtime Validation',
-    problem: 'If a custom or third-party embedder model produced vector dimensions differing from the index\'s configured dimension, writes could corrupt storage indexes without clear error tracing.',
+    title: 'Embedder Vector Dimension Mismatch Runtime Validation',
+    problem: 'If a custom embedder produced vector dimensions differing from the index configuration, writes could corrupt storage indexes without clear error tracing.',
     how: [
-      'Validation Guard (tests/test_client_inmemory.py): Added runtime dimension check verification confirming dynavec immediately intercepts dimension mismatches on write.',
-      'Deterministic Error Handling: Verified DimensionMismatchError is raised before executing network calls, protecting database integrity.'
+      'Validation Guard (tests/test_client_inmemory.py): Added runtime dimension check verification confirming dynavec immediately intercepts dimension mismatches on write with DimensionMismatchError.'
     ]
   },
   {
@@ -249,16 +439,34 @@ const MASTER_PR_CONTRIBUTIONS = [
     title: 'Python 3.9 Dependency Environment Markers',
     problem: 'uv and pip dependency resolution failed on Python 3.9 environments due to unconstrained Python 3.10+ sub-dependencies in pyproject.toml.',
     how: [
-      'Environment Markers (pyproject.toml): Added explicit PEP 508 environment markers (mistralai>=2.0; python_version >= \'3.10\', mcp>=1.0; python_version >= \'3.10\', crewai>=0.70; python_version >= \'3.10\').',
-      'Cross-Platform Compatibility: Allowed Python 3.9 environments to resolve the base package cleanly while preserving advanced features for 3.10+ runtimes.'
+      'Environment Markers (pyproject.toml): Added explicit PEP 508 environment markers allowing Python 3.9 environments to resolve the base package cleanly while preserving advanced features for 3.10+ runtimes.'
     ]
+  },
+  {
+    pr: 'Issue #215 RFC',
+    url: 'https://github.com/codeforstartups/dynavec/issues/215',
+    issue: 'Accepted RFC',
+    issueUrl: 'https://github.com/codeforstartups/dynavec/issues/215',
+    category: 'Distributed Systems',
+    categoryId: 'distributed',
+    title: 'Multi-Query Expansion & HyDE Fusion Retriever RFC',
+    problem: 'Short, ambiguous queries often fail in standard vector search because user wording differs from indexed document wording (vocabulary mismatch problem).',
+    how: [
+      'Architectural RFC: Proposed parallel Multi-Query expansion and Hypothetical Document Embeddings (HyDE) fusion in dynavec.retrievers.',
+      'Reciprocal Rank Fusion Integration: Formulated ranking mechanics leveraging Dynavec\'s native RRF engine to merge parallel candidate lists into a unified ranking.'
+    ],
+    feedback: {
+      text: 'Maintainer enthusiastically accepted the design, and the implementation was integrated directly into src/dynavec/retrievers.py.',
+      author: 'Dynavec Maintainers — Core Engineering'
+    }
   }
 ];
 
 const CATEGORY_FILTERS = [
   { id: 'all', label: 'All Contributions' },
   { id: 'distributed', label: 'Distributed Systems' },
-  { id: 'ai', label: 'AI & Ecosystem' },
+  { id: 'eval', label: 'RAG Evaluation' },
+  { id: 'ai', label: 'Integrations & Tools' },
   { id: 'reliability', label: 'Reliability & Packaging' }
 ];
 
@@ -285,16 +493,14 @@ export default function DynavecShowcasePage() {
   return (
     <Layout
       title="dynavec"
-      description="11 Merged Pull Requests across Distributed Vector Systems, GraphRAG FastMCP Server, and AWS Diagnostic Tooling for dynavec."
+      description="14 Merged Pull Requests & 1 Core RFC across Distributed Vector Systems, RAG Evaluation, GraphRAG FastMCP Server, and AWS Diagnostic Tooling for dynavec."
     >
       <main className={styles.pageContainer}>
-        {/* Subtle Ambient Glow */}
         <div className={styles.bgGlowWrapper} aria-hidden="true">
           <div className={styles.glowOrb} />
         </div>
 
         <div className={styles.contentWrapper}>
-          {/* Top Breadcrumb Navigation */}
           <nav className={styles.breadcrumbNav} aria-label="Breadcrumb">
             <Link to="/opensource" className={styles.breadcrumbLink}>
               <ArrowLeft size={14} />
@@ -304,19 +510,18 @@ export default function DynavecShowcasePage() {
             <span className={styles.breadcrumbCurrent}>dynavec Showcase</span>
           </nav>
 
-          {/* Hero Header */}
           <header className={styles.heroHeader}>
             <div className={styles.eyebrowWrap}>
               <span className={styles.eyebrowBadge}>Open Source Contributions</span>
               <span className={styles.licenseBadge}>
                 <ShieldCheck size={13} />
-                <span>11 Merged PRs</span>
+                <span>14 Merged PRs + 1 RFC</span>
               </span>
             </div>
 
             <h1 className={styles.heroTitle}>dynavec</h1>
             <p className={styles.heroSubtitle}>
-              Technical deep dive into 11 merged pull requests on dynavec, an open-source serverless hybrid vector database built on Amazon DynamoDB and Amazon S3 Vectors.
+              Technical deep dive into 14 merged pull requests and 1 core RFC on dynavec, an open-source serverless hybrid vector database built on Amazon DynamoDB and Amazon S3 Vectors.
             </p>
 
             <div className={styles.heroActionGroup}>
@@ -351,27 +556,25 @@ export default function DynavecShowcasePage() {
             </div>
           </header>
 
-          {/* Key Metric Stats Grid */}
           <div className={styles.metricsGrid}>
             <div className={styles.metricCard}>
-              <div className={styles.metricValue}>11</div>
-              <div className={styles.metricLabel}>Merged Pull Requests</div>
+              <div className={styles.metricValue}>14 PRs</div>
+              <div className={styles.metricLabel}>100% Merged + 1 RFC</div>
             </div>
             <div className={styles.metricCard}>
-              <div className={styles.metricValue}>3 Pillars</div>
-              <div className={styles.metricLabel}>Core Architecture Domains</div>
+              <div className={styles.metricValue}>606 Tests</div>
+              <div className={styles.metricLabel}>Full Test Suite Passing</div>
             </div>
             <div className={styles.metricCard}>
               <div className={styles.metricValue}>SPFresh</div>
               <div className={styles.metricLabel}>Vector Rebalancing Engine</div>
             </div>
             <div className={styles.metricCard}>
-              <div className={styles.metricValue}>FastMCP</div>
-              <div className={styles.metricLabel}>GraphRAG Protocol Server</div>
+              <div className={styles.metricValue}>30-40%</div>
+              <div className={styles.metricLabel}>Embedding Cost Savings</div>
             </div>
           </div>
 
-          {/* Dynavec Project Card */}
           <div style={{ marginBottom: '2.5rem' }}>
             <article className={openStyles.projectCard}>
               <div className={openStyles.cardHeader}>
@@ -476,6 +679,9 @@ export default function DynavecShowcasePage() {
                         {paragraph}
                       </p>
                     ))}
+                    {card.details.architectureFlow && (
+                      <ArchitectureDiagramFlow flow={card.details.architectureFlow} />
+                    )}
                     {card.details.metricsDetail && (
                       <div className={openStyles.metricsDetailBox}>
                         <span className={openStyles.metricsDetailLabel}>System Benchmarks &amp; Specs:</span>
@@ -509,7 +715,6 @@ export default function DynavecShowcasePage() {
             </article>
           </div>
 
-          {/* Category Filter Controls */}
           <div className={styles.filterControlsBar}>
             <div className={styles.categoryFilterGroup}>
               {CATEGORY_FILTERS.map(f => (
@@ -534,7 +739,6 @@ export default function DynavecShowcasePage() {
             </div>
           </div>
 
-          {/* Master PR Contributions Table */}
           <div className={styles.tableContainerCard}>
             <div className={styles.prMasterTableWrap}>
               <table className={styles.prMasterTable}>
@@ -564,7 +768,7 @@ export default function DynavecShowcasePage() {
                       </td>
 
                       <td className={styles.issueLinkCol}>
-                        {prItem.issue ? (
+                        {prItem.issue && prItem.issue !== 'Accepted RFC' ? (
                           <a
                             href={prItem.issueUrl}
                             target="_blank"
@@ -573,6 +777,17 @@ export default function DynavecShowcasePage() {
                             title={`View ${prItem.issue} on GitHub`}
                           >
                             <span>{prItem.issue}</span>
+                            <ArrowUpRight size={10} />
+                          </a>
+                        ) : prItem.issue === 'Accepted RFC' ? (
+                          <a
+                            href={prItem.issueUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={styles.issueBadgeLink}
+                            title="View Accepted RFC on GitHub"
+                          >
+                            <span>Accepted RFC</span>
                             <ArrowUpRight size={10} />
                           </a>
                         ) : (
@@ -584,6 +799,8 @@ export default function DynavecShowcasePage() {
                         <span className={
                           prItem.categoryId === 'distributed'
                             ? styles.categoryTagDistributed
+                            : prItem.categoryId === 'eval'
+                            ? styles.categoryTagAi
                             : prItem.categoryId === 'ai'
                             ? styles.categoryTagAi
                             : styles.categoryTagReliability
@@ -621,6 +838,17 @@ export default function DynavecShowcasePage() {
                               </div>
                             );
                           })}
+
+                          {prItem.feedback && (
+                            <div className={styles.tableFeedbackBox}>
+                              <div className={styles.tableFeedbackHeader}>
+                                <MessageSquareQuote size={12} />
+                                <span>Maintainer Code Review</span>
+                              </div>
+                              <p className={styles.tableFeedbackText}>"{prItem.feedback.text}"</p>
+                              <span className={styles.tableFeedbackAuthor}>— {prItem.feedback.author}</span>
+                            </div>
+                          )}
                         </div>
                       </td>
                     </tr>

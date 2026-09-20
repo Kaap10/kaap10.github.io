@@ -26,6 +26,10 @@ yarn-error.log*
 # Design system documentation
 design_system.md
 DESIGN_SYSTEM.md
+system_design.md
+SYSTEM_DESIGN.md
+system design.md
+system desing.md
 
 # Project documentation
 project.md
@@ -33,3 +37,4 @@ PROJECT.md
 projects.md
 
 
+/OSS Contributions

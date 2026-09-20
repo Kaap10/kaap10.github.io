@@ -1,37 +1,676 @@
-import React from 'react';
+import React, { useState, useMemo } from 'react';
 import Layout from '@theme/Layout';
 import Link from '@docusaurus/Link';
-import { ArrowLeft } from 'lucide-react';
+import { 
+  GitPullRequest, 
+  ArrowLeft, 
+  ShieldCheck, 
+  ArrowUpRight,
+  Database,
+  Layers,
+  Sparkles,
+  Package,
+  ChevronDown,
+  ChevronUp,
+  CheckCircle2,
+  Terminal,
+  Lock,
+  Cpu,
+  Server,
+  MessageSquareQuote
+} from 'lucide-react';
 import styles from './dynavec.module.css';
+import openStyles from '../opensource.module.css';
+import ArchitectureDiagramFlow from './ArchitectureDiagramFlow';
 
-export default function MagpiePage() {
+const IconGithub = ({ size = 15 }) => (
+  <svg viewBox="0 0 24 24" width={size} height={size} fill="currentColor" aria-hidden="true">
+    <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
+  </svg>
+);
+
+const MAGPIE_CARD = {
+  id: 'magpie',
+  index: '01',
+  roleTag: 'Contributor · 5 Merged PRs',
+  icon: ShieldCheck,
+  title: 'apache/magpie',
+  headline: 'Vendor-Neutral AI Agent Harness Runtimes & HITL Security Framework',
+  cardDescription:
+    'Authored 5 first-class runtime adapters integrating industry-standard AI agent harnesses (GitHub Copilot CLI, Aider, Block Goose, Local LLMs, and Cursor) into Apache Magpie under RFC-AI-0004.',
+  license: '5 Merged PRs',
+  techStack: ['Python', 'Shell', 'RFC-AI-0004', 'MCP Protocol', 'GitHub Copilot CLI', 'Aider', 'Block Goose', 'Ollama / vLLM', 'Cursor Agent', 'Apache RAT'],
+  highlights: [
+    {
+      label: 'Copilot CLI & Coding Agent (PR #1287, Issue #318)',
+      text: 'Engineered standalone Copilot CLI runtime, draft PR safety boundaries, and ~/.copilot/mcp-config.json integration.'
+    },
+    {
+      label: 'Aider & Block Goose Runtimes (PR #1286, #1217, Issues #317, #319)',
+      text: 'Designed on-demand /read skill ingestion, GOOSE_MODE="approve" HITL enforcement, and Layer 0 agent-iso credential isolation.'
+    },
+    {
+      label: 'Local LLM & Cursor Adapters (PR #1206, #1204, Issues #315, #316)',
+      text: 'Calibrated air-gapped Ollama/vLLM 70B+ triage floors, and implemented Cursor Composer symlink discovery topology.'
+    }
+  ],
+  github: 'https://github.com/apache/magpie',
+  prsUrl: 'https://github.com/apache/magpie/pulls?q=is%3Apr+is%3Amerged+author%3AKaap10',
+  tags: ['Open Source', 'Apache Software Foundation', 'AI Safety', 'Model Context Protocol', 'Agent Harnesses', 'HITL'],
+  details: {
+    description:
+      'Apache Magpie is the Apache Software Foundation\'s vendor-neutral framework for managing security triage, CVE allocation, and reproducible vulnerability workflows.\n\nAs a core external contributor across 5 merged pull requests, authored first-class runtime adapters for leading AI agent harnesses in full compliance with RFC-AI-0004. Collaborated directly with ASF Board and PMC Member Jarek Potiuk (@potiuk) to establish rigorous Human-in-the-Loop (HITL) security boundaries, ensuring agentic systems propose changes via Draft Pull Requests rather than executing unreviewed mutations.\n\nArchitected Model Context Protocol (MCP) integrations connecting PonyMail archive search and Apache Projects tools, configured Layer 0 clean-environment wrappers (agent-iso) to scrub ambient cloud tokens, and validated all contributions against Apache RAT licensing audits, prek hooks, symlink topology linters, and vendor-neutrality scoring.',
+    allTech: [
+      'Python',
+      'Shell / Bash',
+      'RFC-AI-0004',
+      'Model Context Protocol (MCP)',
+      'GitHub Copilot CLI',
+      'Aider Pair Programming',
+      'Block Goose Agent',
+      'Ollama / llama.cpp / vLLM',
+      'Cursor Agent CLI',
+      'Apache RAT License Auditor',
+      'prek Git Hooks',
+      'agent-iso Sandbox'
+    ],
+    architectureFlow: {
+      title: 'Apache Magpie Universal Agent Harness Architecture Flow',
+      mentalModel: {
+        input: 'Agentic Harnesses (Copilot CLI, Aider, Goose, Local Models)',
+        process: 'Layer 0 agent-iso Clean Room Sandbox + Ambient Credential Scrubbing',
+        output: '70+ Canonical Skills & Model Context Protocol (MCP) Endpoints'
+      },
+      layers: [
+        {
+          stage: 'Stage 1: Client & Agentic Harness Adapters',
+          connectorLabel: null,
+          cards: [
+            {
+              title: 'GitHub Copilot CLI Integration',
+              pr: 'PR #1287',
+              prUrl: 'https://github.com/apache/magpie/pull/1287',
+              impact: 'Standalone CLI Alignment • Draft PR HITL Gating',
+              isContributed: true,
+              points: [
+                'Standalone Copilot CLI tool definition & execution schema',
+                '~/.copilot/mcp-config.json canonical configuration alignment',
+                'Strict privacy boundary framing & draft PR gating'
+              ]
+            },
+            {
+              title: 'Aider Pair Programming Harness',
+              pr: 'PR #1286',
+              prUrl: 'https://github.com/apache/magpie/pull/1286',
+              impact: 'On-Demand /read Ingestion • Git Discipline Rules',
+              isContributed: true,
+              points: [
+                'On-demand /read .agents/skills/* workflow ingestion',
+                'Mandatory git discipline flags (--no-auto-commits)',
+                '.aiderignore secret token sanitization rules'
+              ]
+            },
+            {
+              title: 'Block Goose Agentic CLI Harness',
+              pr: 'PR #1217',
+              prUrl: 'https://github.com/apache/magpie/pull/1217',
+              impact: 'GOOSE_MODE="approve" Guard • Declarative Recipes',
+              isContributed: true,
+              points: [
+                'GOOSE_MODE="approve" human-in-the-loop security guard',
+                'Declarative .goose/recipes/triage.yaml workflow wrapper',
+                'Interactive per-action modal confirmation triggers'
+              ]
+            },
+            {
+              title: 'Local LLM & Air-Gapped Inference',
+              pr: 'PR #1206 & PR #1204',
+              prUrl: 'https://github.com/apache/magpie/pull/1206',
+              impact: 'Ollama / llama.cpp / vLLM • Zero-Network Triage',
+              isContributed: true,
+              points: [
+                'Vendor-neutral Ollama, llama.cpp & vLLM endpoint routing',
+                'Multi-model --architect tiering with 70B+ reasoning floors',
+                'Zero external network dependencies for embargoed CVE triage'
+              ]
+            }
+          ]
+        },
+        {
+          stage: 'Stage 2: Security Isolation & Credential Scrubbing Boundary',
+          connectorLabel: 'Human-in-the-Loop (HITL) Security Boundary',
+          cards: [
+            {
+              title: 'Layer 0 Clean Environment & Credential Isolation',
+              pr: 'PR #1217 & PR #1286',
+              prUrl: 'https://github.com/apache/magpie/pull/1217',
+              impact: 'agent-iso Sandbox • Defense-in-Depth Token Scrubbing',
+              isContributed: true,
+              points: [
+                'agent-iso sandbox scrubbing ambient tokens and API keys',
+                'Proposal-then-confirm authorization modal across all tools',
+                'Strict defense-in-depth against prompt injection and data leaks'
+              ]
+            }
+          ]
+        },
+        {
+          stage: 'Stage 3: Canonical Tool Standard & MCP Execution Engine',
+          connectorLabel: 'Canonical Registry & Model Context Protocol',
+          cards: [
+            {
+              title: 'Canonical Skill Registry & MCP Tool Engine',
+              impact: '70+ RFC-AI-0004 Skills • Multi-Client JSON-RPC 2.0',
+              isContributed: false,
+              points: [
+                '70+ vendor-neutral engineering skill definitions (RFC-AI-0004)',
+                'JSON-RPC 2.0 tool execution endpoints for PonyMail & Projects',
+                'Selective skill loading without token context bloat'
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    fullHighlights: [
+      'RFC-AI-0004 Vendor-Neutral Skill Standard: Universal skill definitions running identically across Cursor, Aider, Goose, Copilot CLI, and local open models without vendor lock-in.',
+      'Human-in-the-Loop (HITL) Security Enforcement: Enforced proposal-then-confirm discipline and disabled unsafe autonomous flags (--allow-all, --yolo, auto-commits) across all agent harnesses.',
+      'Layer 0 Credential & Token Isolation: Engineered agent-iso execution boundaries scrubbing ambient environment variables and cloud tokens prior to launching subshells.',
+      'Sovereign Air-Gapped Local LLM Inference: Formatted local model runtimes (Ollama, llama.cpp, vLLM) establishing 70B+ reasoning floors for embargoed vulnerability triage.',
+      'Model Context Protocol (MCP) Multi-Client Integration: Configured standardized JSON-RPC 2.0 schemas connecting harnesses to PonyMail and Apache Projects MCP servers.',
+      'On-Demand Skill Ingestion: Implemented selective /read .agents/skills/ patterns, eliminating context window exhaustion across large tool suites.'
+    ],
+    metricsDetail: '5 Merged PRs · 100% Merge Rate · RFC-AI-0004 Vendor Neutrality · ASF PMC Reviewed · Zero-Cloud Air-Gapped LLMs',
+  },
+};
+
+const MASTER_PR_CONTRIBUTIONS = [
+  {
+    pr: 'PR #1287',
+    url: 'https://github.com/apache/magpie/pull/1287',
+    issue: 'Issue #318',
+    issueUrl: 'https://github.com/apache/magpie/issues/318',
+    category: 'Agent Harnesses',
+    categoryId: 'agentic',
+    title: 'GitHub Copilot CLI and Coding Agent Skill Runtime',
+    problem: 'GitHub provides two major Copilot surfaces: standalone terminal CLI and server-side autonomous Coding Agent. The framework lacked guides showing how both surfaces execute Magpie skills safely without unreviewed mutations or leaking embargoed security issues.',
+    how: [
+      'Surface Differentiation: Separated interactive human triagers using the standalone copilot binary from automated server-side runs by the Coding Agent.',
+      'Standalone CLI Migration: Targeted modern agentic toolchain (npm install -g @github/copilot) following GitHub\'s deprecation of legacy gh copilot.',
+      'HITL Enforcement: Enforced disabling of permissive flags (--allow-all, --yolo) and mandated strict Draft Pull Request policy for server-side Coding Agents.',
+      'Privacy Boundary: Documented privacy opting via <project-config>/privacy-llm.md for triagers handling <security-list> embargoed vulnerability disclosures.',
+      'MCP Integration: Formatted local MCP server configs using Copilot CLI ~/.copilot/mcp-config.json schema ("type": "local", "tools": ["*"]).'
+    ],
+    feedback: {
+      text: 'LGTM, approving — the rewrite matches the standalone Copilot CLI and I checked the install commands, -p, --allow-all / --yolo, ~/.copilot/mcp-config.json, @copilot and the privacy framing against GitHub\'s docs.',
+      author: 'Jarek Potiuk (@potiuk) — ASF Board & PMC Member'
+    }
+  },
+  {
+    pr: 'PR #1286',
+    url: 'https://github.com/apache/magpie/pull/1286',
+    issue: 'Issue #317',
+    issueUrl: 'https://github.com/apache/magpie/issues/317',
+    category: 'Agent Harnesses',
+    categoryId: 'agentic',
+    title: 'Aider Terminal Pair Programming Agent Runtime Guide',
+    problem: 'Aider does not automatically scan large directories of skills, and its default configuration performs automatic git commits after every turn, violating Magpie\'s human-in-the-loop review tenets.',
+    how: [
+      'On-Demand Skill Ingestion: Established the on-demand /read .agents/skills/magpie-*/SKILL.md pattern, loading specific workflows without bloating context windows across 70+ framework skills.',
+      'Git Discipline Enforcement: Prescribed mandatory --no-auto-commits and --no-dirty-commits flags (auto-commits: false in .aider.conf.yml).',
+      'Local LLM & Multi-Model Tiering: Documented multi-model --architect setups using vendor-neutral placeholders and local Ollama endpoints (export OLLAMA_API_BASE=http://127.0.0.1:11434).',
+      'Environment Scrubbing: Configured .aiderignore rules to block accidental inclusion of sensitive tokens, environment files, and local overrides.'
+    ],
+    feedback: {
+      text: 'Thanks, this follows the Goose guide\'s shape closely and the harness contract, agent-iso caveat and the .aider.conf.yml keys all check out against Aider\'s docs.',
+      author: 'Jarek Potiuk (@potiuk) — ASF Board & PMC Member'
+    }
+  },
+  {
+    pr: 'PR #1217',
+    url: 'https://github.com/apache/magpie/pull/1217',
+    issue: 'Issue #319',
+    issueUrl: 'https://github.com/apache/magpie/issues/319',
+    category: 'HITL & Security',
+    categoryId: 'security',
+    title: 'Block\'s Goose Agentic CLI Runtime Guide',
+    problem: 'By default, Block\'s Goose agent runs in autonomous mode (GOOSE_MODE: "auto"), modifying files and running shell commands without interactive approval modals.',
+    how: [
+      'Safety Mode Configuration: Mandated GOOSE_MODE: "approve" in ~/.config/goose/config.yaml to enforce per-action interactive confirmation modals.',
+      'Declarative Recipe Subsystem: Designed a declarative recipe pattern (.goose/recipes/triage.yaml) wrapping Magpie skills without duplicating underlying skill files.',
+      'MCP Protocol Accuracy: Documented Goose\'s supported transport types (stdio and streamable_http) connecting to Apache Projects and PonyMail MCP servers.',
+      'Transparent Isolation Caveat: Documented Layer 0 environment stripping mechanics of agent-iso goose regarding SSH_AUTH_SOCK preservation and push gating.'
+    ],
+    feedback: {
+      text: 'All four blockers are genuinely fixed — I checked each against the pushed content, not the commit message... The Layer 0 / SSH_AUTH_SOCK caveat you added wasn\'t something I asked for explicitly and it\'s the right instinct — that\'s the part an adopter most needs to see.',
+      author: 'Jarek Potiuk (@potiuk) — ASF Board & PMC Member'
+    }
+  },
+  {
+    pr: 'PR #1206',
+    url: 'https://github.com/apache/magpie/pull/1206',
+    issue: 'Issue #315',
+    issueUrl: 'https://github.com/apache/magpie/issues/315',
+    category: 'Local Inference',
+    categoryId: 'local',
+    title: 'Local LLM (Ollama / llama.cpp / vLLM) Skill Runtime Guide',
+    problem: 'ASF projects require sovereign, privacy-preserving infrastructure for handling embargoed security disclosures and CVE triage where commercial cloud endpoints are prohibited.',
+    how: [
+      'Calibrated Capability Floors: Established empirical capability floors evaluated against tools/skill-evals/ (70B+ reasoning class for multi-step planning/reproduction vs 8B-14B for single-turn formatting).',
+      'Universal OpenAI-Compatible APIs: Documented standard runners (Ollama, llama.cpp, vLLM) exposing /v1 endpoints connecting directly to open-source agent frontends.',
+      'Air-Gapped Sovereign Posture: Validated zero-cloud telemetry architecture where model weights run strictly on private infrastructure.'
+    ],
+    feedback: {
+      text: 'Nice one ! We will also have to add a privacy filtering to the mix (and explain that those private local LLMs do not need to have it set-up). But that can be a follow-up.',
+      author: 'Jarek Potiuk (@potiuk) — ASF Board & PMC Member'
+    }
+  },
+  {
+    pr: 'PR #1204',
+    url: 'https://github.com/apache/magpie/pull/1204',
+    issue: 'Issue #316',
+    issueUrl: 'https://github.com/apache/magpie/issues/316',
+    category: 'Agent Harnesses',
+    categoryId: 'agentic',
+    title: 'Cursor Composer and Agent CLI Skill Runtime',
+    problem: 'Contributors using Cursor IDE needed a standardized reference implementation showing how Cursor Composer and cursor-agent CLI discover and execute Magpie skills natively.',
+    how: [
+      'Universal Skill Discovery: Mapped Cursor\'s native workspace scanner directly to canonical .agents/skills/magpie-*/SKILL.md symlinks.',
+      'Permission Alignment: Mapped Cursor\'s per-action approval modals to Magpie\'s proposal-then-confirm discipline, advising against unrestricted Auto-Runs.',
+      'Headless Spec-Loop Execution: Documented cursor-agent CLI integration for headless triage passes and automated verification.',
+      'Ecosystem Registration: Updated the adapter registry (docs/adapters/registry.md), contributing guidelines, and vendor-neutrality matrices.'
+    ],
+    feedback: {
+      text: 'Approved and merged cleanly into main, establishing the canonical skill discovery architecture for subsequent agent harness adapters.',
+      author: 'Jarek Potiuk (@potiuk) — ASF Board & PMC Member'
+    }
+  }
+];
+
+const CATEGORY_FILTERS = [
+  { id: 'all', label: 'All Contributions' },
+  { id: 'agentic', label: 'Agent Harnesses' },
+  { id: 'security', label: 'HITL & Security' },
+  { id: 'local', label: 'Local Inference' }
+];
+
+export default function MagpieShowcasePage() {
+  const [activeCategory, setActiveCategory] = useState('all');
+  const [isCardExpanded, setIsCardExpanded] = useState(false);
+
+  const filteredPRs = useMemo(() => {
+    if (activeCategory === 'all') return MASTER_PR_CONTRIBUTIONS;
+    return MASTER_PR_CONTRIBUTIONS.filter(item => item.categoryId === activeCategory);
+  }, [activeCategory]);
+
+  const categoryCounts = useMemo(() => {
+    const counts = { all: MASTER_PR_CONTRIBUTIONS.length };
+    MASTER_PR_CONTRIBUTIONS.forEach(item => {
+      counts[item.categoryId] = (counts[item.categoryId] || 0) + 1;
+    });
+    return counts;
+  }, []);
+
+  const card = MAGPIE_CARD;
+  const CardIcon = card.icon;
+
   return (
     <Layout
       title="apache/magpie"
-      description="Apache Magpie open-source contributions by Vardhman Gupta."
+      description="5 Merged Pull Requests across AI Agent Harness Runtimes, Model Context Protocol, and Human-in-the-Loop Security for Apache Magpie."
     >
       <main className={styles.pageContainer}>
+        <div className={styles.bgGlowWrapper} aria-hidden="true">
+          <div className={styles.glowOrb} />
+        </div>
+
         <div className={styles.contentWrapper}>
-          <nav className={styles.breadcrumbNav}>
+          <nav className={styles.breadcrumbNav} aria-label="Breadcrumb">
             <Link to="/opensource" className={styles.breadcrumbLink}>
               <ArrowLeft size={14} />
               <span>Open Source</span>
             </Link>
             <span>/</span>
-            <span className={styles.breadcrumbCurrent}>apache/magpie</span>
+            <span className={styles.breadcrumbCurrent}>apache/magpie Showcase</span>
           </nav>
 
           <header className={styles.heroHeader}>
-            <h1 style={{ fontSize: '2.4rem', fontWeight: 700, margin: '0 0 0.5rem 0' }}>
-              apache/magpie
-            </h1>
-            <p style={{ color: 'var(--vg-text-muted, #A6A6AC)', fontSize: '1.05rem', margin: 0 }}>
-              Open-source contributions and architecture details.
+            <div className={styles.eyebrowWrap}>
+              <span className={styles.eyebrowBadge}>Apache Software Foundation</span>
+              <span className={styles.licenseBadge}>
+                <ShieldCheck size={13} />
+                <span>5 Merged PRs</span>
+              </span>
+            </div>
+
+            <h1 className={styles.heroTitle}>apache/magpie</h1>
+            <p className={styles.heroSubtitle}>
+              Technical deep dive into 5 merged pull requests on Apache Magpie, the ASF's vendor-neutral security triage, CVE allocation, and reproducible vulnerability management framework.
             </p>
+
+            <div className={styles.heroActionGroup}>
+              <a
+                href="https://github.com/apache/magpie/pulls?q=is%3Apr+is%3Amerged+author%3AKaap10"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.primaryBtn}
+              >
+                <GitPullRequest size={15} />
+                <span>View Merged PRs on GitHub</span>
+                <ArrowUpRight size={13} />
+              </a>
+
+              <a
+                href="https://github.com/apache/magpie"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.secondaryBtn}
+              >
+                <IconGithub size={15} />
+                <span>GitHub Repository</span>
+                <ArrowUpRight size={13} />
+              </a>
+
+              <Link
+                to="/opensource"
+                className={styles.secondaryBtn}
+              >
+                <span>View All Open Source</span>
+              </Link>
+            </div>
           </header>
+
+          <div className={styles.metricsGrid}>
+            <div className={styles.metricCard}>
+              <div className={styles.metricValue}>5</div>
+              <div className={styles.metricLabel}>Merged Pull Requests</div>
+            </div>
+            <div className={styles.metricCard}>
+              <div className={styles.metricValue}>100%</div>
+              <div className={styles.metricLabel}>Merge Success Rate</div>
+            </div>
+            <div className={styles.metricCard}>
+              <div className={styles.metricValue}>RFC-AI-0004</div>
+              <div className={styles.metricLabel}>Vendor-Neutral Standard</div>
+            </div>
+            <div className={styles.metricCard}>
+              <div className={styles.metricValue}>ASF PMC</div>
+              <div className={styles.metricLabel}>Board Member Reviewed</div>
+            </div>
+          </div>
+
+          <div style={{ marginBottom: '2.5rem' }}>
+            <article className={openStyles.projectCard}>
+              <div className={openStyles.cardHeader}>
+                <div className={openStyles.indexCategoryWrap}>
+                  <span className={openStyles.projectIndex}>{card.index}</span>
+                  <div className={openStyles.iconBadge}>
+                    <CardIcon size={16} />
+                  </div>
+                  <span className={openStyles.roleBadge}>{card.roleTag}</span>
+                </div>
+
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
+                  {card.license && (
+                    <div className={openStyles.licenseBadge}>
+                      <ShieldCheck size={13} />
+                      <span>{card.license}</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <div className={openStyles.titleBlock}>
+                <h2 className={openStyles.projectTitle}>{card.title}</h2>
+                <p className={openStyles.projectTagline}>{card.headline}</p>
+                <p className={openStyles.projectSummary}>{card.cardDescription}</p>
+              </div>
+
+              <div className={openStyles.highlightsContainer}>
+                <span className={openStyles.highlightsHeader}>Key Engineering Deliverables</span>
+                <ul className={openStyles.highlightsList}>
+                  {card.highlights.map((h, i) => (
+                    <li key={i} className={openStyles.highlightItem}>
+                      <span className={openStyles.highlightDot}>•</span>
+                      <span>
+                        <strong className={openStyles.highlightLabel}>{h.label}: </strong>
+                        <span className={openStyles.highlightText}>{h.text}</span>
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className={openStyles.techTagsRow}>
+                {card.techStack.map((t, idx) => (
+                  <span key={idx} className={openStyles.techTag}>
+                    {t}
+                  </span>
+                ))}
+              </div>
+
+              <div className={openStyles.cardFooter}>
+                <div className={openStyles.footerLeft}>
+                  <button
+                    type="button"
+                    className={`${openStyles.deepDiveBtn} ${isCardExpanded ? openStyles.deepDiveBtnActive : ''}`}
+                    onClick={() => setIsCardExpanded(!isCardExpanded)}
+                    aria-expanded={isCardExpanded}
+                  >
+                    <Layers size={14} />
+                    <span>{isCardExpanded ? 'Hide Architecture Deep Dive' : 'View Architecture Deep Dive'}</span>
+                    {isCardExpanded ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+                  </button>
+                </div>
+
+                <div className={openStyles.cardActions}>
+                  {card.github && (
+                    <a
+                      href={card.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={openStyles.actionBtn}
+                      title="View Repository on GitHub"
+                    >
+                      <IconGithub size={14} />
+                      <span>GitHub</span>
+                      <ArrowUpRight size={13} />
+                    </a>
+                  )}
+                  {card.prsUrl && (
+                    <a
+                      href={card.prsUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={openStyles.actionBtn}
+                      title="View Merged Pull Requests"
+                    >
+                      <GitPullRequest size={14} />
+                      <span>Merged PRs</span>
+                      <ArrowUpRight size={13} />
+                    </a>
+                  )}
+                </div>
+              </div>
+
+              {isCardExpanded && (
+                <div className={openStyles.deepDivePanel}>
+                  <div className={openStyles.deepDiveDivider} />
+                  <div className={openStyles.deepDiveContent}>
+                    <h4 className={openStyles.deepDiveHeading}>System Architecture &amp; Implementation Details</h4>
+                    {card.details.description.split('\n\n').map((paragraph, pIdx) => (
+                      <p key={pIdx} className={openStyles.deepDiveParagraph}>
+                        {paragraph}
+                      </p>
+                    ))}
+                    {card.details.architectureFlow && (
+                      <ArchitectureDiagramFlow flow={card.details.architectureFlow} />
+                    )}
+                    {card.details.metricsDetail && (
+                      <div className={openStyles.metricsDetailBox}>
+                        <span className={openStyles.metricsDetailLabel}>System Benchmarks &amp; Specs:</span>
+                        <span className={openStyles.metricsDetailText}>{card.details.metricsDetail}</span>
+                      </div>
+                    )}
+                    <div className={openStyles.deepDiveSection}>
+                      <h5 className={openStyles.deepDiveSubheading}>Complete Technical Stack</h5>
+                      <div className={openStyles.fullTechWrap}>
+                        {card.details.allTech.map((techItem, tIdx) => (
+                          <span key={tIdx} className={openStyles.fullTechChip}>
+                            {techItem}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                    <div className={openStyles.deepDiveSection}>
+                      <h5 className={openStyles.deepDiveSubheading}>Complete Architectural Highlights</h5>
+                      <ul className={openStyles.fullHighlightsList}>
+                        {card.details.fullHighlights.map((fh, fhIdx) => (
+                          <li key={fhIdx} className={openStyles.fullHighlightItem}>
+                            <CheckCircle2 size={13} className={openStyles.fullHighlightIcon} />
+                            <span>{fh}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </article>
+          </div>
+
+          <div className={styles.filterControlsBar}>
+            <div className={styles.categoryFilterGroup}>
+              {CATEGORY_FILTERS.map(f => (
+                <button
+                  key={f.id}
+                  type="button"
+                  className={`${styles.filterBtn} ${activeCategory === f.id ? styles.filterBtnActive : ''}`}
+                  onClick={() => setActiveCategory(f.id)}
+                >
+                  <span>{f.label}</span>
+                  <span className={styles.filterCountBadge}>{categoryCounts[f.id] || 0}</span>
+                </button>
+              ))}
+            </div>
+
+            <div className={styles.tableCountHint}>
+              <span>Showing </span>
+              <span className={styles.tableCountHighlight}>{filteredPRs.length}</span>
+              <span> of </span>
+              <span className={styles.tableCountHighlight}>{MASTER_PR_CONTRIBUTIONS.length}</span>
+              <span> ranked pull requests</span>
+            </div>
+          </div>
+
+          <div className={styles.tableContainerCard}>
+            <div className={styles.prMasterTableWrap}>
+              <table className={styles.prMasterTable}>
+                <thead>
+                  <tr>
+                    <th className={styles.prLinkCol}>PR</th>
+                    <th className={styles.issueLinkCol}>Issue</th>
+                    <th className={styles.categoryCol}>Domain</th>
+                    <th className={styles.problemCol}>What Is the Issue?</th>
+                    <th className={styles.solutionCol}>How I Resolved It (Technical In-Depth)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredPRs.map((prItem, idx) => (
+                    <tr key={idx}>
+                      <td className={styles.prLinkCol}>
+                        <a
+                          href={prItem.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={styles.prBadgeLink}
+                          title={`View ${prItem.pr} on GitHub`}
+                        >
+                          <span>{prItem.pr}</span>
+                          <ArrowUpRight size={11} />
+                        </a>
+                      </td>
+
+                      <td className={styles.issueLinkCol}>
+                        {prItem.issue ? (
+                          <a
+                            href={prItem.issueUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={styles.issueBadgeLink}
+                            title={`View ${prItem.issue} on GitHub`}
+                          >
+                            <span>{prItem.issue}</span>
+                            <ArrowUpRight size={10} />
+                          </a>
+                        ) : (
+                          <span className={styles.foundationalBadge}>Foundational</span>
+                        )}
+                      </td>
+
+                      <td className={styles.categoryCol}>
+                        <span className={
+                          prItem.categoryId === 'security'
+                            ? styles.categoryTagDistributed
+                            : prItem.categoryId === 'local'
+                            ? styles.categoryTagAi
+                            : styles.categoryTagReliability
+                        }>
+                          {prItem.category}
+                        </span>
+                      </td>
+
+                      <td className={styles.problemCol}>
+                        <div className={styles.prTitleText}>{prItem.title}</div>
+                        <p className={styles.prProblemText}>{prItem.problem}</p>
+                      </td>
+
+                      <td className={styles.solutionCol}>
+                        <div className={styles.prSolutionList}>
+                          {prItem.how.map((point, ptIdx) => {
+                            const colonIdx = point.indexOf(': ');
+                            if (colonIdx !== -1) {
+                              const term = point.substring(0, colonIdx);
+                              const detail = point.substring(colonIdx + 2);
+                              return (
+                                <div key={ptIdx} className={styles.prSolutionPoint}>
+                                  <span className={styles.prBullet}>•</span>
+                                  <div className={styles.pointTextWrap}>
+                                    <strong className={styles.techTerm}>{term}:</strong>{' '}
+                                    <span className={styles.techDetail}>{detail}</span>
+                                  </div>
+                                </div>
+                              );
+                            }
+                            return (
+                              <div key={ptIdx} className={styles.prSolutionPoint}>
+                                <span className={styles.prBullet}>•</span>
+                                <span className={styles.techDetail}>{point}</span>
+                              </div>
+                            );
+                          })}
+
+                          {prItem.feedback && (
+                            <div className={styles.tableFeedbackBox}>
+                              <div className={styles.tableFeedbackHeader}>
+                                <MessageSquareQuote size={12} />
+                                <span>Maintainer Code Review</span>
+                              </div>
+                              <p className={styles.tableFeedbackText}>"{prItem.feedback.text}"</p>
+                              <span className={styles.tableFeedbackAuthor}>— {prItem.feedback.author}</span>
+                            </div>
+                          )}
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
         </div>
       </main>
     </Layout>
   );
 }
-

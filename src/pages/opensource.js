@@ -79,7 +79,7 @@ export default function OpenSourcePage() {
                 </Link>
               </div>
 
-              {/* Row 3: dynavec, quater, palinode */}
+              {/* Row 3: dynavec, layer5io, palinode */}
               <div className={styles.buttonRow}>
                 <Link
                   to="/opensource/dynavec"
@@ -93,12 +93,12 @@ export default function OpenSourcePage() {
                 </Link>
 
                 <Link
-                  to="/opensource/quater"
+                  to="/opensource/layer5io"
                   className={styles.headerLink}
-                  title="quater (Contributor)"
+                  title="layer5io (Contributor)"
                 >
-                  <IconGithub size={13} style={{ color: '#FAAD14' }} />
-                  <span>quater</span>
+                  <IconGithub size={13} style={{ color: '#00D3A9' }} />
+                  <span>layer5io</span>
                   <span className={styles.contributorBadge}>Contributor</span>
                   <ArrowRight size={13} />
                 </Link>
@@ -115,8 +115,19 @@ export default function OpenSourcePage() {
                 </Link>
               </div>
 
-              {/* Row 4: sqlite & meshery extensions */}
+              {/* Row 4: quater, sqlite & meshery extensions */}
               <div className={styles.buttonRow}>
+                <Link
+                  to="/opensource/quater"
+                  className={styles.headerLink}
+                  title="quater (Contributor)"
+                >
+                  <IconGithub size={13} style={{ color: '#FAAD14' }} />
+                  <span>quater</span>
+                  <span className={styles.contributorBadge}>Contributor</span>
+                  <ArrowRight size={13} />
+                </Link>
+
                 <Link
                   to="/opensource/sqlite-graph-memory"
                   className={styles.headerLink}
