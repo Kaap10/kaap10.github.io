@@ -75,32 +75,35 @@ const QUATER_CARD = {
     architectureFlow: {
       title: 'Quater Remote CLI Transport & RPC Architecture Flow',
       mentalModel: {
-        input: 'CLI Developer Commands with Custom Transport Headers (--header)',
-        process: 'Bearer Auth Merge Engine + Remote Manifest & Action Dispatch',
-        output: 'Zero Token Drops Across Python 3.11-3.14 CI Matrix Verification'
+        inputLabel: '1. Command & Header Ingestion',
+        input: 'CLI invocations with repeatable custom transport headers (--header "Key: value")',
+        processLabel: '2. Auth Precedence & RPC Dispatch',
+        process: 'Stored Bearer token preservation + HTTP manifest and call_action RPC forwarding',
+        outputLabel: '3. Matrix Verification (Python 3.11-3.14)',
+        output: 'Zero token drops, strict colon-syntax diagnostics, and 100% multi-runtime CI passes'
       },
       layers: [
         {
           stage: 'Stage 1: CLI Ingestion & Header Parser Layer',
-          connectorLabel: null,
+          connectorLabel: 'Syntax Parsing & Header Extraction',
           cards: [
             {
               title: 'Repeatable CLI Header Parser Layer',
               pr: 'PR #192',
               prUrl: 'https://github.com/DevilsAutumn/quater/pull/192',
-              impact: 'Repeatable --header Flags • Strict Syntax Guard',
+              impact: 'Repeatable --header Flags • Strict Syntax Validation',
               isContributed: true,
               points: [
                 'Enhanced parser accepting multiple repeatable --header "Name: value" flags',
-                'Strict colon-delimited key/value syntax and character validation',
-                'Actionable diagnostic error messages for malformed user inputs'
+                'Enforced strict colon-delimited syntax and whitespace-normalized key/value splitting',
+                'Emitted actionable diagnostic error messages for missing or malformed header inputs'
               ]
             }
           ]
         },
         {
           stage: 'Stage 2: Authentication Resolution & Merge Precedence',
-          connectorLabel: 'Authentication Resolution & Merge Precedence',
+          connectorLabel: 'Header Merging & Authorization Invariant',
           cards: [
             {
               title: 'Authentication Merge Engine',
@@ -109,16 +112,16 @@ const QUATER_CARD = {
               impact: 'Zero Token Drops • Dynamic Override Precedence',
               isContributed: true,
               points: [
-                'Guarantees stored Bearer tokens persist alongside custom headers',
-                'Eliminates inadvertent credential dropping during remote command dispatch',
-                'Permits intentional user Authorization headers to override defaults'
+                'Preserved stored Bearer auth tokens whenever custom metadata headers are provided',
+                'Eliminated inadvertent credential stripping during remote command dispatch',
+                'Permitted explicit user Authorization headers to override defaults when intended'
               ]
             }
           ]
         },
         {
           stage: 'Stage 3: Remote Transport & RPC Dispatch Pipelines',
-          connectorLabel: 'Remote Dispatch & Transport Pipelines',
+          connectorLabel: 'HTTP Serialization & Manifest Routing',
           cards: [
             {
               title: 'Remote Manifest Client Pipeline',
@@ -127,9 +130,9 @@ const QUATER_CARD = {
               impact: '_request_json Routing • Capability Discovery',
               isContributed: true,
               points: [
-                '_request_json HTTP transport routine with header merging',
-                'fetch_manifest endpoint discovery and capability caching',
-                'Automatic global transport header propagation'
+                'Integrated _request_json HTTP transport routing with global merged header maps',
+                'Cached remote service capabilities via fetch_manifest endpoint discovery',
+                'Guaranteed transparent propagation of custom headers to upstream gateway routes'
               ]
             },
             {
@@ -139,16 +142,16 @@ const QUATER_CARD = {
               impact: 'call_action RPC • Safe JSON Serialization',
               isContributed: true,
               points: [
-                'call_action remote RPC invocation and response streaming',
-                'Safe JSON payload serialization without payload corruption',
-                'Multi-header request dispatch over HTTP transport'
+                'Dispatched call_action remote RPC invocations with complete header propagation',
+                'Ensured safe JSON body serialization preventing payload encoding corruption',
+                'Streamed remote server execution responses cleanly back to stdout'
               ]
             }
           ]
         },
         {
           stage: 'Stage 4: Multi-Runtime Matrix QA Verification',
-          connectorLabel: 'Multi-Runtime Matrix QA Verification',
+          connectorLabel: 'Cross-Version Compatibility Matrix',
           cards: [
             {
               title: 'Python 3.11-3.14 CI Matrix Test Verification',
@@ -157,9 +160,9 @@ const QUATER_CARD = {
               impact: '4 Python Versions • 5/5 Greptile Review Score',
               isContributed: true,
               points: [
-                'Exhaustive test suite across Python 3.11, 3.12, 3.13, and 3.14',
-                '100% CI pass rate with Hypothesis property-based testing',
-                '5/5 automated code review score from Greptile'
+                'Verified zero regressions across Python 3.11, 3.12, 3.13, and 3.14 dev runtimes',
+                'Integrated Hypothesis property-based testing covering arbitrary header permutations',
+                'Achieved a perfect 5/5 automated code review score from Greptile AI analysis'
               ]
             }
           ]
@@ -416,7 +419,7 @@ export default function QuaterShowcasePage() {
                       </p>
                     ))}
                     {card.details.architectureFlow && (
-                      <ArchitectureDiagramFlow flow={card.details.architectureFlow} />
+                      <ArchitectureDiagramFlow flow={card.details.architectureFlow} projectId="quater" />
                     )}
                     {card.details.metricsDetail && (
                       <div className={openStyles.metricsDetailBox}>

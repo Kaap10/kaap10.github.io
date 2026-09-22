@@ -29,11 +29,21 @@ const IconGithub = ({ size = 15 }) => (
   </svg>
 );
 
+const ApacheLogoIcon = ({ size = 16 }) => (
+  <img
+    src="/img/apachelogo.png"
+    alt="Apache"
+    width={size}
+    height={size}
+    style={{ objectFit: 'contain', display: 'inline-block', verticalAlign: 'middle' }}
+  />
+);
+
 const MAGPIE_CARD = {
   id: 'magpie',
   index: '01',
   roleTag: 'Contributor · 5 Merged PRs',
-  icon: ShieldCheck,
+  icon: ApacheLogoIcon,
   title: 'apache/magpie',
   headline: 'Vendor-Neutral AI Agent Harness Runtimes & HITL Security Framework',
   cardDescription:
@@ -77,95 +87,98 @@ const MAGPIE_CARD = {
     architectureFlow: {
       title: 'Apache Magpie Universal Agent Harness Architecture Flow',
       mentalModel: {
-        input: 'Agentic Harnesses (Copilot CLI, Aider, Goose, Local Models)',
-        process: 'Layer 0 agent-iso Clean Room Sandbox + Ambient Credential Scrubbing',
-        output: '70+ Canonical Skills & Model Context Protocol (MCP) Endpoints'
+        inputLabel: '1. Agentic Harness Ingestion',
+        input: 'Copilot CLI, Aider, Goose, and air-gapped local model terminal runners',
+        processLabel: '2. Layer 0 Isolation & Policy Boundary',
+        process: 'agent-iso clean-room environment + ambient credential & token scrubbing',
+        outputLabel: '3. Canonical Skills & MCP Execution',
+        output: '70+ RFC-AI-0004 skills, JSON-RPC 2.0 endpoints, and zero unreviewed writes'
       },
       layers: [
         {
           stage: 'Stage 1: Client & Agentic Harness Adapters',
-          connectorLabel: null,
+          connectorLabel: 'Harness Invocation & Option Normalization',
           cards: [
             {
               title: 'GitHub Copilot CLI Integration',
               pr: 'PR #1287',
               prUrl: 'https://github.com/apache/magpie/pull/1287',
-              impact: 'Standalone CLI Alignment • Draft PR HITL Gating',
+              impact: 'Standalone CLI Schema • Draft PR HITL Gating',
               isContributed: true,
               points: [
-                'Standalone Copilot CLI tool definition & execution schema',
-                '~/.copilot/mcp-config.json canonical configuration alignment',
-                'Strict privacy boundary framing & draft PR gating'
+                'Targeted modern standalone Copilot CLI tool runtime (~/.copilot/mcp-config.json)',
+                'Enforced Draft Pull Request policy and disabled unsafe permissive flags (--allow-all, --yolo)',
+                'Configured privacy framing in privacy-llm.md for embargoed vulnerability triage'
               ]
             },
             {
               title: 'Aider Pair Programming Harness',
               pr: 'PR #1286',
               prUrl: 'https://github.com/apache/magpie/pull/1286',
-              impact: 'On-Demand /read Ingestion • Git Discipline Rules',
+              impact: 'On-Demand /read • Git Discipline Enforcement',
               isContributed: true,
               points: [
-                'On-demand /read .agents/skills/* workflow ingestion',
-                'Mandatory git discipline flags (--no-auto-commits)',
-                '.aiderignore secret token sanitization rules'
+                'Established on-demand /read skill pattern preventing context exhaustion across 70+ skills',
+                'Enforced mandatory git discipline flags (--no-auto-commits, --no-dirty-commits)',
+                'Configured .aiderignore rules blocking accidental inclusion of local secrets and overrides'
               ]
             },
             {
               title: 'Block Goose Agentic CLI Harness',
               pr: 'PR #1217',
               prUrl: 'https://github.com/apache/magpie/pull/1217',
-              impact: 'GOOSE_MODE="approve" Guard • Declarative Recipes',
+              impact: 'GOOSE_MODE="approve" • Declarative Recipes',
               isContributed: true,
               points: [
-                'GOOSE_MODE="approve" human-in-the-loop security guard',
-                'Declarative .goose/recipes/triage.yaml workflow wrapper',
-                'Interactive per-action modal confirmation triggers'
+                'Configured mandatory GOOSE_MODE: "approve" enforcing per-action interactive confirmation modals',
+                'Built declarative recipe pattern (.goose/recipes/triage.yaml) wrapping Magpie workflows',
+                'Documented stdio and streamable_http MCP transports connecting to Apache ecosystem servers'
               ]
             },
             {
-              title: 'Local LLM & Air-Gapped Inference',
+              title: 'Local Sovereign LLM Inference',
               pr: 'PR #1206 & PR #1204',
               prUrl: 'https://github.com/apache/magpie/pull/1206',
               impact: 'Ollama / llama.cpp / vLLM • Zero-Network Triage',
               isContributed: true,
               points: [
-                'Vendor-neutral Ollama, llama.cpp & vLLM endpoint routing',
-                'Multi-model --architect tiering with 70B+ reasoning floors',
-                'Zero external network dependencies for embargoed CVE triage'
+                'Configured vendor-neutral endpoint routing for local Ollama, llama.cpp, and vLLM runtimes',
+                'Documented multi-model --architect tiering with 70B+ reasoning floors for triagers',
+                'Guaranteed zero external network telemetry for embargoed CVE disclosures'
               ]
             }
           ]
         },
         {
           stage: 'Stage 2: Security Isolation & Credential Scrubbing Boundary',
-          connectorLabel: 'Human-in-the-Loop (HITL) Security Boundary',
+          connectorLabel: 'Layer 0 Credential & Environment Stripping',
           cards: [
             {
               title: 'Layer 0 Clean Environment & Credential Isolation',
               pr: 'PR #1217 & PR #1286',
               prUrl: 'https://github.com/apache/magpie/pull/1217',
-              impact: 'agent-iso Sandbox • Defense-in-Depth Token Scrubbing',
+              impact: 'agent-iso Sandbox • Token Scrubbing',
               isContributed: true,
               points: [
-                'agent-iso sandbox scrubbing ambient tokens and API keys',
-                'Proposal-then-confirm authorization modal across all tools',
-                'Strict defense-in-depth against prompt injection and data leaks'
+                'Integrated agent-iso execution boundary stripping ambient environment variables and cloud tokens',
+                'Preserved SSH_AUTH_SOCK and git commit signature mechanics while gating remote pushes',
+                'Enforced strict proposal-then-confirm human review modals across all autonomous agents'
               ]
             }
           ]
         },
         {
           stage: 'Stage 3: Canonical Tool Standard & MCP Execution Engine',
-          connectorLabel: 'Canonical Registry & Model Context Protocol',
+          connectorLabel: 'JSON-RPC 2.0 Tool Execution',
           cards: [
             {
               title: 'Canonical Skill Registry & MCP Tool Engine',
-              impact: '70+ RFC-AI-0004 Skills • Multi-Client JSON-RPC 2.0',
+              impact: '70+ RFC-AI-0004 Skills • Multi-Client JSON-RPC',
               isContributed: false,
               points: [
-                '70+ vendor-neutral engineering skill definitions (RFC-AI-0004)',
-                'JSON-RPC 2.0 tool execution endpoints for PonyMail & Projects',
-                'Selective skill loading without token context bloat'
+                'Centralized registry of 70+ vendor-neutral engineering skill definitions (RFC-AI-0004)',
+                'JSON-RPC 2.0 tool execution endpoints serving PonyMail archive and Apache Project data',
+                'Selective skill injection ensuring zero context bloat during model inference'
               ]
             }
           ]
@@ -336,7 +349,16 @@ export default function MagpieShowcasePage() {
 
           <header className={styles.heroHeader}>
             <div className={styles.eyebrowWrap}>
-              <span className={styles.eyebrowBadge}>Apache Software Foundation</span>
+              <span className={styles.eyebrowBadge}>
+                <img
+                  src="/img/apachelogo.png"
+                  alt="Apache"
+                  width={14}
+                  height={14}
+                  style={{ objectFit: 'contain', verticalAlign: 'middle', marginRight: 6 }}
+                />
+                Apache Software Foundation
+              </span>
               <span className={styles.licenseBadge}>
                 <ShieldCheck size={13} />
                 <span>5 Merged PRs</span>
@@ -504,7 +526,7 @@ export default function MagpieShowcasePage() {
                       </p>
                     ))}
                     {card.details.architectureFlow && (
-                      <ArchitectureDiagramFlow flow={card.details.architectureFlow} />
+                      <ArchitectureDiagramFlow flow={card.details.architectureFlow} projectId="magpie" />
                     )}
                     {card.details.metricsDetail && (
                       <div className={openStyles.metricsDetailBox}>

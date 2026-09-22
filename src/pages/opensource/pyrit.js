@@ -6,16 +6,10 @@ import {
   ArrowLeft, 
   ShieldCheck, 
   ArrowUpRight,
-  Database,
   Layers,
-  Sparkles,
-  Package,
   ChevronDown,
   ChevronUp,
   CheckCircle2,
-  Cpu,
-  Lock,
-  Activity,
   Zap,
   MessageSquareQuote
 } from 'lucide-react';
@@ -29,150 +23,174 @@ const IconGithub = ({ size = 15 }) => (
   </svg>
 );
 
+const MicrosoftLogoIcon = ({ size = 16 }) => (
+  <img
+    src="/img/mslogo.png"
+    alt="Microsoft"
+    width={size}
+    height={size}
+    style={{ objectFit: 'contain', display: 'inline-block', verticalAlign: 'middle' }}
+  />
+);
+
 const PYRIT_CARD = {
   id: 'pyrit',
   index: '02',
   roleTag: 'Contributor · Microsoft AI Red Team',
-  icon: Zap,
+  icon: MicrosoftLogoIcon,
   title: 'microsoft/PyRIT',
   headline: 'Greedy Coordinate Gradient (GCG) Adversarial Jailbreak Optimization Engine',
   cardDescription:
-    'Refactored the core Greedy Coordinate Gradient (GCG) adversarial jailbreak attack engine in Microsoft\'s Python Risk Identification Tool (PyRIT) into typed, deterministic, and VRAM-bounded components.',
+    "Refactored the core Greedy Coordinate Gradient (GCG) adversarial jailbreak optimization engine in Microsoft's open-source AI Red Teaming framework into typed, deterministic, and memory-bounded components.",
   license: 'Microsoft AI Red Team',
-  techStack: ['Python', 'PyTorch', 'CUDA Memory Management', 'Transformers', 'GCG Adversarial Attacks', 'Dataclasses', 'pytest', 'Ruff', 'ty'],
+  techStack: [
+    'Python 3.11+',
+    'PyTorch',
+    'CUDA VRAM Management',
+    'Transformers',
+    'GCG Adversarial Attacks',
+    'Dataclasses (slots/frozen)',
+    'pytest',
+    'Ruff',
+    'ty'
+  ],
   highlights: [
     {
-      label: 'Candidate Proposal Phase (PR #2671, Issue #2665)',
-      text: 'Extracted GCGCandidateProposer with immutable CandidateProposalBatch, preserving shape-grouping invariants and cross-device gradient tensor migration.'
+      label: 'Phase 1: Candidate Proposal Phase (PR #2671 · Commit d620b4d4)',
+      text: 'Extracted GCGCandidateProposer with immutable CandidateProposalBatch, preserving shape-grouping invariants, worker ordering, and cross-device gradient tensor migration.'
     },
     {
-      label: 'VRAM-Bounded Evaluation Phase (PR #2700, Issue #2665)',
-      text: 'Engineered prompt-level tensor cleanup (del logits, ids) and sequential candidate evaluation to strictly eliminate GPU Out-Of-Memory spikes.'
+      label: 'Phase 2: VRAM-Bounded Evaluation Phase (PR #2700 · Commit 132d1cd7)',
+      text: 'Engineered prompt-level tensor cleanup (del logits, ids) and sequential candidate evaluation loops to strictly eliminate GPU Out-Of-Memory spikes.'
     },
     {
-      label: 'Progressive Schedule Controller (PR #2720, Issue #2665)',
-      text: 'Modeled state transitions and control-weight ratcheting, guarding against exact-budget boundary edge cases and dangling inf loss resets.'
+      label: 'Phase 3: Progressive Schedule Controller (PR #2720 · Commit dfa2b763)',
+      text: 'Modeled state transitions and control-weight ratcheting with ScheduleTransitionAction, guarding against exact-budget boundary edge cases and dangling inf loss resets.'
     }
   ],
   github: 'https://github.com/microsoft/PyRIT',
   prsUrl: 'https://github.com/microsoft/PyRIT/pulls?q=is%3Apr+author%3AKaap10',
+  umbrellaIssueUrl: 'https://github.com/microsoft/PyRIT/issues/2665',
   tags: ['Open Source', 'Microsoft', 'AI Safety', 'PyTorch', 'Red Teaming', 'Adversarial AI'],
   details: {
     description:
-      'Microsoft PyRIT (Python Risk Identification Tool) is Microsoft\'s open-source framework for AI Red Teams and security engineers to assess the robustness and safety boundaries of foundation models.\n\nUnder umbrella issue #2665, decoupled the monolithic 2,000+ LOC Greedy Coordinate Gradient (GCG) attack loop into modular, testable, and memory-bounded phases. Worked directly with Microsoft maintainer Roman Lutz (@romanlutz) to ensure zero regression across the 309+ GCG test suite.\n\nArchitected strict GPU VRAM memory management with prompt-level tensor deallocation, cross-device loss aggregation on main_device, and state-machine-driven schedule controllers. Authored 45+ deterministic unit tests with 100% pass rates, zero typing errors (ty), and zero linter warnings (Ruff).',
+      "Microsoft PyRIT (Python Risk Identification Tool) is Microsoft's open-source framework for AI Red Teams and security engineers to assess the robustness and safety boundaries of foundation models.\n\nUnder umbrella issue #2665 (\"MAINT Complete GCG optimization phase extraction after #2416\"), decoupled the monolithic 2,000+ LOC Greedy Coordinate Gradient (GCG) attack loop into modular, deterministic, and memory-bounded phases. Collaborated directly with Microsoft maintainer Roman Lutz (@romanlutz) to achieve 100% test pass rate with zero regressions across the 310+ test suite, earning direct maintainer praise for rapid, high-quality iterations.\n\nArchitected strict GPU VRAM memory-bounded tensor cleanup (\"del logits, ids\"), cross-device loss aggregation on \"main_device\", and state-machine-driven schedule controllers. Authored 45+ comprehensive deterministic unit tests with 100% pass rate, 0 type errors (\"ty\"), and 0 linter warnings (\"ruff\").",
     allTech: [
       'Python 3.11+',
-      'PyTorch Tensors & CUDA',
+      'PyTorch (Tensors, CUDA, Device Placement, Memory Management)',
       'Transformers Tokenization',
-      'Device Placement & Memory Deallocation',
-      'Dataclasses (slots=True, frozen=True)',
-      'State Machine Controllers',
-      'SamplingStrategy Protocols',
-      'CandidateFilter Protocols',
-      'pytest',
+      'GPU VRAM Memory Deallocation (del logits, ids)',
+      'Dataclasses (@dataclass(frozen=True, slots=True))',
+      'State Machine & Schedule Controllers',
+      'SamplingStrategy & CandidateFilter Extension Protocols',
+      'pytest & Deterministic Mocks/Tensor Stubs',
       'Ruff Linting & Formatting',
-      'ty Static Typing'
+      'ty Static Type Checking',
+      'Git Pre-commit Hooks & CI/CD Pipelines'
     ],
     architectureFlow: {
       title: 'Microsoft PyRIT GCG Adversarial Optimization Pipeline Architecture Flow',
       mentalModel: {
-        input: 'Foundation Model Jailbreak Targets & Attack Configurations',
-        process: 'Progressive Schedule Machine + L2 Normalized Candidate Proposer',
-        output: 'Prompt-Level VRAM Deallocation (del logits, ids) & 0 OOM Spikes'
+        inputLabel: '1. Jailbreak Targets & Configs',
+        input: 'Foundation model jailbreak objectives, token targets, and attack configurations',
+        processLabel: '2. Modular GCG Attack Engine',
+        process: 'Progressive schedule machine + per-worker L2 normalized candidate proposal',
+        outputLabel: '3. Memory-Bounded Evaluation (0 OOM)',
+        output: 'Prompt-level VRAM tensor deallocation (del logits, ids) and zero CUDA OOM spikes'
       },
       layers: [
         {
           stage: 'Stage 1: Dynamic Attack Scheduling & Budget Machine',
-          connectorLabel: null,
+          connectorLabel: 'Step Budgeting & State Transitions',
           cards: [
             {
               title: 'Progressive Schedule Controller',
-              pr: 'PR #2720',
+              pr: 'PR #2720 · Commit dfa2b763',
               prUrl: 'https://github.com/microsoft/PyRIT/pull/2720',
               impact: 'Boundary Lock • Dynamic Weight Transitions',
               isContributed: true,
               points: [
-                'ScheduleTransitionAction typed state machine controller',
-                'Exact-budget boundary lock preventing max_steps iteration overflow',
-                'Dynamic ratcheted control weights across iterative optimization rounds'
+                'Engineered ScheduleTransitionAction state machine controlling progressive worker admissions',
+                'Protected against exact-budget boundary edge cases preventing max_steps overflow',
+                'Ratcheted control weights (+0.01 increments up to 0.09) and preserved inf/nan loss states'
               ]
             }
           ]
         },
         {
           stage: 'Stage 2: Candidate Generation & Cross-Device Migration',
-          connectorLabel: 'Candidate Generation & Cross-Device Tensor Migration',
+          connectorLabel: 'L2 Normalization & Tensor Synchronization',
           cards: [
             {
               title: 'GCGCandidateProposer Phase',
-              pr: 'PR #2671',
+              pr: 'PR #2671 · Commit d620b4d4',
               prUrl: 'https://github.com/microsoft/PyRIT/pull/2671',
               impact: 'L2 Norm Stability • Extensible Protocols',
               isContributed: true,
               points: [
-                'Immutable CandidateProposalBatch dataclass with shape preservation',
-                'L2 gradient normalization per worker ensuring numerical stability',
-                'SamplingStrategy & CandidateFilter extensible protocols'
+                'Extracted typed immutable CandidateProposalBatch dataclass preserving shape groupings',
+                'Enforced per-worker L2 gradient normalization guaranteeing numerical precision stability',
+                'Complied with SamplingStrategy and CandidateFilter extension protocols with 14 unit tests'
               ]
             },
             {
               title: 'Cross-Device Gradient Synchronization',
-              pr: 'PR #2671',
+              pr: 'PR #2671 · Commit d620b4d4',
               prUrl: 'https://github.com/microsoft/PyRIT/pull/2671',
-              impact: 'Main Device Aggregation • Zero Tensor Mismatches',
+              impact: 'Main Device Aggregation • Zero Shape Mismatches',
               isContributed: true,
               points: [
-                'Per-worker gradient normalization and main_device tensor aggregation',
-                'Eliminates cross-GPU shape mismatch during loss calculations',
-                'Device-safe tensor placement across distributed worker instances'
+                'Migrated per-worker gradient tensors safely to main_device prior to candidate scoring',
+                'Eliminated distributed cross-GPU tensor shape mismatch exceptions during loss reduction',
+                'Guaranteed device-safe tensor placement across distributed multi-GPU worker fleets'
               ]
             }
           ]
         },
         {
-          stage: 'Stage 3: VRAM-Bounded Evaluation Phase',
-          connectorLabel: 'VRAM-Bounded Evaluation Phase',
+          stage: 'Stage 3: VRAM-Bounded Candidate Evaluation Phase',
+          connectorLabel: 'Prompt-Level VRAM Cleanup Loop',
           cards: [
             {
               title: 'Prompt-Level VRAM Cleanup Guard',
-              pr: 'PR #2700',
+              pr: 'PR #2700 · Commit 132d1cd7',
               prUrl: 'https://github.com/microsoft/PyRIT/pull/2700',
               impact: 'del logits, ids • Zero CUDA OOM Spikes',
               isContributed: true,
               points: [
-                'Explicit prompt-level tensor deallocation (del logits, ids)',
-                'Sequential candidate scoring loops strictly capping GPU usage',
-                'Guarantees zero CUDA Out-Of-Memory spikes under large batches'
+                'Engineered sequential candidate scoring loops with explicit prompt tensor cleanup (del logits, ids)',
+                'Enforced strict GPU memory boundaries eliminating runaway allocation spikes under large batches',
+                'Verified zero CUDA Out-Of-Memory crashes across multi-model adversarial evaluations'
               ]
             },
             {
               title: 'GCGCandidateEvaluator Phase',
-              pr: 'PR #2700',
+              pr: 'PR #2700 · Commit 132d1cd7',
               prUrl: 'https://github.com/microsoft/PyRIT/pull/2700',
               impact: 'Frozen Batch Scoring • Loss Minimization',
               isContributed: true,
               points: [
-                'Frozen evaluation batch validation and score tracking',
-                '_loss_is_measured non-finite (inf/nan) state preservation',
-                'Strict best-candidate loss minimization selection'
+                'Validated candidate scores on main_device via typed CandidateEvaluationBatch',
+                'Maintained 100% backward compatibility for _select_best_candidate return signatures',
+                'Authored 15 deterministic unit tests for device placement, tqdm progress, and loss safety'
               ]
             }
           ]
         },
         {
-          stage: 'Stage 4: AI Red Team Verification & Compliance',
-          connectorLabel: 'AI Red Team Verification & Compliance',
+          stage: 'Stage 4: AI Red Team Verification & Quality Compliance',
+          connectorLabel: 'Deterministic Unit Verification',
           cards: [
             {
               title: 'Microsoft AI Red Team Deterministic Test Suite',
-              pr: '45+ Tests',
+              pr: '45+ Unit Tests',
               prUrl: 'https://github.com/microsoft/PyRIT/pulls?q=is%3Apr+author%3AKaap10',
               impact: '45+ Offline Unit Tests • 100% Pass Rate',
               isContributed: true,
               points: [
-                '45+ deterministic unit tests with mock tensor queues and stubs',
-                '100% pass rate across the full 309+ PyRIT GCG test suite',
-                'Zero Ruff lint errors and zero ty static typing warnings'
+                'Authored 45+ deterministic unit tests with mock tensor queues and stubs',
+                'Maintained 100% pass rate across the full 310+ PyRIT GCG test suite',
+                'Zero Ruff lint warnings, zero ty static typing errors, and full pre-commit hook compliance'
               ]
             }
           ]
@@ -180,79 +198,97 @@ const PYRIT_CARD = {
       ]
     },
     fullHighlights: [
-      'Modularized Attack Loop Decomposition: Decoupled 2,000+ LOC monolithic loop into immutable, testable components (GCGCandidateProposer, GCGCandidateEvaluator, ProgressiveScheduleController).',
-      'VRAM-Bounded Memory Management: Engineered prompt-level tensor deallocation (del logits, ids) in evaluation loops to eliminate GPU memory spikes and Out-Of-Memory crashes.',
-      'Cross-Device Gradient Migration: Safely synchronized multi-worker tensor distributions by migrating per-worker gradients to main_device before candidate scoring.',
-      'Progressive State Machine Controller: Modeled schedule transitions with typed ScheduleTransitionAction enums, defending against exact-budget boundary edge cases.',
-      'Robust Non-Finite Loss Preservation: Introduced boolean _loss_is_measured tracking preserving valid non-finite (inf/nan) loss states without false assertion failures.',
-      'Deterministic Test Engineering: Authored 45+ deterministic unit tests with mock queues, tensor stubs, and 100% pass rates across Microsoft PyRIT test suites.'
+      'Modularized Attack Loop Decomposition: Decoupled 2,000+ LOC monolithic loop into immutable, testable components (GCGCandidateProposer, GCGCandidateEvaluator, ProgressiveScheduleController) under umbrella issue #2665.',
+      'VRAM-Bounded Memory Management: Engineered prompt-level tensor cleanup (del logits, ids) in evaluation loops to eliminate GPU memory spikes and Out-Of-Memory crashes.',
+      'Cross-Device Gradient Migration: Safely synchronized multi-worker tensor distributions by migrating per-worker gradients to main_device before candidate token scoring.',
+      'Progressive State Machine Controller: Modeled schedule transitions with typed ScheduleTransitionAction enums, defending against exact-budget boundary edge cases and dangling inf resets.',
+      'Robust Non-Finite Loss Preservation: Introduced explicit boolean _loss_is_measured tracking preserving valid non-finite (inf/nan) loss states without false assertion failures.',
+      'Deterministic Test Engineering: Authored 45+ comprehensive deterministic unit tests with mock queues, tensor stubs, and 100% pass rates across Microsoft PyRIT test suites.'
     ],
-    metricsDetail: '3 Modularized Phases · 45+ Deterministic Unit Tests · 100% Test Pass Rate · Zero VRAM Spikes · Microsoft AI Red Team',
+    metricsDetail: '3 Modularized Phases · 45+ Deterministic Unit Tests · 100% Pass Rate across 310+ Tests · Zero VRAM Spikes · Microsoft AI Red Team',
   },
 };
 
 const MASTER_PR_CONTRIBUTIONS = [
   {
     pr: 'PR #2671',
+    commit: 'Commit d620b4d4',
     url: 'https://github.com/microsoft/PyRIT/pull/2671',
     issue: 'Issue #2665',
     issueUrl: 'https://github.com/microsoft/PyRIT/issues/2665',
     category: 'Architecture',
     categoryId: 'architecture',
-    title: 'Extract Candidate Proposal Phase (GCGCandidateProposer)',
-    problem: 'GCGMultiPromptAttack.step() had a monolithic loop tightly coupling gradient dispatch, per-worker L2 gradient normalization, shape-group grouping, token sampling, and device transfers, making candidate generation untestable in isolation.',
+    title: 'Phase 1: Extract Candidate Proposal Phase (GCGCandidateProposer)',
+    filesChanged: [
+      '[NEW] pyrit/executor/promptgen/gcg/attack/gcg/candidate_proposer.py',
+      '[MODIFY] pyrit/executor/promptgen/gcg/attack/gcg/gcg_attack.py',
+      '[NEW] tests/unit/executor/promptgen/gcg/test_gcg_proposal.py'
+    ],
+    problem: 'GCGMultiPromptAttack.step() had a monolithic loop that tightly coupled gradient dispatch, per-worker L2 gradient normalization, incompatible tensor shape grouping, token sampling, candidate filtering, and device transfers. This made candidate generation untestable in isolation and prone to subtle regressions.',
     how: [
-      'Extracted Candidate Proposal Engine: Built GCGCandidateProposer returning an immutable @dataclass(frozen=True, slots=True) CandidateProposalBatch.',
-      'Preserved Worker Invariants: Maintained exact worker ordering and shape-group grouping behavior across multi-model deployments.',
-      'Cross-Device Migration: Safely migrated per-worker gradient tensors to main_device before candidate token scoring.',
-      'Protocol Compliance: Enforced complete compliance with SamplingStrategy and CandidateFilter extension protocols.',
+      'Candidate Proposal Engine: Extracted logic into GCGCandidateProposer returning a typed, immutable @dataclass(frozen=True, slots=True) CandidateProposalBatch.',
+      'Preserved Worker Invariants: Preserved exact worker ordering and shape-group grouping behavior across multi-model deployments.',
+      'Cross-Device Migration: Handled cross-device gradient tensor migration by safely moving per-worker tensors to main_device.',
+      'Protocol Compliance: Maintained complete compliance with SamplingStrategy and CandidateFilter extension protocols.',
       'Deterministic Test Suite: Authored 14 deterministic unit tests in test_gcg_proposal.py using mock queues and tensor stubs.'
     ],
     feedback: {
-      text: 'Merged into microsoft:main with 0 changes requested after comprehensive code review and automated test verification.',
+      text: 'Reviewed, approved, and merged into microsoft:main (Commit d620b4d4) by Roman Lutz after comprehensive code review and automated test verification.',
       author: 'Roman Lutz (@romanlutz) — Microsoft AI Red Team'
     }
   },
   {
     pr: 'PR #2700',
+    commit: 'Commit 132d1cd7',
     url: 'https://github.com/microsoft/PyRIT/pull/2700',
     issue: 'Issue #2665',
     issueUrl: 'https://github.com/microsoft/PyRIT/issues/2665',
     category: 'GPU & Memory',
     categoryId: 'gpu',
-    title: 'Extract VRAM-Bounded Candidate Evaluation Phase (GCGCandidateEvaluator)',
-    problem: 'Logits evaluation and loss accumulation were intertwined with attack orchestration. Evaluating thousands of candidate tokens across multiple models caused severe GPU VRAM memory spikes and Out-Of-Memory (OOM) crashes.',
+    title: 'Phase 2: Extract VRAM-Bounded Candidate Evaluation Phase (GCGCandidateEvaluator)',
+    filesChanged: [
+      '[NEW] pyrit/executor/promptgen/gcg/attack/gcg/candidate_evaluator.py',
+      '[MODIFY] pyrit/executor/promptgen/gcg/attack/gcg/gcg_attack.py',
+      '[NEW] tests/unit/executor/promptgen/gcg/test_gcg_evaluation.py'
+    ],
+    problem: 'The logits evaluation and loss accumulation phase was intertwined with attack orchestration. When evaluating thousands of candidate tokens across multiple models and prompts, GPU memory (VRAM) spikes could easily lead to Out-Of-Memory (OOM) errors without timely tensor cleanup.',
     how: [
-      'Extracted Evaluator Engine: Created GCGCandidateEvaluator paired with @dataclass(frozen=True, slots=True) CandidateEvaluationBatch.',
-      'Prompt-Level VRAM Cleanup: Engineered sequential candidate evaluation loops with explicit prompt-level tensor deallocation (del logits, ids) to strictly bound GPU memory.',
-      'Loss Accumulation: Migrated and accumulated cross-worker logits losses directly on main_device.',
-      'Backward Compatibility: Maintained 100% backward compatibility for _select_best_candidate and return signatures.',
-      'Unit Test Suite: Added 15 deterministic unit tests in test_gcg_evaluation.py verifying device placement, sequential offsets, tqdm progress tracking, and non-finite loss safety.'
+      'Evaluator Engine Extraction: Extracted GCGCandidateEvaluator paired with @dataclass(frozen=True, slots=True) CandidateEvaluationBatch.',
+      'Prompt-Level VRAM Cleanup: Engineered sequential candidate-group evaluation loops with explicit prompt-level tensor cleanup (del logits, ids) to strictly bound GPU memory.',
+      'Cross-Device Loss Accumulation: Ensured cross-worker logits losses are safely migrated and accumulated directly on main_device.',
+      'Backward Compatibility: Maintained 100% backward compatibility for candidate selection (_select_best_candidate) and return types.',
+      'Deterministic Unit Tests: Added 15 deterministic unit tests in test_gcg_evaluation.py covering device placement, sequential offsets, tqdm progress tracking, and non-finite loss safety.'
     ],
     feedback: {
       text: 'Appreciate all the rapid iterations :-)',
-      author: 'Roman Lutz (@romanlutz) — Microsoft AI Red Team'
+      author: 'Roman Lutz (@romanlutz) — Microsoft AI Red Team (Approved & Merged with 0 changes requested)'
     }
   },
   {
     pr: 'PR #2720',
+    commit: 'Commit dfa2b763',
     url: 'https://github.com/microsoft/PyRIT/pull/2720',
     issue: 'Issue #2665',
     issueUrl: 'https://github.com/microsoft/PyRIT/issues/2665',
     category: 'State Machine',
     categoryId: 'state',
-    title: 'Model Progressive Admission Transitions (ProgressiveScheduleController)',
-    problem: 'ProgressiveMultiPromptAttack.run() mixed high-level inner attack execution with complex state transition rules (progressive goal vs worker admission order, remaining step budgeting, control-weight ratcheting, and sentinel loss resets).',
+    title: 'Phase 3: Model Progressive Admission Transitions (ProgressiveScheduleController)',
+    filesChanged: [
+      '[NEW] pyrit/executor/promptgen/gcg/attack/base/progressive_schedule.py',
+      '[MODIFY] pyrit/executor/promptgen/gcg/attack/base/attack_manager.py',
+      '[NEW] tests/unit/executor/promptgen/gcg/test_progressive_schedule.py'
+    ],
+    problem: 'ProgressiveMultiPromptAttack.run() mixed high-level inner attack execution with complex state transition rules (progressive goal vs. worker admission order, remaining step budgeting, control-weight ratcheting, and sentinel loss resets).',
     how: [
-      'Schedule Controller: Extracted ProgressiveScheduleController alongside ScheduleTransitionAction(Enum).',
-      'Exact-Budget Boundary Protection: Guarded against edge cases where the step budget is exhausted at exact admission boundaries, preventing dangling inf loss resets.',
+      'Schedule Controller & Action Enum: Designed and extracted ProgressiveScheduleController alongside ScheduleTransitionAction(Enum).',
+      'Exact-Budget Boundary Protection: Protected against exact-budget boundary edge cases: prevents dangling inf loss resets when the step budget is exhausted at exact admission boundaries.',
       'Explicit Loss Measurement State: Introduced explicit boolean _loss_is_measured tracking to safely preserve legitimate non-finite model losses (inf/nan) without tripping assertions.',
-      'Control-Weight Ratcheting: Extracted scheduling and ratcheting logic (+0.01 increments up to 0.09 threshold).',
-      'Comprehensive Coverage: Created 16 unit tests in test_progressive_schedule.py verifying all admission sequences and boundary transitions.'
+      'Control-Weight Ratcheting: Extracted control-weight scheduling and ratcheting logic (+0.01 increments up to threshold 0.09).',
+      'Maintainer Feedback Parity: Resolved maintainer feedback on ProgressiveScheduleState class shadowing to guarantee isinstance parity, authoring 16 comprehensive unit tests covering all sequences and boundaries.'
     ],
     feedback: {
-      text: '16 comprehensive unit tests covering all progressive admission transitions, control-weight ratcheting, and exact budget exhaustion with 100% pass rate.',
-      author: 'Microsoft AI Red Team Code Review'
+      text: "There's definitely more work on GCG coming up. Stay tuned!",
+      author: 'Roman Lutz (@romanlutz) — Microsoft AI Red Team (Issue #2665 Closed as Completed)'
     }
   }
 ];
@@ -306,11 +342,28 @@ export default function PyRITShowcasePage() {
 
           <header className={styles.heroHeader}>
             <div className={styles.eyebrowWrap}>
-              <span className={styles.eyebrowBadge}>Microsoft AI Red Team</span>
-              <span className={styles.licenseBadge}>
-                <ShieldCheck size={13} />
-                <span>3 GCG Phases</span>
+              <span className={styles.eyebrowBadge}>
+                <img
+                  src="/img/mslogo.png"
+                  alt="Microsoft"
+                  width={14}
+                  height={14}
+                  style={{ objectFit: 'contain', verticalAlign: 'middle', marginRight: 6 }}
+                />
+                Microsoft AI Red Team
               </span>
+              <a
+                href={card.umbrellaIssueUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.licenseBadge}
+                style={{ textDecoration: 'none' }}
+                title="View Umbrella Issue #2665 on GitHub"
+              >
+                <ShieldCheck size={13} />
+                <span>Issue #2665 Completed</span>
+                <ArrowUpRight size={11} />
+              </a>
             </div>
 
             <h1 className={styles.heroTitle}>microsoft/PyRIT</h1>
@@ -320,7 +373,7 @@ export default function PyRITShowcasePage() {
 
             <div className={styles.heroActionGroup}>
               <a
-                href="https://github.com/microsoft/PyRIT/pulls?q=is%3Apr+author%3AKaap10"
+                href={card.prsUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className={styles.primaryBtn}
@@ -331,7 +384,18 @@ export default function PyRITShowcasePage() {
               </a>
 
               <a
-                href="https://github.com/microsoft/PyRIT"
+                href={card.umbrellaIssueUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.secondaryBtn}
+              >
+                <CheckCircle2 size={15} />
+                <span>Umbrella Issue #2665</span>
+                <ArrowUpRight size={13} />
+              </a>
+
+              <a
+                href={card.github}
                 target="_blank"
                 rel="noopener noreferrer"
                 className={styles.secondaryBtn}
@@ -361,7 +425,7 @@ export default function PyRITShowcasePage() {
             </div>
             <div className={styles.metricCard}>
               <div className={styles.metricValue}>100%</div>
-              <div className={styles.metricLabel}>309+ Suite Pass Rate</div>
+              <div className={styles.metricLabel}>310+ Suite Pass Rate</div>
             </div>
             <div className={styles.metricCard}>
               <div className={styles.metricValue}>Zero OOM</div>
@@ -474,7 +538,7 @@ export default function PyRITShowcasePage() {
                       </p>
                     ))}
                     {card.details.architectureFlow && (
-                      <ArchitectureDiagramFlow flow={card.details.architectureFlow} />
+                      <ArchitectureDiagramFlow flow={card.details.architectureFlow} projectId="pyrit" />
                     )}
                     {card.details.metricsDetail && (
                       <div className={openStyles.metricsDetailBox}>
@@ -482,6 +546,42 @@ export default function PyRITShowcasePage() {
                         <span className={openStyles.metricsDetailText}>{card.details.metricsDetail}</span>
                       </div>
                     )}
+
+                    <div className={openStyles.deepDiveSection}>
+                      <h5 className={openStyles.deepDiveSubheading}>Interview Talking Points (STAR Method)</h5>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem', marginTop: '0.75rem' }}>
+                        <div style={{ background: 'rgba(255, 255, 255, 0.03)', border: '1px solid rgba(255, 255, 255, 0.07)', borderRadius: '6px', padding: '0.85rem 1rem' }}>
+                          <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--vg-accent, #FF4D4F)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Situation</span>
+                          <p style={{ margin: '0.35rem 0 0', fontSize: '0.86rem', color: '#CBD5E1', lineHeight: '1.55' }}>
+                            Microsoft PyRIT's Greedy Coordinate Gradient (GCG) adversarial attack implementation contained large monolithic loops (~2,000+ LOC) combining token sampling, GPU VRAM evaluation, and multi-goal progressive scheduling into a single complex flow, making isolated testing and algorithmic improvements difficult.
+                          </p>
+                        </div>
+                        <div style={{ background: 'rgba(255, 255, 255, 0.03)', border: '1px solid rgba(255, 255, 255, 0.07)', borderRadius: '6px', padding: '0.85rem 1rem' }}>
+                          <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#38BDF8', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Task</span>
+                          <p style={{ margin: '0.35rem 0 0', fontSize: '0.86rem', color: '#CBD5E1', lineHeight: '1.55' }}>
+                            Refactor and decouple the optimization pipeline into three independent, cleanly typed phases under umbrella issue #2665 without breaking backward compatibility, mathematical invariants, or runtime performance.
+                          </p>
+                        </div>
+                        <div style={{ background: 'rgba(255, 255, 255, 0.03)', border: '1px solid rgba(255, 255, 255, 0.07)', borderRadius: '6px', padding: '0.85rem 1rem' }}>
+                          <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#FBBF24', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Action</span>
+                          <ul style={{ margin: '0.35rem 0 0', paddingLeft: '1.2rem', fontSize: '0.86rem', color: '#CBD5E1', lineHeight: '1.55' }}>
+                            <li>Extracted candidate generation into <code>GCGCandidateProposer</code> with immutable data structures (<code>CandidateProposalBatch</code>).</li>
+                            <li>Extracted logit evaluation into <code>GCGCandidateEvaluator</code> with prompt-level tensor cleanup (<code>del logits, ids</code>) to prevent VRAM spikes.</li>
+                            <li>Modeled progressive goal and worker admission transitions into <code>ProgressiveScheduleController</code> with typed <code>ScheduleTransitionAction</code> enums.</li>
+                            <li>Wrote 45+ comprehensive deterministic unit tests across all edge cases, boundary conditions, and mock tensor stubs.</li>
+                          </ul>
+                        </div>
+                        <div style={{ background: 'rgba(255, 255, 255, 0.03)', border: '1px solid rgba(255, 255, 255, 0.07)', borderRadius: '6px', padding: '0.85rem 1rem' }}>
+                          <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#34D399', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Result</span>
+                          <ul style={{ margin: '0.35rem 0 0', paddingLeft: '1.2rem', fontSize: '0.86rem', color: '#CBD5E1', lineHeight: '1.55' }}>
+                            <li>100% clean test pass rate across the full 310+ GCG test suite with zero regressions.</li>
+                            <li>Successfully merged all three phases (PR #2671, PR #2700, PR #2720) directly into <code>microsoft/PyRIT:main</code>, fully completing umbrella issue #2665.</li>
+                            <li>Earned direct praise from Microsoft maintainers for fast, high-quality turnarounds.</li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+
                     <div className={openStyles.deepDiveSection}>
                       <h5 className={openStyles.deepDiveSubheading}>Complete Technical Stack</h5>
                       <div className={openStyles.fullTechWrap}>
@@ -492,6 +592,7 @@ export default function PyRITShowcasePage() {
                         ))}
                       </div>
                     </div>
+
                     <div className={openStyles.deepDiveSection}>
                       <h5 className={openStyles.deepDiveSubheading}>Complete Architectural Highlights</h5>
                       <ul className={openStyles.fullHighlightsList}>
@@ -559,6 +660,11 @@ export default function PyRITShowcasePage() {
                           <span>{prItem.pr}</span>
                           <ArrowUpRight size={11} />
                         </a>
+                        {prItem.commit && (
+                          <span style={{ display: 'block', marginTop: '0.35rem', fontSize: '0.68rem', fontFamily: 'monospace', color: '#94A3B8' }}>
+                            {prItem.commit}
+                          </span>
+                        )}
                       </td>
 
                       <td className={styles.issueLinkCol}>
@@ -593,6 +699,18 @@ export default function PyRITShowcasePage() {
                       <td className={styles.problemCol}>
                         <div className={styles.prTitleText}>{prItem.title}</div>
                         <p className={styles.prProblemText}>{prItem.problem}</p>
+                        {prItem.filesChanged && (
+                          <div style={{ marginTop: '0.75rem', display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+                            <span style={{ fontSize: '0.72rem', fontWeight: 600, color: '#94A3B8', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                              Key Files Changed:
+                            </span>
+                            {prItem.filesChanged.map((file, fIdx) => (
+                              <code key={fIdx} style={{ fontSize: '0.73rem', background: 'rgba(255,255,255,0.04)', color: '#E2E8F0', border: '1px solid rgba(255,255,255,0.08)', padding: '0.15rem 0.4rem', borderRadius: '4px', wordBreak: 'break-all' }}>
+                                {file}
+                              </code>
+                            ))}
+                          </div>
+                        )}
                       </td>
 
                       <td className={styles.solutionCol}>

@@ -74,83 +74,86 @@ const PALINODE_CARD = {
     architectureFlow: {
       title: 'Palinode Cross-Platform Systems & Process Lifecycle Architecture Flow',
       mentalModel: {
-        input: 'AI Coding Agents (Claude Code, Cline, Terminal Harnesses)',
-        process: 'Non-Signalling Win32 Kernel Synchronization (WaitForSingleObject)',
-        output: 'Zero Zombie Processes (STILL_ACTIVE 259) & AST Integrity'
+        inputLabel: '1. Process Invocations & Agents',
+        input: 'AI coding agent subshells, git hook invocations, and terminal commands',
+        processLabel: '2. Kernel Synchronization & Trap Shield',
+        process: 'Non-signalling Win32 WaitForSingleObject + STILL_ACTIVE (259) trap mitigation',
+        outputLabel: '3. Zero Zombie State Guarantees',
+        output: 'Zero zombie processes, thread-safe Win32 error capture, and AST code integrity'
       },
       layers: [
         {
           stage: 'Stage 1: Cross-Platform Process Probing Layer',
-          connectorLabel: null,
+          connectorLabel: 'OS Signal & Kernel Handle Dispatch',
           cards: [
             {
               title: 'POSIX Kernel Runtime Environment',
-              impact: 'Native os.kill(pid, 0) • Standard POSIX Compliant',
+              impact: 'Native os.kill(pid, 0) • Standard POSIX Boundary',
               isContributed: false,
               points: [
-                'Native os.kill(pid, 0) null signal process probe',
-                'Zero side-effects existence verification on Linux & macOS',
-                'Standard POSIX signal boundary compliance'
+                'Native os.kill(pid, 0) null signal existence verification on Linux and macOS',
+                'Zero side-effects execution conforming to POSIX.1 process signalling standards',
+                'Standard ESRCH / EPERM exception propagation for permission validation'
               ]
             },
             {
               title: 'Win32 Kernel Process Probe Engine',
               pr: 'PR #215',
               prUrl: 'https://github.com/phasespace-labs/palinode/pull/215',
-              impact: 'kernel32.dll SYNCHRONIZE • Zero Signal Side-Effects',
+              impact: 'kernel32.dll SYNCHRONIZE • Non-Destructive Probe',
               isContributed: true,
               points: [
-                'OpenProcess with SYNCHRONIZE handle (kernel32.dll via ctypes)',
-                'WaitForSingleObject non-signalling state existence probing',
-                'Eliminates destructive CTRL_C_EVENT console group kill side-effects'
+                'Acquired OpenProcess with SYNCHRONIZE rights via ctypes kernel32 binding',
+                'Invoked WaitForSingleObject with 0ms timeout for non-signalling state inspection',
+                'Eliminated destructive CTRL_C_EVENT console group terminates on Windows'
               ]
             }
           ]
         },
         {
           stage: 'Stage 2: State Machine & Thread-Safe Error Trapping',
-          connectorLabel: 'Process State Machine & Error Capture',
+          connectorLabel: 'Kernel State Evaluation & TLS Safety',
           cards: [
             {
               title: 'STILL_ACTIVE (259) Trap Shield',
               pr: 'PR #215',
               prUrl: 'https://github.com/phasespace-labs/palinode/pull/215',
-              impact: 'WAIT_TIMEOUT Trapping • Prevents Worktree Bloat',
+              impact: 'WAIT_TIMEOUT Invariant • Zombie Prevention',
               isContributed: true,
               points: [
-                'WAIT_TIMEOUT -> Process Alive, WAIT_OBJECT_0 -> Process Exited',
-                'Replaces flawed GetExitCodeProcess inspection traps',
-                'Strict defense against zombie process misidentification'
+                'Mapped WAIT_TIMEOUT to alive and WAIT_OBJECT_0 to exited state accurately',
+                'Prevented false alive reports for genuine child processes returning exit code 259',
+                'Eliminated worktree bloat and persistent lock contentions during test runs'
               ]
             },
             {
               title: 'Thread-Safe Win32 Error Capture',
               pr: 'PR #215',
               prUrl: 'https://github.com/phasespace-labs/palinode/pull/215',
-              impact: 'Thread-Local Storage Guard • ERROR_ACCESS_DENIED Invariant',
+              impact: 'Thread-Local Storage Guard • ERROR_ACCESS_DENIED',
               isContributed: true,
               points: [
-                'ctypes.WinDLL("kernel32", use_last_error=True) isolation',
-                'ctypes.get_last_error() thread-local storage protection',
-                'ERROR_ACCESS_DENIED -> Valid Alive state confirmation'
+                'Configured ctypes.WinDLL("kernel32", use_last_error=True) runtime isolation',
+                'Protected Win32 GetLastError values from C-runtime TLS overwrites',
+                'Treated ERROR_ACCESS_DENIED as definitive confirmation of process existence'
               ]
             }
           ]
         },
         {
           stage: 'Stage 3: Codebase Integrity & Verification',
-          connectorLabel: 'Code Integrity & Filesystem Verification',
+          connectorLabel: 'Static Analysis & Filesystem Parity',
           cards: [
             {
               title: 'AST Static Analysis Guard',
               pr: 'PR #207',
               prUrl: 'https://github.com/phasespace-labs/palinode/pull/207',
-              impact: 'Python AST Verification • Zero Leaked Issue URLs',
+              impact: 'Python AST Verification • Leak Prevention',
               isContributed: true,
               points: [
-                'Python AST syntax tree verification across diagnostic modules',
-                'Prevents internal tracker issue URL leakage to public GitHub',
-                'Enforces zero false diagnostic links during runtime exceptions'
+                'Enforced Python AST syntax tree verification across diagnostic modules',
+                'Blocked internal issue tracker URLs from leaking into public repository codebases',
+                'Enforced clean user-facing error messages across all CLI command paths'
               ]
             },
             {
@@ -160,9 +163,9 @@ const PALINODE_CARD = {
               impact: 'Atomic CJK Writes • 4,000+ Tests Triaged',
               isContributed: true,
               points: [
-                'Full UTF-8 & CJK multibyte unicode atomic write parity',
-                'Graceful os.fchmod symbol fallback on native Windows 3.12',
-                'Verified 100% pass across 4,000+ test suite assertions'
+                'Verified UTF-8 and CJK multibyte unicode atomic file operations across all systems',
+                'Gracefully handled platform-specific os.fchmod symbol fallbacks on Windows Python 3.12',
+                'Triaged and validated 100% pass rates across 4,000+ test suite assertions'
               ]
             }
           ]
@@ -462,7 +465,7 @@ export default function PalinodeShowcasePage() {
                       </p>
                     ))}
                     {card.details.architectureFlow && (
-                      <ArchitectureDiagramFlow flow={card.details.architectureFlow} />
+                      <ArchitectureDiagramFlow flow={card.details.architectureFlow} projectId="palinode" />
                     )}
                     {card.details.metricsDetail && (
                       <div className={openStyles.metricsDetailBox}>

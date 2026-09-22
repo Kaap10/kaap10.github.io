@@ -29,11 +29,21 @@ const IconGithub = ({ size = 15 }) => (
   </svg>
 );
 
+const Layer5LogoIcon = ({ size = 16 }) => (
+  <img
+    src="/img/layer5.png"
+    alt="Layer5"
+    width={size}
+    height={size}
+    style={{ objectFit: 'contain', display: 'inline-block', verticalAlign: 'middle' }}
+  />
+);
+
 const LAYER5_CARD = {
   id: 'layer5io',
   index: '03',
   roleTag: 'Contributor · CNCF Ecosystem',
-  icon: Boxes,
+  icon: Layer5LogoIcon,
   title: 'layer5io / layer5-academy',
   headline: 'Cloud Native, Kubernetes, Containerization & Observability Learning Platform',
   cardDescription:
@@ -75,83 +85,86 @@ const LAYER5_CARD = {
     architectureFlow: {
       title: 'Meshery Cloud Native Playground & Lab Engine Architecture Flow',
       mentalModel: {
-        input: 'Learners & Cloud Engineers on Linux / macOS / Windows WSL2',
-        process: 'Rootless Podman Runtime + KinD Multi-Node K8s Cluster Orchestration',
-        output: 'Interactive Browser Labs + Real-Time PromQL / Grafana Observability'
+        inputLabel: '1. Multi-OS Environment Ingestion',
+        input: 'Cross-platform workstation setup across Linux, macOS, and Windows WSL2',
+        processLabel: '2. Container & Cluster Orchestration',
+        process: 'Rootless Podman socket bridge + KinD multi-node Kubernetes provisioning',
+        outputLabel: '3. Observability & Interactive Delivery',
+        output: 'PromQL-aligned Prometheus/Grafana mesh metrics and zero-downtime browser labs'
       },
       layers: [
         {
           stage: 'Stage 1: Container Runtime & Local Node Provisioning',
-          connectorLabel: null,
+          connectorLabel: 'Socket Bridge & Node Bootstrapping',
           cards: [
             {
               title: 'Podman Container Runtime Layer',
               pr: 'PR #276',
               prUrl: 'https://github.com/layer5io/layer5-academy/pull/276',
-              impact: 'Rootless Daemonless Security • Cross-OS Packaging',
+              impact: 'Rootless Security • Cross-OS Packaging',
               isContributed: true,
               points: [
-                'Rootless daemonless container runtime configuration',
-                'Native Podman socket bridge emulation across WSL2 & macOS',
-                'Modernized package repository installation removing brittle binaries'
+                'Configured rootless daemonless Podman execution boundary across Linux and WSL2',
+                'Emulated native Docker socket interfaces to avoid privileged daemon dependencies',
+                'Automated package repository installs replacing brittle static curl binaries'
               ]
             },
             {
               title: 'KinD Multi-Node K8s Lab Cluster',
               pr: 'PR #278',
               prUrl: 'https://github.com/layer5io/layer5-academy/pull/278',
-              impact: 'Declarative K8s YAML • Standardized Multi-Node Runtime',
+              impact: 'Declarative K8s YAML • Multi-Node Topology',
               isContributed: true,
               points: [
-                'Declarative multi-node Kubernetes cluster configuration',
-                'Standardized runtime terminology across control-plane nodes',
-                'Automated lifecycle hooks for local Docker cluster bootstrapping'
+                'Engineered declarative multi-node Kubernetes cluster topologies using KinD YAML',
+                'Standardized control-plane and worker runtime terminology across classroom setups',
+                'Integrated container lifecycle hooks for reproducible local cluster bootstrapping'
               ]
             }
           ]
         },
         {
-          stage: 'Stage 2: Observability Mesh & Interactive Tooling',
-          connectorLabel: 'Observability & Portability Layer',
+          stage: 'Stage 2: Observability Mesh & Execution Tooling',
+          connectorLabel: 'Telemetry Sync & Shell Normalization',
           cards: [
             {
               title: 'Prometheus & Grafana Observability Mesh',
               pr: 'PR #280',
               prUrl: 'https://github.com/layer5io/layer5-academy/pull/280',
-              impact: 'Decoupled Systemd • Live PromQL Telemetry Alignment',
+              impact: 'Decoupled Telemetry • Live PromQL Alignment',
               isContributed: true,
               points: [
-                'Decoupled rigid Linux systemd services for containerized telemetry',
-                'Real-time PromQL query alignment across telemetry dashboards',
-                'Pre-configured Grafana metric sync for service mesh latency tracking'
+                'Decoupled legacy host systemd services into isolated containerized telemetry pods',
+                'Synchronized live PromQL expressions with interactive Grafana dashboard panels',
+                'Pre-configured service mesh latency, error rate, and throughput scrapers'
               ]
             },
             {
               title: 'Cross-Platform Shell Execution Harness',
               pr: 'PR #274',
               prUrl: 'https://github.com/layer5io/layer5-academy/pull/274',
-              impact: 'Zero Broken Links • Multi-OS Shell Portability',
+              impact: 'POSIX/PowerShell Parity • Zero Broken Routes',
               isContributed: true,
               points: [
-                'Cross-platform bash and PowerShell shell execution compatibility',
-                'Canonical documentation routing for Ambassador, Postgres & MySQL',
-                'Zero broken links across cloud native interactive curricula'
+                'Normalized cross-platform script execution across Bash, Zsh, and PowerShell',
+                'Audited canonical routing for Ambassador, Postgres, and MySQL interactive labs',
+                'Eliminated 100% of dead documentation hyperlinks across cloud native paths'
               ]
             }
           ]
         },
         {
           stage: 'Stage 3: Interactive Cloud Native Learning Experience',
-          connectorLabel: 'Interactive Student Learning Experience',
+          connectorLabel: 'Browser Delivery & Live Verification',
           cards: [
             {
               title: 'Interactive Cloud Native Academy Playground',
               impact: 'Zero-Install Browser Labs • CNCF Ecosystem',
               isContributed: false,
               points: [
-                'Browser-based interactive terminal learning environments',
-                'Hands-on Istio, Linkerd & Envoy service mesh orchestrations',
-                'Instant curriculum feedback and step-by-step verification'
+                'Browser-accessible terminal sessions connected to live multi-node Kubernetes clusters',
+                'Hands-on Istio, Linkerd, and Envoy service mesh traffic management and observability',
+                'Automated validation checks verifying student step completion in real time'
               ]
             }
           ]
@@ -300,7 +313,16 @@ export default function Layer5ShowcasePage() {
 
           <header className={styles.heroHeader}>
             <div className={styles.eyebrowWrap}>
-              <span className={styles.eyebrowBadge}>Layer5 &amp; CNCF Ecosystem</span>
+              <span className={styles.eyebrowBadge}>
+                <img
+                  src="/img/layer5.png"
+                  alt="Layer5"
+                  width={14}
+                  height={14}
+                  style={{ objectFit: 'contain', verticalAlign: 'middle', marginRight: 6 }}
+                />
+                Layer5 &amp; CNCF Ecosystem
+              </span>
               <span className={styles.licenseBadge}>
                 <ShieldCheck size={13} />
                 <span>4 Pull Requests</span>
@@ -468,7 +490,7 @@ export default function Layer5ShowcasePage() {
                       </p>
                     ))}
                     {card.details.architectureFlow && (
-                      <ArchitectureDiagramFlow flow={card.details.architectureFlow} />
+                      <ArchitectureDiagramFlow flow={card.details.architectureFlow} projectId="layer5io" />
                     )}
                     {card.details.metricsDetail && (
                       <div className={openStyles.metricsDetailBox}>

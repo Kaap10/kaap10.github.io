@@ -22,8 +22,27 @@ export default function MesheryExtensionsPage() {
           </nav>
 
           <header className={styles.heroHeader}>
-            <h1 style={{ fontSize: '2.4rem', fontWeight: 700, margin: '0 0 0.5rem 0' }}>
-              meshery-extensions
+            <div className={styles.eyebrowWrap} style={{ marginBottom: '0.75rem' }}>
+              <span className={styles.eyebrowBadge}>
+                <img
+                  src="/img/layer5.png"
+                  alt="Layer5 Meshery"
+                  width={14}
+                  height={14}
+                  style={{ objectFit: 'contain', verticalAlign: 'middle', marginRight: 6 }}
+                />
+                Layer5 &amp; Meshery Ecosystem
+              </span>
+            </div>
+            <h1 style={{ fontSize: '2.4rem', fontWeight: 700, margin: '0 0 0.5rem 0', display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+              <img
+                src="/img/layer5.png"
+                alt="Layer5 Meshery"
+                width={30}
+                height={30}
+                style={{ objectFit: 'contain' }}
+              />
+              <span>meshery-extensions</span>
             </h1>
             <p style={{ color: 'var(--vg-text-muted, #A6A6AC)', fontSize: '1.05rem', margin: 0 }}>
               Open-source contributions and architecture details.

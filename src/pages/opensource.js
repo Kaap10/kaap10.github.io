@@ -61,7 +61,13 @@ export default function OpenSourcePage() {
                   className={styles.headerLink}
                   title="apache/magpie (Contributor)"
                 >
-                  <IconGithub size={13} style={{ color: 'var(--vg-accent, #FF4D4F)' }} />
+                  <img
+                    src="/img/apachelogo.png"
+                    alt="Apache"
+                    width="14"
+                    height="14"
+                    style={{ objectFit: 'contain', flexShrink: 0 }}
+                  />
                   <span>apache/magpie</span>
                   <span className={styles.contributorBadge}>Contributor</span>
                   <ArrowRight size={13} />
@@ -72,7 +78,13 @@ export default function OpenSourcePage() {
                   className={styles.headerLink}
                   title="microsoft/PyRIT (Contributor)"
                 >
-                  <IconGithub size={13} style={{ color: '#3B82F6' }} />
+                  <img
+                    src="/img/mslogo.png"
+                    alt="Microsoft"
+                    width="14"
+                    height="14"
+                    style={{ objectFit: 'contain', flexShrink: 0 }}
+                  />
                   <span>microsoft/PyRIT</span>
                   <span className={styles.contributorBadge}>Contributor</span>
                   <ArrowRight size={13} />
@@ -97,7 +109,13 @@ export default function OpenSourcePage() {
                   className={styles.headerLink}
                   title="layer5io (Contributor)"
                 >
-                  <IconGithub size={13} style={{ color: '#00D3A9' }} />
+                  <img
+                    src="/img/layer5.png"
+                    alt="Layer5"
+                    width="14"
+                    height="14"
+                    style={{ objectFit: 'contain', flexShrink: 0 }}
+                  />
                   <span>layer5io</span>
                   <span className={styles.contributorBadge}>Contributor</span>
                   <ArrowRight size={13} />
@@ -144,7 +162,13 @@ export default function OpenSourcePage() {
                   className={styles.headerLink}
                   title="meshery-extensions (Contributor)"
                 >
-                  <IconGithub size={13} style={{ color: '#06B6D4' }} />
+                  <img
+                    src="/img/layer5.png"
+                    alt="Layer5 Meshery"
+                    width="14"
+                    height="14"
+                    style={{ objectFit: 'contain', flexShrink: 0 }}
+                  />
                   <span>meshery-extensions</span>
                   <span className={styles.contributorBadge}>Contributor</span>
                   <ArrowRight size={13} />

@@ -77,14 +77,17 @@ const DYNAVEC_CARD = {
     architectureFlow: {
       title: 'Dynavec Serverless Vector Database Architecture Flow',
       mentalModel: {
-        input: 'AI Agents & Assistant Run Loops (FastMCP / OpenAI v2)',
-        process: 'In-Memory SPFresh Hot Index (RAM) + S3 Cold Storage Tier',
-        output: 'Sub-5ms Nearest-Neighbor Similarity & Offline Precision Math'
+        inputLabel: '1. Client & Agent Protocols',
+        input: 'FastMCP JSON-RPC over stdio + OpenAI Function Calling v2 tool loops',
+        processLabel: '2. Hybrid Memory & Storage Hierarchy',
+        process: 'In-Memory SPFresh Hot Index (2-Means RAM) + S3 Vector Cold Tier',
+        outputLabel: '3. Sub-5ms Search & Precision Math',
+        output: 'Sub-5ms nearest-neighbor recall, RRF hybrid fusion, and offline nDCG@k validation'
       },
       layers: [
         {
           stage: 'Stage 1: Client & Agent Ingestion Protocol',
-          connectorLabel: null,
+          connectorLabel: 'RPC & Tool Protocol Deserialization',
           cards: [
             {
               title: 'FastMCP JSON-RPC Tool Server',
@@ -94,45 +97,45 @@ const DYNAVEC_CARD = {
               isContributed: true,
               points: [
                 'Zero-dependency FastMCP server implementation over stdio protocol',
-                'Standard memory_recall and similarity search tool schemas',
-                'Native Claude Desktop, Claude Code & Cursor IDE tool connectivity'
+                'Standard memory_recall and similarity search schemas for Claude Desktop & Cursor',
+                'Sub-1ms IPC latency with streaming JSON-RPC message framing'
               ]
             },
             {
               title: 'OpenAI Assistants Adapter',
               pr: 'PR #214',
               prUrl: 'https://github.com/codeforstartups/dynavec/pull/214',
-              impact: 'Function Calling v2 • Multi-Tier Fallback Parsing',
+              impact: 'Function Calling v2 • Resilient JSON Parser',
               isContributed: true,
               points: [
-                'OpenAI Function Calling v2 runtime schema serializer',
-                'Multi-tier resilient fallback JSON parsing pipeline',
-                'Zero-crash prompt execution for complex nested tool arguments'
+                'OpenAI Function Calling v2 runtime schema serializer with strict validation',
+                'Multi-tier resilient fallback JSON parser recovering malformed LLM tool calls',
+                'Zero-crash execution guarantee for deeply nested dictionary arguments'
               ]
             }
           ]
         },
         {
-          stage: 'Stage 2: Embedding Ingestion & Cost Optimization',
-          connectorLabel: 'Ingestion & Deduplication Pipeline',
+          stage: 'Stage 2: Ingestion & Cost Optimization Pipeline',
+          connectorLabel: 'Cryptographic Hashing & Vector Validation',
           cards: [
             {
               title: 'SHA-256 Ingestion Dedup & Dimension Guard',
               pr: 'PR #120 & PR #119',
               prUrl: 'https://github.com/codeforstartups/dynavec/pull/120',
-              impact: '30%–40% Embedding Cost Savings • Strict Shape Guard',
+              impact: '30%-40% Cost Savings • Dimension Validation',
               isContributed: true,
               points: [
-                'Cryptographic SHA-256 payload hashing eliminating duplicate vector storage',
-                '30% to 40% downstream embedding compute cost savings',
-                'Strict vector dimension guard defending against malformed embeddings'
+                'Cryptographic SHA-256 payload hashing pruning duplicate embedding invocations',
+                '30% to 40% downstream embedding compute and vector storage cost reduction',
+                'Strict dimension guard preventing index corruption from mismatched vectors'
               ]
             }
           ]
         },
         {
           stage: 'Stage 3: Hybrid Tiered Storage Architecture',
-          connectorLabel: 'Dynamic Tiered Storage Routing',
+          connectorLabel: 'Hot/Cold Tier Storage Routing',
           cards: [
             {
               title: 'SPFresh Hot Index Engine (RAM)',
@@ -141,26 +144,26 @@ const DYNAVEC_CARD = {
               impact: 'Sub-5ms Query Latency • Dynamic 2-Means Splits',
               isContributed: true,
               points: [
-                'Dynamic 2-Means RAM centroid splitting & nearest-centroid merges',
-                'Non-blocking RLock thread concurrency for streaming writes',
-                'Sub-5ms nearest-neighbor similarity search latency'
+                'Dynamic 2-Means RAM centroid bipartitioning and nearest-neighbor centroid merges',
+                'Non-blocking RLock thread synchronization under continuous streaming writes',
+                'Sub-5ms nearest-neighbor cosine similarity search latency'
               ]
             },
             {
-              title: 'Tiered Serverless Cold Storage',
+              title: 'Serverless Cold Storage Tier',
               impact: 'Zero Idle Costs • DynamoDB + S3 Vectors',
               isContributed: false,
               points: [
-                'AWS DynamoDB for fast transactional metadata & indexed lookups',
-                'Amazon S3 Vectors cold storage with 100-key streaming batching (PR #116)',
-                'AWS Doctor CLI diagnostic analyzer for zero-downtime health (PR #144)'
+                'DynamoDB metadata index coupled with S3 Vectors for long-term cold persistence',
+                '100-key streaming batching for high-throughput vector chunking (PR #116)',
+                'AWS Doctor CLI diagnostic analyzer for continuous cluster health (PR #144)'
               ]
             }
           ]
         },
         {
-          stage: 'Stage 4: Hybrid Search & Graph Traversal',
-          connectorLabel: 'Hybrid Retrieval & Knowledge Walk',
+          stage: 'Stage 4: Hybrid Search & Knowledge Graph Traversal',
+          connectorLabel: 'Dense/Sparse Fusion & Graph Walk',
           cards: [
             {
               title: 'Hybrid RRF & GraphRAG Traversal Engine',
@@ -169,16 +172,16 @@ const DYNAVEC_CARD = {
               impact: 'Multi-Query Expansion • HyDE Fusion • BFS Cycle Safety',
               isContributed: true,
               points: [
-                'Accepted core RFC for Multi-Query expansion & HyDE document fusion',
-                'Reciprocal Rank Fusion (RRF) combining dense & sparse similarity ranks',
-                'Breadth-first cycle detection preventing infinite recursion on knowledge graphs'
+                'Core architecture RFC for Multi-Query expansion and HyDE document fusion',
+                'Reciprocal Rank Fusion (RRF) synthesizing dense similarity and sparse lexical scores',
+                'Breadth-first cycle detection preventing infinite recursion across knowledge graphs'
               ]
             }
           ]
         },
         {
-          stage: 'Stage 5: Quality Benchmarks & Offline Math Validation',
-          connectorLabel: 'Precision Evaluation & Validation',
+          stage: 'Stage 5: Quality Benchmarks & Offline Precision Math',
+          connectorLabel: 'Logarithmic Discounting & IR Metrics',
           cards: [
             {
               title: 'Offline Mathematical Evaluation Engine',
@@ -187,9 +190,9 @@ const DYNAVEC_CARD = {
               impact: 'Recall@k / MRR / nDCG@k • Pluggable LLM Judges',
               isContributed: true,
               points: [
-                'Recall@k, MRR, and nDCG@k calculation with logarithmic rank discounting',
-                'Pluggable BaseLLMJudge interface for automated faithfulness validation',
-                'Dependency-free terminal ASCII evaluation visualizer'
+                'Exact calculation of Recall@k, MRR, and nDCG@k with logarithmic rank discounting',
+                'Pluggable BaseLLMJudge interface for automated factual alignment benchmarking',
+                'Zero-dependency terminal ASCII visualization for rapid developer evaluation'
               ]
             }
           ]
@@ -680,7 +683,7 @@ export default function DynavecShowcasePage() {
                       </p>
                     ))}
                     {card.details.architectureFlow && (
-                      <ArchitectureDiagramFlow flow={card.details.architectureFlow} />
+                      <ArchitectureDiagramFlow flow={card.details.architectureFlow} projectId="dynavec" />
                     )}
                     {card.details.metricsDetail && (
                       <div className={openStyles.metricsDetailBox}>

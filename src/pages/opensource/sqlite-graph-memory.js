@@ -75,105 +75,108 @@ const SQLITE_CARD = {
     architectureFlow: {
       title: 'SQLite-Graph-Memory Native MCP & RAG Architecture Flow',
       mentalModel: {
-        input: 'Claude Desktop & Cursor IDE JSON-RPC 2.0 (stdio) Requests',
-        process: 'Pure Stdlib MCP Server + Crash-Safe NamedTemporaryFile Subprocess',
-        output: 'Zero-Token-per-Turn Graph RAG with Explicit isError: True Diagnostics'
+        inputLabel: '1. Agent Host JSON-RPC Ingestion',
+        input: 'Claude Desktop, Claude Code, and Cursor IDE JSON-RPC 2.0 requests over stdio',
+        processLabel: '2. Stdlib MCP & Isolated Subprocess',
+        process: 'Pure Python stdlib tool server + isolated NamedTemporaryFile worker process',
+        outputLabel: '3. Graph RAG & Clean Diagnostics',
+        output: 'Zero context pollution, explicit isError: True diagnostics, and sub-3.6s test suite'
       },
       layers: [
         {
           stage: 'Stage 1: AI Agent Host & Ingestion Layer',
-          connectorLabel: null,
+          connectorLabel: 'Stdio Framing & JSON-RPC Ingestion',
           cards: [
             {
               title: 'AI Agent Client Host Environment',
               impact: 'Claude & Cursor • stdio JSON-RPC 2.0',
               isContributed: false,
               points: [
-                'Claude Desktop, Cursor IDE & custom LLM agent harnesses',
-                'Zero-token-per-turn memory retrieval requests',
-                'JSON-RPC 2.0 protocol communication over standard I/O (stdio)'
+                'Claude Desktop, Cursor IDE, and terminal agent harnesses dispatching memory queries',
+                'Zero-token-per-turn memory retrieval requests avoiding prompt context bloat',
+                'Standard JSON-RPC 2.0 communication over standard input/output (stdio)'
               ]
             }
           ]
         },
         {
           stage: 'Stage 2: Pure Stdlib MCP Server Layer',
-          connectorLabel: 'Model Context Protocol (MCP) Server Layer',
+          connectorLabel: 'Tool Registration & Request Routing',
           cards: [
             {
-              title: 'Pure Python Stdlib MCP Server Layer',
+              title: 'Pure Python Stdlib MCP Server',
               pr: 'PR #8',
               prUrl: 'https://github.com/tonydzi/sqlite-graph-memory/pull/8',
-              impact: 'Zero External Deps • memory_recall Schema',
+              impact: 'Zero Dependencies • memory_recall Schema',
               isContributed: true,
               points: [
-                'Zero-dependency JSON-RPC 2.0 stdio server implementation in Python stdlib',
-                'Declarative memory_recall tool schema registration & validation',
-                'Synchronous request/response loop handling agent tool calls'
+                'Zero-dependency JSON-RPC 2.0 stdio server implementation using only Python standard library',
+                'Declarative memory_recall tool schema registration with typed argument validation',
+                'Synchronous request/response loop handling agent invocations without async bloat'
               ]
             }
           ]
         },
         {
           stage: 'Stage 3: Crash-Safe Subprocess Isolation',
-          connectorLabel: 'Crash-Safe Subprocess Isolation',
+          connectorLabel: 'Subprocess Isolation & IPC File Scoping',
           cards: [
             {
-              title: 'Subprocess Inference Bridge & Temporary Scoping',
+              title: 'Subprocess Bridge & Temporary Scoping',
               pr: 'PR #10',
               prUrl: 'https://github.com/tonydzi/sqlite-graph-memory/pull/10',
               impact: 'NamedTemporaryFile Scoping • Race-Safe',
               isContributed: true,
               points: [
-                'Decouples heavy neural model inference from the MCP server event loop',
-                'Per-call unique NamedTemporaryFile instances via BRAIN_ANSWER_OUT',
-                'Eliminates stdout log contamination and concurrent race conditions'
+                'Decoupled heavy neural model inference from the MCP event loop into dedicated subshells',
+                'Allocated unique NamedTemporaryFile instances per call via BRAIN_ANSWER_OUT env vars',
+                'Eliminated stdout log contamination and concurrent race conditions on shared files'
               ]
             }
           ]
         },
         {
           stage: 'Stage 4: Graph RAG Storage & Error Boundary',
-          connectorLabel: 'Graph RAG Ledger & Error Boundary Protocol',
+          connectorLabel: 'Graph Traversal & Structured Error Boundary',
           cards: [
             {
               title: 'Dense Vector & Wikilink Graph Ledger',
               impact: 'e5-base Embeddings • Cross-Encoder Rerank',
               isContributed: false,
               points: [
-                'e5-base dense vector embeddings and similarity scoring',
-                'Bidirectional wikilink graph traversal in embedded SQLite',
-                'Cross-encoder neural reranking of retrieved context chunks'
+                'e5-base dense vector embeddings and cosine similarity scoring in embedded SQLite',
+                'Bidirectional wikilink graph traversal resolving relational entities across notes',
+                'Cross-encoder neural reranking selecting top-k retrieved context passages'
               ]
             },
             {
               title: 'Strict Error Boundaries & Diagnostics',
               pr: 'PR #14 & PR #10',
               prUrl: 'https://github.com/tonydzi/sqlite-graph-memory/pull/14',
-              impact: 'isError: True Diagnostics • Zero Crash Trapping',
+              impact: 'isError: True Diagnostics • Zero Silent Swallowing',
               isContributed: true,
               points: [
-                'Structured isError: True diagnostics preventing swallowed exceptions',
-                'Clearly distinguishes fatal tool faults from valid 0-match queries',
-                'Suppresses tokenizer and runtime noise in LLM agent context'
+                'Structured isError: True diagnostics preventing swallowed runtime exceptions',
+                'Cleanly distinguished fatal subprocess faults from valid 0-match memory searches',
+                'Suppressed tokenizer warnings and startup logging from leaking into LLM contexts'
               ]
             }
           ]
         },
         {
           stage: 'Stage 5: TDD & Mutation Test Verification',
-          connectorLabel: 'Test-Driven Development (TDD) Verification',
+          connectorLabel: 'Offline Test-Driven Validation',
           cards: [
             {
               title: 'Red-to-Green Unit & Mutation Test Suite',
-              pr: 'PR #8, #10, #14 TDD',
+              pr: 'PR #8, #10, #14',
               prUrl: 'https://github.com/tonydzi/sqlite-graph-memory/pull/14',
               impact: '84 Unit Tests • 3.6s CI Speed',
               isContributed: true,
               points: [
-                '84 comprehensive offline unit tests with pytest',
-                'Mutation testing verified against subtle code regressions',
-                '3.6-second execution time ensuring rapid CI test verification'
+                'Authored 84 comprehensive deterministic offline unit tests using pytest',
+                'Validated against subtle mutation testing mutations across edge cases',
+                'Executed complete test suite in 3.6 seconds on local and remote CI pipelines'
               ]
             }
           ]
@@ -472,7 +475,7 @@ export default function SqliteGraphMemoryShowcasePage() {
                       </p>
                     ))}
                     {card.details.architectureFlow && (
-                      <ArchitectureDiagramFlow flow={card.details.architectureFlow} />
+                      <ArchitectureDiagramFlow flow={card.details.architectureFlow} projectId="sqlite-graph-memory" />
                     )}
                     {card.details.metricsDetail && (
                       <div className={openStyles.metricsDetailBox}>
