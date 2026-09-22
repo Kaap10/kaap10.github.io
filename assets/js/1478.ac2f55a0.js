@@ -1,0 +1,1 @@
+"use strict";(globalThis.webpackChunkkaap10_portfolio=globalThis.webpackChunkkaap10_portfolio||[]).push([[1478],{61478(a,e,o){o.d(e,{createPieServices:()=>i.f});var i=o(45145);o(17946)}}]);

@@ -1,0 +1,1 @@
+"use strict";(globalThis.webpackChunkkaap10_portfolio=globalThis.webpackChunkkaap10_portfolio||[]).push([[5332],{35332(a,e,o){o.d(e,{createTreemapServices:()=>p.d});var p=o(97871);o(17946)}}]);
