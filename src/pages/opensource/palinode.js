@@ -473,6 +473,39 @@ export default function PalinodeShowcasePage() {
                         <span className={openStyles.metricsDetailText}>{card.details.metricsDetail}</span>
                       </div>
                     )}
+
+                    <div className={openStyles.deepDiveSection}>
+                      <h5 className={openStyles.deepDiveSubheading}>Interview Talking Points (STAR Method)</h5>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem', marginTop: '0.75rem' }}>
+                        <div style={{ background: 'rgba(255, 255, 255, 0.03)', border: '1px solid rgba(255, 255, 255, 0.07)', borderRadius: '6px', padding: '0.85rem 1rem' }}>
+                          <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--vg-accent, #FF4D4F)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Situation</span>
+                          <p style={{ margin: '0.35rem 0 0', fontSize: '0.86rem', color: '#CBD5E1', lineHeight: '1.55' }}>
+                            Palinode's core suite had untested assumptions about POSIX filesystem behavior and process liveness probing. On Windows, <code>os.kill(pid, 0)</code> signaled <code>CTRL_C_EVENT</code> instead of safely probing, thereby inadvertently terminating active agent processes during stale worktree cleanup.
+                          </p>
+                        </div>
+                        <div style={{ background: 'rgba(255, 255, 255, 0.03)', border: '1px solid rgba(255, 255, 255, 0.07)', borderRadius: '6px', padding: '0.85rem 1rem' }}>
+                          <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#38BDF8', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Task</span>
+                          <p style={{ margin: '0.35rem 0 0', fontSize: '0.86rem', color: '#CBD5E1', lineHeight: '1.55' }}>
+                            Resolve cross-platform process probing vulnerabilities, prevent privacy leaks in diagnostic outputs referencing private issue trackers, and harden filesystem operations for native Windows Python 3.12 compatibility.
+                          </p>
+                        </div>
+                        <div style={{ background: 'rgba(255, 255, 255, 0.03)', border: '1px solid rgba(255, 255, 255, 0.07)', borderRadius: '6px', padding: '0.85rem 1rem' }}>
+                          <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#FBBF24', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Action</span>
+                          <ul style={{ margin: '0.35rem 0 0', paddingLeft: '1.2rem', fontSize: '0.86rem', color: '#CBD5E1', lineHeight: '1.55' }}>
+                            <li>Engineered a non-signalling Win32 process probe using <code>ctypes</code> and <code>WaitForSingleObject</code> to safely query kernel object states without interrupting agent processes.</li>
+                            <li>Built an AST-based static analysis regression guard to inspect Python syntax trees across diagnostic modules, preventing accidental exposure of internal private issue tracker references.</li>
+                            <li>Triaged 4,000+ tests on Windows Python 3.12, verifying atomic UTF-8 CJK writes and <code>os.fchmod</code> missing-symbol fallbacks.</li>
+                          </ul>
+                        </div>
+                        <div style={{ background: 'rgba(255, 255, 255, 0.03)', border: '1px solid rgba(255, 255, 255, 0.07)', borderRadius: '6px', padding: '0.85rem 1rem' }}>
+                          <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#34D399', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Result</span>
+                          <ul style={{ margin: '0.35rem 0 0', paddingLeft: '1.2rem', fontSize: '0.86rem', color: '#CBD5E1', lineHeight: '1.55' }}>
+                            <li>Successfully merged all fixes and closed the critical platform parity issues.</li>
+                            <li>Earned explicit praise from maintainers for architectural foresight (rejecting naive <code>GetExitCodeProcess</code> implementations) and rigorous defensive programming.</li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
                     <div className={openStyles.deepDiveSection}>
                       <h5 className={openStyles.deepDiveSubheading}>Complete Technical Stack</h5>
                       <div className={openStyles.fullTechWrap}>

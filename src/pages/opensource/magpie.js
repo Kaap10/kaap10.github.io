@@ -534,6 +534,40 @@ export default function MagpieShowcasePage() {
                         <span className={openStyles.metricsDetailText}>{card.details.metricsDetail}</span>
                       </div>
                     )}
+
+                    <div className={openStyles.deepDiveSection}>
+                      <h5 className={openStyles.deepDiveSubheading}>Interview Talking Points (STAR Method)</h5>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem', marginTop: '0.75rem' }}>
+                        <div style={{ background: 'rgba(255, 255, 255, 0.03)', border: '1px solid rgba(255, 255, 255, 0.07)', borderRadius: '6px', padding: '0.85rem 1rem' }}>
+                          <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--vg-accent, #FF4D4F)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Situation</span>
+                          <p style={{ margin: '0.35rem 0 0', fontSize: '0.86rem', color: '#CBD5E1', lineHeight: '1.55' }}>
+                            The Apache Magpie framework required vendor-neutral runtime adapters to allow various AI agent harnesses (Copilot, Aider, Goose, Cursor, Local LLMs) to execute security triage skills safely without leaking embargoed vulnerabilities or performing unreviewed autonomous actions.
+                          </p>
+                        </div>
+                        <div style={{ background: 'rgba(255, 255, 255, 0.03)', border: '1px solid rgba(255, 255, 255, 0.07)', borderRadius: '6px', padding: '0.85rem 1rem' }}>
+                          <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#38BDF8', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Task</span>
+                          <p style={{ margin: '0.35rem 0 0', fontSize: '0.86rem', color: '#CBD5E1', lineHeight: '1.55' }}>
+                            Engineer 5 core runtime adapters integrating these agent harnesses while enforcing strict Human-in-the-Loop (HITL) boundaries, environment isolation (agent-iso), and Model Context Protocol (MCP) tool bridges, ensuring compliance with RFC-AI-0004.
+                          </p>
+                        </div>
+                        <div style={{ background: 'rgba(255, 255, 255, 0.03)', border: '1px solid rgba(255, 255, 255, 0.07)', borderRadius: '6px', padding: '0.85rem 1rem' }}>
+                          <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#FBBF24', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Action</span>
+                          <ul style={{ margin: '0.35rem 0 0', paddingLeft: '1.2rem', fontSize: '0.86rem', color: '#CBD5E1', lineHeight: '1.55' }}>
+                            <li>Mapped platform-specific approval modalities (e.g., Goose <code>GOOSE_MODE="approve"</code>, Aider <code>--no-auto-commits</code>) to enforce proposal-then-confirm discipline.</li>
+                            <li>Integrated <code>agent-iso</code> execution boundaries to scrub ambient cloud tokens before launching subshells.</li>
+                            <li>Connected harnesses to PonyMail and Apache Projects MCP servers via JSON-RPC 2.0.</li>
+                            <li>Calibrated local LLM capability floors (70B+ reasoning class) for air-gapped sovereign inference.</li>
+                          </ul>
+                        </div>
+                        <div style={{ background: 'rgba(255, 255, 255, 0.03)', border: '1px solid rgba(255, 255, 255, 0.07)', borderRadius: '6px', padding: '0.85rem 1rem' }}>
+                          <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#34D399', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Result</span>
+                          <ul style={{ margin: '0.35rem 0 0', paddingLeft: '1.2rem', fontSize: '0.86rem', color: '#CBD5E1', lineHeight: '1.55' }}>
+                            <li>Successfully merged all 5 Pull Requests into <code>apache/magpie:main</code> with a 100% merge rate.</li>
+                            <li>Collaborated directly with ASF Board/PMC maintainers, establishing the canonical skill discovery architecture for subsequent agent harness adapters.</li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
                     <div className={openStyles.deepDiveSection}>
                       <h5 className={openStyles.deepDiveSubheading}>Complete Technical Stack</h5>
                       <div className={openStyles.fullTechWrap}>
