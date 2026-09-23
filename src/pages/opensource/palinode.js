@@ -176,15 +176,36 @@ const PALINODE_CARD = {
       'Non-Signalling Win32 Kernel Synchronization: Probed process existence via OpenProcess with SYNCHRONIZE and WaitForSingleObject, eliminating destructive CTRL_C_EVENT console group kills.',
       'STILL_ACTIVE (259) Trap Defense: Replaced naive GetExitCodeProcess inspection with kernel object signaled state checks, preventing zombie process misidentification.',
       'Thread-Safe Error Capture: Utilized ctypes.WinDLL("kernel32", use_last_error=True) with ctypes.get_last_error() to prevent runtime overwrites in thread-local storage.',
+      'Cross-Platform Path Normalization: Standardized native Windows backslash delimiters to POSIX invariants for LLM tooling APIs, enforced by ntpath OS-emulation on Linux CI runners.',
       'Fail-Safe Security Invariants: Preserved defensive invariants where ERROR_ACCESS_DENIED resolves to True, protecting elevated worktrees against accidental pruning.',
       'Python AST Static Analysis Guard: Implemented abstract syntax tree inspection across diagnostic modules to programmatically prevent leaking private issue tracker identifiers.',
       'Cross-Platform Filesystem Parity: Triaged 4,000+ tests under native Windows Python 3.12, verifying graceful fallbacks for missing os.fchmod APIs and atomic UTF-8 writes.'
     ],
-    metricsDetail: '3 Systems Deliverables · Win32 Kernel Synchronization · AST Static Analysis · 4,000+ Tests Triaged · Zero Zombie Traps',
+    metricsDetail: '4 Systems Deliverables · Win32 Kernel Synchronization · AST Static Analysis · 4,000+ Tests Triaged · Zero Zombie Traps',
   },
 };
 
 const MASTER_PR_CONTRIBUTIONS = [
+  {
+    pr: 'PR #228',
+    url: 'https://github.com/phasespace-labs/palinode/pull/228',
+    issue: 'Issue #214',
+    issueUrl: 'https://github.com/phasespace-labs/palinode/issues/214',
+    category: 'OS Internals',
+    categoryId: 'os',
+    title: 'Cross-Platform Path Normalization Guard',
+    problem: 'Palinode\'s core storage mechanism and MCP layer rely on canonical POSIX relative paths. On Windows, os.path.relpath natively returns paths with backslashes (\\), which broke strict cross-platform invariants when surfaced to agents or database stores.',
+    how: [
+      'Centralized POSIX Normalization: Updated to_rel_path to reliably replace all Windows backslashes with POSIX forward slashes after relative resolution, ensuring strict API parity.',
+      'Cross-Platform OS Emulation in Testing: Implemented tests using ntpath (via monkeypatching os.path) to ensure Windows-specific path semantics are rigorously tested on Linux CI runners.',
+      'Widened Type Safety: Migrated the core path function to support os.PathLike[str] inputs using os.fspath(), while strictly rejecting out-of-contract types like None.',
+      'Refactoring & Cleanup: Removed brittle string-stripping logic, routing all path translations safely through the hardened canonical helper.'
+    ],
+    feedback: {
+      text: 'Merged — thank you, and thank you especially for the ntpath test. I reverted the normalization on a scratch copy to check it and your test failed, which is the whole point... That is the part of this PR still earning its keep in a year.',
+      author: 'Paul-Kyle — Repository Maintainer'
+    }
+  },
   {
     pr: 'PR #215',
     url: 'https://github.com/phasespace-labs/palinode/pull/215',
@@ -494,6 +515,7 @@ export default function PalinodeShowcasePage() {
                           <ul style={{ margin: '0.35rem 0 0', paddingLeft: '1.2rem', fontSize: '0.86rem', color: '#CBD5E1', lineHeight: '1.55' }}>
                             <li>Engineered a non-signalling Win32 process probe using <code>ctypes</code> and <code>WaitForSingleObject</code> to safely query kernel object states without interrupting agent processes.</li>
                             <li>Built an AST-based static analysis regression guard to inspect Python syntax trees across diagnostic modules, preventing accidental exposure of internal private issue tracker references.</li>
+                            <li>Implemented strict cross-platform filesystem normalization, standardizing native Windows backslash delimiters to POSIX invariants for LLM tooling APIs using <code>ntpath</code> OS-emulation.</li>
                             <li>Triaged 4,000+ tests on Windows Python 3.12, verifying atomic UTF-8 CJK writes and <code>os.fchmod</code> missing-symbol fallbacks.</li>
                           </ul>
                         </div>

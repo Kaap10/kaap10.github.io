@@ -29,6 +29,7 @@ const DYNAVEC_CARD = {
   id: 'dynavec',
   index: '07',
   roleTag: 'Core Contributor · 14 Merged PRs',
+  roleTag: 'Maintainer & Core Contributor · 14 Merged PRs',
   icon: Package,
   title: 'dynavec',
   headline: 'Serverless Hybrid Vector Database on DynamoDB & S3',
@@ -56,6 +57,7 @@ const DYNAVEC_CARD = {
   details: {
     description:
       'dynavec is a serverless hybrid vector database engineered on top of Amazon DynamoDB and Amazon S3 Vectors. As an active open-source core contributor across 14 merged PRs and 1 core RFC, engineered core vector database algorithms, evaluation engines, ecosystem integrations, and production diagnostic tooling.\n\nKey architectural contributions include implementing the SPFresh-style incremental hot index rebalancing engine featuring dynamic spherical 2-means bipartitioning, nearest-centroid merges, normalized drift tracking, and concurrent non-blocking RLock memory buffers. Also built the official FastMCP server supporting semantic vector search, hybrid filtering, and multi-hop Knowledge Graph traversal for LLM agents.\n\nAuthored the accepted Multi-Query and HyDE fusion retriever RFC (Issue #215), built the offline RAG evaluation runner (Recall@k, MRR, nDCG@k), designed pluggable LLM Faithfulness judges, engineered zero-dependency OpenAI Assistant tool adapters, implemented SHA-256 content deduplication, and enforced PEP 561 typing compliance across 606 passing tests.',
+      'dynavec is a serverless hybrid vector database engineered on top of Amazon DynamoDB and Amazon S3 Vectors. As an active maintainer and core contributor across 14 merged PRs and 1 core RFC, engineered core vector database algorithms, evaluation engines, ecosystem integrations, and production diagnostic tooling.\n\nKey architectural contributions include implementing the SPFresh-style incremental hot index rebalancing engine featuring dynamic spherical 2-means bipartitioning, nearest-centroid merges, normalized drift tracking, and concurrent non-blocking RLock memory buffers. Also built the official FastMCP server supporting semantic vector search, hybrid filtering, and multi-hop Knowledge Graph traversal for LLM agents.\n\nAuthored the accepted Multi-Query and HyDE fusion retriever RFC (Issue #215), built the offline RAG evaluation runner (Recall@k, MRR, nDCG@k), designed pluggable LLM Faithfulness judges, engineered zero-dependency OpenAI Assistant tool adapters, implemented SHA-256 content deduplication, and enforced PEP 561 typing compliance across 606 passing tests.',
     allTech: [
       'Python',
       'DynamoDB',

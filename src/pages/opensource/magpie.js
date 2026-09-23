@@ -189,15 +189,55 @@ const MAGPIE_CARD = {
       'RFC-AI-0004 Vendor-Neutral Skill Standard: Universal skill definitions running identically across Cursor, Aider, Goose, Copilot CLI, and local open models without vendor lock-in.',
       'Human-in-the-Loop (HITL) Security Enforcement: Enforced proposal-then-confirm discipline and disabled unsafe autonomous flags (--allow-all, --yolo, auto-commits) across all agent harnesses.',
       'Layer 0 Credential & Token Isolation: Engineered agent-iso execution boundaries scrubbing ambient environment variables and cloud tokens prior to launching subshells.',
-      'Sovereign Air-Gapped Local LLM Inference: Formatted local model runtimes (Ollama, llama.cpp, vLLM) establishing 70B+ reasoning floors for embargoed vulnerability triage.',
+      'Vulnerability Cross-Referencing & Databases: Engineered OSV.dev and CVE.org integration using pure Python urllib.request backend with strict regex validation to prevent path traversal.',
       'Model Context Protocol (MCP) Multi-Client Integration: Configured standardized JSON-RPC 2.0 schemas connecting harnesses to PonyMail and Apache Projects MCP servers.',
       'On-Demand Skill Ingestion: Implemented selective /read .agents/skills/ patterns, eliminating context window exhaustion across large tool suites.'
     ],
-    metricsDetail: '5 Merged PRs · 100% Merge Rate · RFC-AI-0004 Vendor Neutrality · ASF PMC Reviewed · Zero-Cloud Air-Gapped LLMs',
+    metricsDetail: '7 Merged PRs · 100% Merge Rate · OSV.dev / CVE Integrations · ASF PMC Reviewed · Zero-Cloud Air-Gapped LLMs',
   },
 };
 
 const MASTER_PR_CONTRIBUTIONS = [
+  {
+    pr: 'PR #1326',
+    url: 'https://github.com/apache/magpie/pull/1326',
+    issue: 'Issue #1320',
+    issueUrl: 'https://github.com/apache/magpie/issues/1320',
+    category: 'Vulnerability Infrastructure',
+    categoryId: 'security',
+    title: 'Route OSV and CVE.org adapter recipes through vetted-ops',
+    problem: 'The framework\'s recommended sandbox baseline denies Bash(curl *). However, the tools/osv and tools/cve-org adapters documented bare curl | jq recipes, causing a deny-versus-adapter-recipes inconsistency.',
+    how: [
+      'Extended vetted-ops Core: Implemented a pure Python standard library (urllib.request) HTTP read backend alongside the existing gh subprocess backend.',
+      'Strict Parameter Validation: Added regex constraints for _VULN_ID, _PACKAGE_NAME, _VERSION, and _COMMIT_HASH to prevent URL path traversal injections.',
+      'Closed Catalogue Routing: Registered 5 operations built on closed endpoint templates configured in the vetted-ops policy [endpoints] block.',
+      'Preserved Output Formats: Designed the dispatcher to output raw JSON payloads to stdout, preserving the existing jq processing pipelines.'
+    ],
+    feedback: {
+      text: 'LGTM — every blocking point from both reviews is addressed in the tree, the affected eval suites show no regression, and CI is green. Approving. ... That was the finding I most wanted closed, and it came back stronger than I asked for.',
+      author: 'Jarek Potiuk (@potiuk) — ASF Board & PMC Member'
+    }
+  },
+  {
+    pr: 'PR #1297',
+    url: 'https://github.com/apache/magpie/pull/1297',
+    issue: 'Issue #311',
+    issueUrl: 'https://github.com/apache/magpie/issues/311',
+    category: 'Vulnerability Infrastructure',
+    categoryId: 'security',
+    title: 'OSV.dev Vulnerability Cross-Reference Adapter',
+    problem: 'Security teams need to detect duplicate reports and map GHSA to existing CVEs before allocating a new CVE ID. Magpie needed a read-only tools/osv/ adapter without compromising embargoed reports.',
+    how: [
+      'Four Standard API Operations: Authored POSIX curl + jq operations covering get-vuln, query-package, query-commit, and query-batch.',
+      'Strict Embargo Boundary: Explicitly defined rules forbidding the transmission of private reproducer commits or embargoed issue numbers to OSV.dev\'s public servers.',
+      'Full Taxonomy Sync: Integrated contract:security-cross-ref across registry docs, labels, vendor-neutrality matrix, and validators.',
+      'Egress Gateway Integration: Whitelisted api.osv.dev in tools/egress-gateway to ensure production readiness under default-deny network proxies.'
+    ],
+    feedback: {
+      text: 'Approving. Everything from the previous two rounds is fixed... Verified against the tree, not the description... Thanks for the patience through three rounds.',
+      author: 'Jarek Potiuk (@potiuk) — ASF Board & PMC Member'
+    }
+  },
   {
     pr: 'PR #1287',
     url: 'https://github.com/apache/magpie/pull/1287',

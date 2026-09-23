@@ -97,10 +97,12 @@ export default function OpenSourcePage() {
                   to="/opensource/dynavec"
                   className={styles.headerLink}
                   title="dynavec (Contributor)"
+                  title="dynavec (Maintainer)"
                 >
                   <Package size={14} style={{ color: '#22C55E' }} />
                   <span>dynavec</span>
                   <span className={styles.contributorBadge}>Contributor</span>
+                  <span className={styles.contributorBadge} style={{ background: 'rgba(255, 170, 0, 0.15)', color: '#FFB700', border: '1px solid rgba(255, 170, 0, 0.2)' }}>Maintainer</span>
                   <ArrowRight size={13} />
                 </Link>
 
