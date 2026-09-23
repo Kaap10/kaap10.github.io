@@ -42,15 +42,19 @@ const ApacheLogoIcon = ({ size = 16 }) => (
 const MAGPIE_CARD = {
   id: 'magpie',
   index: '01',
-  roleTag: 'Contributor · 5 Merged PRs',
+  roleTag: 'Contributor · 7 Merged PRs',
   icon: ApacheLogoIcon,
   title: 'apache/magpie',
   headline: 'Vendor-Neutral AI Agent Harness Runtimes & HITL Security Framework',
   cardDescription:
-    'Authored 5 first-class runtime adapters integrating industry-standard AI agent harnesses (GitHub Copilot CLI, Aider, Block Goose, Local LLMs, and Cursor) into Apache Magpie under RFC-AI-0004.',
-  license: '5 Merged PRs',
-  techStack: ['Python', 'Shell', 'RFC-AI-0004', 'MCP Protocol', 'GitHub Copilot CLI', 'Aider', 'Block Goose', 'Ollama / vLLM', 'Cursor Agent', 'Apache RAT'],
+    'Authored 7 major feature Pull Requests implementing first-class runtime adapters for leading AI agent harnesses and vulnerability cross-referencing infrastructure into Apache Magpie under RFC-AI-0004.',
+  license: '7 Merged PRs',
+  techStack: ['Python', 'Shell', 'RFC-AI-0004', 'MCP Protocol', 'OSV.dev API', 'GitHub Copilot CLI', 'Aider', 'Block Goose', 'Ollama / vLLM', 'Cursor Agent', 'Apache RAT'],
   highlights: [
+    {
+      label: 'OSV.dev & Vetted-Ops Dispatcher (PR #1326, #1297)',
+      text: 'Engineered vulnerability cross-referencing and routed HTTP ops via Python urllib.request with strict input validation.'
+    },
     {
       label: 'Copilot CLI & Coding Agent (PR #1287, Issue #318)',
       text: 'Engineered standalone Copilot CLI runtime, draft PR safety boundaries, and ~/.copilot/mcp-config.json integration.'
@@ -69,7 +73,7 @@ const MAGPIE_CARD = {
   tags: ['Open Source', 'Apache Software Foundation', 'AI Safety', 'Model Context Protocol', 'Agent Harnesses', 'HITL'],
   details: {
     description:
-      'Apache Magpie is the Apache Software Foundation\'s vendor-neutral framework for managing security triage, CVE allocation, and reproducible vulnerability workflows.\n\nAs a core external contributor across 5 merged pull requests, authored first-class runtime adapters for leading AI agent harnesses in full compliance with RFC-AI-0004. Collaborated directly with ASF Board and PMC Member Jarek Potiuk (@potiuk) to establish rigorous Human-in-the-Loop (HITL) security boundaries, ensuring agentic systems propose changes via Draft Pull Requests rather than executing unreviewed mutations.\n\nArchitected Model Context Protocol (MCP) integrations connecting PonyMail archive search and Apache Projects tools, configured Layer 0 clean-environment wrappers (agent-iso) to scrub ambient cloud tokens, and validated all contributions against Apache RAT licensing audits, prek hooks, symlink topology linters, and vendor-neutrality scoring.',
+      'Apache Magpie is the Apache Software Foundation\'s vendor-neutral framework for managing security triage, CVE allocation, and reproducible vulnerability workflows.\n\nAs a core external contributor across 7 merged pull requests, authored first-class runtime adapters for leading AI agent harnesses and vulnerability cross-referencing infrastructure in full compliance with RFC-AI-0004. Collaborated directly with ASF Board and PMC Member Jarek Potiuk (@potiuk) to establish rigorous Human-in-the-Loop (HITL) security boundaries, ensuring agentic systems propose changes via Draft Pull Requests rather than executing unreviewed mutations.\n\nArchitected Model Context Protocol (MCP) integrations connecting PonyMail archive search and Apache Projects tools, engineered OSV.dev and vetted-ops dispatcher backends, configured Layer 0 clean-environment wrappers (agent-iso) to scrub ambient cloud tokens, and validated all contributions against Apache RAT licensing audits, prek hooks, symlink topology linters, and vendor-neutrality scoring.',
     allTech: [
       'Python',
       'Shell / Bash',
@@ -370,7 +374,7 @@ export default function MagpieShowcasePage() {
   return (
     <Layout
       title="apache/magpie"
-      description="5 Merged Pull Requests across AI Agent Harness Runtimes, Model Context Protocol, and Human-in-the-Loop Security for Apache Magpie."
+      description="7 Merged Pull Requests across AI Agent Harness Runtimes, Vulnerability Cross-Referencing, and HITL Security for Apache Magpie."
     >
       <main className={styles.pageContainer}>
         <div className={styles.bgGlowWrapper} aria-hidden="true">
@@ -401,13 +405,13 @@ export default function MagpieShowcasePage() {
               </span>
               <span className={styles.licenseBadge}>
                 <ShieldCheck size={13} />
-                <span>5 Merged PRs</span>
+                <span>7 Merged PRs</span>
               </span>
             </div>
 
             <h1 className={styles.heroTitle}>apache/magpie</h1>
             <p className={styles.heroSubtitle}>
-              Technical deep dive into 5 merged pull requests on Apache Magpie, the ASF's vendor-neutral security triage, CVE allocation, and reproducible vulnerability management framework.
+              Technical deep dive into 7 merged pull requests on Apache Magpie, the ASF's vendor-neutral security triage, CVE allocation, and reproducible vulnerability management framework.
             </p>
 
             <div className={styles.heroActionGroup}>
@@ -444,7 +448,7 @@ export default function MagpieShowcasePage() {
 
           <div className={styles.metricsGrid}>
             <div className={styles.metricCard}>
-              <div className={styles.metricValue}>5</div>
+              <div className={styles.metricValue}>7</div>
               <div className={styles.metricLabel}>Merged Pull Requests</div>
             </div>
             <div className={styles.metricCard}>
@@ -587,12 +591,13 @@ export default function MagpieShowcasePage() {
                         <div style={{ background: 'rgba(255, 255, 255, 0.03)', border: '1px solid rgba(255, 255, 255, 0.07)', borderRadius: '6px', padding: '0.85rem 1rem' }}>
                           <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#38BDF8', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Task</span>
                           <p style={{ margin: '0.35rem 0 0', fontSize: '0.86rem', color: '#CBD5E1', lineHeight: '1.55' }}>
-                            Engineer 5 core runtime adapters integrating these agent harnesses while enforcing strict Human-in-the-Loop (HITL) boundaries, environment isolation (agent-iso), and Model Context Protocol (MCP) tool bridges, ensuring compliance with RFC-AI-0004.
+                            Engineer 7 major Pull Requests implementing runtime adapters for leading AI agent harnesses and vulnerability cross-referencing infrastructure while enforcing strict Human-in-the-Loop (HITL) boundaries, environment isolation (agent-iso), and Model Context Protocol (MCP) tool bridges under RFC-AI-0004.
                           </p>
                         </div>
                         <div style={{ background: 'rgba(255, 255, 255, 0.03)', border: '1px solid rgba(255, 255, 255, 0.07)', borderRadius: '6px', padding: '0.85rem 1rem' }}>
                           <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#FBBF24', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Action</span>
                           <ul style={{ margin: '0.35rem 0 0', paddingLeft: '1.2rem', fontSize: '0.86rem', color: '#CBD5E1', lineHeight: '1.55' }}>
+                            <li>Engineered the OSV.dev vulnerability cross-referencing bridge and routed HTTP operations through the <code>vetted-ops</code> Python dispatcher with strict regex validation.</li>
                             <li>Mapped platform-specific approval modalities (e.g., Goose <code>GOOSE_MODE="approve"</code>, Aider <code>--no-auto-commits</code>) to enforce proposal-then-confirm discipline.</li>
                             <li>Integrated <code>agent-iso</code> execution boundaries to scrub ambient cloud tokens before launching subshells.</li>
                             <li>Connected harnesses to PonyMail and Apache Projects MCP servers via JSON-RPC 2.0.</li>
@@ -602,8 +607,8 @@ export default function MagpieShowcasePage() {
                         <div style={{ background: 'rgba(255, 255, 255, 0.03)', border: '1px solid rgba(255, 255, 255, 0.07)', borderRadius: '6px', padding: '0.85rem 1rem' }}>
                           <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#34D399', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Result</span>
                           <ul style={{ margin: '0.35rem 0 0', paddingLeft: '1.2rem', fontSize: '0.86rem', color: '#CBD5E1', lineHeight: '1.55' }}>
-                            <li>Successfully merged all 5 Pull Requests into <code>apache/magpie:main</code> with a 100% merge rate.</li>
-                            <li>Collaborated directly with ASF Board/PMC maintainers, establishing the canonical skill discovery architecture for subsequent agent harness adapters.</li>
+                            <li>Successfully merged all 7 Pull Requests into <code>apache/magpie:main</code> with a 100% merge rate.</li>
+                            <li>Collaborated directly with ASF Board/PMC maintainers, establishing the canonical skill discovery architecture and vulnerability triage bridges.</li>
                           </ul>
                         </div>
                       </div>
