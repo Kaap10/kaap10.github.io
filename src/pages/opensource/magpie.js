@@ -176,6 +176,18 @@ const MAGPIE_CARD = {
           connectorLabel: 'JSON-RPC 2.0 Tool Execution',
           cards: [
             {
+              title: 'OSV.dev & Vetted-Ops Dispatcher',
+              pr: 'PR #1326 & PR #1297',
+              prUrl: 'https://github.com/apache/magpie/pull/1326',
+              impact: 'OSV.dev API v1 • Python urllib vetted-ops',
+              isContributed: true,
+              points: [
+                'Implemented pure Python urllib.request HTTP backend routing OSV and CVE ops without external dependencies',
+                'Added strict regex validation for vulnerability IDs, packages, versions, and Git hashes preventing path traversal',
+                'Whitelisted api.osv.dev across framework egress gateways and sandboxes under default-deny policies'
+              ]
+            },
+            {
               title: 'Canonical Skill Registry & MCP Tool Engine',
               impact: '70+ RFC-AI-0004 Skills • Multi-Client JSON-RPC',
               isContributed: false,

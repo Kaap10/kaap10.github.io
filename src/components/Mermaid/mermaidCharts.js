@@ -25,9 +25,10 @@ export const MERMAID_CHARTS = {
 
     subgraph S3 ["Stage 3: Canonical Tool Standard and MCP Execution Engine"]
       M7["70+ RFC-AI-0004 Universal Skill Registry<br/>Vendor-Neutral Standard across All Harnesses"]:::core
-      M8["PonyMail & Apache Projects MCP Tool Servers<br/>JSON-RPC 2.0 stdio & streamable_http Endpoints"]:::core
-      M9["Human-in-the-Loop Review Boundary<br/>Draft Pull Request Verification (0 Unreviewed Writes)"]:::contributed
-      M7 --> M8 --> M9
+      M8["OSV.dev & Vetted-Ops Dispatcher<br/><b>PR #1326 & #1297</b> · Alias Graph & Python urllib Egress"]:::contributed
+      M9["PonyMail & Apache Projects MCP Tool Servers<br/>JSON-RPC 2.0 stdio & streamable_http Endpoints"]:::core
+      M10["Human-in-the-Loop Review Boundary<br/>Draft Pull Request Verification (0 Unreviewed Writes)"]:::contributed
+      M7 --> M8 --> M9 --> M10
     end
 
     M4 -->|Harness Invocation<br/>& Option Normalization| M5
@@ -151,8 +152,9 @@ export const MERMAID_CHARTS = {
 
     subgraph S3 ["Stage 3: Codebase Integrity and Verification"]
       P5["AST Static Analysis Guard<br/><b>PR #207</b> · Python AST Scanner & Issue URL Leak Filter"]:::contributed
-      P6["Resilient Filesystem Operations<br/><b>Issue #169 Triage</b> · Atomic UTF-8/CJK Writes & os.fchmod Fallback"]:::integrity
-      P5 --> P6
+      P6["Cross-Platform Path Guard<br/><b>PR #228</b> · POSIX Forward-Slash Normalization & ntpath Test"]:::contributed
+      P7["Resilient Filesystem Operations<br/><b>Issue #169 Triage</b> · Atomic UTF-8/CJK Writes & os.fchmod Fallback"]:::integrity
+      P5 --> P6 --> P7
     end
 
     P2 -->|Kernel Process Handles<br/>& Signal Probes| P3

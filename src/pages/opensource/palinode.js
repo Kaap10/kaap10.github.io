@@ -32,15 +32,19 @@ const IconGithub = ({ size = 15 }) => (
 const PALINODE_CARD = {
   id: 'palinode',
   index: '04',
-  roleTag: 'Contributor · Systems & OS Internals',
+  roleTag: 'Contributor · 4 Systems Deliverables',
   icon: Binary,
   title: 'phasespace-labs/palinode',
   headline: 'Cross-Platform Process Synchronization & AST Diagnostics for AI Coding Agents',
   cardDescription:
-    'Engineered non-signalling Win32 process probing, AST-based static analysis privacy guards, and cross-platform filesystem parity on Windows Python 3.12 for AI agent memory systems.',
-  license: 'Core Systems',
-  techStack: ['Python', 'Win32 API (kernel32)', 'ctypes', 'AST Static Analysis', 'Process Synchronization', 'POSIX Signals', 'pytest', 'Windows 11'],
+    'Engineered non-signalling Win32 process probing, AST static analysis privacy guards, POSIX path normalization, and cross-platform filesystem parity on Windows Python 3.12 for AI agent memory systems.',
+  license: '4 Systems Deliverables',
+  techStack: ['Python', 'Win32 API (kernel32)', 'ctypes', 'Path Normalization (ntpath)', 'AST Static Analysis', 'Process Synchronization', 'POSIX Signals', 'pytest', 'Windows 11'],
   highlights: [
+    {
+      label: 'Path Normalization Guard (PR #228, Issue #214)',
+      text: 'Normalized native Windows backslash delimiters to POSIX invariants for LLM tooling APIs using ntpath OS-emulation on Linux CI runners.'
+    },
     {
       label: 'Win32 Process Probing (PR #215, Issue #212)',
       text: 'Engineered non-signalling process probing using ctypes and WaitForSingleObject, defending against Windows 259 (STILL_ACTIVE) exit-code traps.'
@@ -154,6 +158,18 @@ const PALINODE_CARD = {
                 'Enforced Python AST syntax tree verification across diagnostic modules',
                 'Blocked internal issue tracker URLs from leaking into public repository codebases',
                 'Enforced clean user-facing error messages across all CLI command paths'
+              ]
+            },
+            {
+              title: 'Cross-Platform Path Normalization Guard',
+              pr: 'PR #228',
+              prUrl: 'https://github.com/phasespace-labs/palinode/pull/228',
+              impact: 'POSIX Normalization • ntpath Emulation',
+              isContributed: true,
+              points: [
+                'Normalized native Windows backslash delimiters to POSIX forward slashes cross-platform',
+                'Engineered ntpath OS-emulation tests to enforce Windows-specific path semantics on Linux CI runners',
+                'Extended type safety to os.PathLike[str] while strictly rejecting out-of-contract inputs'
               ]
             },
             {
@@ -364,7 +380,7 @@ export default function PalinodeShowcasePage() {
 
           <div className={styles.metricsGrid}>
             <div className={styles.metricCard}>
-              <div className={styles.metricValue}>3</div>
+              <div className={styles.metricValue}>4</div>
               <div className={styles.metricLabel}>Major Systems Deliverables</div>
             </div>
             <div className={styles.metricCard}>
