@@ -51,78 +51,58 @@ const BLUEPRINTS = [
 ];
 
 /* ==========================================================================
-   Data: 5-Stage Closed Architectural Loop
+   Data: 7-Step Walkthrough Architecture
    ========================================================================== */
 const ARCHITECTURAL_LOOP_STAGES = [
   {
     num: 1,
-    title: 'Select Blueprint & Initialize Project',
-    desc: 'Developer picks a battle-tested blueprint. The CLI initializes local-first storage inside `.buildwithai/context.json` without cloud telemetry.',
+    title: 'Initialize',
+    desc: 'Select a template, experience level, and project overview. The `.buildwithai/` workspace is created.',
     role: 'CLI Initializer',
-    payload: `$ npx build-with-ai init
-? Select Blueprint: Modern SaaS MVP (15 Steps)
-? Project Name: my-saas-platform
-[OK] Created .buildwithai/context.json
-[OK] Initialized Phase 01: Architecture & Foundation`
+    payload: `$ npx build-with-ai init`
   },
   {
     num: 2,
-    title: 'CLI Injects Memory & Generates Prompt',
-    desc: 'The prompt engine pulls architectural decisions from earlier steps and constructs a complete, context-aware prompt with zero context drift.',
+    title: 'Generate Prompt (`next`)',
+    desc: 'The CLI formats the active step, identifies recommended models and target files, and copies the prompt to your clipboard.',
     role: 'Prompt Engine',
-    payload: `[PHASE 01: STEP 3/15]
-Target: Setup PostgreSQL schema & Row-Level Security
-Injected Architectural Context:
-- Framework: Next.js 14 (App Router)
-- Database: Supabase PostgreSQL (RLS Enabled)
-- Auth: Supabase Auth with Cookie Sessions`
+    payload: `$ npx build-with-ai next`
   },
   {
     num: 3,
-    title: 'AI Model Generates Disciplined Code',
-    desc: 'The AI produces targeted, single-responsibility code, schema migrations, or configurations that strictly adhere to earlier project constraints.',
-    role: 'AI Model Generation',
-    payload: `// schema.prisma
-model Organization {
-  id        String   @id @default(cuid())
-  name      String
-  slug      String   @unique
-  createdAt DateTime @default(now())
-  users     User[]
-
-  @@index([slug])
-}`
+    title: 'Record Decisions (`done`)',
+    desc: 'Paste the prompt into your AI assistant, review the architectural output, and record the choices.',
+    role: 'Developer Verification',
+    payload: `$ npx build-with-ai done`
   },
   {
     num: 4,
-    title: 'Code Saved & Decisions Recorded',
-    desc: 'Developer verifies code on disk and confirms the step in the CLI with `done`. Any new architectural choices are captured.',
-    role: 'Developer Verification',
-    payload: `$ npx build-with-ai done
-? Did you verify the schema migration? Yes
-? Record technical decisions:
-  · ORM: Prisma v5
-  · Primary Keys: CUID
-[OK] Recorded to .buildwithai/context.json`
+    title: 'Automatic Context Injection',
+    desc: 'On subsequent steps, previous decisions are automatically injected into the generated prompt.',
+    role: 'Context Injection',
+    payload: `[Injected from Step 1: Freelance designers and agencies]`
   },
   {
     num: 5,
-    title: 'Local Memory Updated For Next Step',
-    desc: 'Choices persist in `.buildwithai/context.json`. Downstream steps (e.g. Step 5: Auth Middleware) automatically inherit these values.',
-    role: 'Persistent Local State',
-    payload: `// .buildwithai/context.json
-{
-  "project": "my-saas-app",
-  "template": "saas-mvp",
-  "current_step": 5,
-  "decisions": {
-    "database": "PostgreSQL",
-    "orm": "Prisma v5",
-    "primary_keys": "CUID",
-    "auth": "NextAuth",
-    "hosting": "Vercel"
-  }
-}`
+    title: 'Inspect and Modify Decisions',
+    desc: 'View stored decisions or update any value directly using dot-notation.',
+    role: 'Context Management',
+    payload: `$ npx build-with-ai context
+$ npx build-with-ai set decisions.database "PostgreSQL"`
+  },
+  {
+    num: 6,
+    title: 'Track Progress',
+    desc: 'View project progress bar, active step, and completed step checklist.',
+    role: 'Status Dashboard',
+    payload: `$ npx build-with-ai status`
+  },
+  {
+    num: 7,
+    title: 'Export Documentation',
+    desc: 'Generates standardized documentation (README, BUILD_LOG, CONTEXT) from your build history.',
+    role: 'Artifact Generation',
+    payload: `$ npx build-with-ai export`
   }
 ];
 
@@ -132,33 +112,33 @@ model Organization {
 const ENGINEERING_HIGHLIGHTS = [
   {
     icon: ShieldCheck,
-    title: 'Zero API & 100% Local Privacy',
-    desc: 'Requires no API keys, cloud accounts, or telemetry. All templates, progress, and architectural decisions live locally inside your project folder.'
+    title: 'Zero API Keys & Zero Cost',
+    desc: 'Runs 100% locally in your terminal. No third-party API accounts or rate limits required.'
   },
   {
     icon: Cpu,
-    title: 'Dynamic Context Interpolation',
-    desc: 'Uses regex template resolvers to dynamically interpolate decisions across prompts. Downstream steps always remember choices made in upstream phases.'
-  },
-  {
-    icon: Copy,
-    title: 'Cross-Platform Clipboard Sync',
-    desc: 'Gracefully synchronizes generated prompts with macOS pbcopy, Linux xclip/wl-copy, and Windows clip.exe, with headless CI fallbacks.'
-  },
-  {
-    icon: FileCode,
-    title: 'Deterministic Doc Generator',
-    desc: 'Automatically compiles production-ready README.md, full BUILD_LOG.md, and CONTEXT.md documentation files as you advance through project milestones.'
+    title: 'Universal Model Compatibility',
+    desc: 'Use with any web interface, IDE plugin, or local model (Claude, ChatGPT, Cursor, DeepSeek, Ollama).'
   },
   {
     icon: CheckCircle2,
-    title: 'Non-Destructive Safety Guarantee',
-    desc: 'Never deletes, overwrites, or executes destructive modifications against your source code. You remain in 100% control of file writes.'
+    title: 'Non-Destructive Guarantee',
+    desc: 'Operates entirely within .buildwithai/ and never touches or overwrites your application source files.'
+  },
+  {
+    icon: Bot,
+    title: 'Solves The Blank Canvas',
+    desc: 'Asking an AI to "build a whole app" produces monolithic, fragmented code. We break projects into disciplined, sequential phases.'
+  },
+  {
+    icon: FileCode,
+    title: 'Prevents Context Drift',
+    desc: 'As the chat progresses, the AI forgets foundational schema and architectural decisions. We interpolate prior choices into downstream prompts.'
   },
   {
     icon: Layers,
-    title: 'Extensible Blueprint Engine',
-    desc: 'Supports custom organizational blueprints loaded via local JSON files or HTTPS URLs, enabling engineering teams to standardize custom software workflows.'
+    title: 'Enforces Sequential Phases',
+    desc: 'Prevents jumping directly to UI before establishing data contracts, authentication, or error handling.'
   }
 ];
 
@@ -401,33 +381,12 @@ Run 'build-with-ai template <name>' to switch.`
              1. Hero Section
              ================================================================= */}
           <section className={styles.heroSection}>
-            <div className={styles.badgeRow}>
-              <a 
-                href="https://www.npmjs.com/package/build-with-ai" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className={styles.npmBadge}
-                title="View build-with-ai on npm (626 downloads)"
-              >
-                <span className={styles.badgeDot} />
-                <Package size={14} />
-                <span>npm: build-with-ai</span>
-                <span className={styles.downloadsBadgePill}>626 downloads</span>
-                <ExternalLink size={12} className={styles.badgeExtIcon} />
-              </a>
-              <span className={styles.licenseBadge}>
-                <ShieldCheck size={13} />
-                <span>Apache 2.0 Open Source</span>
-              </span>
-            </div>
-
             <h1 className={styles.heroHeadline}>
-              Build full-stack software with any AI.<br />
-              <span className={styles.gradientText}>Disciplined, deterministic, zero context drift.</span>
+              build-with-ai
             </h1>
 
             <p className={styles.heroSubheadline}>
-              A local-first CLI orchestrator that generates context-aware prompts, preserves architectural memory, and eliminates AI drift with zero API keys.
+              A zero-API, local-first CLI that guides developers step-by-step through building complete software projects with any AI by generating deterministic, context-aware prompts at every engineering phase.
             </p>
 
             <div className={styles.ctaGroup}>
@@ -451,10 +410,6 @@ Run 'build-with-ai template <name>' to switch.`
                 className={styles.primaryBtn}
               >
                 <span>View on GitHub</span>
-                <span className={styles.starPill}>
-                  <Star size={12} fill="currentColor" />
-                  <span>Star</span>
-                </span>
                 <ArrowRight size={15} />
               </a>
 
@@ -473,7 +428,7 @@ Run 'build-with-ai template <name>' to switch.`
             {/* Key Credibility Metrics Ticker */}
             <div className={styles.metricsGrid}>
               <div className={styles.metricCard}>
-                <div className={styles.metricValue}>626+</div>
+                <div className={styles.metricValue}>830+</div>
                 <div className={styles.metricLabel}>NPM Package Downloads</div>
               </div>
               <div className={styles.metricCard}>
@@ -609,12 +564,12 @@ Run 'build-with-ai template <name>' to switch.`
           </section>
 
           {/* =================================================================
-             3. The 5-Stage Closed Architectural Loop
+             3. The 7-Step Walkthrough Architecture
              ================================================================= */}
           <section className={styles.sectionBlock}>
             <div className={styles.sectionHeader}>
               <span className={styles.sectionEyebrow}>System Architecture</span>
-              <h2 className={styles.sectionTitle}>The 5-Stage Closed Engineering Loop</h2>
+              <h2 className={styles.sectionTitle}>The 7-Step Walkthrough Architecture</h2>
               <p className={styles.sectionSubtitle}>
                 How build-with-ai preserves state across multiple chat sessions and prevents the AI from forgetting earlier architectural decisions.
               </p>
@@ -674,7 +629,7 @@ Run 'build-with-ai template <name>' to switch.`
           <section id="blueprints" className={styles.sectionBlock}>
             <div className={styles.sectionHeader}>
               <span className={styles.sectionEyebrow}>Production Templates</span>
-              <h2 className={styles.sectionTitle}>11 Built-in Architectural Blueprints</h2>
+              <h2 className={styles.sectionTitle}>11 Available Templates</h2>
               <p className={styles.sectionSubtitle}>
                 Battle-tested phased workflows for full-stack apps, SaaS MVPs, REST APIs, mobile apps, extensions, and AI pipelines.
               </p>

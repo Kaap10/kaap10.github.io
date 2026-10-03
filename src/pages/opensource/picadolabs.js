@@ -13,7 +13,8 @@ import {
   Cpu,
   ShieldCheck,
   Package,
-  Sparkles
+  Sparkles,
+  Globe
 } from 'lucide-react';
 import styles from './dynavec.module.css';
 import openStyles from '../opensource.module.css';
@@ -42,7 +43,7 @@ const PICADOLABS_PROJECTS = [
     cardDescription:
       'Open-source developer CLI guiding engineers through structured development phases with zero-API overhead and persistent local context across any AI model.',
     license: 'Apache 2.0',
-    techStack: ['Node.js', 'JavaScript', 'CLI Engine', 'npm', 'AI Prompts'],
+    techStack: ['Node.js', 'JavaScript', 'CLI Engine', 'AI Prompts'],
     highlights: [
       {
         label: 'Local-First Memory',
@@ -50,7 +51,7 @@ const PICADOLABS_PROJECTS = [
       },
       {
         label: 'Workflow Blueprints',
-        text: '6 production templates spanning SaaS MVPs, REST APIs, Expo, AI Agents/RAG, and Chrome extensions.'
+        text: '11 production templates spanning SaaS MVPs, REST APIs, FastAPI, Expo, Electron, Discord Bots, AI Agents/RAG, and Chrome extensions.'
       },
       {
         label: 'Interpolation Engine',
@@ -63,16 +64,16 @@ const PICADOLABS_PROJECTS = [
     tags: ['Open Source', 'Node.js', 'CLI', 'Developer Tools', 'AI'],
     details: {
       description:
-        'build-with-ai is an open-source, zero-API developer CLI that guides engineers through structured, end-to-end software development phases using any AI model (ChatGPT, Claude, Cursor, Gemini, local LLMs).\n\nIt features a local-first memory architecture (.buildwithai/context.json) that preserves technical choices across sessions and dynamically injects dependencies to eliminate AI context drift and hallucinations.\n\nThe system includes an extensible prompt interpolation engine with prerequisite validation (requires/writes), automated clipboard synchronization, and deterministic documentation generation (README, BUILD_LOG, CONTEXT.md).\n\nShipped with 6 production workflow templates spanning SaaS MVPs, REST APIs, React Native (Expo), AI Agent & RAG Pipelines, and Chrome Extensions, with custom JSON/HTTPS template loading support. Published as an open-source npm package (npx build-with-ai) with 100% test coverage, a multi-OS CI pipeline (Ubuntu, macOS, Windows), and zero external cloud or telemetry dependencies.',
-      allTech: ['Node.js', 'JavaScript', 'CLI', 'npm', 'JSON', 'Markdown', 'Git', 'Prompt Engineering'],
+        'build-with-ai is an open-source, zero-API developer CLI that guides engineers through structured, end-to-end software development phases using any AI model (ChatGPT, Claude, Cursor, Gemini, local LLMs).\n\nIt features a local-first memory architecture (.buildwithai/context.json) that preserves technical choices across sessions and dynamically injects dependencies to eliminate AI context drift and hallucinations.\n\nThe system includes an extensible prompt interpolation engine with prerequisite validation (requires/writes), automated clipboard synchronization, and deterministic documentation generation (README, BUILD_LOG, CONTEXT.md).\n\nShipped with 11 production workflow templates spanning SaaS MVPs, REST APIs, FastAPI, React Native (Expo), Electron, Discord Bots, AI Agent & RAG Pipelines, and Chrome Extensions, with custom JSON/HTTPS template loading support. Published as an open-source npm package (npx build-with-ai) with 100% test coverage, a multi-OS CI pipeline (Ubuntu, macOS, Windows), and zero external cloud or telemetry dependencies.',
+      allTech: ['Node.js', 'JavaScript', 'CLI', 'JSON', 'Markdown', 'Git', 'Prompt Engineering'],
       fullHighlights: [
         'Built an open-source, zero-API developer CLI that guides engineers through structured, end-to-end software development phases using any AI model (ChatGPT, Claude, Cursor, Gemini, local LLMs)',
         'Designed a local-first memory architecture (.buildwithai/context.json) that preserves technical choices across sessions and dynamically injects dependencies to eliminate AI context drift and hallucinations',
         'Implemented an extensible prompt interpolation engine with prerequisite validation (requires/writes), automated clipboard synchronization, and deterministic documentation generation (README, BUILD_LOG, CONTEXT.md)',
-        'Shipped 6 production workflow templates spanning SaaS MVPs, REST APIs, React Native (Expo), AI Agent & RAG Pipelines, and Chrome Extensions, with custom JSON/HTTPS template loading support',
+        'Shipped 11 production workflow templates spanning SaaS MVPs, REST APIs, FastAPI, React Native (Expo), Electron, Discord Bots, AI Agent & RAG Pipelines, and Chrome Extensions, with custom JSON/HTTPS template loading support',
         'Published as an open-source npm package (npx build-with-ai) with 100% test coverage, a multi-OS CI pipeline (Ubuntu, macOS, Windows), and zero external cloud or telemetry dependencies',
       ],
-      metricsDetail: 'npx build-with-ai · 626+ Downloads · 100% Test Coverage · Multi-OS CI · Apache 2.0 License',
+      metricsDetail: 'npx build-with-ai · 830+ Downloads · 100% Test Coverage · Multi-OS CI · Apache 2.0 License',
     },
   },
 
@@ -86,7 +87,7 @@ const PICADOLABS_PROJECTS = [
     headline: 'Verify-first autonomous software engineering agent.',
     cardDescription:
       'An autonomous AI coding agent that plans, modifies, tests, and independently verifies real-world codebases with sandboxed isolation and automatic rollback.',
-    license: 'MIT',
+    license: 'Apache 2.0',
     techStack: ['Python', 'Docker', 'SQLite', 'Git', 'Pytest'],
     highlights: [
       {
@@ -133,7 +134,7 @@ const PICADOLABS_PROJECTS = [
     headline: 'Autonomous AI agent benchmarking framework.',
     cardDescription:
       'A CLI toolkit for benchmarking AI coding agents across 40+ programming tasks using deterministic rule-based scoring and full execution trace logging.',
-    license: 'MIT',
+    license: 'Apache 2.0',
     techStack: ['Python', 'CLI', 'YAML', 'Docker', 'JSON'],
     highlights: [
       {
@@ -179,7 +180,7 @@ const PICADOLABS_PROJECTS = [
     headline: 'Adaptive LLM selection proxy designed to optimize inference costs through intelligent routing.',
     cardDescription:
       'An intelligent proxy gateway that dynamically routes LLM queries based on prompt complexity—directing simpler queries to lower-cost models while reserving premium models for complex tasks.',
-    license: 'MIT',
+    license: 'Apache 2.0',
     techStack: ['Python', 'FastAPI', 'OpenAI API', 'Anthropic API', 'Local LLMs'],
     highlights: [
       {
@@ -265,15 +266,25 @@ export default function PicadoLabsPage() {
 
             <div className={styles.heroActionGroup}>
               <a
-                href="https://github.com/Kaap10/build-with-ai"
+                href="https://github.com/PicadoLabs"
                 target="_blank"
                 rel="noopener noreferrer"
                 className={styles.primaryBtn}
               >
                 <IconGithub size={15} />
-                <span>build-with-ai GitHub</span>
+                <span>Picado Labs GitHub</span>
                 <ArrowUpRight size={13} />
               </a>
+
+                <a
+                  href="https://picadolabs.me"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.secondaryBtn}
+                >
+                  <Globe size={14} style={{ color: 'var(--vg-accent)' }} />
+                  <span>Website</span>
+                </a>
 
               <Link
                 to="/build-with-ai"
@@ -423,10 +434,10 @@ export default function PicadoLabsPage() {
                           target="_blank"
                           rel="noopener noreferrer"
                           className={openStyles.actionBtn}
-                          title="View Package on npm"
+                          title="Apache 2.0 License"
                         >
-                          <IconNpm size={14} />
-                          <span>npm</span>
+                          <ShieldCheck size={14} />
+                          <span>Apache 2.0</span>
                           <ArrowUpRight size={13} />
                         </a>
                       )}
