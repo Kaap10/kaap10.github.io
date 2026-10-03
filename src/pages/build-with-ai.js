@@ -37,232 +37,17 @@ import styles from './build-with-ai.module.css';
    Data: 7 Production Blueprints
    ========================================================================== */
 const BLUEPRINTS = [
-  {
-    id: 'fullstack-web',
-    title: 'Full-Stack Web Application',
-    stepCount: 23,
-    icon: Globe,
-    desc: 'End-to-end modern web monolith or hybrid architecture with robust auth, relational schema, automated tests, and CI/CD.',
-    techStack: ['Next.js / Vite', 'Tailwind CSS', 'Prisma / Drizzle', 'PostgreSQL', 'NextAuth', 'Stripe', 'Jest / Playwright', 'Vercel'],
-    phases: [
-      {
-        num: 'Phase 01',
-        title: 'Discovery & Schema Architecture',
-        steps: 'Steps 1 to 6',
-        items: ['System requirements & user journeys', 'Relational database schema modeling', 'API route contracts & status codes']
-      },
-      {
-        num: 'Phase 02',
-        title: 'Scaffolding & Authentication',
-        steps: 'Steps 7 to 12',
-        items: ['Project initialization & linting', 'Database migration & ORM client setup', 'Session auth & role-based middleware']
-      },
-      {
-        num: 'Phase 03',
-        title: 'Core Features & State Engine',
-        steps: 'Steps 13 to 18',
-        items: ['Server actions & data fetching hooks', 'Interactive UI components & forms', 'Stripe payment webhooks & billing']
-      },
-      {
-        num: 'Phase 04',
-        title: 'Testing, Hardening & CI/CD',
-        steps: 'Steps 19 to 23',
-        items: ['Unit tests for services & edge cases', 'End-to-end Playwright user flows', 'Production Docker & Vercel deployment']
-      }
-    ]
-  },
-  {
-    id: 'saas-mvp',
-    title: 'Modern SaaS MVP',
-    stepCount: 15,
-    icon: Sparkles,
-    desc: 'High-velocity SaaS template optimized to launch in hours with Supabase auth, Stripe recurring billing, and transactional email.',
-    techStack: ['Next.js 14 App Router', 'Supabase Auth', 'Supabase PostgreSQL (RLS)', 'Stripe Subscriptions', 'Resend Email', 'PostHog Analytics', 'Vercel'],
-    phases: [
-      {
-        num: 'Phase 01',
-        title: 'Architecture & Foundation',
-        steps: 'Steps 1 to 4',
-        items: ['Product requirements & data dictionary', 'Supabase project & Row-Level Security', 'Next.js App Router initialization']
-      },
-      {
-        num: 'Phase 02',
-        title: 'Auth & Subscription Billing',
-        steps: 'Steps 5 to 8',
-        items: ['Magic link / OAuth authentication flow', 'Stripe customer portal & webhooks', 'Protected member dashboards']
-      },
-      {
-        num: 'Phase 03',
-        title: 'Core SaaS Workflow',
-        steps: 'Steps 9 to 12',
-        items: ['Main application feature set', 'Transactional email triggers via Resend', 'Usage limits & tiered gating']
-      },
-      {
-        num: 'Phase 04',
-        title: 'Analytics & Launch',
-        steps: 'Steps 13 to 15',
-        items: ['PostHog telemetry integration', 'SEO metadata & social preview cards', 'Production deployment & smoke tests']
-      }
-    ]
-  },
-  {
-    id: 'rest-api',
-    title: 'Backend REST API Service',
-    stepCount: 10,
-    icon: Server,
-    desc: 'Production-ready, type-safe backend microservice with request validation, JWT authentication, structured logging, and Docker containerization.',
-    techStack: ['Node.js', 'Fastify / Express', 'PostgreSQL', 'Zod Validation', 'JWT Auth', 'Pino Logging', 'Docker', 'GitHub Actions'],
-    phases: [
-      {
-        num: 'Phase 01',
-        title: 'Contract & Data Modeling',
-        steps: 'Steps 1 to 3',
-        items: ['OpenAPI 3.0 specification & schema design', 'PostgreSQL table definitions & indexes', 'Configuration & env variable validator']
-      },
-      {
-        num: 'Phase 02',
-        title: 'Core Service Architecture',
-        steps: 'Steps 4 to 7',
-        items: ['Fastify server & plugin registration', 'Zod request/response validation layer', 'JWT authentication middleware & guards', 'Controller, service & repository modules']
-      },
-      {
-        num: 'Phase 03',
-        title: 'Testing & Containerization',
-        steps: 'Steps 8 to 10',
-        items: ['Integration test suite with supertest', 'Multi-stage Dockerfile build', 'CI pipeline for automated test execution']
-      }
-    ]
-  },
-  {
-    id: 'mobile-app',
-    title: 'Cross-Platform Mobile App',
-    stepCount: 15,
-    icon: Smartphone,
-    desc: 'Modern cross-platform mobile application powered by React Native and Expo Router with native device integrations.',
-    techStack: ['React Native', 'Expo Router', 'NativeWind (Tailwind)', 'SecureStore', 'TanStack Query', 'EAS Build', 'App Store / Play Store'],
-    phases: [
-      {
-        num: 'Phase 01',
-        title: 'Mobile Architecture',
-        steps: 'Steps 1 to 4',
-        items: ['App navigation tree & deep links', 'Expo Router file-based setup', 'NativeWind design system tokens']
-      },
-      {
-        num: 'Phase 02',
-        title: 'Authentication & Local State',
-        steps: 'Steps 5 to 8',
-        items: ['Biometric & SecureStore token storage', 'TanStack Query caching layer', 'Offline-first network synchronizer']
-      },
-      {
-        num: 'Phase 03',
-        title: 'Native Features & Polish',
-        steps: 'Steps 9 to 12',
-        items: ['Camera, haptics, and push notifications', 'Animated gesture transitions', 'Smooth dark/light theme switching']
-      },
-      {
-        num: 'Phase 04',
-        title: 'EAS Build & Store Release',
-        steps: 'Steps 13 to 15',
-        items: ['App icons & splash asset generation', 'EAS credentials & build configurations', 'Production submission pipeline']
-      }
-    ]
-  },
-  {
-    id: 'flutter-app',
-    title: 'Flutter Mobile Application',
-    stepCount: 16,
-    icon: Smartphone,
-    desc: 'Enterprise Clean Architecture Flutter application with Riverpod/BLoC state management, robust networking, and automated CI.',
-    techStack: ['Flutter 3.x', 'Dart', 'Clean Architecture', 'Riverpod / BLoC', 'Dio Client', 'Hive / SQLite', 'Fastlane CI'],
-    phases: [
-      {
-        num: 'Phase 01',
-        title: 'Domain & Architecture',
-        steps: 'Steps 1 to 4',
-        items: ['Domain entities & use case contracts', 'Folder structure & dependency injection', 'Theme styling & typography scales']
-      },
-      {
-        num: 'Phase 02',
-        title: 'Data & Networking Layer',
-        steps: 'Steps 5 to 8',
-        items: ['Dio HTTP client with auth interceptors', 'Freezed data models & JSON serialization', 'Hive local cache & offline repository']
-      },
-      {
-        num: 'Phase 03',
-        title: 'Presentation & State',
-        steps: 'Steps 9 to 13',
-        items: ['Riverpod state providers & listeners', 'Responsive screen layouts & custom widgets', 'Error handling & retry mechanisms']
-      },
-      {
-        num: 'Phase 04',
-        title: 'Testing & Automation',
-        steps: 'Steps 14 to 16',
-        items: ['Unit tests for domain use cases', 'Widget testing for key screen interactions', 'Fastlane automated release scripts']
-      }
-    ]
-  },
-  {
-    id: 'chrome-ext',
-    title: 'Chrome Browser Extension',
-    stepCount: 12,
-    icon: Puzzle,
-    desc: 'Manifest V3 Chrome extension with isolated content scripts, shadow DOM UI injection, background service workers, and storage sync.',
-    techStack: ['Manifest V3', 'Vite', 'React', 'Shadow DOM', 'Chrome Storage API', 'CRX Build', 'Web Store Release'],
-    phases: [
-      {
-        num: 'Phase 01',
-        title: 'Manifest & Build Config',
-        steps: 'Steps 1 to 3',
-        items: ['Manifest V3 permissions & host matching', 'Vite multi-entry bundling setup', 'TypeScript interfaces for messaging']
-      },
-      {
-        num: 'Phase 02',
-        title: 'Core Extension Modules',
-        steps: 'Steps 4 to 8',
-        items: ['Background service worker lifecycle', 'Content script DOM listeners & observers', 'Shadow DOM isolated UI container', 'Popup quick-action menu interface']
-      },
-      {
-        num: 'Phase 03',
-        title: 'Sync & Distribution',
-        steps: 'Steps 9 to 12',
-        items: ['Chrome Storage sync & options page', 'Cross-browser compatibility checks', 'ZIP packaging & Web Store submission']
-      }
-    ]
-  },
-  {
-    id: 'ai-agent',
-    title: 'AI Agent & RAG Pipeline',
-    stepCount: 14,
-    icon: Bot,
-    desc: 'Autonomous agent and Retrieval-Augmented Generation (RAG) system with vector search, document chunking, dynamic tool execution, and streaming responses.',
-    techStack: ['LangChain / LlamaIndex', 'Vector DB (Pinecone/Qdrant)', 'FastAPI / Express', 'OpenAI / Anthropic / Ollama', 'SSE Streaming UI'],
-    phases: [
-      {
-        num: 'Phase 01',
-        title: 'Pipeline Architecture',
-        steps: 'Steps 1 to 4',
-        items: ['Agent tools & capability specifications', 'Document ingestion & chunking strategy', 'Vector database index configuration']
-      },
-      {
-        num: 'Phase 02',
-        title: 'Embeddings & Retrieval Engine',
-        steps: 'Steps 5 to 8',
-        items: ['Embedding pipeline & batch indexer', 'Hybrid semantic + keyword search filter', 'Context window optimization & ranking']
-      },
-      {
-        num: 'Phase 03',
-        title: 'Tool Calling & Agent Loop',
-        steps: 'Steps 9 to 12',
-        items: ['Structured function calling schema', 'ReAct decision loop with fallback handlers', 'Conversation memory & session caching']
-      },
-      {
-        num: 'Phase 04',
-        title: 'API Gateway & Deployment',
-        steps: 'Steps 13 to 14',
-        items: ['Server-Sent Events (SSE) streaming API', 'Docker multi-stage runtime deployment']
-      }
-    ]
-  }
+  { id: 'web-app', title: 'Full-Stack Web Application', stepCount: 23, icon: Globe, desc: 'End-to-end modern web monolith or hybrid architecture with robust auth, relational schema, automated tests, and CI/CD.', techStack: ['Next.js / React', 'Tailwind CSS', 'Prisma ORM', 'PostgreSQL'], phases: [] },
+  { id: 'saas-mvp', title: 'Modern SaaS MVP', stepCount: 15, icon: Sparkles, desc: 'High-velocity SaaS template optimized to launch in hours with Supabase auth, Stripe recurring billing, and transactional email.', techStack: ['Next.js 14 App Router', 'Supabase', 'Stripe', 'Resend Email'], phases: [] },
+  { id: 'rest-api', title: 'Backend REST API Service', stepCount: 10, icon: Server, desc: 'Production-ready, type-safe backend microservice with request validation, JWT authentication, structured logging, and Docker containerization.', techStack: ['Node.js', 'Fastify / Express', 'PostgreSQL', 'Zod'], phases: [] },
+  { id: 'fastapi-backend', title: 'Python FastAPI Microservices', stepCount: 12, icon: Server, desc: 'Scalable Python backend services with FastAPI, Pydantic v2, and async SQLAlchemy.', techStack: ['Python 3.11+', 'FastAPI', 'Pydantic v2', 'Async SQLAlchemy 2.0', 'Alembic'], phases: [] },
+  { id: 'mobile-app', title: 'Cross-Platform Mobile App', stepCount: 15, icon: Smartphone, desc: 'Modern cross-platform mobile application powered by React Native and Expo Router with native device integrations.', techStack: ['React Native', 'Expo Router', 'NativeWind', 'EAS Build'], phases: [] },
+  { id: 'flutter-app', title: 'Flutter Mobile Application', stepCount: 16, icon: Smartphone, desc: 'Enterprise Clean Architecture Flutter application with Riverpod/BLoC state management, robust networking, and automated CI.', techStack: ['Flutter 3.x', 'Dart', 'Riverpod / BLoC', 'Clean Architecture'], phases: [] },
+  { id: 'electron-app', title: 'Electron Desktop Application', stepCount: 12, icon: Layers, desc: 'End-to-end SDLC for desktop applications built with Electron, React, TypeScript, and local SQLite.', techStack: ['Electron', 'Vite', 'React', 'IPC Handlers', 'electron-builder'], phases: [] },
+  { id: 'chrome-extension', title: 'Chrome Browser Extension', stepCount: 12, icon: Puzzle, desc: 'Manifest V3 Chrome extension with isolated content scripts, shadow DOM UI injection, background service workers, and storage sync.', techStack: ['Manifest V3', 'Vite', 'React', 'Shadow DOM'], phases: [] },
+  { id: 'ai-agent', title: 'AI Agent & RAG Pipeline', stepCount: 14, icon: Bot, desc: 'Autonomous agent and Retrieval-Augmented Generation (RAG) system with vector search, document chunking, dynamic tool execution, and streaming responses.', techStack: ['LangChain / LlamaIndex', 'Vector DB', 'FastAPI / Express'], phases: [] },
+  { id: 'ai-orchestration', title: 'AI Orchestration & Multi-Agent', stepCount: 14, icon: Bot, desc: 'Complex AI orchestration workflows for multi-agent autonomous systems.', techStack: ['LangGraph / CrewAI', 'AutoGen', 'Vector DB', 'Telemetry'], phases: [] },
+  { id: 'discord-bot', title: 'Discord Bot Workflow', stepCount: 12, icon: Terminal, desc: 'Production-ready Discord bot template with discord.js v14, slash commands registration, and event listeners.', techStack: ['Node.js', 'discord.js v14', 'Slash Commands', 'SQLite / PostgreSQL'], phases: [] }
 ];
 
 /* ==========================================================================
@@ -381,228 +166,33 @@ const ENGINEERING_HIGHLIGHTS = [
    Data: CLI Commands Reference
    ========================================================================== */
 const CLI_COMMANDS = [
-  { 
-    cmd: 'npx build-with-ai', 
-    category: 'Setup', 
-    desc: 'Launches interactive setup wizard to select blueprints, models, and configure project parameters' 
-  },
-  { 
-    cmd: 'build-with-ai next', 
-    category: 'Workflow', 
-    desc: 'Generates and copies the next sequential phase prompt to clipboard with interpolated context' 
-  },
-  { 
-    cmd: 'build-with-ai status', 
-    category: 'Inspection', 
-    desc: 'Displays ASCII progress bar, active phase, and completed steps checklist across the project' 
-  },
-  { 
-    cmd: 'build-with-ai done', 
-    category: 'Workflow', 
-    desc: 'Marks current step complete, prompts for key technical choices, and updates context.json' 
-  },
-  { 
-    cmd: 'build-with-ai context', 
-    category: 'State Store', 
-    desc: 'Prints the live JSON architectural decision store and active parameters in the terminal' 
-  },
-  { 
-    cmd: 'build-with-ai list', 
-    category: 'Blueprints', 
-    desc: 'Lists all 7 built-in production templates with step counts, descriptions, and prerequisites' 
-  },
-  { 
-    cmd: 'build-with-ai export', 
-    category: 'Artifacts', 
-    desc: 'Generates README.md, BUILD_LOG.md, and CONTEXT.md documentation from session history' 
-  }
+  { cmd: 'npx build-with-ai', category: 'Setup', desc: 'Interactive launcher displaying active status or starting initialization.' },
+  { cmd: 'npx build-with-ai init', category: 'Setup', desc: 'Start setup wizard (template selection, experience level, project concept).' },
+  { cmd: 'npx build-with-ai init --template <path|url>', category: 'Setup', desc: 'Load a custom template from a local file path or remote HTTPS URL.' },
+  { cmd: 'npx build-with-ai next', category: 'Workflow', desc: 'Generate and copy the prompt for the current step.' },
+  { cmd: 'npx build-with-ai next --no-copy', category: 'Workflow', desc: 'Generate the step prompt without accessing the system clipboard.' },
+  { cmd: 'npx build-with-ai next --raw', category: 'Workflow', desc: 'Output only the raw prompt string for scripting and CLI piping.' },
+  { cmd: 'npx build-with-ai next --json', category: 'Workflow', desc: 'Output complete step metadata as structured JSON.' },
+  { cmd: 'npx build-with-ai done', category: 'Workflow', desc: 'Record decisions, archive step logs, and advance to the next step.' },
+  { cmd: 'npx build-with-ai back', category: 'Workflow', desc: 'Step back to the previous step without removing recorded context.' },
+  { cmd: 'npx build-with-ai jump [step]', category: 'Workflow', desc: 'Navigate directly to a specific step number.' },
+  { cmd: 'npx build-with-ai context [key]', category: 'State Store', desc: 'Inspect recorded decisions or retrieve a specific dot-notation path.' },
+  { cmd: 'npx build-with-ai set <key> <value>', category: 'State Store', desc: 'Update a decision in context.json from the command line.' },
+  { cmd: 'npx build-with-ai status [--json]', category: 'Inspection', desc: 'Display project progress bar, step list, and recorded decisions.' },
+  { cmd: 'npx build-with-ai history [step] [--json]', category: 'Inspection', desc: 'Display archived AI responses and step logs.' },
+  { cmd: 'npx build-with-ai resume', category: 'Inspection', desc: 'Overview dashboard summarizing active step and next action.' },
+  { cmd: 'npx build-with-ai export [--out-dir <dir>]', category: 'Artifacts', desc: 'Generate README.md, BUILD_LOG.md, and CONTEXT.md.' },
+  { cmd: 'npx build-with-ai list [-s <query>] [--json]', category: 'Blueprints', desc: 'List and search available templates with step counts.' },
+  { cmd: 'npx build-with-ai reset', category: 'Maintenance', desc: 'Remove .buildwithai/ state while leaving project source code intact.' }
 ];
 
-/* ==========================================================================
-   Data: Active Issues & Community Roadmap
-   ========================================================================== */
-const ACTIVE_ISSUES = [
-  {
-    number: 42,
-    title: 'Add ESLint and automated code formatting check to CI pipeline',
-    type: 'issue',
-    category: 'enhancement',
-    labels: [
-      { name: 'ci', color: '#0e8a16' },
-      { name: 'dx', color: '#0052cc' }
-    ],
-    desc: 'Set up a lightweight ESLint configuration and npm run lint command to enforce code quality, catch syntax issues, and verify consistent formatting in GitHub Actions CI.',
-    url: 'https://github.com/Kaap10/build-with-ai/issues/42'
-  },
-  {
-    number: 41,
-    title: 'Add project progress metrics and timestamps to the status command',
-    type: 'issue',
-    category: 'good-first-issue',
-    labels: [
-      { name: 'enhancement', color: '#a2eeef' },
-      { name: 'good first issue', color: '#7057ff' }
-    ],
-    desc: 'Enrich the status dashboard with elapsed project time calculation, last updated relative timestamps, recorded decisions count, and export readiness indicator.',
-    url: 'https://github.com/Kaap10/build-with-ai/issues/41'
-  },
-  {
-    number: 40,
-    title: 'Add history inspect command to view previous step logs',
-    type: 'issue',
-    category: 'good-first-issue',
-    labels: [
-      { name: 'enhancement', color: '#a2eeef' },
-      { name: 'good first issue', color: '#7057ff' }
-    ],
-    desc: 'Add CLI command build-with-ai history to inspect recorded AI summaries and step history files directly from terminal without opening history folder.',
-    url: 'https://github.com/Kaap10/build-with-ai/issues/40'
-  },
-  {
-    number: 39,
-    title: 'Add search and json options to the list command',
-    type: 'issue',
-    category: 'good-first-issue',
-    labels: [
-      { name: 'enhancement', color: '#a2eeef' },
-      { name: 'good first issue', color: '#7057ff' }
-    ],
-    desc: 'Improve blueprint discovery by adding keyword search filtering and machine-readable JSON array output for external automation.',
-    url: 'https://github.com/Kaap10/build-with-ai/issues/39'
-  },
-  {
-    number: 38,
-    title: 'Add unit test coverage for contextBuilder dot-notation edge cases',
-    type: 'issue',
-    category: 'good-first-issue',
-    labels: [
-      { name: 'good first issue', color: '#7057ff' },
-      { name: 'tests', color: '#1f6feb' }
-    ],
-    desc: 'Dedicated unit test suite in test-flow.js to rigorously verify getByPath, setByPath, and flattenObject against complex deeply nested structures.',
-    url: 'https://github.com/Kaap10/build-with-ai/issues/38'
-  },
-  {
-    number: 37,
-    title: 'Add Python FastAPI & Microservices workflow template',
-    type: 'issue',
-    category: 'templates',
-    labels: [
-      { name: 'good first issue', color: '#7057ff' },
-      { name: 'templates', color: '#5319e7' }
-    ],
-    desc: 'Create fastapi-backend template guiding developers through building scalable, production-grade Python backend services with FastAPI, Pydantic v2, and async SQLAlchemy.',
-    url: 'https://github.com/Kaap10/build-with-ai/issues/37'
-  },
-  {
-    number: 36,
-    title: 'Implement atomic file writing for state and context persistence',
-    type: 'issue',
-    category: 'enhancement',
-    labels: [
-      { name: 'enhancement', color: '#a2eeef' },
-      { name: 'reliability', color: '#fbca04' }
-    ],
-    desc: 'Prevent state file corruption if a terminal session is abruptly killed midway through a save by writing to a temporary file and performing an atomic rename.',
-    url: 'https://github.com/Kaap10/build-with-ai/issues/36'
-  },
-  {
-    number: 35,
-    title: 'Add custom out-dir option to the export command',
-    type: 'issue',
-    category: 'good-first-issue',
-    labels: [
-      { name: 'enhancement', color: '#a2eeef' },
-      { name: 'good first issue', color: '#7057ff' }
-    ],
-    desc: 'Allow export command to write generated project documentation (README.md, BUILD_LOG.md, and CONTEXT.md) to a custom output directory.',
-    url: 'https://github.com/Kaap10/build-with-ai/issues/35'
-  },
-  {
-    number: 34,
-    title: 'Add an Electron Desktop App workflow template',
-    type: 'issue',
-    category: 'templates',
-    labels: [
-      { name: 'good first issue', color: '#7057ff' },
-      { name: 'templates', color: '#5319e7' }
-    ],
-    desc: 'Create electron-app template covering the end-to-end SDLC for desktop applications built with Electron, React, TypeScript, and local SQLite.',
-    url: 'https://github.com/Kaap10/build-with-ai/issues/34'
-  },
-  {
-    number: 33,
-    title: 'Add no-copy flag and environment variable support to next command',
-    type: 'issue',
-    category: 'good-first-issue',
-    labels: [
-      { name: 'enhancement', color: '#a2eeef' },
-      { name: 'good first issue', color: '#7057ff' }
-    ],
-    desc: 'Allow developers running in headless, CI/CD, or SSH environments to suppress automatic clipboard copy operations via no-copy flag or environment variable.',
-    url: 'https://github.com/Kaap10/build-with-ai/issues/33'
-  },
-  {
-    number: 29,
-    title: 'Feature export dry run',
-    type: 'pr',
-    category: 'enhancement',
-    labels: [
-      { name: 'pull request', color: '#8957e5' }
-    ],
-    desc: 'CLI export preview mode enabling developers to inspect rendered markdown output without touching disk.',
-    url: 'https://github.com/Kaap10/build-with-ai/pull/29'
-  },
-  {
-    number: 21,
-    title: 'Add a Node.js version to the CI matrix',
-    type: 'issue',
-    category: 'good-first-issue',
-    labels: [
-      { name: 'good first issue', color: '#7057ff' },
-      { name: 'ci', color: '#0e8a16' }
-    ],
-    desc: 'Expand GitHub Actions matrix across Node 18, 20, and 22 LTS releases to ensure cross-platform compatibility.',
-    url: 'https://github.com/Kaap10/build-with-ai/issues/21'
-  },
-  {
-    number: 18,
-    title: 'Document non-interactive JSON usage',
-    type: 'issue',
-    category: 'good-first-issue',
-    labels: [
-      { name: 'documentation', color: '#0075ca' },
-      { name: 'good first issue', color: '#7057ff' }
-    ],
-    desc: 'Comprehensive CLI guide and documentation for automated AI subagent and non-interactive script piping.',
-    url: 'https://github.com/Kaap10/build-with-ai/issues/18'
-  },
-  {
-    number: 17,
-    title: 'Add a Discord bot workflow template',
-    type: 'issue',
-    category: 'templates',
-    labels: [
-      { name: 'good first issue', color: '#7057ff' },
-      { name: 'templates', color: '#5319e7' }
-    ],
-    desc: 'Production-ready Discord bot template with discord.js v14, slash commands registration, and event listeners.',
-    url: 'https://github.com/Kaap10/build-with-ai/issues/17'
-  }
-];
 
-const ISSUE_FILTERS = [
-  { id: 'all', label: 'All Issues' },
-  { id: 'good-first-issue', label: 'Good First Issue' },
-  { id: 'templates', label: 'Templates' },
-  { id: 'enhancement', label: 'Enhancements & DX' }
-];
 
 export default function BuildWithAiPage() {
   const [activeTab, setActiveTab] = useState('fullstack-web');
   const [activeLoopStep, setActiveLoopStep] = useState(1);
   const [copiedToast, setCopiedToast] = useState('');
-  const [issueFilter, setIssueFilter] = useState('all');
+  
   
   // Terminal Simulator State
   const [terminalInput, setTerminalInput] = useState('');
@@ -761,7 +351,7 @@ Run 'build-with-ai template <name>' to switch.`
   status    · View progress bar and completed steps checklist
   context   · Inspect .buildwithai/context.json technical choices
   done      · Mark current step complete and record decisions
-  list      · Display all 7 production workflow blueprints
+  list      · Display all 11 production workflow blueprints
   export    · Export README, BUILD_LOG, and CONTEXT documentation
   clear     · Clear terminal history buffer`
         });
@@ -788,22 +378,9 @@ Run 'build-with-ai template <name>' to switch.`
   const activeBlueprintData = BLUEPRINTS.find(b => b.id === activeTab) || BLUEPRINTS[0];
   const activeLoopData = ARCHITECTURAL_LOOP_STAGES.find(s => s.num === activeLoopStep) || ARCHITECTURAL_LOOP_STAGES[0];
 
-  const filteredIssues = useMemo(() => {
-    if (issueFilter === 'all') return ACTIVE_ISSUES;
-    if (issueFilter === 'good-first-issue') return ACTIVE_ISSUES.filter(i => i.labels.some(l => l.name === 'good first issue'));
-    if (issueFilter === 'templates') return ACTIVE_ISSUES.filter(i => i.category === 'templates' || i.labels.some(l => l.name === 'templates'));
-    if (issueFilter === 'enhancement') return ACTIVE_ISSUES.filter(i => i.category === 'enhancement' || i.labels.some(l => l.name === 'enhancement' || l.name === 'dx'));
-    return ACTIVE_ISSUES;
-  }, [issueFilter]);
+  
 
-  const filterCounts = useMemo(() => {
-    return {
-      'all': ACTIVE_ISSUES.length,
-      'good-first-issue': ACTIVE_ISSUES.filter(i => i.labels.some(l => l.name === 'good first issue')).length,
-      'templates': ACTIVE_ISSUES.filter(i => i.category === 'templates' || i.labels.some(l => l.name === 'templates')).length,
-      'enhancement': ACTIVE_ISSUES.filter(i => i.category === 'enhancement' || i.labels.some(l => l.name === 'enhancement' || l.name === 'dx')).length
-    };
-  }, []);
+  
 
   return (
     <Layout
@@ -1097,7 +674,7 @@ Run 'build-with-ai template <name>' to switch.`
           <section id="blueprints" className={styles.sectionBlock}>
             <div className={styles.sectionHeader}>
               <span className={styles.sectionEyebrow}>Production Templates</span>
-              <h2 className={styles.sectionTitle}>7 Built-in Architectural Blueprints</h2>
+              <h2 className={styles.sectionTitle}>11 Built-in Architectural Blueprints</h2>
               <p className={styles.sectionSubtitle}>
                 Battle-tested phased workflows for full-stack apps, SaaS MVPs, REST APIs, mobile apps, extensions, and AI pipelines.
               </p>
@@ -1145,7 +722,7 @@ Run 'build-with-ai template <name>' to switch.`
 
                 {/* Phases Breakdown Grid */}
                 <div className={styles.phasesGrid}>
-                  {activeBlueprintData.phases.map((phase, pIdx) => (
+                  {activeBlueprintData.phases && activeBlueprintData.phases.map((phase, pIdx) => (
                     <div key={pIdx} className={styles.phaseCard}>
                       <div className={styles.phaseHeader}>
                         <span className={styles.phaseNum}>{phase.num}</span>
@@ -1295,116 +872,7 @@ Run 'build-with-ai template <name>' to switch.`
             </div>
           </section>
 
-          {/* =================================================================
-             8. Active Issues & Community Roadmap
-             ================================================================= */}
-          <section className={styles.sectionBlock}>
-            <div className={styles.issuesHeaderWrap}>
-              <div>
-                <span className={styles.sectionEyebrow}>Open Source Roadmap</span>
-                <h2 className={styles.sectionTitle}>Active Issues &amp; Contributions</h2>
-                <p className={styles.sectionSubtitle}>
-                  Help shape the future of build-with-ai. Pick a good first issue, propose new templates, or contribute core features.
-                </p>
-              </div>
-
-              <div className={styles.issuesFilterBar}>
-                {ISSUE_FILTERS.map((f) => (
-                  <button
-                    key={f.id}
-                    type="button"
-                    className={`${styles.issueFilterBtn} ${issueFilter === f.id ? styles.issueFilterBtnActive : ''}`}
-                    onClick={() => setIssueFilter(f.id)}
-                  >
-                    <span>{f.label}</span>
-                    <span className={styles.issueFilterCount}>{filterCounts[f.id] || 0}</span>
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div className={styles.issuesGrid}>
-              {filteredIssues.map((issue) => {
-                const isPR = issue.type === 'pr';
-                return (
-                  <a
-                    key={issue.number}
-                    href={issue.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={styles.issueCard}
-                  >
-                    <div className={styles.issueCardHeader}>
-                      <span className={styles.issueNumberBadge}>
-                        {isPR ? (
-                          <GitPullRequest size={15} className={styles.prTypeIcon} />
-                        ) : (
-                          <CircleDot size={15} className={styles.issueTypeIcon} />
-                        )}
-                        <span>#{issue.number}</span>
-                      </span>
-
-                      <ExternalLink size={15} className={styles.issueExternalIcon} />
-                    </div>
-
-                    <h3 className={styles.issueCardTitle}>{issue.title}</h3>
-                    <p className={styles.issueCardDesc}>{issue.desc}</p>
-
-                    <div className={styles.issueLabelsList}>
-                      {issue.labels.map((l, lIdx) => {
-                        const tagColor = l.color === '#a2eeef' ? '#7EE7F0' : (l.color === '#fbca04' ? '#FDE047' : l.color);
-                        return (
-                          <span
-                            key={lIdx}
-                            className={styles.issueLabelTag}
-                            style={{
-                              borderColor: `${l.color}50`,
-                              backgroundColor: `${l.color}15`,
-                              color: tagColor
-                            }}
-                          >
-                            {l.name}
-                          </span>
-                        );
-                      })}
-                    </div>
-                  </a>
-                );
-              })}
-            </div>
-
-            <div className={styles.issuesFooterActions}>
-              <div className={styles.issuesCountSummary}>
-                <span>Showing</span>
-                <span className={styles.issuesCountHighlight}>{filteredIssues.length}</span>
-                <span>of</span>
-                <span className={styles.issuesCountHighlight}>{ACTIVE_ISSUES.length}</span>
-                <span>active roadmap items</span>
-              </div>
-
-              <div className={styles.issuesActionBtns}>
-                <a
-                  href="https://github.com/Kaap10/build-with-ai/issues/new"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={styles.copyCommandBtn}
-                >
-                  <PlusCircle size={15} />
-                  <span>Submit New Issue</span>
-                </a>
-
-                <a
-                  href="https://github.com/Kaap10/build-with-ai/issues"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={styles.primaryBtn}
-                >
-                  <span>View All on GitHub</span>
-                  <ExternalLink size={15} />
-                </a>
-              </div>
-            </div>
-          </section>
+          
 
           {/* =================================================================
              9. Bottom CTA Card & Creator Credits
