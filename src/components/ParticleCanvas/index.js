@@ -96,22 +96,42 @@ export default function ParticleCanvas({
     }
 
     let isVisible = true;
+    let isIntersecting = true;
     let lastTime = performance.now();
+
+    const checkShouldAnimate = () => isVisible && isIntersecting;
 
     const handleVisibilityChange = () => {
       isVisible = !document.hidden;
-      if (isVisible) {
+      if (checkShouldAnimate()) {
         lastTime = performance.now();
+        cancelAnimationFrame(animationFrameId);
         animationFrameId = requestAnimationFrame(animate);
       }
     };
     document.addEventListener('visibilitychange', handleVisibilityChange);
 
+    let observer;
+    if (typeof IntersectionObserver !== 'undefined') {
+      observer = new IntersectionObserver(
+        ([entry]) => {
+          isIntersecting = entry.isIntersecting;
+          if (checkShouldAnimate()) {
+            lastTime = performance.now();
+            cancelAnimationFrame(animationFrameId);
+            animationFrameId = requestAnimationFrame(animate);
+          }
+        },
+        { rootMargin: '100px' }
+      );
+      observer.observe(canvas);
+    }
+
     const maxLinkDistSq = maxLinkDist * maxLinkDist;
     const maxMouseDistSq = maxMouseDist * maxMouseDist;
 
     const animate = (currentTime) => {
-      if (!isVisible) return;
+      if (!checkShouldAnimate()) return;
       // Delta time normalized to 60fps standard for identical smooth physics on 60/120/144Hz
       const dt = Math.min(32, currentTime - lastTime) / 16;
       lastTime = currentTime;
@@ -185,6 +205,7 @@ export default function ParticleCanvas({
 
     return () => {
       cancelAnimationFrame(animationFrameId);
+      if (observer) observer.disconnect();
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('touchmove', handleTouchMove);
       window.removeEventListener('mouseleave', handleMouseLeave);

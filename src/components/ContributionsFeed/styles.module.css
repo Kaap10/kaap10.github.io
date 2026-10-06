@@ -1,0 +1,219 @@
+.container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--vg-bg-elevated, #0A0A0E);
+  border: 1px solid var(--vg-border, rgba(255, 255, 255, 0.08));
+  border-radius: 16px;
+  padding: 1.75rem 1.85rem;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 12px 36px rgba(0, 0, 0, 0.6);
+  box-sizing: border-box;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding-bottom: 0.5rem;
+}
+
+.titleWrap {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.title {
+  font-size: 1.28rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  color: var(--vg-text, #F5F5F7);
+  margin: 0;
+  line-height: 1.2;
+}
+
+.highlightBlue {
+  color: #38BDF8;
+}
+
+/* Tabs */
+.tabsWrapper {
+  display: flex;
+  align-items: center;
+  background: #000000;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  padding: 3px;
+  gap: 3px;
+}
+
+.tabBtn {
+  background: transparent;
+  border: none;
+  color: var(--vg-text-muted, #A0A0AA);
+  padding: 0.32rem 0.85rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-family: inherit;
+}
+
+.tabBtn:hover {
+  color: #FFFFFF;
+}
+
+.tabBtnActive {
+  background: #181822;
+  color: #FFFFFF !important;
+  font-weight: 600;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+}
+
+/* List */
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  margin-top: 1.25rem;
+}
+
+.itemRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.9rem;
+  text-decoration: none !important;
+  transition: transform 0.15s ease;
+  padding: 0.35rem 0;
+}
+
+.itemRow:hover {
+  transform: translateX(3px);
+}
+
+.bulletCol {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 0.35rem;
+}
+
+.bulletDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.bulletMerged {
+  background: #C084FC;
+  box-shadow: 0 0 8px rgba(192, 132, 252, 0.7);
+}
+
+.bulletOpen {
+  background: #4ADE80;
+  box-shadow: 0 0 8px rgba(74, 222, 128, 0.7);
+}
+
+.bulletClosed {
+  background: #94A3B8;
+  box-shadow: 0 0 6px rgba(148, 163, 184, 0.4);
+}
+
+.contentCol {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 0;
+}
+
+.itemTitle {
+  font-size: 0.98rem;
+  font-weight: 600;
+  color: var(--vg-text, #F5F5F7);
+  letter-spacing: -0.015em;
+  line-height: 1.45;
+  transition: color 0.15s ease;
+}
+
+.itemRow:hover .itemTitle {
+  color: #C084FC;
+}
+
+.itemRepo {
+  font-size: 0.78rem;
+  font-family: var(--ifm-font-family-monospace, 'JetBrains Mono', monospace);
+  color: var(--vg-text-subtle, #70707B);
+}
+
+.emptyState {
+  padding: 2rem 1rem;
+  text-align: center;
+  font-size: 0.88rem;
+  color: var(--vg-text-subtle, #70707B);
+  font-family: var(--ifm-font-family-monospace, monospace);
+}
+
+/* Footer Action */
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.viewAllBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: #0E0E14;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 0.55rem 1.35rem;
+  color: var(--vg-text, #F5F5F7) !important;
+  font-size: 0.84rem;
+  font-weight: 600;
+  text-decoration: none !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.viewAllBtn:hover {
+  background: #161620;
+  border-color: rgba(255, 255, 255, 0.22);
+  transform: translateY(-2px);
+  color: #FFFFFF !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+}
+
+@media (max-width: 640px) {
+  .container {
+    padding: 1.25rem 1.15rem;
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .tabsWrapper {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .tabBtn {
+    flex: 1;
+    text-align: center;
+  }
+
+  .viewAllBtn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+

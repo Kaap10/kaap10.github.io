@@ -36,19 +36,20 @@ const MicrosoftLogoIcon = ({ size = 16 }) => (
 const PYRIT_CARD = {
   id: 'pyrit',
   index: '02',
-  roleTag: 'Contributor · Microsoft AI Red Team',
+  roleTag: 'Contributor · 8 Merged PRs · Microsoft AI Red Team',
   icon: MicrosoftLogoIcon,
   title: 'microsoft/PyRIT',
-  headline: 'Greedy Coordinate Gradient (GCG) Adversarial Jailbreak Optimization Engine',
+  headline: 'Greedy Coordinate Gradient (GCG) Adversarial Jailbreak Optimization Engine & Robustness',
   cardDescription:
-    "Refactored the core Greedy Coordinate Gradient (GCG) adversarial jailbreak optimization engine in Microsoft's open-source AI Red Teaming framework into typed, deterministic, and memory-bounded components.",
-  license: 'Microsoft AI Red Team',
+    "Authored 8 Pull Requests across Microsoft's open-source AI Red Teaming framework (PyRIT), modularizing the Greedy Coordinate Gradient (GCG) adversarial engine, optimizing GPU VRAM deallocation, resolving SQLite concurrent evaluation locks, and hardening converter & attack builders.",
+  license: '8 Merged PRs',
   techStack: [
     'Python 3.11+',
     'PyTorch',
     'CUDA VRAM Management',
     'Transformers',
     'GCG Adversarial Attacks',
+    'SQLite Concurrency',
     'Dataclasses (slots/frozen)',
     'pytest',
     'Ruff',
@@ -56,16 +57,20 @@ const PYRIT_CARD = {
   ],
   highlights: [
     {
-      label: 'Phase 1: Candidate Proposal Phase (PR #2671 · Commit d620b4d4)',
-      text: 'Extracted GCGCandidateProposer with immutable CandidateProposalBatch, preserving shape-grouping invariants, worker ordering, and cross-device gradient tensor migration.'
+      label: 'Converter & Scorer Validation Hardening (PR #2912, #2911)',
+      text: 'Added constructor validation preventing empty word separators and non-positive n-gram slices in WordLevelConverter and ApproximateTextMatching.'
     },
     {
-      label: 'Phase 2: VRAM-Bounded Evaluation Phase (PR #2700 · Commit 132d1cd7)',
-      text: 'Engineered prompt-level tensor cleanup (del logits, ids) and sequential candidate evaluation loops to strictly eliminate GPU Out-Of-Memory spikes.'
+      label: 'Matrix & Attack Factory Extraction (PR #2879, #2795)',
+      text: 'Decoupled technique factory resolution from MatrixAtomicAttackBuilder and extracted constructor compatibility inspection rules.'
     },
     {
-      label: 'Phase 3: Progressive Schedule Controller (PR #2720 · Commit dfa2b763)',
-      text: 'Modeled state transitions and control-weight ratcheting with ScheduleTransitionAction, guarding against exact-budget boundary edge cases and dangling inf loss resets.'
+      label: 'MOSSBench & VLSU Concurrency Isolation (PR #2781 · Issue #2775)',
+      text: 'Eliminated SQLite locking collisions and session collisions during concurrent benchmark evaluations across multi-worker fleets.'
+    },
+    {
+      label: 'GCG Modularization & VRAM Bounding (PR #2720, #2700, #2671 · Issue #2665)',
+      text: 'Decoupled 2,000+ LOC monolithic attack loop into GCGCandidateProposer, VRAM-bounded evaluator (del logits, ids), and ProgressiveScheduleController.'
     }
   ],
   github: 'https://github.com/microsoft/PyRIT',
@@ -74,12 +79,13 @@ const PYRIT_CARD = {
   tags: ['Open Source', 'Microsoft', 'AI Safety', 'PyTorch', 'Red Teaming', 'Adversarial AI'],
   details: {
     description:
-      "Microsoft PyRIT (Python Risk Identification Tool) is Microsoft's open-source framework for AI Red Teams and security engineers to assess the robustness and safety boundaries of foundation models.\n\nUnder umbrella issue #2665 (\"MAINT Complete GCG optimization phase extraction after #2416\"), decoupled the monolithic 2,000+ LOC Greedy Coordinate Gradient (GCG) attack loop into modular, deterministic, and memory-bounded phases. Collaborated directly with Microsoft maintainer Roman Lutz (@romanlutz) to achieve 100% test pass rate with zero regressions across the 310+ test suite, earning direct maintainer praise for rapid, high-quality iterations.\n\nArchitected strict GPU VRAM memory-bounded tensor cleanup (\"del logits, ids\"), cross-device loss aggregation on \"main_device\", and state-machine-driven schedule controllers. Authored 45+ comprehensive deterministic unit tests with 100% pass rate, 0 type errors (\"ty\"), and 0 linter warnings (\"ruff\").",
+      "Microsoft PyRIT (Python Risk Identification Tool) is Microsoft's open-source framework for AI Red Teams and security engineers to assess the robustness and safety boundaries of foundation models.\n\nAcross 8 merged pull requests, contributed to critical subsystems: decoupled the monolithic 2,000+ LOC Greedy Coordinate Gradient (GCG) attack loop into modular, deterministic, and memory-bounded phases under umbrella issue #2665. Collaborated directly with Microsoft maintainers Roman Lutz (@romanlutz) and Hannah Westra (@hannahwestra25) to achieve 100% test pass rate with zero regressions across the 310+ test suite.\n\nEngineered strict GPU VRAM memory-bounded tensor cleanup (\"del logits, ids\"), cross-device loss aggregation on \"main_device\", isolated concurrent SQLite evaluations in MOSSBench/VLSU benchmarks, and added early input validation across text converters and approximate matching scorers. Authored 50+ comprehensive deterministic unit tests with 100% pass rate, 0 type errors (\"ty\"), and 0 linter warnings (\"ruff\").",
     allTech: [
       'Python 3.11+',
       'PyTorch (Tensors, CUDA, Device Placement, Memory Management)',
       'Transformers Tokenization',
       'GPU VRAM Memory Deallocation (del logits, ids)',
+      'SQLite Transaction Isolation',
       'Dataclasses (@dataclass(frozen=True, slots=True))',
       'State Machine & Schedule Controllers',
       'SamplingStrategy & CandidateFilter Extension Protocols',
@@ -183,12 +189,12 @@ const PYRIT_CARD = {
           cards: [
             {
               title: 'Microsoft AI Red Team Deterministic Test Suite',
-              pr: '45+ Unit Tests',
+              pr: '50+ Unit Tests',
               prUrl: 'https://github.com/microsoft/PyRIT/pulls?q=is%3Apr+author%3AKaap10',
-              impact: '45+ Offline Unit Tests • 100% Pass Rate',
+              impact: '50+ Offline Unit Tests • 100% Pass Rate',
               isContributed: true,
               points: [
-                'Authored 45+ deterministic unit tests with mock tensor queues and stubs',
+                'Authored 50+ deterministic unit tests with mock tensor queues and stubs',
                 'Maintained 100% pass rate across the full 310+ PyRIT GCG test suite',
                 'Zero Ruff lint warnings, zero ty static typing errors, and full pre-commit hook compliance'
               ]
@@ -202,39 +208,127 @@ const PYRIT_CARD = {
       'VRAM-Bounded Memory Management: Engineered prompt-level tensor cleanup (del logits, ids) in evaluation loops to eliminate GPU memory spikes and Out-Of-Memory crashes.',
       'Cross-Device Gradient Migration: Safely synchronized multi-worker tensor distributions by migrating per-worker gradients to main_device before candidate token scoring.',
       'Progressive State Machine Controller: Modeled schedule transitions with typed ScheduleTransitionAction enums, defending against exact-budget boundary edge cases and dangling inf resets.',
-      'Robust Non-Finite Loss Preservation: Introduced explicit boolean _loss_is_measured tracking preserving valid non-finite (inf/nan) loss states without false assertion failures.',
-      'Deterministic Test Engineering: Authored 45+ comprehensive deterministic unit tests with mock queues, tensor stubs, and 100% pass rates across Microsoft PyRIT test suites.'
+      'Concurrent SQLite Benchmark Isolation: Fixed race conditions and database locks in MOSSBench and VLSU parallel evaluation runs.',
+      'Text Converter & Scorer Input Validation: Added early constructor guards in WordLevelConverter and ApproximateTextMatching preventing unhandled exceptions.',
+      'Deterministic Test Engineering: Authored 50+ comprehensive deterministic unit tests with mock queues, tensor stubs, and 100% pass rates across Microsoft PyRIT test suites.'
     ],
-    metricsDetail: '3 Modularized Phases · 45+ Deterministic Unit Tests · 100% Pass Rate across 310+ Tests · Zero VRAM Spikes · Microsoft AI Red Team',
+    metricsDetail: '8 Merged PRs · 50+ Deterministic Unit Tests · 100% Pass Rate across 310+ Tests · Zero VRAM Spikes · SQLite Isolation Fixed · Microsoft AI Red Team',
   },
 };
 
 const MASTER_PR_CONTRIBUTIONS = [
   {
-    pr: 'PR #2671',
-    commit: 'Commit d620b4d4',
-    url: 'https://github.com/microsoft/PyRIT/pull/2671',
-    issue: 'Issue #2665',
-    issueUrl: 'https://github.com/microsoft/PyRIT/issues/2665',
-    category: 'Architecture',
-    categoryId: 'architecture',
-    title: 'Phase 1: Extract Candidate Proposal Phase (GCGCandidateProposer)',
-    filesChanged: [
-      '[NEW] pyrit/executor/promptgen/gcg/attack/gcg/candidate_proposer.py',
-      '[MODIFY] pyrit/executor/promptgen/gcg/attack/gcg/gcg_attack.py',
-      '[NEW] tests/unit/executor/promptgen/gcg/test_gcg_proposal.py'
-    ],
-    problem: 'GCGMultiPromptAttack.step() had a monolithic loop that tightly coupled gradient dispatch, per-worker L2 gradient normalization, incompatible tensor shape grouping, token sampling, candidate filtering, and device transfers. This made candidate generation untestable in isolation and prone to subtle regressions.',
+    pr: 'PR #2912',
+    url: 'https://github.com/microsoft/PyRIT/pull/2912',
+    category: 'Text Converters & Scoring',
+    categoryId: 'converters',
+    title: 'FIX: Disallow empty word_split_separator in WordLevelConverter',
+    problem: 'WordLevelConverter initialized with word_split_separator="" silently accepted the invalid configuration, but later threw an unhandled ValueError: empty separator during async convert execution.',
     how: [
-      'Candidate Proposal Engine: Extracted logic into GCGCandidateProposer returning a typed, immutable @dataclass(frozen=True, slots=True) CandidateProposalBatch.',
-      'Preserved Worker Invariants: Preserved exact worker ordering and shape-group grouping behavior across multi-model deployments.',
-      'Cross-Device Migration: Handled cross-device gradient tensor migration by safely moving per-worker tensors to main_device.',
-      'Protocol Compliance: Maintained complete compliance with SamplingStrategy and CandidateFilter extension protocols.',
-      'Deterministic Test Suite: Authored 14 deterministic unit tests in test_gcg_proposal.py using mock queues and tensor stubs.'
+      'Early Constructor Validation: Added validation requiring word_split_separator to be None or a non-empty string, raising a clear ValueError on empty input.',
+      'Docstring & Exception Specification: Updated docstring documenting the exception and added comprehensive unit tests in tests/unit/converter/test_word_level_converter.py.',
+      'Zero Regressions: Full 1,729 converter unit tests passed with 0 errors.'
     ],
     feedback: {
-      text: 'Reviewed, approved, and merged into microsoft:main (Commit d620b4d4) by Roman Lutz after comprehensive code review and automated test verification.',
+      text: 'Reviewed and merged into main.',
+      author: 'Hannah Westra (@hannahwestra25) — Microsoft AI Red Team'
+    }
+  },
+  {
+    pr: 'PR #2911',
+    url: 'https://github.com/microsoft/PyRIT/pull/2911',
+    category: 'Text Converters & Scoring',
+    categoryId: 'converters',
+    title: 'FIX: Validate n-gram size in ApproximateTextMatching (n >= 1)',
+    problem: 'ApproximateTextMatching accepted non-positive values of n (e.g. n <= 0), which generated invalid token slices and corrupted text similarity scores.',
+    how: [
+      'Input Boundary Enforcement: Added explicit assertion and ValueError check ensuring n >= 1 upon instantiation.',
+      'Test Suite Hardening: Added regression tests covering edge-case boundary inputs.'
+    ],
+    feedback: {
+      text: 'Reviewed and merged into main.',
+      author: 'Hannah Westra (@hannahwestra25) — Microsoft AI Red Team'
+    }
+  },
+  {
+    pr: 'PR #2879',
+    url: 'https://github.com/microsoft/PyRIT/pull/2879',
+    issue: 'Issue #2869',
+    issueUrl: 'https://github.com/microsoft/PyRIT/issues/2869',
+    category: 'Attack Architecture',
+    categoryId: 'architecture',
+    title: 'MAINT: Extract technique factory resolution from MatrixAtomicAttackBuilder',
+    problem: 'MatrixAtomicAttackBuilder was tightly coupled to inline factory resolution, making custom attack composition fragile and difficult to extend.',
+    how: [
+      'Decoupled Factory Resolution: Extracted clean, modular resolution handlers for atomic attack techniques.',
+      'Type Safety & Compatibility: Ensured strict signature typing and backward compatibility across existing builder pipelines.'
+    ],
+    feedback: {
+      text: 'Approved and merged into microsoft:main.',
       author: 'Roman Lutz (@romanlutz) — Microsoft AI Red Team'
+    }
+  },
+  {
+    pr: 'PR #2795',
+    url: 'https://github.com/microsoft/PyRIT/pull/2795',
+    issue: 'Issue #2764',
+    issueUrl: 'https://github.com/microsoft/PyRIT/issues/2764',
+    category: 'Attack Architecture',
+    categoryId: 'architecture',
+    title: 'FEAT: Extract attack factory constructor compatibility rules',
+    problem: 'Dynamic attack instantiation was failing when constructor parameter signatures varied across newly added attack classes.',
+    how: [
+      'Constructor Inspection Rules: Standardized parameter signature inspection and argument routing in attack factories.',
+      'Defensive Fallbacks: Handled optional kwargs and default parameters gracefully across all registered attack types.'
+    ],
+    feedback: {
+      text: 'Approved and merged into microsoft:main.',
+      author: 'Roman Lutz (@romanlutz) — Microsoft AI Red Team'
+    }
+  },
+  {
+    pr: 'PR #2781',
+    url: 'https://github.com/microsoft/PyRIT/pull/2781',
+    issue: 'Issue #2775',
+    issueUrl: 'https://github.com/microsoft/PyRIT/issues/2775',
+    category: 'Database & Concurrency',
+    categoryId: 'concurrency',
+    title: 'FIX MOSSBench and VLSU SQLite isolation collisions',
+    problem: 'Parallel multi-threaded evaluation runs in MOSSBench and VLSU benchmarks crashed due to concurrent SQLite database write locks and session collisions.',
+    how: [
+      'Transaction Scope Isolation: Isolated SQLite database handles and transaction scopes per evaluation worker.',
+      'Concurrency Safety: Verified collision-free parallel execution across multi-GPU benchmark runs.'
+    ],
+    feedback: {
+      text: 'Approved and merged into microsoft:main.',
+      author: 'Roman Lutz (@romanlutz) — Microsoft AI Red Team'
+    }
+  },
+  {
+    pr: 'PR #2720',
+    commit: 'Commit dfa2b763',
+    url: 'https://github.com/microsoft/PyRIT/pull/2720',
+    issue: 'Issue #2665',
+    issueUrl: 'https://github.com/microsoft/PyRIT/issues/2665',
+    category: 'State Machine',
+    categoryId: 'state',
+    title: 'Phase 3: Model Progressive Admission Transitions (ProgressiveScheduleController)',
+    filesChanged: [
+      '[NEW] pyrit/executor/promptgen/gcg/attack/base/progressive_schedule.py',
+      '[MODIFY] pyrit/executor/promptgen/gcg/attack/base/attack_manager.py',
+      '[NEW] tests/unit/executor/promptgen/gcg/test_progressive_schedule.py'
+    ],
+    problem: 'ProgressiveMultiPromptAttack.run() mixed high-level inner attack execution with complex state transition rules (progressive goal vs. worker admission order, remaining step budgeting, control-weight ratcheting, and sentinel loss resets).',
+    how: [
+      'Schedule Controller & Action Enum: Designed and extracted ProgressiveScheduleController alongside ScheduleTransitionAction(Enum).',
+      'Exact-Budget Boundary Protection: Protected against exact-budget boundary edge cases: prevents dangling inf loss resets when the step budget is exhausted at exact admission boundaries.',
+      'Explicit Loss Measurement State: Introduced explicit boolean _loss_is_measured tracking to safely preserve legitimate non-finite model losses (inf/nan) without tripping assertions.',
+      'Control-Weight Ratcheting: Extracted control-weight scheduling and ratcheting logic (+0.01 increments up to threshold 0.09).',
+      'Maintainer Feedback Parity: Resolved maintainer feedback on ProgressiveScheduleState class shadowing to guarantee isinstance parity, authoring 16 comprehensive unit tests covering all sequences and boundaries.'
+    ],
+    feedback: {
+      text: "There's definitely more work on GCG coming up. Stay tuned!",
+      author: 'Roman Lutz (@romanlutz) — Microsoft AI Red Team (Issue #2665 Closed as Completed)'
     }
   },
   {
@@ -265,30 +359,30 @@ const MASTER_PR_CONTRIBUTIONS = [
     }
   },
   {
-    pr: 'PR #2720',
-    commit: 'Commit dfa2b763',
-    url: 'https://github.com/microsoft/PyRIT/pull/2720',
+    pr: 'PR #2671',
+    commit: 'Commit d620b4d4',
+    url: 'https://github.com/microsoft/PyRIT/pull/2671',
     issue: 'Issue #2665',
     issueUrl: 'https://github.com/microsoft/PyRIT/issues/2665',
-    category: 'State Machine',
-    categoryId: 'state',
-    title: 'Phase 3: Model Progressive Admission Transitions (ProgressiveScheduleController)',
+    category: 'Attack Architecture',
+    categoryId: 'architecture',
+    title: 'Phase 1: Extract Candidate Proposal Phase (GCGCandidateProposer)',
     filesChanged: [
-      '[NEW] pyrit/executor/promptgen/gcg/attack/base/progressive_schedule.py',
-      '[MODIFY] pyrit/executor/promptgen/gcg/attack/base/attack_manager.py',
-      '[NEW] tests/unit/executor/promptgen/gcg/test_progressive_schedule.py'
+      '[NEW] pyrit/executor/promptgen/gcg/attack/gcg/candidate_proposer.py',
+      '[MODIFY] pyrit/executor/promptgen/gcg/attack/gcg/gcg_attack.py',
+      '[NEW] tests/unit/executor/promptgen/gcg/test_gcg_proposal.py'
     ],
-    problem: 'ProgressiveMultiPromptAttack.run() mixed high-level inner attack execution with complex state transition rules (progressive goal vs. worker admission order, remaining step budgeting, control-weight ratcheting, and sentinel loss resets).',
+    problem: 'GCGMultiPromptAttack.step() had a monolithic loop that tightly coupled gradient dispatch, per-worker L2 gradient normalization, incompatible tensor shape grouping, token sampling, candidate filtering, and device transfers. This made candidate generation untestable in isolation and prone to subtle regressions.',
     how: [
-      'Schedule Controller & Action Enum: Designed and extracted ProgressiveScheduleController alongside ScheduleTransitionAction(Enum).',
-      'Exact-Budget Boundary Protection: Protected against exact-budget boundary edge cases: prevents dangling inf loss resets when the step budget is exhausted at exact admission boundaries.',
-      'Explicit Loss Measurement State: Introduced explicit boolean _loss_is_measured tracking to safely preserve legitimate non-finite model losses (inf/nan) without tripping assertions.',
-      'Control-Weight Ratcheting: Extracted control-weight scheduling and ratcheting logic (+0.01 increments up to threshold 0.09).',
-      'Maintainer Feedback Parity: Resolved maintainer feedback on ProgressiveScheduleState class shadowing to guarantee isinstance parity, authoring 16 comprehensive unit tests covering all sequences and boundaries.'
+      'Candidate Proposal Engine: Extracted logic into GCGCandidateProposer returning a typed, immutable @dataclass(frozen=True, slots=True) CandidateProposalBatch.',
+      'Preserved Worker Invariants: Preserved exact worker ordering and shape-group grouping behavior across multi-model deployments.',
+      'Cross-Device Migration: Handled cross-device gradient tensor migration by safely moving per-worker tensors to main_device.',
+      'Protocol Compliance: Maintained complete compliance with SamplingStrategy and CandidateFilter extension protocols.',
+      'Deterministic Test Suite: Authored 14 deterministic unit tests in test_gcg_proposal.py using mock queues and tensor stubs.'
     ],
     feedback: {
-      text: "There's definitely more work on GCG coming up. Stay tuned!",
-      author: 'Roman Lutz (@romanlutz) — Microsoft AI Red Team (Issue #2665 Closed as Completed)'
+      text: 'Reviewed, approved, and merged into microsoft:main (Commit d620b4d4) by Roman Lutz after comprehensive code review and automated test verification.',
+      author: 'Roman Lutz (@romanlutz) — Microsoft AI Red Team'
     }
   }
 ];
@@ -297,7 +391,9 @@ const CATEGORY_FILTERS = [
   { id: 'all', label: 'All Contributions' },
   { id: 'architecture', label: 'Attack Architecture' },
   { id: 'gpu', label: 'GPU VRAM Optimization' },
-  { id: 'state', label: 'State Machine' }
+  { id: 'state', label: 'State Machine' },
+  { id: 'concurrency', label: 'Database & Concurrency' },
+  { id: 'converters', label: 'Text Converters & Scoring' }
 ];
 
 export default function PyRITShowcasePage() {

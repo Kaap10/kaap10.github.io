@@ -32,7 +32,7 @@ const IconGithub = ({ size = 15 }) => (
 const SQLITE_CARD = {
   id: 'sqlite-graph-memory',
   index: '06',
-  roleTag: 'Contributor · Graph RAG & MCP Server',
+  roleTag: 'Collaborator · Graph RAG & MCP Server',
   icon: Share2,
   title: 'tonydzi/sqlite-graph-memory',
   headline: 'Model Context Protocol (MCP) Server & Concurrency Scoping for Graph RAG Memory',

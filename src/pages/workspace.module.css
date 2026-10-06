@@ -2,7 +2,7 @@
   display: flex;
   justify-content: center;
   padding: 4.5rem 1.5rem 5rem;
-  background-color: var(--vg-bg, #121216);
+  background-color: var(--vg-bg, #000000);
   min-height: 100vh;
   position: relative;
   overflow: hidden;
@@ -70,10 +70,10 @@
   align-items: center;
   gap: 0.4rem;
   padding: 0.35rem 0.75rem;
-  background: var(--vg-surface, #2E2E31);
+  background: #0E0E14;
   border: 1px solid var(--vg-border, rgba(255, 255, 255, 0.08));
   border-radius: var(--vg-radius-sm, 6px);
-  color: var(--vg-text-muted, #A6A6AC);
+  color: var(--vg-text-muted, #A0A0AA);
   font-size: 0.8rem;
   font-weight: 500;
   text-decoration: none !important;
@@ -82,10 +82,11 @@
 }
 
 .portfolioBackBtn:hover {
-  background: var(--vg-surface-strong, #38383C);
+  background: #161620;
   color: var(--vg-text, #F5F5F7);
-  border-color: var(--vg-border-hover, rgba(255, 255, 255, 0.16));
+  border-color: var(--vg-border-hover, rgba(255, 255, 255, 0.18));
   transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
 }
 
 .headerEyebrow {
@@ -112,7 +113,7 @@
 .pageSubtitle {
   font-size: 1.02rem;
   line-height: 1.6;
-  color: var(--vg-text-muted, #A6A6AC);
+  color: var(--vg-text-muted, #A0A0AA);
   margin: 0;
   max-width: 680px;
 }
@@ -135,7 +136,7 @@
   padding: 0.3rem 0.65rem;
   font-size: 0.76rem;
   font-family: var(--ifm-font-family-monospace, monospace);
-  color: var(--vg-text-muted, #A6A6AC);
+  color: var(--vg-text-muted, #A0A0AA);
 }
 
 .statPillActive {
@@ -165,9 +166,7 @@
 
 /* Square / Compact Box Card */
 .toolCard {
-  background: rgba(24, 24, 29, 0.85);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: #0A0A0E;
   border: 1px solid var(--vg-border, rgba(255, 255, 255, 0.08));
   border-radius: var(--vg-radius-lg, 12px);
   padding: 1.75rem;
@@ -179,6 +178,7 @@
   overflow: hidden;
   min-height: 380px;
   box-sizing: border-box;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 8px 24px rgba(0, 0, 0, 0.45);
   transition: all var(--vg-transition-smooth, 0.22s cubic-bezier(0.16, 1, 0.3, 1));
 }
 
@@ -196,8 +196,9 @@
 
 .toolCard:hover {
   transform: translateY(-2px);
-  border-color: var(--vg-border-hover, rgba(255, 255, 255, 0.16));
-  box-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.6);
+  border-color: var(--vg-border-hover, rgba(255, 255, 255, 0.18));
+  background: #101016;
+  box-shadow: 0 20px 40px -8px rgba(0, 0, 0, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
 .toolCard:hover::before {
@@ -228,7 +229,7 @@
   width: 40px;
   height: 40px;
   border-radius: var(--vg-radius-sm, 6px);
-  background: var(--vg-surface, #222228);
+  background: #121217;
   border: 1px solid var(--vg-border, rgba(255, 255, 255, 0.08));
   color: var(--vg-accent, #FF4D4F);
   display: flex;

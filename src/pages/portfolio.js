@@ -13,30 +13,10 @@ import {
 } from 'lucide-react';
 import styles from './portfolio.module.css';
 import ParticleCanvas from '@site/src/components/ParticleCanvas';
+import PicadoLabsShowcase from '@site/src/components/PicadoLabsShowcase';
+import ContributionsFeed from '@site/src/components/ContributionsFeed';
 
 export default function PortfolioPage() {
-  const [headerWidth, setHeaderWidth] = React.useState(null);
-
-  React.useEffect(() => {
-    const syncHeaderWidth = () => {
-      const navbar = document.querySelector('.navbar');
-      if (navbar) {
-        const width = navbar.getBoundingClientRect().width;
-        if (width > 0) {
-          setHeaderWidth(Math.round(width));
-        }
-      }
-    };
-
-    syncHeaderWidth();
-    const timer = setTimeout(syncHeaderWidth, 120);
-    window.addEventListener('resize', syncHeaderWidth);
-    return () => {
-      clearTimeout(timer);
-      window.removeEventListener('resize', syncHeaderWidth);
-    };
-  }, []);
-
   return (
     <Layout
       title="Portfolio"
@@ -115,50 +95,33 @@ export default function PortfolioPage() {
             </div>
           </section>
 
-          {/* Recent Work Section */}
-          <section 
-            className={styles.recentWorkSection}
-            style={headerWidth ? { maxWidth: `min(${headerWidth}px, 100%)` } : undefined}
-          >
-            <div className={styles.sectionHeader}>
-              <div className={styles.sectionTitleWrap}>
-                <Clock size={16} style={{ color: 'var(--vg-accent, #FF4D4F)' }} />
-                <h2 className={styles.sectionTitle}>Recent Work</h2>
-              </div>
-              <span className={styles.sectionSubtitle}>Updates &amp; Highlights</span>
-            </div>
-
-            {/* Recent Work Entry */}
-            <div className={styles.recentWorkContainer}>
-              <a
-                href="https://github.com/search?q=org%3AApache+is%3Apr+is%3Amerged+author%3AKaap10&type=pullrequests"
-                target="_blank"
-                rel="noopener noreferrer"
-                className={styles.recentWorkCard}
-                title="View merged pull requests in Apache Software Foundation"
-              >
-                <div className={styles.recentWorkLeft}>
-                  <div className={styles.recentWorkIconWrap}>
-                    <GitPullRequest size={18} />
-                  </div>
-                  <div className={styles.recentWorkText}>
-                    <div className={styles.recentWorkMeta}>
-                      <span className={styles.recentWorkBadge}>3 Merged PRs</span>
-                      <span className={styles.recentWorkDate}>Apache Software Foundation</span>
-                    </div>
-                    <p className={styles.recentWorkTitle}>
-                      Contributed to <strong className={styles.recentWorkOrg}>Apache/magpie</strong> with 3 merged pull requests.
-                    </p>
-                  </div>
-                </div>
-
-                <div className={styles.recentWorkAction}>
-                  <span>View PRs</span>
-                  <ArrowUpRight size={15} />
-                </div>
-              </a>
-            </div>
+          {/* PicadoLabs Core Ecosystem Showcase & Contributions Feed */}
+          <section className={styles.githubSection}>
+            <PicadoLabsShowcase />
+            <ContributionsFeed limit={5} showViewAll={true} />
           </section>
+
+          {/* Typographic Footer Branding */}
+          <footer className={styles.footerBranding}>
+            {/* Option 1: Vardhman (Active) */}
+            <div className={styles.wordmarkContainer}>
+              <span className={styles.outlineText}>Vardh</span>
+              <span className={styles.solidTextWrap}>
+                <span className={styles.accentTriangle} aria-hidden="true" />
+                <span className={styles.solidText}>man</span>
+              </span>
+            </div>
+
+            {/* Option 2: Kap10 (Commented out for comparison)
+            <div className={styles.wordmarkContainer}>
+              <span className={styles.outlineText}>Kap</span>
+              <span className={styles.solidTextWrap}>
+                <span className={styles.accentTriangle} aria-hidden="true" />
+                <span className={styles.solidText}>10</span>
+              </span>
+            </div>
+            */}
+          </footer>
         </div>
       </main>
     </Layout>

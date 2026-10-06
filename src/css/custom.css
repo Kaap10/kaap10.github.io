@@ -1,21 +1,20 @@
-@import url('https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
-
 /* ==========================================================================
    Vardhman Gupta — Premium Technical Minimalist Design System
    Visual Inspiration: Linear / Vercel / Raycast / Modern Engineering Tools
    ========================================================================== */
 
 :root {
-  /* Obsidian Darkness / Linear Style Deep Dark Palette (Default) */
-  --vg-bg: #121216;
-  --vg-bg-elevated: #18181d;
-  --vg-surface: #222228;
-  --vg-surface-strong: #2c2c34;
+  /* Obsidian Pitch Black / Linear & Vercel Style Palette */
+  --vg-bg: #000000;
+  --vg-bg-depth: #050507;
+  --vg-bg-elevated: #0A0A0E;
+  --vg-surface: #121217;
+  --vg-surface-strong: #181822;
   --vg-text: #F5F5F7;
-  --vg-text-muted: #A6A6AC;
-  --vg-text-subtle: #787880;
+  --vg-text-muted: #A0A0AA;
+  --vg-text-subtle: #70707B;
   --vg-border: rgba(255, 255, 255, 0.08);
-  --vg-border-hover: rgba(255, 255, 255, 0.16);
+  --vg-border-hover: rgba(255, 255, 255, 0.18);
 
   /* Quater One Style Red Accent */
   --vg-accent: #FF4D4F;
@@ -24,8 +23,8 @@
   --vg-accent-border: rgba(255, 77, 79, 0.28);
 
   /* Glassmorphic Navbar & Header Blur Tokens */
-  --vg-navbar-bg: rgba(18, 18, 22, 0.75);
-  --vg-header-bg: rgba(18, 18, 22, 0.82);
+  --vg-navbar-bg: rgba(6, 6, 8, 0.82);
+  --vg-header-bg: rgba(6, 6, 8, 0.85);
 
   /* Typography Stacks */
   --ifm-font-family-base: 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -47,7 +46,7 @@
   --ifm-color-primary-lighter: #ff7375;
   --ifm-color-primary-lightest: #ff999b;
 
-  --ifm-navbar-background-color: rgba(18, 18, 22, 0.85);
+  --ifm-navbar-background-color: rgba(6, 6, 8, 0.85);
   --ifm-navbar-shadow: none;
   --ifm-border-color: var(--vg-border);
   --ifm-line-height-base: 1.7;
@@ -69,25 +68,25 @@
   --vg-transition-fast: 160ms cubic-bezier(0.16, 1, 0.3, 1);
   --vg-transition-smooth: 220ms cubic-bezier(0.16, 1, 0.3, 1);
 
-  /* Algolia DocSearch Modal Grey Theme */
+  /* Algolia DocSearch Modal Obsidian Black Theme */
   --docsearch-primary-color: var(--vg-accent);
   --docsearch-text-color: var(--vg-text);
   --docsearch-spacing: 12px;
   --docsearch-icon-stroke-width: 1.4;
   --docsearch-highlight-color: var(--vg-accent);
   --docsearch-muted-color: var(--vg-text-muted);
-  --docsearch-container-background: rgba(0, 0, 0, 0.65);
+  --docsearch-container-background: rgba(0, 0, 0, 0.75);
   --docsearch-logo-color: var(--vg-text-subtle);
-  --docsearch-modal-background: var(--vg-bg-elevated);
-  --docsearch-modal-shadow: 0 16px 36px rgba(0, 0, 0, 0.5);
-  --docsearch-searchbox-background: var(--vg-surface);
-  --docsearch-searchbox-focus-background: var(--vg-surface-strong);
+  --docsearch-modal-background: var(--vg-bg-elevated, #0A0A0E);
+  --docsearch-modal-shadow: 0 20px 48px rgba(0, 0, 0, 0.85);
+  --docsearch-searchbox-background: #000000;
+  --docsearch-searchbox-focus-background: var(--vg-surface, #121217);
   --docsearch-hit-color: var(--vg-text-muted);
   --docsearch-hit-shadow: none;
-  --docsearch-hit-background: var(--vg-surface);
+  --docsearch-hit-background: var(--vg-surface, #121217);
   --docsearch-key-gradient: none;
   --docsearch-key-shadow: none;
-  --docsearch-footer-background: var(--vg-bg);
+  --docsearch-footer-background: #000000;
   --docsearch-footer-shadow: none;
 }
 
@@ -152,6 +151,19 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 600;
   letter-spacing: -0.025em;
   color: var(--ifm-heading-color);
+}
+
+/* GPU Compositing & Paint Containment */
+canvas,
+[class*='glowOrb'],
+[class*='bgGlowWrapper'],
+[class*='bgCanvasWrapper'] {
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+}
+
+img {
+  image-rendering: -webkit-optimize-contrast;
 }
 
 /* ==========================================================================

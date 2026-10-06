@@ -42,30 +42,30 @@ const ApacheLogoIcon = ({ size = 16 }) => (
 const MAGPIE_CARD = {
   id: 'magpie',
   index: '01',
-  roleTag: 'Contributor · 7 Merged PRs',
+  roleTag: 'Contributor · 15 Merged PRs',
   icon: ApacheLogoIcon,
   title: 'apache/magpie',
-  headline: 'Vendor-Neutral AI Agent Harness Runtimes & HITL Security Framework',
+  headline: 'Vendor-Neutral AI Agent Harness Runtimes, Git Forge Bridges & Security Framework',
   cardDescription:
-    'Authored 7 major feature Pull Requests implementing first-class runtime adapters for leading AI agent harnesses and vulnerability cross-referencing infrastructure into Apache Magpie under RFC-AI-0004.',
-  license: '7 Merged PRs',
-  techStack: ['Python', 'Shell', 'RFC-AI-0004', 'MCP Protocol', 'OSV.dev API', 'GitHub Copilot CLI', 'Aider', 'Block Goose', 'Ollama / vLLM', 'Cursor Agent', 'Apache RAT'],
+    'Authored 15 Pull Requests implementing first-class runtime adapters for leading AI agent harnesses, Forgejo/GitLab bridge tooling, contributor-growth token budget optimization, and vulnerability cross-referencing under RFC-AI-0004.',
+  license: '15 Merged PRs',
+  techStack: ['Python', 'Shell', 'RFC-AI-0004', 'MCP Protocol', 'OSV.dev API', 'GitLab REST API', 'Forgejo / Gitea', 'GitHub Copilot CLI', 'Aider', 'Block Goose', 'Ollama / vLLM', 'Cursor Agent', 'Apache RAT'],
   highlights: [
+    {
+      label: 'Contributor-Growth Token & Metadata Optimization (PR #1489, #1487, #1483, #1482, #1481)',
+      text: 'Trimmed skill routing metadata and execution body budgets across onboarding, activity-sweep, and nomination workflows to eliminate context bloat.'
+    },
+    {
+      label: 'Forgejo, Gitea & GitLab Tool Adapters (PR #1469, #1441, #1369)',
+      text: 'Engineered read-only bridge adapters for Forgejo/Gitea and GitLab with robust pagination, issue templates, and sanitized schema mappings.'
+    },
     {
       label: 'OSV.dev & Vetted-Ops Dispatcher (PR #1326, #1297)',
       text: 'Engineered vulnerability cross-referencing and routed HTTP ops via Python urllib.request with strict input validation.'
     },
     {
-      label: 'Copilot CLI & Coding Agent (PR #1287, Issue #318)',
-      text: 'Engineered standalone Copilot CLI runtime, draft PR safety boundaries, and ~/.copilot/mcp-config.json integration.'
-    },
-    {
-      label: 'Aider & Block Goose Runtimes (PR #1286, #1217, Issues #317, #319)',
+      label: 'Universal Agent Harnesses (PR #1287, #1286, #1217, #1206, #1204)',
       text: 'Designed on-demand /read skill ingestion, GOOSE_MODE="approve" HITL enforcement, and Layer 0 agent-iso credential isolation.'
-    },
-    {
-      label: 'Local LLM & Cursor Adapters (PR #1206, #1204, Issues #315, #316)',
-      text: 'Calibrated air-gapped Ollama/vLLM 70B+ triage floors, and implemented Cursor Composer symlink discovery topology.'
     }
   ],
   github: 'https://github.com/apache/magpie',
@@ -73,12 +73,14 @@ const MAGPIE_CARD = {
   tags: ['Open Source', 'Apache Software Foundation', 'AI Safety', 'Model Context Protocol', 'Agent Harnesses', 'HITL'],
   details: {
     description:
-      'Apache Magpie is the Apache Software Foundation\'s vendor-neutral framework for managing security triage, CVE allocation, and reproducible vulnerability workflows.\n\nAs a core external contributor across 7 merged pull requests, authored first-class runtime adapters for leading AI agent harnesses and vulnerability cross-referencing infrastructure in full compliance with RFC-AI-0004. Collaborated directly with ASF Board and PMC Member Jarek Potiuk (@potiuk) to establish rigorous Human-in-the-Loop (HITL) security boundaries, ensuring agentic systems propose changes via Draft Pull Requests rather than executing unreviewed mutations.\n\nArchitected Model Context Protocol (MCP) integrations connecting PonyMail archive search and Apache Projects tools, engineered OSV.dev and vetted-ops dispatcher backends, configured Layer 0 clean-environment wrappers (agent-iso) to scrub ambient cloud tokens, and validated all contributions against Apache RAT licensing audits, prek hooks, symlink topology linters, and vendor-neutrality scoring.',
+      'Apache Magpie is the Apache Software Foundation\'s vendor-neutral framework for managing security triage, CVE allocation, and reproducible vulnerability workflows.\n\nAs a core external contributor across 15 merged pull requests, authored first-class runtime adapters for leading AI agent harnesses, multi-forge bridge adapters (Forgejo, Gitea, GitLab), and vulnerability cross-referencing infrastructure in full compliance with RFC-AI-0004. Collaborated directly with ASF Board and PMC Member Jarek Potiuk (@potiuk) to establish rigorous Human-in-the-Loop (HITL) security boundaries, ensuring agentic systems propose changes via Draft Pull Requests rather than executing unreviewed mutations.\n\nOptimized prompt token budgets and skill routing metadata across contributor-growth skills, architected Model Context Protocol (MCP) integrations connecting PonyMail archive search and Apache Projects tools, engineered OSV.dev and vetted-ops dispatcher backends, configured Layer 0 clean-environment wrappers (agent-iso) to scrub ambient cloud tokens, and validated all contributions against Apache RAT licensing audits, prek hooks, symlink topology linters, and vendor-neutrality scoring.',
     allTech: [
       'Python',
       'Shell / Bash',
       'RFC-AI-0004',
       'Model Context Protocol (MCP)',
+      'GitLab REST API',
+      'Forgejo / Gitea API',
       'GitHub Copilot CLI',
       'Aider Pair Programming',
       'Block Goose Agent',
@@ -92,7 +94,7 @@ const MAGPIE_CARD = {
       title: 'Apache Magpie Universal Agent Harness Architecture Flow',
       mentalModel: {
         inputLabel: '1. Agentic Harness Ingestion',
-        input: 'Copilot CLI, Aider, Goose, and air-gapped local model terminal runners',
+        input: 'Copilot CLI, Aider, Goose, Forgejo/GitLab bridges, and air-gapped local runners',
         processLabel: '2. Layer 0 Isolation & Policy Boundary',
         process: 'agent-iso clean-room environment + ambient credential & token scrubbing',
         outputLabel: '3. Canonical Skills & MCP Execution',
@@ -188,13 +190,15 @@ const MAGPIE_CARD = {
               ]
             },
             {
-              title: 'Canonical Skill Registry & MCP Tool Engine',
-              impact: '70+ RFC-AI-0004 Skills • Multi-Client JSON-RPC',
-              isContributed: false,
+              title: 'Forgejo & GitLab Multi-Forge Bridges',
+              pr: 'PR #1469 & PR #1369',
+              prUrl: 'https://github.com/apache/magpie/pull/1469',
+              impact: 'Multi-Forge Protocol • Normalized REST Schema',
+              isContributed: true,
               points: [
-                'Centralized registry of 70+ vendor-neutral engineering skill definitions (RFC-AI-0004)',
-                'JSON-RPC 2.0 tool execution endpoints serving PonyMail archive and Apache Project data',
-                'Selective skill injection ensuring zero context bloat during model inference'
+                'Engineered unified adapter bridge mapping Forgejo/Gitea and GitLab API responses into standard Magpie schemas',
+                'Integrated robust pagination and issue template discovery across self-hosted and cloud git providers',
+                'Protected against unbounded API responses with deterministic truncation bounds'
               ]
             }
           ]
@@ -203,17 +207,154 @@ const MAGPIE_CARD = {
     },
     fullHighlights: [
       'RFC-AI-0004 Vendor-Neutral Skill Standard: Universal skill definitions running identically across Cursor, Aider, Goose, Copilot CLI, and local open models without vendor lock-in.',
+      'Multi-Forge Ecosystem Bridges: Authored first-class read-only bridges for Forgejo, Gitea, and GitLab, standardizing repository metadata, issue ingestion, and pagination pipelines.',
+      'Contributor-Growth Token & Metadata Optimization: Reduced prompt overhead and latency across onboarding and committer nomination workflows through concise routing metadata.',
       'Human-in-the-Loop (HITL) Security Enforcement: Enforced proposal-then-confirm discipline and disabled unsafe autonomous flags (--allow-all, --yolo, auto-commits) across all agent harnesses.',
       'Layer 0 Credential & Token Isolation: Engineered agent-iso execution boundaries scrubbing ambient environment variables and cloud tokens prior to launching subshells.',
       'Vulnerability Cross-Referencing & Databases: Engineered OSV.dev and CVE.org integration using pure Python urllib.request backend with strict regex validation to prevent path traversal.',
       'Model Context Protocol (MCP) Multi-Client Integration: Configured standardized JSON-RPC 2.0 schemas connecting harnesses to PonyMail and Apache Projects MCP servers.',
       'On-Demand Skill Ingestion: Implemented selective /read .agents/skills/ patterns, eliminating context window exhaustion across large tool suites.'
     ],
-    metricsDetail: '7 Merged PRs · 100% Merge Rate · OSV.dev / CVE Integrations · ASF PMC Reviewed · Zero-Cloud Air-Gapped LLMs',
+    metricsDetail: '15 Merged PRs · 100% Merge Rate · Forgejo/GitLab Bridges · OSV.dev / CVE Integrations · ASF PMC Reviewed · Zero-Cloud Air-Gapped LLMs',
   },
 };
 
 const MASTER_PR_CONTRIBUTIONS = [
+  {
+    pr: 'PR #1489',
+    url: 'https://github.com/apache/magpie/pull/1489',
+    category: 'Optimization',
+    categoryId: 'optimization',
+    title: 'Trim nomination body budget across contributor-growth skills',
+    problem: 'Prompt tokens in the committer nomination workflow were causing unnecessary context inflation and slower inference times during agentic evaluation turns.',
+    how: [
+      'Budget Optimization: Trimmed verbose explanatory prose and redundant template placeholders in the nomination skill body.',
+      'Instruction Density: Preserved strict evaluation criteria while improving token compactness and prompt execution speed.',
+      'Verification: Validated skill execution across test harnesses, ensuring zero metric regression.'
+    ],
+    feedback: {
+      text: 'Approved and merged into main.',
+      author: 'Jarek Potiuk (@potiuk) — ASF Board & PMC Member'
+    }
+  },
+  {
+    pr: 'PR #1487',
+    url: 'https://github.com/apache/magpie/pull/1487',
+    category: 'Optimization',
+    categoryId: 'optimization',
+    title: 'Trim contributor-to-committer body budget',
+    problem: 'The contributor-to-committer transition skill contained repetitive scoring instructions that consumed precious LLM context.',
+    how: [
+      'Token Compaction: Streamlined the transition criteria and candidate evaluation instructions.',
+      'Consistency Check: Aligned markdown headers with canonical RFC-AI-0004 skill syntax.',
+      'Evaluation Pass: Verified against the evaluation runner with clean passing checks.'
+    ],
+    feedback: {
+      text: 'Merged into apache/magpie:main.',
+      author: 'Jarek Potiuk (@potiuk) — ASF Board & PMC Member'
+    }
+  },
+  {
+    pr: 'PR #1483',
+    url: 'https://github.com/apache/magpie/pull/1483',
+    category: 'Optimization',
+    categoryId: 'optimization',
+    title: 'Trim activity-sweep skill routing metadata',
+    problem: 'Overly verbose routing descriptors in the activity-sweep skill degraded agent routing accuracy and increased tool selection latency.',
+    how: [
+      'Routing Precision: Compacted skill description metadata to improve high-confidence routing in multi-agent registries.',
+      'Schema Compliance: Validated metadata against the framework-wide skill manifest linters.'
+    ],
+    feedback: {
+      text: 'Merged into apache/magpie:main.',
+      author: 'Jarek Potiuk (@potiuk) — ASF Board & PMC Member'
+    }
+  },
+  {
+    pr: 'PR #1482',
+    url: 'https://github.com/apache/magpie/pull/1482',
+    category: 'Optimization',
+    categoryId: 'optimization',
+    title: 'Trim sentiment skill routing metadata',
+    problem: 'Sentiment analysis skill metadata had bloated trigger conditions causing routing false positives.',
+    how: [
+      'Refined Trigger Boundaries: Sharpened the semantic scope for sentiment classification during triage sweeps.',
+      'Linter Verification: Passed all automated YAML/Markdown formatting checks in CI.'
+    ],
+    feedback: {
+      text: 'Merged into apache/magpie:main.',
+      author: 'Jarek Potiuk (@potiuk) — ASF Board & PMC Member'
+    }
+  },
+  {
+    pr: 'PR #1481',
+    url: 'https://github.com/apache/magpie/pull/1481',
+    category: 'Optimization',
+    categoryId: 'optimization',
+    title: 'Trim onboarding-concierge routing metadata',
+    problem: 'Initial onboarding concierge skill was consuming disproportionate token budgets on basic repository handshakes.',
+    how: [
+      'Concise Skill Contract: Restructured onboarding triggers to focus strictly on setup, docs, and environment preparation.',
+      'Zero Regressions: Tested workflow invocations across Aider and Cursor CLI.'
+    ],
+    feedback: {
+      text: 'Merged into apache/magpie:main.',
+      author: 'Jarek Potiuk (@potiuk) — ASF Board & PMC Member'
+    }
+  },
+  {
+    pr: 'PR #1469',
+    url: 'https://github.com/apache/magpie/pull/1469',
+    issue: 'Issue #310',
+    issueUrl: 'https://github.com/apache/magpie/issues/310',
+    category: 'Git Forge Bridges',
+    categoryId: 'tools',
+    title: 'Add Forgejo/Gitea adapter bridge',
+    problem: 'Self-hosted open-source communities using Forgejo and Gitea lacked a standard Magpie bridge adapter to ingest issues and contributor activity.',
+    how: [
+      'Forgejo REST API Integration: Built read-only bridge operations for issue fetching, repository metadata, and commit inspections.',
+      'Schema Mapping: Normalized Forgejo responses into standard Magpie entity schemas.',
+      'Sanitized Execution: Ensured zero credential leakage and handled authentication headers safely.'
+    ],
+    feedback: {
+      text: 'Approved and merged into main.',
+      author: 'Jarek Potiuk (@potiuk) — ASF Board & PMC Member'
+    }
+  },
+  {
+    pr: 'PR #1441',
+    url: 'https://github.com/apache/magpie/pull/1441',
+    category: 'Git Forge Bridges',
+    categoryId: 'tools',
+    title: 'GitLab adapter pagination, short pages, and template follow-up',
+    problem: 'Review feedback on GitLab adapter needed pagination edge-case hardening when handling single-item or short pages.',
+    how: [
+      'Robust Pagination Handling: Fixed pagination termination loop for short and single-page GitLab API responses.',
+      'Docstrings & Schema: Updated comprehensive docstrings and issue template configurations.'
+    ],
+    feedback: {
+      text: 'LGTM — review follow-up verified and merged.',
+      author: 'Jarek Potiuk (@potiuk) — ASF Board & PMC Member'
+    }
+  },
+  {
+    pr: 'PR #1369',
+    url: 'https://github.com/apache/magpie/pull/1369',
+    issue: 'Issue #305',
+    issueUrl: 'https://github.com/apache/magpie/issues/305',
+    category: 'Git Forge Bridges',
+    categoryId: 'tools',
+    title: 'Add read-only GitLab bridge foundation',
+    problem: 'Magpie was primarily coupled to GitHub APIs. Support was needed for GitLab repositories hosting Apache-affiliated tools.',
+    how: [
+      'GitLab REST Bridge: Implemented read-only HTTP endpoints querying GitLab project issues, merge requests, and contributor trees.',
+      'Rate-Limit & Error Handling: Handled GitLab API rate-limiting and private instance base URLs gracefully.'
+    ],
+    feedback: {
+      text: 'Approved and merged into apache/magpie:main.',
+      author: 'Jarek Potiuk (@potiuk) — ASF Board & PMC Member'
+    }
+  },
   {
     pr: 'PR #1326',
     url: 'https://github.com/apache/magpie/pull/1326',
@@ -358,8 +499,10 @@ const MASTER_PR_CONTRIBUTIONS = [
 
 const CATEGORY_FILTERS = [
   { id: 'all', label: 'All Contributions' },
+  { id: 'optimization', label: 'Token & Performance Budget' },
+  { id: 'tools', label: 'GitLab & Forgejo Bridges' },
+  { id: 'security', label: 'Vulnerability Infrastructure' },
   { id: 'agentic', label: 'Agent Harnesses' },
-  { id: 'security', label: 'HITL & Security' },
   { id: 'local', label: 'Local Inference' }
 ];
 

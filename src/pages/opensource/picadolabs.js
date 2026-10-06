@@ -73,7 +73,7 @@ const PICADOLABS_PROJECTS = [
         'Shipped 11 production workflow templates spanning SaaS MVPs, REST APIs, FastAPI, React Native (Expo), Electron, Discord Bots, AI Agent & RAG Pipelines, and Chrome Extensions, with custom JSON/HTTPS template loading support',
         'Published as an open-source npm package (npx build-with-ai) with 100% test coverage, a multi-OS CI pipeline (Ubuntu, macOS, Windows), and zero external cloud or telemetry dependencies',
       ],
-      metricsDetail: 'npx build-with-ai · 830+ Downloads · 100% Test Coverage · Multi-OS CI · Apache 2.0 License',
+      metricsDetail: 'npx build-with-ai · 950+ Downloads · 14+ Contributors · 100% Test Coverage · Multi-OS CI · Apache 2.0 License',
     },
   },
 

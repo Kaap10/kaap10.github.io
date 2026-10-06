@@ -1,22 +1,237 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Layout from '@theme/Layout';
 import Link from '@docusaurus/Link';
 import { 
   ArrowRight,
+  ArrowUpRight,
+  GitPullRequest,
   Package,
   Layers,
-  Sparkles
+  Database,
+  Cpu,
+  Boxes
 } from 'lucide-react';
 import styles from './opensource.module.css';
 import ParticleCanvas from '@site/src/components/ParticleCanvas';
 
-const IconGithub = ({ size = 15 }) => (
-  <svg viewBox="0 0 24 24" width={size} height={size} fill="currentColor" aria-hidden="true">
-    <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
-  </svg>
-);
+const OSS_PROJECTS = [
+  {
+    id: 'picadolabs',
+    name: 'PicadoLabs',
+    org: 'PicadoLabs Projects',
+    role: 'Owner & Maintainer',
+    roleType: 'owner',
+    repoMatcher: (repo) => repo.toLowerCase().startsWith('picadolabs/'),
+    defaultPRCount: 18,
+    logoType: 'img',
+    logoSrc: '/img/picadolabs.png',
+    description: 'Autonomous AI orchestration, dynamic model routing architectures, and production developer agent systems.',
+    deepDiveUrl: '/opensource/picadolabs',
+    githubUrl: 'https://github.com/search?q=org%3APicadoLabs+is%3Apr+is%3Amerged+author%3AKaap10&type=pullrequests',
+  },
+  {
+    id: 'magpie',
+    name: 'Apache Magpie',
+    org: 'Apache Software Foundation',
+    role: 'Contributor',
+    roleType: 'contributor',
+    repoMatcher: (repo) => repo.toLowerCase().includes('magpie'),
+    defaultPRCount: 15,
+    logoType: 'img',
+    logoSrc: '/img/apachelogo.png',
+    description: 'Cloud security posture management & automated compliance discovery framework for enterprise footprints.',
+    deepDiveUrl: '/opensource/magpie',
+    githubUrl: 'https://github.com/search?q=repo%3Aapache%2Fmagpie+is%3Apr+is%3Amerged+author%3AKaap10&type=pullrequests',
+  },
+  {
+    id: 'pyrit',
+    name: 'Microsoft PyRIT',
+    org: 'Microsoft AI Red Team',
+    role: 'Contributor',
+    roleType: 'contributor',
+    repoMatcher: (repo) => repo.toLowerCase().includes('pyrit'),
+    defaultPRCount: 8,
+    logoType: 'img',
+    logoSrc: '/img/mslogo.png',
+    description: 'Python Risk Identification Tool for Generative AI security, automated jailbreak detection, and vulnerability testing.',
+    deepDiveUrl: '/opensource/pyrit',
+    githubUrl: 'https://github.com/search?q=repo%3Amicrosoft%2FPyRIT+is%3Apr+is%3Amerged+author%3AKaap10&type=pullrequests',
+  },
+  {
+    id: 'dynavec',
+    name: 'DynaVec',
+    org: 'codeforstartups',
+    role: 'Collaborator',
+    roleType: 'collaborator',
+    repoMatcher: (repo) => repo.toLowerCase().includes('dynavec'),
+    defaultPRCount: 18,
+    logoType: 'icon',
+    icon: Cpu,
+    description: 'High-dimensional vector database engine and nearest-neighbor indexing architecture for fast similarity search.',
+    deepDiveUrl: '/opensource/dynavec',
+    githubUrl: 'https://github.com/search?q=repo%3Acodeforstartups%2Fdynavec+is%3Apr+is%3Amerged+author%3AKaap10&type=pullrequests',
+  },
+  {
+    id: 'layer5io',
+    name: 'Layer5 IO',
+    org: 'Cloud Native Ecosystem',
+    role: 'Contributor',
+    roleType: 'contributor',
+    repoMatcher: (repo) => repo.toLowerCase().includes('layer5'),
+    defaultPRCount: 3,
+    logoType: 'img',
+    logoSrc: '/img/layer5.png',
+    description: 'Service mesh management plane, visual topology orchestration, and interactive learning academy labs.',
+    deepDiveUrl: '/opensource/layer5io',
+    githubUrl: 'https://github.com/search?q=org%3Alayer5io+is%3Apr+is%3Amerged+author%3AKaap10&type=pullrequests',
+  },
+  {
+    id: 'palinode',
+    name: 'Palinode',
+    org: 'phasespace-labs',
+    role: 'Contributor',
+    roleType: 'contributor',
+    repoMatcher: (repo) => repo.toLowerCase().includes('palinode'),
+    defaultPRCount: 3,
+    logoType: 'icon',
+    icon: Boxes,
+    description: 'Decentralized consensus protocols, state-machine replication engines, and distributed network tooling.',
+    deepDiveUrl: '/opensource/palinode',
+    githubUrl: 'https://github.com/search?q=repo%3Aphasespace-labs%2Fpalinode+is%3Apr+is%3Amerged+author%3AKaap10&type=pullrequests',
+  },
+  {
+    id: 'sqlite-graph-memory',
+    name: 'SQLite Graph Memory',
+    org: 'tonydzi',
+    role: 'Collaborator',
+    roleType: 'collaborator',
+    repoMatcher: (repo) => repo.toLowerCase().includes('sqlite-graph-memory'),
+    defaultPRCount: 3,
+    logoType: 'icon',
+    icon: Database,
+    description: 'Lightweight embedded graph storage and relational memory retrieval layer built over SQLite for AI agents.',
+    deepDiveUrl: '/opensource/sqlite-graph-memory',
+    githubUrl: 'https://github.com/search?q=repo%3Atonydzi%2Fsqlite-graph-memory+is%3Apr+is%3Amerged+author%3AKaap10&type=pullrequests',
+  },
+  {
+    id: 'quater',
+    name: 'Quater',
+    org: 'DevilsAutumn',
+    role: 'Contributor',
+    roleType: 'contributor',
+    repoMatcher: (repo) => repo.toLowerCase().includes('quater'),
+    defaultPRCount: 1,
+    logoType: 'icon',
+    icon: Layers,
+    description: 'High-performance asynchronous data manipulation, stream processing, and event ingestion utilities.',
+    deepDiveUrl: '/opensource/quater',
+    githubUrl: 'https://github.com/search?q=repo%3ADevilsAutumn%2Fquater+is%3Apr+is%3Amerged+author%3AKaap10&type=pullrequests',
+  },
+  {
+    id: 'meshery-extensions',
+    name: 'Meshery Extensions',
+    org: 'meshery-extensions',
+    role: 'Contributor',
+    roleType: 'contributor',
+    repoMatcher: (repo) => repo.toLowerCase().includes('meshery'),
+    defaultPRCount: 1,
+    logoType: 'img',
+    logoSrc: '/img/layer5.png',
+    description: 'Specialized cloud native playground extensions and runtime integrations for Meshery.',
+    deepDiveUrl: '/opensource/meshery-extensions',
+    githubUrl: 'https://github.com/search?q=org%3Ameshery-extensions+is%3Apr+is%3Amerged+author%3AKaap10&type=pullrequests',
+  },
+];
 
 export default function OpenSourcePage() {
+  const [counts, setCounts] = useState(() => {
+    const initial = { total: 87 };
+    OSS_PROJECTS.forEach((p) => {
+      initial[p.id] = p.defaultPRCount;
+    });
+    return initial;
+  });
+
+  useEffect(() => {
+    let isMounted = true;
+    const cacheKey = 'gh_org_counts_v1_Kaap10';
+
+    const fetchCounts = async () => {
+      // Check cache (30 mins)
+      try {
+        const cached = localStorage.getItem(cacheKey);
+        if (cached) {
+          const parsed = JSON.parse(cached);
+          if (Date.now() - parsed.timestamp < 30 * 60 * 1000) {
+            setCounts((prev) => ({ ...prev, ...parsed.counts }));
+            return;
+          }
+        }
+      } catch {
+        // ignore
+      }
+
+      try {
+        const res = await fetch(
+          'https://api.github.com/search/issues?q=type:pr+author:Kaap10+is:merged&per_page=100'
+        );
+        if (!res.ok) return;
+        const data = await res.json();
+
+        if (isMounted && data.items) {
+          const newCounts = { total: data.total_count || 87 };
+
+          OSS_PROJECTS.forEach((p) => {
+            newCounts[p.id] = 0;
+          });
+
+          data.items.forEach((item) => {
+            let repoPath = '';
+            if (item.repository_url) {
+              repoPath = item.repository_url.replace('https://api.github.com/repos/', '');
+            } else if (item.html_url) {
+              const parts = item.html_url.split('/');
+              if (parts.length >= 5) {
+                repoPath = `${parts[3]}/${parts[4]}`;
+              }
+            }
+
+            OSS_PROJECTS.forEach((p) => {
+              if (p.repoMatcher(repoPath)) {
+                newCounts[p.id] = (newCounts[p.id] || 0) + 1;
+              }
+            });
+          });
+
+          OSS_PROJECTS.forEach((p) => {
+            if (!newCounts[p.id] || newCounts[p.id] === 0) {
+              newCounts[p.id] = p.defaultPRCount;
+            }
+          });
+
+          setCounts(newCounts);
+
+          try {
+            localStorage.setItem(
+              cacheKey,
+              JSON.stringify({ timestamp: Date.now(), counts: newCounts })
+            );
+          } catch {
+            // ignore
+          }
+        }
+      } catch (err) {
+        console.error('Failed to fetch OSS counts:', err);
+      }
+    };
+
+    fetchCounts();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
   return (
     <Layout
       title="Open Source"
@@ -35,150 +250,77 @@ export default function OpenSourcePage() {
           <header className={styles.pageHeader}>
             <h1 className={styles.pageTitle}>Open Source</h1>
             <p className={styles.pageSubtitle}>
-              Open-source developer tooling, CLI workflow engines, and contributions to distributed serverless vector databases.
+              Open-source developer tooling, AI agent frameworks, and contributions to distributed vector engines and enterprise ecosystems.
             </p>
-
-            {/* Centered Structured Repository Buttons */}
-            <div className={styles.buttonsContainer}>
-              {/* Row 1: PicadoLabs */}
-              <div className={styles.buttonRow}>
-                <Link
-                  to="/opensource/picadolabs"
-                  className={styles.headerLink}
-                  title="PicadoLabs (Owner and Maintainer)"
-                >
-                  <Sparkles size={13} style={{ color: 'var(--vg-accent, #FF4D4F)' }} />
-                  <span>PicadoLabs</span>
-                  <span className={styles.ownerBadge}>Owner and Maintainer</span>
-                  <ArrowRight size={13} />
-                </Link>
-              </div>
-
-              {/* Row 2: Apache & Microsoft */}
-              <div className={styles.buttonRow}>
-                <Link
-                  to="/opensource/magpie"
-                  className={styles.headerLink}
-                  title="apache/magpie (Contributor)"
-                >
-                  <img
-                    src="/img/apachelogo.png"
-                    alt="Apache"
-                    width="14"
-                    height="14"
-                    style={{ objectFit: 'contain', flexShrink: 0 }}
-                  />
-                  <span>apache/magpie</span>
-                  <span className={styles.contributorBadge}>Contributor</span>
-                  <ArrowRight size={13} />
-                </Link>
-
-                <Link
-                  to="/opensource/pyrit"
-                  className={styles.headerLink}
-                  title="microsoft/PyRIT (Contributor)"
-                >
-                  <img
-                    src="/img/mslogo.png"
-                    alt="Microsoft"
-                    width="14"
-                    height="14"
-                    style={{ objectFit: 'contain', flexShrink: 0 }}
-                  />
-                  <span>microsoft/PyRIT</span>
-                  <span className={styles.contributorBadge}>Contributor</span>
-                  <ArrowRight size={13} />
-                </Link>
-              </div>
-
-              {/* Row 3: dynavec, layer5io, palinode */}
-              <div className={styles.buttonRow}>
-                <Link
-                  to="/opensource/dynavec"
-                  className={styles.headerLink}
-                  title="dynavec (Contributor)"
-                  title="dynavec (Maintainer)"
-                >
-                  <Package size={14} style={{ color: '#22C55E' }} />
-                  <span>dynavec</span>
-                  <span className={styles.contributorBadge}>Contributor</span>
-                  <span className={styles.contributorBadge} style={{ background: 'rgba(255, 170, 0, 0.15)', color: '#FFB700', border: '1px solid rgba(255, 170, 0, 0.2)' }}>Maintainer</span>
-                  <ArrowRight size={13} />
-                </Link>
-
-                <Link
-                  to="/opensource/layer5io"
-                  className={styles.headerLink}
-                  title="layer5io (Contributor)"
-                >
-                  <img
-                    src="/img/layer5.png"
-                    alt="Layer5"
-                    width="14"
-                    height="14"
-                    style={{ objectFit: 'contain', flexShrink: 0 }}
-                  />
-                  <span>layer5io</span>
-                  <span className={styles.contributorBadge}>Contributor</span>
-                  <ArrowRight size={13} />
-                </Link>
-
-                <Link
-                  to="/opensource/palinode"
-                  className={styles.headerLink}
-                  title="palinode (Contributor)"
-                >
-                  <IconGithub size={13} style={{ color: '#A855F7' }} />
-                  <span>palinode</span>
-                  <span className={styles.contributorBadge}>Contributor</span>
-                  <ArrowRight size={13} />
-                </Link>
-              </div>
-
-              {/* Row 4: quater, sqlite & meshery extensions */}
-              <div className={styles.buttonRow}>
-                <Link
-                  to="/opensource/quater"
-                  className={styles.headerLink}
-                  title="quater (Contributor)"
-                >
-                  <IconGithub size={13} style={{ color: '#FAAD14' }} />
-                  <span>quater</span>
-                  <span className={styles.contributorBadge}>Contributor</span>
-                  <ArrowRight size={13} />
-                </Link>
-
-                <Link
-                  to="/opensource/sqlite-graph-memory"
-                  className={styles.headerLink}
-                  title="sqlite-graph-memory (Contributor)"
-                >
-                  <IconGithub size={13} style={{ color: '#EC4899' }} />
-                  <span>sqlite-graph-memory</span>
-                  <span className={styles.contributorBadge}>Contributor</span>
-                  <ArrowRight size={13} />
-                </Link>
-
-                <Link
-                  to="/opensource/meshery-extensions"
-                  className={styles.headerLink}
-                  title="meshery-extensions (Contributor)"
-                >
-                  <img
-                    src="/img/layer5.png"
-                    alt="Layer5 Meshery"
-                    width="14"
-                    height="14"
-                    style={{ objectFit: 'contain', flexShrink: 0 }}
-                  />
-                  <span>meshery-extensions</span>
-                  <span className={styles.contributorBadge}>Contributor</span>
-                  <ArrowRight size={13} />
-                </Link>
-              </div>
+            <div className={styles.statsBadgeRow}>
+              <span className={styles.statsBadge}>
+                <strong className={styles.highlightCount}>{counts.total || 87}+</strong> Total Merged Pull Requests
+              </span>
+              <Link to="/contribution" className={styles.viewAllContribLink}>
+                <span>View All Contributions</span>
+                <ArrowRight size={13} />
+              </Link>
             </div>
           </header>
 
+          {/* 2-Column Grid Box Cards */}
+          <div className={styles.grid}>
+            {OSS_PROJECTS.map((project) => {
+              const prCount = counts[project.id] || project.defaultPRCount;
+
+              return (
+                <div key={project.id} className={styles.card}>
+                  <div className={styles.cardTop}>
+                    <div className={styles.projectInfo}>
+                      <div className={styles.logoWrap}>
+                        {project.logoType === 'img' ? (
+                          <img src={project.logoSrc} alt="" className={styles.logoImg} />
+                        ) : (
+                          <project.icon size={18} className={styles.logoIcon} />
+                        )}
+                      </div>
+
+                      <div className={styles.titleArea}>
+                        <span className={styles.projectName}>{project.name}</span>
+                        <span className={styles.orgSubtitle}>{project.org}</span>
+                      </div>
+                    </div>
+
+                    <span className={`${styles.roleTag} ${styles['role_' + project.roleType]}`}>
+                      {project.role}
+                    </span>
+                  </div>
+
+                  <p className={styles.description}>{project.description}</p>
+
+                  <div className={styles.cardFooter}>
+                    <span className={styles.prBadge} title={`${prCount} Merged Pull Requests`}>
+                      <GitPullRequest size={12} className={styles.prBadgeIcon} />
+                      <span>{prCount} Merged {prCount === 1 ? 'PR' : 'PRs'}</span>
+                    </span>
+
+                    <div className={styles.actionButtons}>
+                      <a
+                        href={project.githubUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={styles.prLink}
+                        title="View merged pull requests on GitHub"
+                      >
+                        <span>PRs</span>
+                        <ArrowUpRight size={12} />
+                      </a>
+
+                      <Link to={project.deepDiveUrl} className={styles.deepDiveLink}>
+                        <span>Deep Dive</span>
+                        <ArrowRight size={12} />
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </main>
     </Layout>

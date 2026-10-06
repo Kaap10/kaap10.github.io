@@ -5,14 +5,14 @@
   align-items: center;
   min-height: 100vh;
   padding: 5.5rem 1.5rem 4rem;
-  background-color: var(--vg-bg, #121216);
+  background-color: var(--vg-bg, #000000);
   position: relative;
   overflow: hidden;
   box-sizing: border-box;
 }
 
 .contentWrapper {
-  max-width: var(--vg-content-max-width, 820px);
+  max-width: var(--vg-content-max-width, 1060px);
   width: 100%;
   position: relative;
   z-index: 1;
@@ -163,7 +163,7 @@
   gap: 0.45rem;
   padding: 0.65rem 1rem;
   border-radius: var(--vg-radius-sm, 6px);
-  background-color: var(--vg-surface, #222228);
+  background-color: var(--vg-surface, #0E0E14);
   border: 1px solid var(--vg-border, rgba(255, 255, 255, 0.08));
   color: var(--vg-text, #F5F5F7) !important;
   font-size: 0.86rem;
@@ -173,9 +173,10 @@
 }
 
 .heroLink:hover {
-  background-color: var(--vg-surface-strong, #2c2c34);
-  border-color: var(--vg-border-hover, rgba(255, 255, 255, 0.16));
+  background-color: var(--vg-surface-strong, #161620);
+  border-color: var(--vg-border-hover, rgba(255, 255, 255, 0.18));
   transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
 }
 
 .paletteHintRow {
@@ -185,7 +186,7 @@
   gap: 0.45rem;
   margin-top: 1.15rem;
   font-size: 0.88rem;
-  color: var(--vg-text-muted, #A6A6AC);
+  color: var(--vg-text-muted, #A0A0AA);
   cursor: pointer;
   user-select: none;
   transition: all var(--vg-transition-fast, 0.15s ease);
@@ -199,8 +200,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: var(--vg-surface, #222228);
-  border: 1px solid var(--vg-border, rgba(255, 255, 255, 0.14));
+  background: #0A0A0E;
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-bottom: 2px solid rgba(255, 255, 255, 0.2);
   border-radius: var(--vg-radius-sm, 5px);
   padding: 0.15rem 0.5rem;
@@ -208,167 +209,119 @@
   font-size: 0.76rem;
   font-weight: 700;
   color: var(--vg-accent, #FF4D4F);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
   transition: all var(--vg-transition-fast, 0.15s ease);
 }
 
 .paletteHintRow:hover .hintKbd {
-  border-color: rgba(255, 77, 79, 0.4);
-  background: var(--vg-surface-strong, #2c2c34);
+  border-color: rgba(255, 77, 79, 0.5);
+  background: #121218;
   transform: translateY(-1px);
 }
 
 /* ==========================================================================
-   Recent Work Section
+   GitHub Activity & Open Source Contributions Section
    ========================================================================== */
 
-.recentWorkSection {
-  margin-top: 1.5rem;
-  padding-top: 1.75rem;
+.githubSection {
+  margin-top: 2rem;
+  padding-top: 2rem;
   border-top: 1px solid var(--vg-border, rgba(255, 255, 255, 0.08));
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: 2.25rem;
   width: 100%;
-  max-width: 580px;
+  max-width: 100%;
   box-sizing: border-box;
 }
 
-.sectionHeader {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
+/* ==========================================================================
+   Typographic Footer Branding (Kap10 Luxury Editorial Display)
+   ========================================================================== */
 
-.sectionTitleWrap {
-  display: flex;
-  align-items: center;
-  gap: 0.55rem;
-}
-
-.sectionTitle {
-  font-size: 1.35rem;
-  font-weight: 700;
-  letter-spacing: -0.025em;
-  color: var(--vg-text, #F5F5F7);
-  margin: 0;
-}
-
-.sectionSubtitle {
-  font-size: 0.78rem;
-  font-family: var(--ifm-font-family-monospace, monospace);
-  color: var(--vg-text-subtle, #787880);
-}
-
-.recentWorkContainer {
-  display: flex;
-  flex-direction: column;
-  gap: 0.85rem;
-}
-
-.recentWorkCard {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1.25rem;
-  padding: 1.15rem 1.35rem;
-  background: var(--vg-bg-elevated, #18181d);
-  border: 1px solid var(--vg-border, rgba(255, 255, 255, 0.08));
-  border-radius: var(--vg-radius-md, 8px);
-  text-decoration: none !important;
-  color: inherit;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  position: relative;
-  overflow: hidden;
-}
-
-.recentWorkCard:hover {
-  background: var(--vg-surface, #222228);
-  border-color: var(--vg-border-hover, rgba(255, 255, 255, 0.16));
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px -6px rgba(0, 0, 0, 0.5);
-}
-
-.recentWorkLeft {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  min-width: 0;
-}
-
-.recentWorkIconWrap {
-  width: 38px;
-  height: 38px;
-  border-radius: var(--vg-radius-sm, 6px);
-  background: rgba(168, 85, 247, 0.12);
-  border: 1px solid rgba(168, 85, 247, 0.25);
-  color: #A855F7;
+.footerBranding {
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
+  padding: 4.5rem 0 2rem;
+  margin-top: 2.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  position: relative;
+  overflow: visible;
 }
 
-.recentWorkText {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  min-width: 0;
-}
-
-.recentWorkMeta {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-}
-
-.recentWorkBadge {
-  font-family: 'JetBrains Mono', SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 0.68rem;
-  font-weight: 600;
-  padding: 0.12rem 0.45rem;
-  border-radius: 4px;
-  background: rgba(168, 85, 247, 0.12);
-  border: 1px solid rgba(168, 85, 247, 0.28);
-  color: #C084FC;
-}
-
-.recentWorkDate {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.7rem;
-  color: var(--vg-text-subtle, #787880);
-}
-
-.recentWorkTitle {
-  font-size: 0.92rem;
-  font-weight: 500;
-  color: var(--vg-text, #F5F5F7);
-  line-height: 1.45;
-  margin: 0;
-}
-
-.recentWorkOrg {
-  color: #FFFFFF;
-  font-weight: 600;
-}
-
-.recentWorkAction {
+.wordmarkContainer {
   display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  color: var(--vg-text-muted, #A6A6AC);
-  font-size: 0.8rem;
-  font-weight: 500;
-  flex-shrink: 0;
-  transition: all 0.15s ease;
+  align-items: baseline;
+  justify-content: center;
+  font-family: 'Instrument Serif', 'Playfair Display', 'Newsreader', 'Times New Roman', 'Georgia', serif;
+  font-size: clamp(3.6rem, 13vw, 8.5rem);
+  font-weight: 700;
+  line-height: 0.9;
+  letter-spacing: -0.035em;
+  user-select: none;
+  cursor: default;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.recentWorkCard:hover .recentWorkAction {
-  color: var(--vg-text, #FFFFFF);
-  transform: translateX(2px);
+.wordmarkContainer:hover {
+  transform: scale(1.02);
+}
+
+.outlineText {
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.5);
+  transition: -webkit-text-stroke 0.2s ease;
+}
+
+.wordmarkContainer:hover .outlineText {
+  -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.8);
+}
+
+.solidTextWrap {
+  position: relative;
+  display: inline-flex;
+  align-items: baseline;
+}
+
+.solidText {
+  color: #FFFFFF;
+  font-weight: 700;
+  text-shadow: 0 0 35px rgba(255, 255, 255, 0.25);
+}
+
+.accentTriangle {
+  position: absolute;
+  top: 10%;
+  left: -2px;
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 14px solid #38BDF8;
+  transform: rotate(-30deg);
+  filter: drop-shadow(0 0 8px rgba(56, 189, 248, 0.8));
+  pointer-events: none;
+  transition: transform 0.3s ease;
+}
+
+.wordmarkContainer:hover .accentTriangle {
+  transform: rotate(-15deg) scale(1.1);
+}
+
+@media (max-width: 640px) {
+  .footerBranding {
+    padding: 3rem 0 1.5rem;
+    margin-top: 1.5rem;
+  }
+
+  .accentTriangle {
+    border-left-width: 5px;
+    border-right-width: 5px;
+    border-bottom-width: 9px;
+    top: 12%;
+  }
 }
 
 @media (max-width: 640px) {
