@@ -31,7 +31,8 @@ import {
   Moon,
   Database,
   Shield,
-  Cpu
+  Cpu,
+  Briefcase
 } from 'lucide-react';
 import styles from './commonComponents.module.css';
 
@@ -109,24 +110,100 @@ const COMMANDS = [
     path: '/',
   },
 
-  // 2. Open Source Showcases (All Merged Work)
+  // 2. Work Experience (Verified Timeline)
+  {
+    id: 'exp-timeline',
+    section: 'Experience',
+    title: 'Work Experience Timeline',
+    subtitle: 'PicadoLabs, Open Source, Dazu Services & Freelancing',
+    keywords: ['experience', 'work', 'career', 'jobs', 'roles', 'resume', 'timeline', 'employment'],
+    shortcut: 'G E',
+    icon: <Briefcase size={16} />,
+    path: '/portfolio#experience',
+  },
+  {
+    id: 'exp-picadolabs',
+    section: 'Experience',
+    title: 'Building @PicadoLabs: Founder & Maintainer',
+    subtitle: 'July 2026 – Present · 5.3k+ Downloads, 37+ Contributors, 4 Core Systems',
+    keywords: ['picadolabs', 'founder', 'maintainer', 'ai', 'agents', 'experience', 'build-with-ai', 'router', 'agentbench', 'terminal agent'],
+    icon: <Globe size={16} />,
+    path: '/portfolio#experience-picadolabs',
+  },
+  {
+    id: 'exp-opensource',
+    section: 'Experience',
+    title: 'Open Source (Contributor & Collaborator)',
+    subtitle: 'Aug 2026 – Present · Apache Magpie (31 PRs), PyRIT (21 PRs), DynaVec (21 PRs)',
+    keywords: ['opensource', 'open source', 'contributor', 'collaborator', 'apache', 'magpie', 'microsoft', 'pyrit', 'dynavec', 'experience', '138 prs'],
+    icon: <GitPullRequest size={16} />,
+    path: '/portfolio#experience-opensource',
+  },
+  {
+    id: 'exp-dazu',
+    section: 'Experience',
+    title: 'Dazu Services (Startup): Full Stack Developer Intern',
+    subtitle: 'Aug 2025 – Oct 2025 · React, TypeScript, Node.js, Supabase, Docker CI/CD',
+    keywords: ['dazu', 'dazu services', 'intern', 'full stack', 'developer', 'startup', 'react', 'typescript', 'node.js', 'supabase', 'docker', 'latency'],
+    icon: <Briefcase size={16} />,
+    path: '/portfolio#experience-dazu',
+  },
+  {
+    id: 'exp-freelancing',
+    section: 'Experience',
+    title: 'Freelancing: Delivered Website to Startup',
+    subtitle: 'March 2025 – April 2025 · Production platform delivery ($48 contract) · Next.js & Tailwind CSS',
+    keywords: ['freelance', 'freelancing', 'client', 'startup', 'contract', 'delivered', 'next.js', 'tailwind', 'experience'],
+    icon: <Code2 size={16} />,
+    path: '/portfolio#experience-freelancing',
+  },
+
+  // 3. Open Source Showcases (All Merged Work)
+  {
+    id: 'oss-feed',
+    section: 'Open Source',
+    title: 'Open Source Hub: 138+ Merged Pull Requests',
+    subtitle: 'Full interactive feed across 31 repositories (Apache, Microsoft, DynaVec, PicadoLabs)',
+    keywords: ['opensource', 'open source', 'prs', 'merged', 'github', 'feed', '138 prs', 'contributions'],
+    shortcut: 'G O',
+    icon: <GitPullRequest size={16} />,
+    path: '/opensource',
+  },
   {
     id: 'oss-magpie',
     section: 'Open Source',
-    title: 'Apache Magpie: Universal Agent Harnesses',
-    subtitle: 'RFC-AI-0004 standard, Copilot CLI, Aider, Goose & agent-iso sandbox',
-    keywords: ['apache', 'magpie', 'copilot', 'aider', 'goose', 'mcp', 'hitl', 'agent', 'pr 1287', 'pr 1286', 'pr 1217'],
+    title: 'Apache Magpie: 31 Merged Pull Requests',
+    subtitle: 'Agentic triage, RFC-AI-0004 standard, Copilot CLI, Aider, Goose & agent-iso sandbox',
+    keywords: ['apache', 'magpie', 'copilot', 'aider', 'goose', 'mcp', 'hitl', 'agent', '31 prs', 'pr 1887', 'pr 1891', 'pr 1855'],
     icon: <Shield size={16} />,
     path: '/opensource/magpie',
   },
   {
     id: 'oss-pyrit',
     section: 'Open Source',
-    title: 'Microsoft PyRIT: GCG Adversarial Pipeline',
-    subtitle: 'Dynamic schedule machine, L2 candidate proposer & prompt VRAM cleanup',
-    keywords: ['microsoft', 'pyrit', 'gcg', 'jailbreak', 'red team', 'vram', 'torch', 'pr 2720', 'pr 2671', 'pr 2700'],
+    title: 'Microsoft PyRIT: 21 Merged Pull Requests',
+    subtitle: 'AI Red Teaming, GCG Adversarial Pipeline, Path Traversal, XXE & SSTI mitigations',
+    keywords: ['microsoft', 'pyrit', 'gcg', 'jailbreak', 'red team', 'vram', 'torch', '21 prs', 'pr 3488', 'pr 3486', 'pr 3541'],
     icon: <Zap size={16} />,
     path: '/opensource/pyrit',
+  },
+  {
+    id: 'oss-dynavec',
+    section: 'Open Source',
+    title: 'Dynavec (Collaborator): 21 Merged Pull Requests',
+    subtitle: 'Serverless hybrid vector DB, ReAct agent primitives & real-time async streaming',
+    keywords: ['dynavec', 'vector', 'database', 'collaborator', 'fastmcp', 'dynamodb', 's3', '21 prs', 'pr 319', 'pr 328', 'pr 329'],
+    icon: <Zap size={16} />,
+    path: '/opensource/dynavec',
+  },
+  {
+    id: 'oss-picadolabs',
+    section: 'Open Source',
+    title: 'PicadoLabs: 5.3k+ Downloads & 37+ Contributors',
+    subtitle: 'Autonomous AI developer infrastructure org (Owner & Maintainer)',
+    keywords: ['picadolabs', 'org', 'maintainer', 'tools', 'developer tools', '5.3k downloads', '37 contributors', 'owner'],
+    icon: <Globe size={16} />,
+    path: '/opensource/picadolabs',
   },
   {
     id: 'oss-sqlite-graph',
@@ -156,15 +233,6 @@ const COMMANDS = [
     path: '/opensource/quater',
   },
   {
-    id: 'oss-dynavec',
-    section: 'Open Source',
-    title: 'Dynavec: Vector DB & SPFresh Hot Index',
-    subtitle: 'FastMCP stdio server, 2-Means RAM index, SHA-256 dedup & S3 cold storage',
-    keywords: ['dynavec', 'vector', 'database', 'fastmcp', 'dynamodb', 's3', 'spfresh', 'pr 165', 'pr 170', 'pr 120'],
-    icon: <Zap size={16} />,
-    path: '/opensource/dynavec',
-  },
-  {
     id: 'oss-layer5io',
     section: 'Open Source',
     title: 'Layer5 Meshery: Design Engine & Catalog',
@@ -177,19 +245,10 @@ const COMMANDS = [
     id: 'oss-bwa',
     section: 'Open Source',
     title: 'build-with-ai: Zero-API-Key Coding CLI',
-    subtitle: 'Autonomous AI terminal coding agent, multi-provider model routing',
+    subtitle: 'Autonomous AI terminal coding agent, multi-provider model routing (1.2k+ downloads)',
     keywords: ['build-with-ai', 'bwa', 'cli', 'zero-api', 'npm', 'prompt engineering', 'coding agent'],
     icon: <Sparkles size={16} />,
     path: '/build-with-ai',
-  },
-  {
-    id: 'oss-picadolabs',
-    section: 'Open Source',
-    title: 'PicadoLabs: Developer Tooling Organization',
-    subtitle: 'Open-source infrastructure tooling (Owner and Lead Maintainer)',
-    keywords: ['picadolabs', 'org', 'maintainer', 'tools', 'developer tools'],
-    icon: <Globe size={16} />,
-    path: '/opensource/picadolabs',
   },
 
   // 3. Featured Projects
@@ -543,6 +602,17 @@ function scoreCommand(cmd, query) {
   if (section.startsWith(q)) return 60;
   if (section.includes(q)) return 40;
 
+  // Multi-term token matching (e.g. "dazu intern", "react docker", "magpie pr", "work experience")
+  const tokens = q.split(/\s+/).filter(Boolean);
+  if (tokens.length > 1) {
+    const fullHaystack = `${title} ${subtitle} ${section} ${keywords.join(' ')}`;
+    if (tokens.every((t) => fullHaystack.includes(t))) {
+      let score = 220;
+      if (tokens.every((t) => title.includes(t))) score += 120;
+      return score;
+    }
+  }
+
   // Initialisms (e.g., "mcp", "dsa", "pr", "bwa")
   const acronym = words.map((w) => w[0]).join('');
   if (acronym.includes(q)) return 110;
@@ -550,7 +620,7 @@ function scoreCommand(cmd, query) {
   return 0;
 }
 
-const CATEGORY_CHIPS = ['All', 'Navigation', 'Open Source', 'Projects', 'Workspace', 'Actions'];
+const CATEGORY_CHIPS = ['All', 'Experience', 'Navigation', 'Open Source', 'Projects', 'Workspace', 'Actions'];
 
 export default function GlobalCommandPalette() {
   const [mounted, setMounted] = useState(false);
@@ -581,10 +651,32 @@ export default function GlobalCommandPalette() {
       window.open(path, path.startsWith('mailto:') ? '_self' : '_blank');
     } else {
       try {
+        const [targetPath, hash] = path.split('#');
+        const currentPath = typeof window !== 'undefined' ? window.location.pathname : '';
+
+        // If navigating to an anchor on the same page, smooth scroll immediately
+        if (hash && (currentPath === targetPath || (currentPath === '/' && targetPath === '/portfolio'))) {
+          const el = document.getElementById(hash);
+          if (el) {
+            el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            return;
+          }
+        }
+
         if (history && typeof history.push === 'function') {
           history.push(path);
         } else {
           window.location.href = path;
+        }
+
+        // Handle anchor scroll after route transition
+        if (hash) {
+          setTimeout(() => {
+            const el = document.getElementById(hash);
+            if (el) {
+              el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+          }, 150);
         }
       } catch (_) {
         window.location.href = path;
@@ -739,7 +831,7 @@ export default function GlobalCommandPalette() {
             ref={inputRef}
             type="text"
             className={styles.paletteInput}
-            placeholder="Type a command, project name, or hit Tab to filter..."
+            placeholder="Search experience, open-source PRs, projects, or hit Tab..."
             value={query}
             onChange={(e) => {
               setQuery(e.target.value);

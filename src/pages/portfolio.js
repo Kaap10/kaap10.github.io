@@ -13,8 +13,7 @@ import {
 } from 'lucide-react';
 import styles from './portfolio.module.css';
 import ParticleCanvas from '@site/src/components/ParticleCanvas';
-import PicadoLabsShowcase from '@site/src/components/PicadoLabsShowcase';
-import ContributionsFeed from '@site/src/components/ContributionsFeed';
+import ExperienceSection from '@site/src/components/ExperienceSection';
 
 export default function PortfolioPage() {
   return (
@@ -45,24 +44,35 @@ export default function PortfolioPage() {
 
             {/* Action Buttons */}
             <div className={styles.heroActionsContainer}>
+              {/* Row 1: Picado Labs | Open Source */}
               <div className={styles.heroActionRow}>
+                <Link to="/opensource/picadolabs" className={styles.picadoHeroLink}>
+                  <div className={styles.picadoLogoWrap}>
+                    <img 
+                      src="/img/picadolabs.png" 
+                      alt="" 
+                      width={17} 
+                      height={17} 
+                      style={{ borderRadius: 3, objectFit: 'contain' }} 
+                    />
+                  </div>
+                  <span className={styles.picadoText}>Picado Labs</span>
+                  <span className={styles.picadoBadge}>5.3k+</span>
+                  <ArrowRight size={14} className={styles.picadoArrow} />
+                </Link>
+
                 <Link to="/opensource" className={styles.primaryHeroLink}>
                   <GitPullRequest size={15} />
                   <span>Open Source</span>
                   <ArrowRight size={15} />
                 </Link>
+              </div>
 
+              {/* Row 2: Projects | Blogs | Terminal */}
+              <div className={styles.heroActionRow}>
                 <Link to="/projects" className={styles.heroLink}>
                   <Code2 size={15} style={{ color: '#38BDF8' }} />
                   <span>Projects</span>
-                  <ArrowRight size={14} />
-                </Link>
-              </div>
-
-              <div className={styles.heroActionRow}>
-                <Link to="/" className={styles.heroLink}>
-                  <Terminal size={15} style={{ color: '#22C55E' }} />
-                  <span>Terminal</span>
                   <ArrowRight size={14} />
                 </Link>
 
@@ -72,9 +82,18 @@ export default function PortfolioPage() {
                   <ArrowRight size={14} />
                 </Link>
 
+                <Link to="/" className={styles.heroLink}>
+                  <Terminal size={15} style={{ color: '#22C55E' }} />
+                  <span>Terminal</span>
+                  <ArrowRight size={14} />
+                </Link>
+              </div>
+
+              {/* Row 3: DevworkSpace */}
+              <div className={styles.heroActionRow}>
                 <Link to="/workspace" className={styles.heroLink}>
                   <Layers size={15} style={{ color: 'var(--vg-accent, #FF4D4F)' }} />
-                  <span>DevWorkspace</span>
+                  <span>DevworkSpace</span>
                   <ArrowRight size={14} />
                 </Link>
               </div>
@@ -95,10 +114,9 @@ export default function PortfolioPage() {
             </div>
           </section>
 
-          {/* PicadoLabs Core Ecosystem Showcase & Contributions Feed */}
+          {/* Work Experience Section */}
           <section className={styles.githubSection}>
-            <PicadoLabsShowcase />
-            <ContributionsFeed limit={5} showViewAll={true} />
+            <ExperienceSection />
           </section>
 
           {/* Typographic Footer Branding */}

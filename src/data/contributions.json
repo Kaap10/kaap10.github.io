@@ -1,15 +1,631 @@
 {
-  "total": 98,
+  "total": 158,
   "items": [
+    {
+      "id": 6148190705,
+      "number": 1955,
+      "title": "fix(sandbox-lint): exclude vetted-op from sandbox while keeping in ask (#1952)",
+      "repo": "apache/magpie",
+      "status": "closed",
+      "url": "https://github.com/apache/magpie/pull/1955",
+      "created_at": "2026-11-01",
+      "closed_at": "2026-11-01",
+      "comments": 1
+    },
+    {
+      "id": 6147639891,
+      "number": 1954,
+      "title": "feat(pr-management): add interactive review findings pane UI mod (part 2 of #1887)",
+      "repo": "apache/magpie",
+      "status": "open",
+      "url": "https://github.com/apache/magpie/pull/1954",
+      "created_at": "2026-11-01",
+      "closed_at": null,
+      "comments": 4
+    },
+    {
+      "id": 6144993157,
+      "number": 3774,
+      "title": "FIX: Reject concurrent SDK scenario runs and make attempt accounting atomic (#3748)",
+      "repo": "microsoft/PyRIT",
+      "status": "open",
+      "url": "https://github.com/microsoft/PyRIT/pull/3774",
+      "created_at": "2026-11-01",
+      "closed_at": null,
+      "comments": 1
+    },
+    {
+      "id": 6143477688,
+      "number": 3768,
+      "title": "FIX: Reject mismatched normalizer templates in RoundRobinTarget",
+      "repo": "microsoft/PyRIT",
+      "status": "open",
+      "url": "https://github.com/microsoft/PyRIT/pull/3768",
+      "created_at": "2026-11-01",
+      "closed_at": null,
+      "comments": 3
+    },
+    {
+      "id": 6136591314,
+      "number": 1920,
+      "title": "feat(pr-management): add review findings data model and parser (part of #1887)",
+      "repo": "apache/magpie",
+      "status": "merged",
+      "url": "https://github.com/apache/magpie/pull/1920",
+      "created_at": "2026-10-31",
+      "closed_at": "2026-11-01",
+      "comments": 2
+    },
+    {
+      "id": 6132405807,
+      "number": 3693,
+      "title": "FIX: Extract Ruby gems required via subpaths or with parentheses in PackageHallucinationScorer (#3692)",
+      "repo": "microsoft/PyRIT",
+      "status": "open",
+      "url": "https://github.com/microsoft/PyRIT/pull/3693",
+      "created_at": "2026-10-31",
+      "closed_at": null,
+      "comments": 1
+    },
+    {
+      "id": 6131853091,
+      "number": 209,
+      "title": "Update README.md",
+      "repo": "PicadoLabs/build-with-ai",
+      "status": "closed",
+      "url": "https://github.com/PicadoLabs/build-with-ai/pull/209",
+      "created_at": "2026-10-31",
+      "closed_at": "2026-10-31",
+      "comments": 0
+    },
+    {
+      "id": 5957573813,
+      "number": 5339,
+      "title": "[Bug] Specify explicit UTF-8 encoding for config file operations in CLI",
+      "repo": "vllm-project/semantic-router",
+      "status": "merged",
+      "url": "https://github.com/vllm-project/semantic-router/pull/5339",
+      "created_at": "2026-10-21",
+      "closed_at": "2026-10-31",
+      "comments": 31
+    },
+    {
+      "id": 6121931144,
+      "number": 5650,
+      "title": "[Bug] Reject duplicate and colliding model entries when name is omitted in model runtime",
+      "repo": "vllm-project/semantic-router",
+      "status": "open",
+      "url": "https://github.com/vllm-project/semantic-router/pull/5650",
+      "created_at": "2026-10-30",
+      "closed_at": null,
+      "comments": 1
+    },
+    {
+      "id": 6072759166,
+      "number": 1892,
+      "title": "feat(hook-manager): add step-hook-manager-shim eval suite for Step P.3b (part of #1891)",
+      "repo": "apache/magpie",
+      "status": "merged",
+      "url": "https://github.com/apache/magpie/pull/1892",
+      "created_at": "2026-10-28",
+      "closed_at": "2026-10-30",
+      "comments": 0
+    },
+    {
+      "id": 6098183737,
+      "number": 6011,
+      "title": "[Ops][addmv] Validate self shape and dimension in torch.addmv",
+      "repo": "google-pytorch/torch_tpu",
+      "status": "open",
+      "url": "https://github.com/google-pytorch/torch_tpu/pull/6011",
+      "created_at": "2026-10-29",
+      "closed_at": null,
+      "comments": 2
+    },
+    {
+      "id": 6054440730,
+      "number": 1856,
+      "title": "test(security): use claude-code/testing tool noun in public-surface-scrub tests (#1855)",
+      "repo": "apache/magpie",
+      "status": "merged",
+      "url": "https://github.com/apache/magpie/pull/1856",
+      "created_at": "2026-10-27",
+      "closed_at": "2026-10-27",
+      "comments": 0
+    },
+    {
+      "id": 6033724180,
+      "number": 1838,
+      "title": "feat(hook-manager): register managers that need no install fix (#1825)",
+      "repo": "apache/magpie",
+      "status": "merged",
+      "url": "https://github.com/apache/magpie/pull/1838",
+      "created_at": "2026-10-26",
+      "closed_at": "2026-10-27",
+      "comments": 3
+    },
+    {
+      "id": 6032491318,
+      "number": 3541,
+      "title": "FIX: Detect multi-engine RCE gadgets in SSTIOutputScorer",
+      "repo": "microsoft/PyRIT",
+      "status": "open",
+      "url": "https://github.com/microsoft/PyRIT/pull/3541",
+      "created_at": "2026-10-26",
+      "closed_at": null,
+      "comments": 1
+    },
+    {
+      "id": 5998048518,
+      "number": 3486,
+      "title": "FIX: Detect direct external DTDs and netdoc/gopher schemes in XXEOutputScorer",
+      "repo": "microsoft/PyRIT",
+      "status": "merged",
+      "url": "https://github.com/microsoft/PyRIT/pull/3486",
+      "created_at": "2026-10-23",
+      "closed_at": "2026-10-26",
+      "comments": 1
+    },
+    {
+      "id": 5883356939,
+      "number": 1676,
+      "title": "feat(security): add deterministic public-surface scrub Claude Code mod (part of #1497)",
+      "repo": "apache/magpie",
+      "status": "merged",
+      "url": "https://github.com/apache/magpie/pull/1676",
+      "created_at": "2026-10-16",
+      "closed_at": "2026-10-26",
+      "comments": 11
+    },
+    {
+      "id": 5998252779,
+      "number": 3488,
+      "title": "FIX: Detect canonical Windows targets win.ini and web.config in PathTraversalOutputScorer",
+      "repo": "microsoft/PyRIT",
+      "status": "merged",
+      "url": "https://github.com/microsoft/PyRIT/pull/3488",
+      "created_at": "2026-10-23",
+      "closed_at": "2026-10-25",
+      "comments": 0
+    },
+    {
+      "id": 5997894234,
+      "number": 3484,
+      "title": "FIX: Detect modern LLM chat template tokens in StaticPromptInjectionScorer",
+      "repo": "microsoft/PyRIT",
+      "status": "merged",
+      "url": "https://github.com/microsoft/PyRIT/pull/3484",
+      "created_at": "2026-10-23",
+      "closed_at": "2026-10-25",
+      "comments": 0
+    },
+    {
+      "id": 5945000094,
+      "number": 3402,
+      "title": "FEAT: Add configurable safe parameter to UrlConverter",
+      "repo": "microsoft/PyRIT",
+      "status": "merged",
+      "url": "https://github.com/microsoft/PyRIT/pull/3402",
+      "created_at": "2026-10-20",
+      "closed_at": "2026-10-25",
+      "comments": 0
+    },
+    {
+      "id": 5944278415,
+      "number": 3400,
+      "title": "FEAT: Expand XSSOutputScorer to detect SVG and JavaScript data URIs",
+      "repo": "microsoft/PyRIT",
+      "status": "merged",
+      "url": "https://github.com/microsoft/PyRIT/pull/3400",
+      "created_at": "2026-10-20",
+      "closed_at": "2026-10-25",
+      "comments": 0
+    },
+    {
+      "id": 6010004743,
+      "number": 1776,
+      "title": "fix(setup): hold doctor probe 3 and 5 outputs in memory and add tests",
+      "repo": "apache/magpie",
+      "status": "merged",
+      "url": "https://github.com/apache/magpie/pull/1776",
+      "created_at": "2026-10-24",
+      "closed_at": "2026-10-24",
+      "comments": 2
+    },
+    {
+      "id": 5976532497,
+      "number": 439,
+      "title": "feat: allow turning lint rules off in config",
+      "repo": "pangular-inspector/devtools",
+      "status": "closed",
+      "url": "https://github.com/pangular-inspector/devtools/pull/439",
+      "created_at": "2026-10-22",
+      "closed_at": "2026-10-24",
+      "comments": 6
+    },
+    {
+      "id": 6000916820,
+      "number": 5778,
+      "title": "[Ops][dot] Validate input vector length equality in torch.dot",
+      "repo": "google-pytorch/torch_tpu",
+      "status": "open",
+      "url": "https://github.com/google-pytorch/torch_tpu/pull/5778",
+      "created_at": "2026-10-23",
+      "closed_at": null,
+      "comments": 3
+    },
+    {
+      "id": 5994031952,
+      "number": 1767,
+      "title": "fix(dev): support stdin '-' and normalize path separators in ci-pytest-batches.py",
+      "repo": "apache/magpie",
+      "status": "merged",
+      "url": "https://github.com/apache/magpie/pull/1767",
+      "created_at": "2026-10-23",
+      "closed_at": "2026-10-23",
+      "comments": 2
+    },
+    {
+      "id": 5962549092,
+      "number": 1757,
+      "title": "fix(agent-guard): discover contributed skill guards under plugins/*/skills/*/guards",
+      "repo": "apache/magpie",
+      "status": "merged",
+      "url": "https://github.com/apache/magpie/pull/1757",
+      "created_at": "2026-10-21",
+      "closed_at": "2026-10-22",
+      "comments": 1
+    },
+    {
+      "id": 5943392156,
+      "number": 1742,
+      "title": "fix(vulnogram): exit cleanly without a TTY and point to --pmc (#1733)",
+      "repo": "apache/magpie",
+      "status": "merged",
+      "url": "https://github.com/apache/magpie/pull/1742",
+      "created_at": "2026-10-20",
+      "closed_at": "2026-10-20",
+      "comments": 0
+    },
+    {
+      "id": 5938038543,
+      "number": 132,
+      "title": "ci: optimize pipeline and standardize contributor workflow",
+      "repo": "PicadoLabs/build-with-ai",
+      "status": "merged",
+      "url": "https://github.com/PicadoLabs/build-with-ai/pull/132",
+      "created_at": "2026-10-20",
+      "closed_at": "2026-10-20",
+      "comments": 0
+    },
+    {
+      "id": 5924024562,
+      "number": 33,
+      "title": "fix(mcp): resolve brain_ask sibling and propagate non-zero exit in test mode (closes #24)",
+      "repo": "tonydzi/sqlite-graph-memory",
+      "status": "merged",
+      "url": "https://github.com/tonydzi/sqlite-graph-memory/pull/33",
+      "created_at": "2026-10-19",
+      "closed_at": "2026-10-20",
+      "comments": 4
+    },
+    {
+      "id": 5906115994,
+      "number": 3308,
+      "title": "FEAT: Expand ShellCommandOutputScorer to modern shells and Azure exfiltration",
+      "repo": "microsoft/PyRIT",
+      "status": "merged",
+      "url": "https://github.com/microsoft/PyRIT/pull/3308",
+      "created_at": "2026-10-18",
+      "closed_at": "2026-10-20",
+      "comments": 0
+    },
+    {
+      "id": 5897787507,
+      "number": 3286,
+      "title": "FEAT: Detect OpenAI, Anthropic, and Hugging Face API keys in CredentialLeakScorer",
+      "repo": "microsoft/PyRIT",
+      "status": "merged",
+      "url": "https://github.com/microsoft/PyRIT/pull/3286",
+      "created_at": "2026-10-17",
+      "closed_at": "2026-10-20",
+      "comments": 1
+    },
+    {
+      "id": 5923886511,
+      "number": 32,
+      "title": "fix(mcp): return -32600 Invalid Request on non-object JSON payloads (closes #22)",
+      "repo": "tonydzi/sqlite-graph-memory",
+      "status": "merged",
+      "url": "https://github.com/tonydzi/sqlite-graph-memory/pull/32",
+      "created_at": "2026-10-19",
+      "closed_at": "2026-10-19",
+      "comments": 2
+    },
+    {
+      "id": 5917164664,
+      "number": 1702,
+      "title": "feat(setup): first-run welcome guide for the contributor-growth family (#1658)",
+      "repo": "apache/magpie",
+      "status": "merged",
+      "url": "https://github.com/apache/magpie/pull/1702",
+      "created_at": "2026-10-19",
+      "closed_at": "2026-10-19",
+      "comments": 1
+    },
+    {
+      "id": 5907520418,
+      "number": 4356,
+      "title": "fix(agent-hypervisor): prevent path traversal and prefix collision in session isolation",
+      "repo": "microsoft/agent-governance-toolkit",
+      "status": "open",
+      "url": "https://github.com/microsoft/agent-governance-toolkit/pull/4356",
+      "created_at": "2026-10-18",
+      "closed_at": null,
+      "comments": 8
+    },
+    {
+      "id": 5878741772,
+      "number": 3260,
+      "title": "FIX: Support user:password credentials and IPv4 destinations in OpenRedirectOutputScorer (#3259)",
+      "repo": "microsoft/PyRIT",
+      "status": "merged",
+      "url": "https://github.com/microsoft/PyRIT/pull/3260",
+      "created_at": "2026-10-16",
+      "closed_at": "2026-10-18",
+      "comments": 2
+    },
+    {
+      "id": 5878584977,
+      "number": 3258,
+      "title": "FIX: Handle CMYK images when output format is PNG in image converters (#3257)",
+      "repo": "microsoft/PyRIT",
+      "status": "merged",
+      "url": "https://github.com/microsoft/PyRIT/pull/3258",
+      "created_at": "2026-10-16",
+      "closed_at": "2026-10-17",
+      "comments": 1
+    },
+    {
+      "id": 5881176353,
+      "number": 1669,
+      "title": "feat(setup): first-run welcome guide for the utilities family (#1663)",
+      "repo": "apache/magpie",
+      "status": "merged",
+      "url": "https://github.com/apache/magpie/pull/1669",
+      "created_at": "2026-10-16",
+      "closed_at": "2026-10-16",
+      "comments": 2
+    },
+    {
+      "id": 5879769347,
+      "number": 1667,
+      "title": "feat(utilities): add zero-token /magpie-skills Claude Code mod command (part of #1497)",
+      "repo": "apache/magpie",
+      "status": "merged",
+      "url": "https://github.com/apache/magpie/pull/1667",
+      "created_at": "2026-10-16",
+      "closed_at": "2026-10-16",
+      "comments": 1
+    },
+    {
+      "id": 5860743333,
+      "number": 3236,
+      "title": "FIX: Detect GitHub fine-grained personal access tokens in CredentialLeakScorer (#3235)",
+      "repo": "microsoft/PyRIT",
+      "status": "merged",
+      "url": "https://github.com/microsoft/PyRIT/pull/3236",
+      "created_at": "2026-10-15",
+      "closed_at": "2026-10-16",
+      "comments": 1
+    },
+    {
+      "id": 5859679923,
+      "number": 3234,
+      "title": "FIX: Detect 127.0.0.0/8 loopback subnet and abbreviated IPv4 in SSRFOutputScorer (#3233)",
+      "repo": "microsoft/PyRIT",
+      "status": "merged",
+      "url": "https://github.com/microsoft/PyRIT/pull/3234",
+      "created_at": "2026-10-15",
+      "closed_at": "2026-10-16",
+      "comments": 1
+    },
+    {
+      "id": 5808687413,
+      "number": 1601,
+      "title": "feat(setup): add zero-token /magpie-status Claude Code mod command (part of #1497)",
+      "repo": "apache/magpie",
+      "status": "merged",
+      "url": "https://github.com/apache/magpie/pull/1601",
+      "created_at": "2026-10-12",
+      "closed_at": "2026-10-16",
+      "comments": 1
+    },
+    {
+      "id": 5858750224,
+      "number": 3230,
+      "title": "FIX: Detect inline, hash, and block comment bypasses in SQLInjectionOutputScorer (#3204)",
+      "repo": "microsoft/PyRIT",
+      "status": "merged",
+      "url": "https://github.com/microsoft/PyRIT/pull/3230",
+      "created_at": "2026-10-15",
+      "closed_at": "2026-10-15",
+      "comments": 0
+    },
     {
       "id": 5723354012,
       "number": 3008,
-      "title": "FIX: Calculate accurate UTF-8 byte length for content-length in HTTPTarget",
+      "title": "FIX: Strip hop-by-hop framing headers (Transfer-Encoding & Content-Length) in HTTPTarget (#3202)",
       "repo": "microsoft/PyRIT",
-      "status": "open",
+      "status": "merged",
       "url": "https://github.com/microsoft/PyRIT/pull/3008",
       "created_at": "2026-10-06",
-      "closed_at": null,
+      "closed_at": "2026-10-15",
+      "comments": 7
+    },
+    {
+      "id": 5813093171,
+      "number": 377,
+      "title": "feat(mcp): trim tool and resource descriptions under 600 characters",
+      "repo": "pangular-inspector/devtools",
+      "status": "closed",
+      "url": "https://github.com/pangular-inspector/devtools/pull/377",
+      "created_at": "2026-10-12",
+      "closed_at": "2026-10-13",
+      "comments": 3
+    },
+    {
+      "id": 5740473233,
+      "number": 338,
+      "title": "feat(dynaflow): add per-node retry policy, error fallback edges & state resumability",
+      "repo": "codeforstartups/dynavec",
+      "status": "merged",
+      "url": "https://github.com/codeforstartups/dynavec/pull/338",
+      "created_at": "2026-10-07",
+      "closed_at": "2026-10-13",
+      "comments": 1
+    },
+    {
+      "id": 5815403926,
+      "number": 4,
+      "title": "fix(scanner): preserve default imports when mixed with type specifiers (fixes #3)",
+      "repo": "santoshyadavdev/monorepo-doctor",
+      "status": "merged",
+      "url": "https://github.com/santoshyadavdev/monorepo-doctor/pull/4",
+      "created_at": "2026-10-12",
+      "closed_at": "2026-10-12",
+      "comments": 3
+    },
+    {
+      "id": 5809938033,
+      "number": 365,
+      "title": "feat(mcp): add clear-recordings agent tool",
+      "repo": "pangular-inspector/devtools",
+      "status": "merged",
+      "url": "https://github.com/pangular-inspector/devtools/pull/365",
+      "created_at": "2026-10-12",
+      "closed_at": "2026-10-12",
+      "comments": 4
+    },
+    {
+      "id": 5742841045,
+      "number": 1552,
+      "title": "feat(setup): add zero-token setup drift check Claude Code mod (part of #1497)",
+      "repo": "apache/magpie",
+      "status": "merged",
+      "url": "https://github.com/apache/magpie/pull/1552",
+      "created_at": "2026-10-07",
+      "closed_at": "2026-10-11",
+      "comments": 8
+    },
+    {
+      "id": 5756828733,
+      "number": 36,
+      "title": "docs: update README with SDKs, Pareto benchmark suite, and observability",
+      "repo": "PicadoLabs/ai-model-router",
+      "status": "merged",
+      "url": "https://github.com/PicadoLabs/ai-model-router/pull/36",
+      "created_at": "2026-10-08",
+      "closed_at": "2026-10-08",
+      "comments": 0
+    },
+    {
+      "id": 5756781356,
+      "number": 35,
+      "title": "feat(sdk): publish lightweight Python & TypeScript SDKs for drop-in routing (#10)",
+      "repo": "PicadoLabs/ai-model-router",
+      "status": "merged",
+      "url": "https://github.com/PicadoLabs/ai-model-router/pull/35",
+      "created_at": "2026-10-08",
+      "closed_at": "2026-10-08",
+      "comments": 0
+    },
+    {
+      "id": 5756675438,
+      "number": 34,
+      "title": "feat(benchmark): automated routing benchmark suite and cost-accuracy Pareto evaluator (#20)",
+      "repo": "PicadoLabs/ai-model-router",
+      "status": "merged",
+      "url": "https://github.com/PicadoLabs/ai-model-router/pull/34",
+      "created_at": "2026-10-08",
+      "closed_at": "2026-10-08",
+      "comments": 0
+    },
+    {
+      "id": 5756430786,
+      "number": 33,
+      "title": "feat(observability): export OpenTelemetry distributed traces and Prometheus metrics (#19)",
+      "repo": "PicadoLabs/ai-model-router",
+      "status": "merged",
+      "url": "https://github.com/PicadoLabs/ai-model-router/pull/33",
+      "created_at": "2026-10-08",
+      "closed_at": "2026-10-08",
+      "comments": 0
+    },
+    {
+      "id": 5756319816,
+      "number": 32,
+      "title": "feat(ml): implement Thompson Sampling RL to auto-tune model weights from feedback",
+      "repo": "PicadoLabs/ai-model-router",
+      "status": "merged",
+      "url": "https://github.com/PicadoLabs/ai-model-router/pull/32",
+      "created_at": "2026-10-08",
+      "closed_at": "2026-10-08",
+      "comments": 0
+    },
+    {
+      "id": 5756226166,
+      "number": 31,
+      "title": "feat(analyzer): add lightweight ONNX semantic embedding classifier for ambiguous prompts",
+      "repo": "PicadoLabs/ai-model-router",
+      "status": "merged",
+      "url": "https://github.com/PicadoLabs/ai-model-router/pull/31",
+      "created_at": "2026-10-08",
+      "closed_at": "2026-10-08",
+      "comments": 0
+    },
+    {
+      "id": 5756108438,
+      "number": 30,
+      "title": "feat(auth): add API key authentication, multi-tenant workspace isolation, and rate limiter",
+      "repo": "PicadoLabs/ai-model-router",
+      "status": "merged",
+      "url": "https://github.com/PicadoLabs/ai-model-router/pull/30",
+      "created_at": "2026-10-08",
+      "closed_at": "2026-10-08",
+      "comments": 0
+    },
+    {
+      "id": 5739583551,
+      "number": 1550,
+      "title": "docs(contributor-growth): vendor-neutral skill descriptions for code-host and tracker activity",
+      "repo": "apache/magpie",
+      "status": "merged",
+      "url": "https://github.com/apache/magpie/pull/1550",
+      "created_at": "2026-10-07",
+      "closed_at": "2026-10-07",
+      "comments": 1
+    },
+    {
+      "id": 5707957910,
+      "number": 329,
+      "title": "feat(chat): implement true real-time async streaming (astream) for OpenAI and Anthropic",
+      "repo": "codeforstartups/dynavec",
+      "status": "merged",
+      "url": "https://github.com/codeforstartups/dynavec/pull/329",
+      "created_at": "2026-10-05",
+      "closed_at": "2026-10-07",
+      "comments": 1
+    },
+    {
+      "id": 5707787258,
+      "number": 328,
+      "title": "feat(agents): add tool registry and built-in connectors",
+      "repo": "codeforstartups/dynavec",
+      "status": "merged",
+      "url": "https://github.com/codeforstartups/dynavec/pull/328",
+      "created_at": "2026-10-05",
+      "closed_at": "2026-10-07",
       "comments": 1
     },
     {
@@ -17,33 +633,11 @@
       "number": 1541,
       "title": "docs(architecture): add guidelines for Claude Code mods and vendor neutrality (part of #1497)",
       "repo": "apache/magpie",
-      "status": "open",
+      "status": "merged",
       "url": "https://github.com/apache/magpie/pull/1541",
       "created_at": "2026-10-06",
-      "closed_at": null,
-      "comments": 0
-    },
-    {
-      "id": 5707957910,
-      "number": 329,
-      "title": "feat(chat): implement true real-time async streaming (astream) for OpenAI and Anthropic",
-      "repo": "codeforstartups/dynavec",
-      "status": "open",
-      "url": "https://github.com/codeforstartups/dynavec/pull/329",
-      "created_at": "2026-10-05",
-      "closed_at": null,
-      "comments": 0
-    },
-    {
-      "id": 5707787258,
-      "number": 328,
-      "title": "feat(agents): add tool registry and built-in connectors",
-      "repo": "codeforstartups/dynavec",
-      "status": "open",
-      "url": "https://github.com/codeforstartups/dynavec/pull/328",
-      "created_at": "2026-10-05",
-      "closed_at": null,
-      "comments": 0
+      "closed_at": "2026-10-06",
+      "comments": 1
     },
     {
       "id": 5686309123,
@@ -242,6 +836,17 @@
       "created_at": "2026-10-02",
       "closed_at": "2026-10-02",
       "comments": 2
+    },
+    {
+      "id": 5662806962,
+      "number": 1,
+      "title": "feat: Eval Framework and Project Scaffolding",
+      "repo": "PicadoLabs/LightPR",
+      "status": "merged",
+      "url": "https://github.com/PicadoLabs/LightPR/pull/1",
+      "created_at": "2026-10-01",
+      "closed_at": "2026-10-01",
+      "comments": 0
     },
     {
       "id": 5660968666,
@@ -538,7 +1143,7 @@
       "url": "https://github.com/layer5io/layer5-academy/pull/280",
       "created_at": "2026-09-20",
       "closed_at": null,
-      "comments": 11
+      "comments": 15
     },
     {
       "id": 5509749789,
@@ -626,7 +1231,7 @@
       "url": "https://github.com/tonydzi/sqlite-graph-memory/pull/14",
       "created_at": "2026-09-17",
       "closed_at": "2026-09-17",
-      "comments": 2
+      "comments": 3
     },
     {
       "id": 5473249435,
@@ -736,7 +1341,7 @@
       "url": "https://github.com/tonydzi/sqlite-graph-memory/pull/8",
       "created_at": "2026-09-12",
       "closed_at": "2026-09-13",
-      "comments": 7
+      "comments": 10
     },
     {
       "id": 5434447639,
@@ -937,6 +1542,17 @@
       "comments": 0
     },
     {
+      "id": 5356051847,
+      "number": 2,
+      "title": "Add subtraction",
+      "repo": "Kaap10/open-source-practice",
+      "status": "merged",
+      "url": "https://github.com/Kaap10/open-source-practice/pull/2",
+      "created_at": "2026-09-05",
+      "closed_at": "2026-09-05",
+      "comments": 1
+    },
+    {
       "id": 5322188818,
       "number": 2,
       "title": "Harden frontend CD build against missing `REACT_APP_MOVIE_API_URL`",
@@ -959,6 +1575,17 @@
       "comments": 0
     },
     {
+      "id": 3937456297,
+      "number": 1,
+      "title": "Added live demo link to README",
+      "repo": "Kaap10/NeuroGuess",
+      "status": "merged",
+      "url": "https://github.com/Kaap10/NeuroGuess/pull/1",
+      "created_at": "2026-02-13",
+      "closed_at": "2026-02-13",
+      "comments": 0
+    },
+    {
       "id": 3380898912,
       "number": 1,
       "title": "feat: Auth",
@@ -967,6 +1594,17 @@
       "url": "https://github.com/hemanshusah/lead-gen/pull/1",
       "created_at": "2025-09-03",
       "closed_at": "2025-09-03",
+      "comments": 0
+    },
+    {
+      "id": 3355875851,
+      "number": 1,
+      "title": "feat: IT-19",
+      "repo": "hemanshusah/InstaTool",
+      "status": "merged",
+      "url": "https://github.com/hemanshusah/InstaTool/pull/1",
+      "created_at": "2025-08-26",
+      "closed_at": "2025-08-26",
       "comments": 0
     },
     {
@@ -1069,6 +1707,17 @@
       "comments": 0
     },
     {
+      "id": 2762174797,
+      "number": 1,
+      "title": "Update README.md",
+      "repo": "Kaap10/Code-with-Buddy",
+      "status": "merged",
+      "url": "https://github.com/Kaap10/Code-with-Buddy/pull/1",
+      "created_at": "2024-12-29",
+      "closed_at": "2024-12-29",
+      "comments": 0
+    },
+    {
       "id": 2762170182,
       "number": 1,
       "title": "Create readme.md",
@@ -1077,6 +1726,17 @@
       "url": "https://github.com/Kaap10/Drishyam_2.0/pull/1",
       "created_at": "2024-12-29",
       "closed_at": "2024-12-29",
+      "comments": 0
+    },
+    {
+      "id": 2705143528,
+      "number": 1,
+      "title": "updated dev-KAP10",
+      "repo": "Kaap10/Drishyam-old",
+      "status": "merged",
+      "url": "https://github.com/Kaap10/Drishyam-old/pull/1",
+      "created_at": "2024-11-29",
+      "closed_at": "2024-11-29",
       "comments": 0
     }
   ]

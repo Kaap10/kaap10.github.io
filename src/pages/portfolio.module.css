@@ -157,6 +157,97 @@
   box-shadow: 0 8px 24px -4px rgba(255, 77, 79, 0.4);
 }
 
+.picadoHeroLink {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.62rem 1.25rem;
+  border-radius: var(--vg-radius-sm, 6px);
+  background: linear-gradient(135deg, rgba(255, 77, 79, 0.16) 0%, rgba(168, 85, 247, 0.12) 50%, rgba(14, 14, 20, 0.95) 100%);
+  border: 1px solid rgba(255, 77, 79, 0.55);
+  color: #FFFFFF !important;
+  font-size: 0.88rem;
+  font-weight: 600;
+  text-decoration: none !important;
+  box-shadow: 0 0 20px -3px rgba(255, 77, 79, 0.35), 0 4px 16px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+  animation: picadoAura 3.5s ease-in-out infinite;
+}
+
+@keyframes picadoAura {
+  0%, 100% {
+    box-shadow: 0 0 16px -2px rgba(255, 77, 79, 0.35), 0 4px 16px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 77, 79, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 28px 2px rgba(255, 77, 79, 0.6), 0 4px 22px rgba(255, 77, 79, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 110, 110, 0.85);
+  }
+}
+
+.picadoHeroLink::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.14), transparent);
+  transform: skewX(-20deg);
+  transition: none;
+  animation: picadoShine 5s ease-in-out infinite;
+}
+
+@keyframes picadoShine {
+  0%, 75% { left: -100%; }
+  100% { left: 160%; }
+}
+
+.picadoHeroLink:hover {
+  background: linear-gradient(135deg, rgba(255, 77, 79, 0.25) 0%, rgba(168, 85, 247, 0.2) 50%, rgba(20, 20, 30, 0.98) 100%);
+  border-color: var(--vg-accent, #FF4D4F);
+  transform: translateY(-2px);
+  box-shadow: 0 0 32px rgba(255, 77, 79, 0.65), 0 8px 24px rgba(0, 0, 0, 0.6);
+  color: #FFFFFF !important;
+}
+
+.picadoLogoWrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  filter: drop-shadow(0 0 6px rgba(255, 77, 79, 0.5));
+}
+
+.picadoText {
+  letter-spacing: -0.01em;
+}
+
+.picadoBadge {
+  font-size: 0.68rem;
+  font-weight: 700;
+  font-family: var(--ifm-font-family-monospace, 'JetBrains Mono', monospace);
+  padding: 0.1rem 0.42rem;
+  border-radius: 4px;
+  background: rgba(255, 77, 79, 0.22);
+  color: #FFA39E;
+  border: 1px solid rgba(255, 77, 79, 0.4);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  line-height: 1.2;
+}
+
+.picadoArrow {
+  transition: transform 0.2s ease;
+  color: #FFA39E;
+}
+
+.picadoHeroLink:hover .picadoArrow {
+  transform: translateX(3px);
+  color: #FFFFFF;
+}
+
 .heroLink {
   display: inline-flex;
   align-items: center;
