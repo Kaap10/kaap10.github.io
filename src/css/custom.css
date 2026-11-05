@@ -55,7 +55,7 @@
 
   /* Layout & Measure */
   --vg-content-max-width: 672px;
-  --vg-reading-max-width: 760px;
+  --vg-reading-max-width: 960px;
   --vg-page-max-width: 1180px;
 
   /* Border Radii Hierarchy */
@@ -645,6 +645,48 @@ html.is-blog-page .theme-doc-breadcrumbs {
     height: calc(100vh - 64px) !important;
     max-height: calc(100vh - 64px) !important;
     overflow-y: auto !important;
+    scrollbar-width: none !important; /* Hide Firefox scrollbar line */
+    -ms-overflow-style: none !important;
+  }
+
+  html.plugin-docs .theme-doc-toc-desktop::-webkit-scrollbar,
+  html.is-blog-page .theme-doc-toc-desktop::-webkit-scrollbar {
+    display: none !important; /* Hide Chrome/Edge grey scrollbar line */
+    width: 0 !important;
+    height: 0 !important;
+  }
+
+  /* Main docs container optimization: roomy canvas on desktop */
+  html.plugin-docs [class*='docMainContainer'] .container,
+  html.is-blog-page [class*='docMainContainer'] .container {
+    max-width: 1380px !important;
+    padding-left: 2rem !important;
+    padding-right: 1.5rem !important;
+  }
+
+  /* Right Table of Contents (Topic Slider) - balanced 250px width */
+  html.plugin-docs .row > .col--3,
+  html.is-blog-page .row > .col--3 {
+    flex: 0 0 250px !important;
+    max-width: 250px !important;
+    width: 250px !important;
+    padding-left: 0.75rem !important;
+    padding-right: 0.25rem !important;
+  }
+
+  /* Expand Main Content column to use reclaimed space */
+  html.plugin-docs [class*='docItemCol'],
+  html.is-blog-page [class*='docItemCol'] {
+    flex: 1 1 auto !important;
+    max-width: calc(100% - 250px) !important;
+    width: calc(100% - 250px) !important;
+    padding-right: 2rem !important;
+  }
+
+  /* Allow doc article & markdown to expand seamlessly */
+  html.plugin-docs [class*='docItemContainer'],
+  html.is-blog-page [class*='docItemContainer'] {
+    max-width: 100% !important;
   }
 }
 
@@ -711,10 +753,24 @@ html.is-blog-page .theme-doc-breadcrumbs {
   padding: 0.5rem 0 0.5rem 0.75rem;
 }
 
+.table-of-contents ul {
+  padding-left: 0.65rem;
+}
+
+.table-of-contents code {
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  font-size: 0.85em;
+  color: inherit !important;
+}
+
 .table-of-contents__link {
   color: var(--vg-text-subtle);
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   line-height: 1.45;
+  word-break: break-word;
+  overflow-wrap: break-word;
   transition: color var(--vg-transition-fast);
 }
 
@@ -737,8 +793,8 @@ html.is-blog-page .theme-doc-breadcrumbs {
 
 .markdown {
   max-width: var(--vg-reading-max-width);
-  margin: 0 auto;
-  padding: 2.75rem 1.5rem 4rem;
+  margin: 0;
+  padding: 1.5rem 0 4rem;
 }
 
 .markdown h1 {
