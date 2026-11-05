@@ -1,0 +1,22 @@
+.counterWrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--ifm-font-family-monospace, 'JetBrains Mono', monospace);
+  font-size: 0.76rem;
+  color: var(--vg-text-muted, #A0A0AA);
+  background: var(--vg-bg-elevated, #0A0A0E);
+  border: 1px solid var(--vg-border, rgba(255, 255, 255, 0.08));
+  padding: 0.2rem 0.55rem;
+  border-radius: 4px;
+  line-height: 1.2;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+}
+
+.icon {
+  color: var(--vg-accent, #FF4D4F);
+}
+
+.skeleton {
+  opacity: 0.5;
+}
