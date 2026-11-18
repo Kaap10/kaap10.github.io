@@ -42,7 +42,7 @@ const ApacheLogoIcon = ({ size = 16 }) => (
 const MAGPIE_CARD = {
   id: 'magpie',
   index: '01',
-  roleTag: 'Contributor · 15 Merged PRs',
+  roleTag: 'Committer · 41 Merged PRs',
   icon: ApacheLogoIcon,
   title: 'apache/magpie',
   headline: 'Vendor-Neutral AI Agent Harness Runtimes, Git Forge Bridges & Security Framework',

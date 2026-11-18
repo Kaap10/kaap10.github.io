@@ -1,6 +1,402 @@
 {
-  "total": 158,
+  "total": 186,
   "items": [
+    {
+      "id": 6437804348,
+      "number": 2152,
+      "title": "fix(security-model-verify): harden model_pr.py dry-run, workdir safety, and path validation",
+      "repo": "apache/magpie",
+      "status": "open",
+      "url": "https://github.com/apache/magpie/pull/2152",
+      "created_at": "2026-11-17",
+      "closed_at": null,
+      "comments": 0
+    },
+    {
+      "id": 6279617895,
+      "number": 4077,
+      "title": "FIX: Validate regex replacement templates in SearchReplaceConverter (#4076)",
+      "repo": "microsoft/PyRIT",
+      "status": "merged",
+      "url": "https://github.com/microsoft/PyRIT/pull/4077",
+      "created_at": "2026-11-09",
+      "closed_at": "2026-11-17",
+      "comments": 0
+    },
+    {
+      "id": 6417250251,
+      "number": 2146,
+      "title": "fix(setup): split isolated.configured() into installed() and sandbox_active() (#2121)",
+      "repo": "apache/magpie",
+      "status": "open",
+      "url": "https://github.com/apache/magpie/pull/2146",
+      "created_at": "2026-11-16",
+      "closed_at": null,
+      "comments": 0
+    },
+    {
+      "id": 6414290100,
+      "number": 2140,
+      "title": "docs(privacy-llm): document Grok / xAI as an opt-in harness model (#2111)",
+      "repo": "apache/magpie",
+      "status": "open",
+      "url": "https://github.com/apache/magpie/pull/2140",
+      "created_at": "2026-11-16",
+      "closed_at": null,
+      "comments": 1
+    },
+    {
+      "id": 6402773233,
+      "number": 2104,
+      "title": "fix(dev): normalize workspace member paths to POSIX in check-workspace-members.py",
+      "repo": "apache/magpie",
+      "status": "merged",
+      "url": "https://github.com/apache/magpie/pull/2104",
+      "created_at": "2026-11-15",
+      "closed_at": "2026-11-15",
+      "comments": 0
+    },
+    {
+      "id": 6402199572,
+      "number": 2103,
+      "title": "docs(antigravity): document scoped egress-gateway route for ASF network grants (#2003)",
+      "repo": "apache/magpie",
+      "status": "open",
+      "url": "https://github.com/apache/magpie/pull/2103",
+      "created_at": "2026-11-15",
+      "closed_at": null,
+      "comments": 1
+    },
+    {
+      "id": 6399925761,
+      "number": 2080,
+      "title": "feat(issue): wire filesystem IPC and skill integration for duplicate-picker pane (part 2 of #2075)",
+      "repo": "apache/magpie",
+      "status": "open",
+      "url": "https://github.com/apache/magpie/pull/2080",
+      "created_at": "2026-11-15",
+      "closed_at": null,
+      "comments": 1
+    },
+    {
+      "id": 6385950182,
+      "number": 2076,
+      "title": "feat(issue): core duplicate-picker mod and packaging parity (part 1 of #2075)",
+      "repo": "apache/magpie",
+      "status": "merged",
+      "url": "https://github.com/apache/magpie/pull/2076",
+      "created_at": "2026-11-14",
+      "closed_at": "2026-11-14",
+      "comments": 0
+    },
+    {
+      "id": 6384795266,
+      "number": 2072,
+      "title": "feat(code-review): secondary confirmation of real CI on head commit (part 2 of #2034)",
+      "repo": "apache/magpie",
+      "status": "merged",
+      "url": "https://github.com/apache/magpie/pull/2072",
+      "created_at": "2026-11-14",
+      "closed_at": "2026-11-14",
+      "comments": 0
+    },
+    {
+      "id": 6367105397,
+      "number": 6631,
+      "title": "[Ops][view_as_complex] Validate even storage offset in torch.view_as_complex",
+      "repo": "google-pytorch/torch_tpu",
+      "status": "open",
+      "url": "https://github.com/google-pytorch/torch_tpu/pull/6631",
+      "created_at": "2026-11-13",
+      "closed_at": null,
+      "comments": 1
+    },
+    {
+      "id": 6365032952,
+      "number": 2061,
+      "title": "fix(pr-management): verify CI status check rollup belongs to PR head (part 1 of #2034)",
+      "repo": "apache/magpie",
+      "status": "merged",
+      "url": "https://github.com/apache/magpie/pull/2061",
+      "created_at": "2026-11-13",
+      "closed_at": "2026-11-13",
+      "comments": 0
+    },
+    {
+      "id": 6228792659,
+      "number": 2013,
+      "title": "feat(release-management): live verification checklist tool-call feed and skill integration (closes #2006)",
+      "repo": "apache/magpie",
+      "status": "merged",
+      "url": "https://github.com/apache/magpie/pull/2013",
+      "created_at": "2026-11-05",
+      "closed_at": "2026-11-13",
+      "comments": 0
+    },
+    {
+      "id": 6216107749,
+      "number": 2005,
+      "title": "feat(pr-management): connect findings pane curation to render and polish review hooks",
+      "repo": "apache/magpie",
+      "status": "merged",
+      "url": "https://github.com/apache/magpie/pull/2005",
+      "created_at": "2026-11-05",
+      "closed_at": "2026-11-13",
+      "comments": 2
+    },
+    {
+      "id": 6344170437,
+      "number": 4236,
+      "title": "FIX: Detect pseudo-protocol redirects in OpenRedirectOutputScorer (#4235)",
+      "repo": "microsoft/PyRIT",
+      "status": "open",
+      "url": "https://github.com/microsoft/PyRIT/pull/4236",
+      "created_at": "2026-11-12",
+      "closed_at": null,
+      "comments": 0
+    },
+    {
+      "id": 6343340289,
+      "number": 4233,
+      "title": "FIX: Detect modern OpenSSH private keys in PathTraversalOutputScorer (#4232)",
+      "repo": "microsoft/PyRIT",
+      "status": "open",
+      "url": "https://github.com/microsoft/PyRIT/pull/4233",
+      "created_at": "2026-11-12",
+      "closed_at": null,
+      "comments": 0
+    },
+    {
+      "id": 6195361695,
+      "number": 6199,
+      "title": "[Ops][bincount] Validate non-negative inputs and preconditions in torch.bincount",
+      "repo": "google-pytorch/torch_tpu",
+      "status": "closed",
+      "url": "https://github.com/google-pytorch/torch_tpu/pull/6199",
+      "created_at": "2026-11-04",
+      "closed_at": "2026-11-12",
+      "comments": 6
+    },
+    {
+      "id": 6308412166,
+      "number": 110,
+      "title": "fix(doctor): address four review findings from #31 (closes #107)",
+      "repo": "tonydzi/sqlite-graph-memory",
+      "status": "merged",
+      "url": "https://github.com/tonydzi/sqlite-graph-memory/pull/110",
+      "created_at": "2026-11-10",
+      "closed_at": "2026-11-11",
+      "comments": 1
+    },
+    {
+      "id": 6269231122,
+      "number": 4062,
+      "title": "FIX: Case-insensitive pre-flight check in DenylistConverter (#4061)",
+      "repo": "microsoft/PyRIT",
+      "status": "merged",
+      "url": "https://github.com/microsoft/PyRIT/pull/4062",
+      "created_at": "2026-11-08",
+      "closed_at": "2026-11-11",
+      "comments": 0
+    },
+    {
+      "id": 6098183737,
+      "number": 6011,
+      "title": "[Ops][addmv] Validate self shape and dimension in torch.addmv",
+      "repo": "google-pytorch/torch_tpu",
+      "status": "closed",
+      "url": "https://github.com/google-pytorch/torch_tpu/pull/6011",
+      "created_at": "2026-10-29",
+      "closed_at": "2026-11-11",
+      "comments": 4
+    },
+    {
+      "id": 6260550293,
+      "number": 4042,
+      "title": "FIX: Detect modern frontier chat template delimiters in StaticPromptInjectionScorer (#4041)",
+      "repo": "microsoft/PyRIT",
+      "status": "merged",
+      "url": "https://github.com/microsoft/PyRIT/pull/4042",
+      "created_at": "2026-11-07",
+      "closed_at": "2026-11-10",
+      "comments": 0
+    },
+    {
+      "id": 6269131057,
+      "number": 4060,
+      "title": "FIX: Normalize newlines and tabs in MathObfuscationConverter (#4059)",
+      "repo": "microsoft/PyRIT",
+      "status": "merged",
+      "url": "https://github.com/microsoft/PyRIT/pull/4060",
+      "created_at": "2026-11-08",
+      "closed_at": "2026-11-09",
+      "comments": 0
+    },
+    {
+      "id": 6256086518,
+      "number": 2022,
+      "title": "fix(permission-audit): align MCP recommendations with family-mcp-allows",
+      "repo": "apache/magpie",
+      "status": "merged",
+      "url": "https://github.com/apache/magpie/pull/2022",
+      "created_at": "2026-11-07",
+      "closed_at": "2026-11-09",
+      "comments": 0
+    },
+    {
+      "id": 6225925177,
+      "number": 3982,
+      "title": "MAINT: Adopt noUncheckedIndexedAccess in frontend (#3729)",
+      "repo": "microsoft/PyRIT",
+      "status": "merged",
+      "url": "https://github.com/microsoft/PyRIT/pull/3982",
+      "created_at": "2026-11-05",
+      "closed_at": "2026-11-09",
+      "comments": 0
+    },
+    {
+      "id": 6261137416,
+      "number": 4044,
+      "title": "FIX: Strip punctuation before spacing in CharacterSpaceConverter (#4043)",
+      "repo": "microsoft/PyRIT",
+      "status": "merged",
+      "url": "https://github.com/microsoft/PyRIT/pull/4044",
+      "created_at": "2026-11-07",
+      "closed_at": "2026-11-08",
+      "comments": 0
+    },
+    {
+      "id": 6179733508,
+      "number": 351,
+      "title": "feat(eval): add regression runs and CI gating (#305)",
+      "repo": "codeforstartups/dynavec",
+      "status": "merged",
+      "url": "https://github.com/codeforstartups/dynavec/pull/351",
+      "created_at": "2026-11-03",
+      "closed_at": "2026-11-08",
+      "comments": 0
+    },
+    {
+      "id": 6032491318,
+      "number": 3541,
+      "title": "FIX: Detect multi-engine RCE gadgets in SSTIOutputScorer",
+      "repo": "microsoft/PyRIT",
+      "status": "merged",
+      "url": "https://github.com/microsoft/PyRIT/pull/3541",
+      "created_at": "2026-10-26",
+      "closed_at": "2026-11-07",
+      "comments": 2
+    },
+    {
+      "id": 6144993157,
+      "number": 3774,
+      "title": "FIX: Reject concurrent SDK scenario runs and make attempt accounting atomic (#3748)",
+      "repo": "microsoft/PyRIT",
+      "status": "merged",
+      "url": "https://github.com/microsoft/PyRIT/pull/3774",
+      "created_at": "2026-11-01",
+      "closed_at": "2026-11-06",
+      "comments": 1
+    },
+    {
+      "id": 6217731914,
+      "number": 76519,
+      "title": "Escape Rich markup in airflow-core SimpleTable output",
+      "repo": "apache/airflow",
+      "status": "open",
+      "url": "https://github.com/apache/airflow/pull/76519",
+      "created_at": "2026-11-05",
+      "closed_at": null,
+      "comments": 1
+    },
+    {
+      "id": 6216978988,
+      "number": 2007,
+      "title": "feat(release-management): add verify-rc live checklist pane mod scaffolding and UI component",
+      "repo": "apache/magpie",
+      "status": "merged",
+      "url": "https://github.com/apache/magpie/pull/2007",
+      "created_at": "2026-11-05",
+      "closed_at": "2026-11-05",
+      "comments": 0
+    },
+    {
+      "id": 6143477688,
+      "number": 3768,
+      "title": "FIX: Reject mismatched normalizer templates in RoundRobinTarget",
+      "repo": "microsoft/PyRIT",
+      "status": "merged",
+      "url": "https://github.com/microsoft/PyRIT/pull/3768",
+      "created_at": "2026-11-01",
+      "closed_at": "2026-11-05",
+      "comments": 3
+    },
+    {
+      "id": 6204314613,
+      "number": 1992,
+      "title": "feat(pr-management): wire live session feed, action toggling, and review-flow integration (part 3 of #1887)",
+      "repo": "apache/magpie",
+      "status": "merged",
+      "url": "https://github.com/apache/magpie/pull/1992",
+      "created_at": "2026-11-04",
+      "closed_at": "2026-11-04",
+      "comments": 1
+    },
+    {
+      "id": 6198348309,
+      "number": 76419,
+      "title": "Escape Rich markup in airflowctl variable and pool commands",
+      "repo": "apache/airflow",
+      "status": "merged",
+      "url": "https://github.com/apache/airflow/pull/76419",
+      "created_at": "2026-11-04",
+      "closed_at": "2026-11-04",
+      "comments": 1
+    },
+    {
+      "id": 6147639891,
+      "number": 1954,
+      "title": "feat(pr-management): add interactive review findings pane UI mod (part 2 of #1887)",
+      "repo": "apache/magpie",
+      "status": "merged",
+      "url": "https://github.com/apache/magpie/pull/1954",
+      "created_at": "2026-11-01",
+      "closed_at": "2026-11-04",
+      "comments": 4
+    },
+    {
+      "id": 6132405807,
+      "number": 3693,
+      "title": "FIX: Extract Ruby gems required via subpaths or with parentheses in PackageHallucinationScorer (#3692)",
+      "repo": "microsoft/PyRIT",
+      "status": "merged",
+      "url": "https://github.com/microsoft/PyRIT/pull/3693",
+      "created_at": "2026-10-31",
+      "closed_at": "2026-11-04",
+      "comments": 2
+    },
+    {
+      "id": 6000916820,
+      "number": 5778,
+      "title": "[Ops][dot] Validate input vector length equality in torch.dot",
+      "repo": "google-pytorch/torch_tpu",
+      "status": "closed",
+      "url": "https://github.com/google-pytorch/torch_tpu/pull/5778",
+      "created_at": "2026-10-23",
+      "closed_at": "2026-11-03",
+      "comments": 3
+    },
+    {
+      "id": 5697298556,
+      "number": 74179,
+      "title": "API: Translate domain ValueError to HTTPException in Asset State Store routes",
+      "repo": "apache/airflow",
+      "status": "closed",
+      "url": "https://github.com/apache/airflow/pull/74179",
+      "created_at": "2026-10-04",
+      "closed_at": "2026-11-03",
+      "comments": 1
+    },
     {
       "id": 6148190705,
       "number": 1955,
@@ -13,39 +409,6 @@
       "comments": 1
     },
     {
-      "id": 6147639891,
-      "number": 1954,
-      "title": "feat(pr-management): add interactive review findings pane UI mod (part 2 of #1887)",
-      "repo": "apache/magpie",
-      "status": "open",
-      "url": "https://github.com/apache/magpie/pull/1954",
-      "created_at": "2026-11-01",
-      "closed_at": null,
-      "comments": 4
-    },
-    {
-      "id": 6144993157,
-      "number": 3774,
-      "title": "FIX: Reject concurrent SDK scenario runs and make attempt accounting atomic (#3748)",
-      "repo": "microsoft/PyRIT",
-      "status": "open",
-      "url": "https://github.com/microsoft/PyRIT/pull/3774",
-      "created_at": "2026-11-01",
-      "closed_at": null,
-      "comments": 1
-    },
-    {
-      "id": 6143477688,
-      "number": 3768,
-      "title": "FIX: Reject mismatched normalizer templates in RoundRobinTarget",
-      "repo": "microsoft/PyRIT",
-      "status": "open",
-      "url": "https://github.com/microsoft/PyRIT/pull/3768",
-      "created_at": "2026-11-01",
-      "closed_at": null,
-      "comments": 3
-    },
-    {
       "id": 6136591314,
       "number": 1920,
       "title": "feat(pr-management): add review findings data model and parser (part of #1887)",
@@ -55,17 +418,6 @@
       "created_at": "2026-10-31",
       "closed_at": "2026-11-01",
       "comments": 2
-    },
-    {
-      "id": 6132405807,
-      "number": 3693,
-      "title": "FIX: Extract Ruby gems required via subpaths or with parentheses in PackageHallucinationScorer (#3692)",
-      "repo": "microsoft/PyRIT",
-      "status": "open",
-      "url": "https://github.com/microsoft/PyRIT/pull/3693",
-      "created_at": "2026-10-31",
-      "closed_at": null,
-      "comments": 1
     },
     {
       "id": 6131853091,
@@ -98,7 +450,7 @@
       "url": "https://github.com/vllm-project/semantic-router/pull/5650",
       "created_at": "2026-10-30",
       "closed_at": null,
-      "comments": 1
+      "comments": 7
     },
     {
       "id": 6072759166,
@@ -110,17 +462,6 @@
       "created_at": "2026-10-28",
       "closed_at": "2026-10-30",
       "comments": 0
-    },
-    {
-      "id": 6098183737,
-      "number": 6011,
-      "title": "[Ops][addmv] Validate self shape and dimension in torch.addmv",
-      "repo": "google-pytorch/torch_tpu",
-      "status": "open",
-      "url": "https://github.com/google-pytorch/torch_tpu/pull/6011",
-      "created_at": "2026-10-29",
-      "closed_at": null,
-      "comments": 2
     },
     {
       "id": 6054440730,
@@ -143,17 +484,6 @@
       "created_at": "2026-10-26",
       "closed_at": "2026-10-27",
       "comments": 3
-    },
-    {
-      "id": 6032491318,
-      "number": 3541,
-      "title": "FIX: Detect multi-engine RCE gadgets in SSTIOutputScorer",
-      "repo": "microsoft/PyRIT",
-      "status": "open",
-      "url": "https://github.com/microsoft/PyRIT/pull/3541",
-      "created_at": "2026-10-26",
-      "closed_at": null,
-      "comments": 1
     },
     {
       "id": 5998048518,
@@ -242,17 +572,6 @@
       "created_at": "2026-10-22",
       "closed_at": "2026-10-24",
       "comments": 6
-    },
-    {
-      "id": 6000916820,
-      "number": 5778,
-      "title": "[Ops][dot] Validate input vector length equality in torch.dot",
-      "repo": "google-pytorch/torch_tpu",
-      "status": "open",
-      "url": "https://github.com/google-pytorch/torch_tpu/pull/5778",
-      "created_at": "2026-10-23",
-      "closed_at": null,
-      "comments": 3
     },
     {
       "id": 5994031952,
@@ -717,17 +1036,6 @@
       "comments": 6
     },
     {
-      "id": 5697298556,
-      "number": 74179,
-      "title": "API: Translate domain ValueError to HTTPException in Asset State Store routes",
-      "repo": "apache/airflow",
-      "status": "open",
-      "url": "https://github.com/apache/airflow/pull/74179",
-      "created_at": "2026-10-04",
-      "closed_at": null,
-      "comments": 1
-    },
-    {
       "id": 5689051424,
       "number": 81,
       "title": "feat: Automate GitHub release drafting and changelogs (Resolves #60)",
@@ -978,7 +1286,7 @@
       "url": "https://github.com/apache/airflow/pull/73939",
       "created_at": "2026-09-30",
       "closed_at": null,
-      "comments": 0
+      "comments": 1
     },
     {
       "id": 5592949596,

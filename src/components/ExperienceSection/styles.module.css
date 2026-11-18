@@ -228,6 +228,20 @@
   margin: 0.15rem 0 0 0;
 }
 
+.bulletList {
+  margin: 0.45rem 0 0.2rem 1.15rem;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.bulletItem {
+  font-size: 0.83rem;
+  color: #A0A0AA;
+  line-height: 1.5;
+}
+
 /* Sub-list for Open Source projects */
 .subList {
   display: flex;

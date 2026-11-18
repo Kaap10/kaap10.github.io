@@ -14,7 +14,6 @@ import {
   FileEdit 
 } from 'lucide-react';
 import styles from './workspace.module.css';
-import ParticleCanvas from '@site/src/components/ParticleCanvas';
 
 export default function WorkspacePage() {
   const triggerSpotlight = () => {
@@ -46,11 +45,9 @@ export default function WorkspacePage() {
         <title>DevWorkspace</title>
       </Head>
       <main className={styles.pageContainer}>
-        {/* Ambient Top Glow, Grid & Particle Canvas */}
+        {/* Subtle Matte Grid Backdrop */}
         <div className={styles.bgGlowWrapper} aria-hidden="true">
-          <div className={styles.glowOrb} />
           <div className={styles.gridOverlay} />
-          <ParticleCanvas />
         </div>
 
         <div className={styles.contentWrapper}>

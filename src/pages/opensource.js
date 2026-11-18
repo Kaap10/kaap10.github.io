@@ -17,7 +17,6 @@ import {
   Clock
 } from 'lucide-react';
 import styles from './opensource.module.css';
-import ParticleCanvas from '@site/src/components/ParticleCanvas';
 import contributionsData from '@site/src/data/contributions.json';
 
 const CATEGORIES = [
@@ -51,16 +50,16 @@ const OSS_PROJECTS = [
     id: 'magpie',
     name: 'Apache Magpie',
     org: 'Apache Software Foundation',
-    role: 'Contributor',
-    roleType: 'contributor',
+    role: 'Committer',
+    roleType: 'committer',
     category: 'agents',
     repoMatcher: (repo) => repo.toLowerCase() === 'apache/magpie',
-    defaultMerged: 31,
-    defaultOpen: 1,
+    defaultMerged: 41,
+    defaultOpen: 5,
     logoType: 'img',
     logoSrc: '/img/apachelogo.png',
     description: 'Agent-assisted maintainership and development framework for Apache projects (triage, mentoring, human-reviewed agent drafting, and pairing).',
-    highlights: 'Authored review findings data models (#1920), step-hook-manager-shim eval suite (#1892), public-surface-scrub security tests (#1856), and interactive findings UI (#1954).',
+    highlights: 'Authored review findings data models (#1920), live checklist tool-call feed (#2013), review findings pane UI mod (#1954), CI status check rollup verification (#2061, #2072), and duplicate-picker mod (#2076).',
     tech: ['Apache Foundation', 'Agentic Triage', 'Hook Manager', 'Security Testing', 'Python'],
     deepDiveUrl: '/opensource/magpie',
     githubUrl: 'https://github.com/search?q=repo%3Aapache%2Fmagpie+is%3Apr+author%3AKaap10&type=pullrequests',
@@ -73,12 +72,12 @@ const OSS_PROJECTS = [
     roleType: 'contributor',
     category: 'security',
     repoMatcher: (repo) => repo.toLowerCase() === 'microsoft/pyrit',
-    defaultMerged: 21,
-    defaultOpen: 4,
+    defaultMerged: 31,
+    defaultOpen: 2,
     logoType: 'img',
     logoSrc: '/img/mslogo.png',
     description: "Microsoft's open-source Python Risk Identification Tool for GenAI. Enables automated multi-turn adversarial attacks and red teaming for LLM systems.",
-    highlights: 'Built security scorers for Path Traversal (#3488), XXE injection (#3486), multi-engine RCE gadgets in SSTI (#3541), hallucinated package detection (#3693), and atomic attempt accounting (#3774).',
+    highlights: 'Built frontier chat template delimiter detection (#4042), regex template validation in SearchReplaceConverter (#4077), case-insensitive denylist checks (#4062), and multi-engine RCE gadgets in SSTI (#3541).',
     tech: ['AI Red Teaming', 'Jailbreak Scoring', 'XXE & Path Traversal', 'GenAI Security', 'Python'],
     deepDiveUrl: '/opensource/pyrit',
     githubUrl: 'https://github.com/search?q=repo%3Amicrosoft%2FPyRIT+is%3Apr+author%3AKaap10&type=pullrequests',
@@ -91,12 +90,12 @@ const OSS_PROJECTS = [
     roleType: 'collaborator',
     category: 'database',
     repoMatcher: (repo) => repo.toLowerCase() === 'codeforstartups/dynavec',
-    defaultMerged: 21,
+    defaultMerged: 22,
     defaultOpen: 0,
     logoType: 'icon',
     icon: Cpu,
     description: 'Serverless hybrid vector database engine built on DynamoDB and Amazon S3 Vectors for ultra-low latency semantic embeddings.',
-    highlights: 'Implemented core ReAct & Planner agent primitives (#319), tool registry connectors (#328), real-time async streaming (astream) for OpenAI & Anthropic (#329), and DynaFlow retry/fallback policies (#338).',
+    highlights: 'Implemented core ReAct & Planner agent primitives (#319), regression evals & CI gating (#351), real-time async streaming (astream) for OpenAI & Anthropic (#329), and DynaFlow retry/fallback policies (#338).',
     tech: ['Hybrid Vector DB', 'ReAct Agents', 'Async Streaming', 'DynamoDB', 'Python'],
     deepDiveUrl: '/opensource/dynavec',
     githubUrl: 'https://github.com/search?q=repo%3Acodeforstartups%2Fdynavec+is%3Apr+author%3AKaap10&type=pullrequests',
@@ -127,12 +126,12 @@ const OSS_PROJECTS = [
     roleType: 'contributor',
     category: 'tooling',
     repoMatcher: (repo) => repo.toLowerCase() === 'apache/airflow',
-    defaultMerged: 1,
+    defaultMerged: 2,
     defaultOpen: 2,
     logoType: 'img',
     logoSrc: '/img/apachelogo.png',
     description: 'The industry-standard platform to programmatically author, schedule, and orchestrate complex distributed workflows and data pipelines.',
-    highlights: 'Enhanced REST API stability by translating domain ValueErrors into proper HTTPExceptions across Task State Store (#73753) and Asset State Store (#74179) routes, plus strengthened test suite assertions (#73939).',
+    highlights: 'Escaped Rich markup in airflowctl variable & pool commands (#76419), and enhanced REST API stability by translating domain ValueErrors into proper HTTPExceptions across Task State Store routes (#73753).',
     tech: ['Workflow Orchestration', 'REST API', 'Task State Store', 'Python', 'FastAPI'],
     deepDiveUrl: null,
     githubUrl: 'https://github.com/search?q=repo%3Aapache%2Fairflow+is%3Apr+author%3AKaap10&type=pullrequests',
@@ -145,12 +144,12 @@ const OSS_PROJECTS = [
     roleType: 'collaborator',
     category: 'database',
     repoMatcher: (repo) => repo.toLowerCase() === 'tonydzi/sqlite-graph-memory',
-    defaultMerged: 5,
+    defaultMerged: 6,
     defaultOpen: 0,
     logoType: 'icon',
     icon: Database,
     description: 'Agent memory substrate and Graph RAG over Obsidian and markdown notes for Claude Code, Cursor, and Codex using SQLite.',
-    highlights: 'Shipped MCP server runtime & example integrations (#8), handled empty recall results safely (#10, #14), added JSON-RPC -32600 invalid payload validation (#32), and process exit propagation (#33).',
+    highlights: 'Shipped MCP server runtime & example integrations (#8), doctor diagnostics review patches (#110), JSON-RPC -32600 invalid payload validation (#32), and process exit propagation (#33).',
     tech: ['Graph RAG', 'MCP Server', 'SQLite', 'Claude Code / Cursor', 'TypeScript'],
     deepDiveUrl: '/opensource/sqlite-graph-memory',
     githubUrl: 'https://github.com/search?q=repo%3Atonydzi%2Fsqlite-graph-memory+is%3Apr+author%3AKaap10&type=pullrequests',
@@ -301,7 +300,7 @@ const OSS_PROJECTS = [
   },
 ];
 
-// Helper to compute exact project counts from the 158 verified GitHub PRs
+// Helper to compute exact project counts from the 186 verified GitHub PRs
 function computeVerifiedCounts() {
   const result = {
     totalMerged: 0,
@@ -370,26 +369,20 @@ export default function OpenSourcePage() {
       noFooter
     >
       <main className={styles.pageContainer}>
-        {/* Subtle Ambient Glow & Particle Backdrop */}
-        <div className={styles.bgGlowWrapper} aria-hidden="true">
-          <div className={styles.glowOrb} />
-          <ParticleCanvas />
-        </div>
+        {/* Subtle Matte Grid Backdrop */}
+        <div className={styles.bgGlowWrapper} aria-hidden="true" />
 
         <div className={styles.contentWrapper}>
           {/* Header */}
           <header className={styles.pageHeader}>
             <h1 className={styles.pageTitle}>Open Source</h1>
-            <p className={styles.pageSubtitle}>
-              Production-grade contributions to tier-1 enterprise foundations, AI red teaming engines, distributed vector databases, and developer agent frameworks.
-            </p>
 
             <div className={styles.statsBadgeRow}>
               <span className={styles.statsBadge}>
-                <strong className={styles.highlightCount}>{counts.totalMerged || 138}+</strong> Merged Pull Requests
+                <strong className={styles.highlightCount}>{counts.totalMerged || 161}+</strong> Merged Pull Requests
               </span>
               <span className={styles.statsBadge}>
-                <strong className={styles.highlightCountBlue}>{counts.totalOpen || 12}</strong> In-Progress Active PRs
+                <strong className={styles.highlightCountBlue}>{counts.totalOpen || 13}</strong> In-Progress Active PRs
               </span>
               <span className={styles.statsBadge}>
                 <strong className={styles.highlightCountPurple}>{counts.totalRepos || 31}</strong> Ecosystem Repositories

@@ -14,7 +14,6 @@ import {
   Database
 } from 'lucide-react';
 import styles from './projects.module.css';
-import ParticleCanvas from '@site/src/components/ParticleCanvas';
 
 const TECH_ICONS = {
   nextjs: (props) => (
@@ -100,6 +99,79 @@ const TECH_ICONS = {
 
 const PROJECTS = [
   {
+    id: 'build-with-ai',
+    name: 'build-with-ai',
+    status: 'Live',
+    statusType: 'live',
+    isPinned: true,
+    tagline: 'Zero-API deterministic SDLC CLI for autonomous agent-driven workflow scaffolding and verification.',
+    link: '/build-with-ai',
+    techStack: ['nodejs', 'typescript', 'docker', 'react'],
+    preview: {
+      title: 'Zero-API deterministic SDLC CLI',
+      tag: '1.4k+ Downloads · 28+ Contributors',
+      headline: 'Zero-API deterministic SDLC CLI',
+      badgeText: '1.4k+ Downloads',
+      accentColor: '#38BDF8',
+      glowColor: 'rgba(56, 189, 248, 0.28)'
+    }
+  },
+  {
+    id: 'ai-model-router',
+    name: 'ai-model-router',
+    status: 'Live',
+    statusType: 'live',
+    isPinned: false,
+    tagline: 'Cost-aware LLM routing and reinforcement learning gateway with latency optimization and failover fallbacks.',
+    link: '/opensource/picadolabs',
+    techStack: ['python', 'fastapi', 'redis', 'docker'],
+    preview: {
+      title: 'Cost-aware LLM routing & RL gateway',
+      tag: '3.4k+ Downloads · 13+ Contributors',
+      headline: 'Cost-aware LLM routing & RL gateway',
+      badgeText: '3.4k+ Downloads',
+      accentColor: '#10B981',
+      glowColor: 'rgba(16, 185, 129, 0.28)'
+    }
+  },
+  {
+    id: 'terminal-agent',
+    name: 'terminal-agent',
+    status: 'Live',
+    statusType: 'live',
+    isPinned: false,
+    tagline: 'Verify-first sandboxed coding agent executing end-to-end tasks with isolated CLI tool runners and rollback checkpoints.',
+    link: '/opensource/picadolabs',
+    techStack: ['python', 'docker', 'fastapi'],
+    preview: {
+      title: 'Verify-first sandboxed coding agent',
+      tag: '1.1k+ Downloads · 4+ Contributors',
+      headline: 'Verify-first sandboxed coding agent',
+      badgeText: '1.1k+ Downloads',
+      accentColor: '#FACC15',
+      glowColor: 'rgba(250, 204, 21, 0.28)'
+    }
+  },
+  {
+    id: 'agent-bench',
+    name: 'agent-bench',
+    status: 'Live',
+    statusType: 'live',
+    isPinned: false,
+    tagline: 'Multi-turn coding agent eval suite benchmarking autonomous agents on polyglot tasks using deterministic rule-based scoring.',
+    link: '/opensource/picadolabs',
+    techStack: ['python', 'docker'],
+    preview: {
+      title: 'Multi-turn coding agent eval suite',
+      tag: '550+ Downloads · 4+ Contributors',
+      headline: 'Multi-turn coding agent eval suite',
+      badgeText: '550+ Downloads',
+      accentColor: '#FF4D4F',
+      glowColor: 'rgba(255, 77, 79, 0.28)'
+    }
+  },
+  /*
+  {
     id: 'karya',
     name: 'Karya',
     status: 'Live',
@@ -171,6 +243,7 @@ const PROJECTS = [
       glowColor: 'rgba(244, 63, 94, 0.28)'
     }
   },
+  */
 ];
 
 export default function ProjectsPage() {
@@ -181,11 +254,8 @@ export default function ProjectsPage() {
       noFooter
     >
       <main className={styles.pageContainer}>
-        {/* Subtle Ambient Glow & Particle Backdrop */}
-        <div className={styles.bgGlowWrapper} aria-hidden="true">
-          <div className={styles.glowOrb} />
-          <ParticleCanvas />
-        </div>
+        {/* Subtle Matte Grid Backdrop */}
+        <div className={styles.bgGlowWrapper} aria-hidden="true" />
 
         <div className={styles.contentWrapper}>
           {/* Header */}

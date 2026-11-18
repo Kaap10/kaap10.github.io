@@ -38,12 +38,12 @@ const PICADOLABS_PROJECTS = [
     roleTag: 'Founder & Maintainer',
     icon: Terminal,
     title: 'build-with-ai',
-    headline: 'Zero-API Developer CLI & AI Workflow Engine',
+    headline: 'Zero-API deterministic SDLC CLI',
     cardDescription:
       'Open-source developer CLI guiding engineers through structured development phases with zero-API overhead and persistent local context across any AI model.',
     license: 'Apache 2.0',
-    downloads: '1.2k+ Downloads',
-    contributors: '24 Contributors',
+    downloads: '1.4k+ Downloads',
+    contributors: '28 Contributors',
     releases: 'v1.4.0 (3 Releases)',
     forks: '24 Forks',
     installCmd: 'npm install -g build-with-ai',
@@ -77,9 +77,9 @@ const PICADOLABS_PROJECTS = [
         'Designed a local-first memory architecture (.buildwithai/context.json) that preserves technical choices across sessions and dynamically injects dependencies to eliminate AI context drift and hallucinations',
         'Implemented an extensible prompt interpolation engine with prerequisite validation (requires/writes), automated clipboard synchronization, and deterministic documentation generation (README, BUILD_LOG, CONTEXT.md)',
         'Shipped 11 production workflow templates spanning SaaS MVPs, REST APIs, FastAPI, React Native (Expo), Electron, Discord Bots, AI Agent & RAG Pipelines, and Chrome Extensions, with custom JSON/HTTPS template loading support',
-        'Published as an open-source npm package (npm i -g build-with-ai) with 1,273+ downloads, 24 community contributors, and 24 forks on GitHub under Apache-2.0',
+        'Published as an open-source npm package (npm i -g build-with-ai) with 1.4k+ downloads, 28 community contributors, and 24 forks on GitHub under Apache-2.0',
       ],
-      metricsDetail: 'npm install -g build-with-ai · 1,273+ Downloads · 24 Contributors · 24 Forks · 100% Test Coverage · Apache 2.0 License',
+      metricsDetail: 'npm install -g build-with-ai · 1.4k+ Downloads · 28 Contributors · 24 Forks · 100% Test Coverage · Apache 2.0 License',
     },
   },
 
@@ -90,12 +90,12 @@ const PICADOLABS_PROJECTS = [
     roleTag: 'Founder & Maintainer',
     icon: Cpu,
     title: 'AI Model Router',
-    headline: 'Adaptive LLM selection proxy designed to optimize inference costs through intelligent routing.',
+    headline: 'Cost-aware LLM routing & RL gateway',
     cardDescription:
       'Sub-3ms Pareto Traffic Control Room UI with Thompson Sampling RL auto-tuning, dynamically optimizing cost, latency, and quality across OpenAI, Anthropic, Gemini, and local models.',
     license: 'Apache 2.0',
     downloads: '3.4k+ Downloads',
-    contributors: '11 Contributors',
+    contributors: '13 Contributors',
     releases: 'v1.2.0 (2 Releases)',
     forks: '12 Forks',
     installCmd: 'pip install model-router-cli',
@@ -130,9 +130,9 @@ const PICADOLABS_PROJECTS = [
         'Drop-in OpenAI and Anthropic API-compatible proxy interface with unified streaming',
         'Thompson Sampling reinforcement learning agent auto-tuning routing weights from feedback signals',
         'Automated Pareto benchmark suite and cost-accuracy evaluator with distributed OpenTelemetry tracing',
-        '3,400+ downloads, 11 contributors, and 12 forks across enterprise AI deployments',
+        '3.4k+ downloads, 13 contributors, and 12 forks across enterprise AI deployments',
       ],
-      metricsDetail: 'pip install model-router-cli · 3,400+ Downloads · 11 Contributors · 12 Forks · Sub-3ms routing overhead · Apache 2.0',
+      metricsDetail: 'pip install model-router-cli · 3.4k+ Downloads · 13 Contributors · 12 Forks · Sub-3ms routing overhead · Apache 2.0',
     },
   },
 
@@ -143,12 +143,12 @@ const PICADOLABS_PROJECTS = [
     roleTag: 'Founder & Maintainer',
     icon: Terminal,
     title: 'Terminal Agent',
-    headline: 'Verify-first autonomous software engineering agent.',
+    headline: 'Verify-first sandboxed coding agent',
     cardDescription:
       'An autonomous AI coding agent that plans, modifies, tests, and independently verifies real-world codebases with sandboxed isolation and automatic rollback.',
     license: 'Apache 2.0',
-    downloads: '700+ Downloads',
-    contributors: '3 Contributors',
+    downloads: '1.1k+ Downloads',
+    contributors: '4 Contributors',
     releases: 'v0.1.1 (1 Release)',
     forks: '3 Forks',
     installCmd: 'pip install terminal-agent-cli',
@@ -186,7 +186,7 @@ const PICADOLABS_PROJECTS = [
         'Independent sandboxed verification isolating test execution from agent generation',
         '12-category failure classification with automated SQLite rollback checkpoints',
       ],
-      metricsDetail: 'pip install terminal-agent-cli · 700+ Downloads · 3 Contributors · 12 specialized CLI tools · Apache 2.0',
+      metricsDetail: 'pip install terminal-agent-cli · 1.1k+ Downloads · 4 Contributors · 12 specialized CLI tools · Apache 2.0',
     },
   },
 
@@ -197,11 +197,11 @@ const PICADOLABS_PROJECTS = [
     roleTag: 'Founder & Maintainer',
     icon: Gauge,
     title: 'AgentBench',
-    headline: 'Autonomous AI agent benchmarking framework.',
+    headline: 'Multi-turn coding agent eval suite.',
     cardDescription:
       'A platform to benchmark, score, and diagnose autonomous AI coding agents on 12 polyglot software engineering tasks using deterministic rule-based scoring and full trace audits.',
     license: 'Apache 2.0',
-    downloads: '12 Polyglot Benchmarks',
+    downloads: '550+ Downloads',
     contributors: '4 Contributors',
     releases: 'v1.0.0 (1 Release)',
     forks: '3 Forks',
@@ -239,7 +239,7 @@ const PICADOLABS_PROJECTS = [
         'Full execution trace logging with microsecond timestamps and tool call inspection',
         'Custom task ingestion via declarative YAML specifications',
       ],
-      metricsDetail: 'pip install agentbench-core · 12 Benchmarks · 4 Contributors · 100% deterministic evaluation · Apache 2.0',
+      metricsDetail: 'pip install agentbench-core · 550+ Downloads · 4 Contributors · 100% deterministic evaluation · Apache 2.0',
     },
   },
 ];
@@ -334,7 +334,7 @@ export default function PicadoLabsPage() {
           <div className={styles.metricsGrid} style={{ marginTop: '2.5rem', marginBottom: '1.5rem' }}>
             <div className={styles.metricCard}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <span className={styles.metricValue} style={{ color: '#10B981' }}>5.3k+</span>
+                <span className={styles.metricValue} style={{ color: '#10B981' }}>6.4k+</span>
                 <Download size={18} style={{ color: '#10B981', opacity: 0.8 }} />
               </div>
               <span className={styles.metricLabel}>Total Downloads</span>
@@ -342,7 +342,7 @@ export default function PicadoLabsPage() {
 
             <div className={styles.metricCard}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <span className={styles.metricValue} style={{ color: '#38BDF8' }}>37+</span>
+                <span className={styles.metricValue} style={{ color: '#38BDF8' }}>42+</span>
                 <Users size={18} style={{ color: '#38BDF8', opacity: 0.8 }} />
               </div>
               <span className={styles.metricLabel}>Unique Contributors</span>
@@ -478,6 +478,7 @@ export default function PicadoLabsPage() {
               return (
                 <article
                   key={project.id}
+                  id={project.id}
                   className={openStyles.projectCard}
                 >
                   {/* Card Header */}

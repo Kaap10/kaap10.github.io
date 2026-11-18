@@ -11,7 +11,8 @@ import {
   Code2, 
   Sparkles,
   Layers,
-  Terminal
+  Terminal,
+  ShieldCheck
 } from 'lucide-react';
 import styles from './styles.module.css';
 
@@ -29,7 +30,78 @@ export default function ExperienceSection() {
 
       {/* Experience Timeline */}
       <div className={styles.timeline}>
-        {/* 1. Building @ PicadoLabs */}
+        {/* 1. Apache Magpie Committer (The Apache Software Foundation) */}
+        <div className={styles.item} id="experience-apache-magpie">
+          <div className={styles.iconCol}>
+            <div className={styles.iconCircle} style={{ borderColor: 'rgba(251, 146, 60, 0.35)' }}>
+              <img 
+                src="/img/apachelogo.png" 
+                alt="Apache" 
+                width={17} 
+                height={17} 
+                style={{ objectFit: 'contain' }} 
+              />
+            </div>
+          </div>
+
+          <div className={styles.contentCol}>
+            <div className={styles.itemHeader}>
+              <div className={styles.roleTitleWrap}>
+                <h3 className={styles.itemTitle}>
+                  <a 
+                    href="https://github.com/apache/magpie" 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className={styles.itemLink}
+                  >
+                    <span>Apache Magpie Committer</span>
+                    <ArrowUpRight size={13} />
+                  </a>
+                </h3>
+                <span 
+                  className={styles.companyTag}
+                  style={{ background: 'rgba(251, 146, 60, 0.1)', color: '#FB923C', borderColor: 'rgba(251, 146, 60, 0.25)' }}
+                >
+                  The Apache Software Foundation
+                </span>
+              </div>
+              <span className={styles.period}>Nov'2026 — Present · Remote</span>
+            </div>
+
+            {/* Badges */}
+            <div className={styles.metricsRow}>
+              <span className={`${styles.metricBadge} ${styles.metricGreen}`}>
+                <CheckCircle2 size={12} />
+                <span>Present</span>
+              </span>
+              <span className={`${styles.metricBadge} ${styles.metricBlue}`}>
+                <ShieldCheck size={12} />
+                <span>Official Committer</span>
+              </span>
+              <span className={`${styles.metricBadge} ${styles.metricAmber}`}>
+                <span>Contributor (Aug'2026 — Nov'2026)</span>
+              </span>
+            </div>
+
+            <p className={styles.description}>
+              Elected as an official Committer for the Apache Magpie project.
+            </p>
+
+            <ul className={styles.bulletList}>
+              <li className={styles.bulletItem}>
+                Building and maintaining developer tooling, multi-forge VCS adapters (GitLab, Forgejo, OSV.dev), and security sandboxing.
+              </li>
+              <li className={styles.bulletItem}>
+                Designing Claude Code mods and automated review triage workflows.
+              </li>
+              <li className={styles.bulletItem}>
+                Reviewing pull requests and collaborating on codebase architecture with community maintainers.
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        {/* 2. Building @ PicadoLabs */}
         <div className={styles.item} id="experience-picadolabs">
           <div className={styles.iconCol}>
             <div className={styles.iconCircle}>
@@ -61,11 +133,11 @@ export default function ExperienceSection() {
             <div className={styles.metricsRow}>
               <span className={`${styles.metricBadge} ${styles.metricBlue}`}>
                 <Users size={12} />
-                <span>37+ Contributors</span>
+                <span>42+ Contributors</span>
               </span>
               <span className={`${styles.metricBadge} ${styles.metricGreen}`}>
                 <Download size={12} />
-                <span>5.3k+ Downloads</span>
+                <span>6.4k+ Downloads</span>
               </span>
               <span className={`${styles.metricBadge} ${styles.metricPurple}`}>
                 <Layers size={12} />
@@ -74,7 +146,7 @@ export default function ExperienceSection() {
             </div>
 
             <p className={styles.description}>
-              Architecting deterministic, verify-first developer infrastructure and autonomous software engineering systems — including <strong>build-with-ai</strong> (1.2k+ downloads), <strong>AI Model Router</strong> (sub-3ms Pareto proxy), <strong>Terminal Agent</strong>, and <strong>AgentBench</strong>.
+              Architecting deterministic, verify-first developer infrastructure and autonomous software engineering systems — including <strong>build-with-ai</strong> (1.4k+ downloads), <strong>AI Model Router</strong> (sub-3ms Pareto proxy), <strong>Terminal Agent</strong>, and <strong>AgentBench</strong>.
             </p>
           </div>
         </div>
@@ -111,9 +183,9 @@ export default function ExperienceSection() {
               >
                 <span className={styles.subItemName}>
                   <img src="/img/apachelogo.png" alt="" width={15} height={15} style={{ objectFit: 'contain' }} />
-                  <span>Apache Magpie (Contributor)</span>
+                  <span>Apache Magpie (Committer)</span>
                 </span>
-                <span className={styles.subItemCount}>31 Merged PRs</span>
+                <span className={styles.subItemCount}>41 Merged PRs</span>
               </a>
 
               <a 
@@ -127,7 +199,7 @@ export default function ExperienceSection() {
                   <img src="/img/mslogo.png" alt="" width={14} height={14} style={{ objectFit: 'contain' }} />
                   <span>Microsoft PyRIT (Contributor)</span>
                 </span>
-                <span className={styles.subItemCount}>21 Merged PRs</span>
+                <span className={styles.subItemCount}>31 Merged PRs</span>
               </a>
 
               <a 
@@ -141,12 +213,12 @@ export default function ExperienceSection() {
                   <Code2 size={14} style={{ color: '#38BDF8' }} />
                   <span>DynaVec (Collaborator)</span>
                 </span>
-                <span className={styles.subItemCount}>21 Merged PRs</span>
+                <span className={styles.subItemCount}>22 Merged PRs</span>
               </a>
             </div>
 
             <p className={styles.description} style={{ marginTop: '0.4rem' }}>
-              Engineered security evaluators, ReAct agent primitives, real-time async streaming pipelines, and review finding parsers across 138+ total merged pull requests.
+              Engineered security evaluators, ReAct agent primitives, real-time async streaming pipelines, and review finding parsers across 161+ total merged pull requests.
             </p>
           </div>
         </div>

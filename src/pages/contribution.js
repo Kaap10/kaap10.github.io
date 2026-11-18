@@ -13,13 +13,12 @@ import {
 } from 'lucide-react';
 import initialData from '@site/src/data/contributions.json';
 import styles from './contribution.module.css';
-import ParticleCanvas from '@site/src/components/ParticleCanvas';
 
 export default function ContributionPage() {
   const [activeTab, setActiveTab] = useState('all'); // 'all' | 'merged' | 'open' | 'closed'
   const [searchQuery, setSearchQuery] = useState('');
   const [items, setItems] = useState(initialData.items || []);
-  const [totalCount, setTotalCount] = useState(initialData.total || 98);
+  const [totalCount, setTotalCount] = useState(initialData.total || 186);
 
   // Background fetch to sync latest PRs
   useEffect(() => {
@@ -146,11 +145,8 @@ export default function ContributionPage() {
       noFooter
     >
       <main className={styles.pageContainer}>
-        {/* Particle Backdrop & Glow */}
-        <div className={styles.bgGlowWrapper} aria-hidden="true">
-          <div className={styles.glowOrb} />
-          <ParticleCanvas />
-        </div>
+        {/* Subtle Matte Grid Backdrop */}
+        <div className={styles.bgGlowWrapper} aria-hidden="true" />
 
         <div className={styles.contentWrapper}>
           {/* Header */}

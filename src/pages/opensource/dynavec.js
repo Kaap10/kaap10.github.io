@@ -28,7 +28,7 @@ const IconGithub = ({ size = 15 }) => (
 const DYNAVEC_CARD = {
   id: 'dynavec',
   index: '07',
-  roleTag: 'Collaborator · 18 Merged PRs',
+  roleTag: 'Collaborator · 22 Merged PRs',
   icon: Package,
   title: 'dynavec',
   headline: 'Serverless Hybrid Vector Database on DynamoDB & S3',

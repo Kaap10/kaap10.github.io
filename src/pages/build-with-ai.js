@@ -428,7 +428,7 @@ Run 'build-with-ai template <name>' to switch.`
             {/* Key Credibility Metrics Ticker */}
             <div className={styles.metricsGrid}>
               <div className={styles.metricCard}>
-                <div className={styles.metricValue}>830+</div>
+                <div className={styles.metricValue}>1.4k+</div>
                 <div className={styles.metricLabel}>NPM Package Downloads</div>
               </div>
               <div className={styles.metricCard}>

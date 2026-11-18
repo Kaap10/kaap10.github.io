@@ -12,23 +12,19 @@ import {
   GitPullRequest
 } from 'lucide-react';
 import styles from './portfolio.module.css';
-import ParticleCanvas from '@site/src/components/ParticleCanvas';
 import ExperienceSection from '@site/src/components/ExperienceSection';
 
 export default function PortfolioPage() {
   return (
     <Layout
       title="Portfolio"
-      description="Portfolio of Vardhman Gupta — AI Engineer."
+      description="Portfolio of Vardhman Gupta — I build AI agents and developer tools, work on LLM security, and actively contribute to OSS."
       noFooter
     >
       <main className={styles.pageContainer}>
-        {/* Ambient Subtle Glow & Grid Backdrop */}
+        {/* Subtle Matte Technical Grid Backdrop */}
         <div className={styles.bgCanvasWrapper} aria-hidden="true">
-          <div className={styles.glowOrb1} />
-          <div className={styles.glowOrb2} />
           <div className={styles.gridOverlay} />
-          <ParticleCanvas />
         </div>
 
         <div className={styles.contentWrapper}>
@@ -39,7 +35,8 @@ export default function PortfolioPage() {
             </h1>
 
             <p className={styles.heroHeadline}>
-              AI Engineer
+              <span className={styles.promptSymbol}>&gt;</span>
+              I build <span className={styles.tagHighlight}>AI agents</span> and <span className={styles.tagHighlight}>developer tools</span>, work on <span className={styles.tagHighlight}>LLM security</span>, and actively contribute to <span className={styles.tagHighlight}>OSS</span>
             </p>
 
             {/* Action Buttons */}
@@ -57,7 +54,7 @@ export default function PortfolioPage() {
                     />
                   </div>
                   <span className={styles.picadoText}>Picado Labs</span>
-                  <span className={styles.picadoBadge}>5.3k+</span>
+                  <span className={styles.picadoBadge}>6.4k+</span>
                   <ArrowRight size={14} className={styles.picadoArrow} />
                 </Link>
 

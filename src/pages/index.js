@@ -23,7 +23,6 @@ import {
   Timer
 } from 'lucide-react';
 import styles from './index.module.css';
-import ParticleCanvas from '@site/src/components/ParticleCanvas';
 
 const COMMAND_LIST = [
   'help', 'ls', 'cd', 'cat', 'portfolio', 'workspace', 'projects', 'tools', 
@@ -1081,24 +1080,8 @@ export default function Home() {
       noFooter
     >
       <main className={styles.pageContainer}>
-        {/* Dynamic Interactive Particles Network Canvas & Volumetric Smoke */}
+        {/* Subtle Matte Technical Grid Backdrop */}
         <div className={styles.bgCanvasWrapper} aria-hidden="true">
-          <ParticleCanvas />
-          <div className={styles.glowOrb} />
-          <div className={styles.glowOrbSecondary} />
-          
-          {/* Volumetric Organic Smoke System */}
-          <div className={styles.smokeContainer}>
-            <div className={`${styles.smokePuff} ${styles.smokePuff1}`} />
-            <div className={`${styles.smokePuff} ${styles.smokePuff2}`} />
-            <div className={`${styles.smokePuff} ${styles.smokePuff3}`} />
-            <div className={`${styles.smokePuff} ${styles.smokePuff4}`} />
-            <div className={`${styles.smokePuff} ${styles.smokePuff5}`} />
-            <div className={`${styles.smokePuff} ${styles.smokePuff6}`} />
-            <div className={styles.groundMistLayer} />
-            <div className={styles.crimsonHaze} />
-          </div>
-
           <div className={styles.gridOverlay} />
         </div>
 
