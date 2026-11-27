@@ -1,16 +1,302 @@
 {
-  "total": 186,
+  "total": 206,
   "items": [
+    {
+      "id": 6639826195,
+      "number": 2399,
+      "title": "feat(contributor-growth): add local contributor activity sweep pane mod (part 1)",
+      "repo": "apache/magpie",
+      "status": "open",
+      "url": "https://github.com/apache/magpie/pull/2399",
+      "created_at": "2026-11-27",
+      "closed_at": null,
+      "comments": 0
+    },
+    {
+      "id": 6639578163,
+      "number": 2398,
+      "title": "fix(security): suppress Staged footer when queue action write is refused or fails",
+      "repo": "apache/magpie",
+      "status": "open",
+      "url": "https://github.com/apache/magpie/pull/2398",
+      "created_at": "2026-11-27",
+      "closed_at": null,
+      "comments": 0
+    },
+    {
+      "id": 6639406420,
+      "number": 2397,
+      "title": "feat(security): wire Write/Bash auto-hydration and skill queue emission (part 2 of #2295)",
+      "repo": "apache/magpie",
+      "status": "open",
+      "url": "https://github.com/apache/magpie/pull/2397",
+      "created_at": "2026-11-27",
+      "closed_at": null,
+      "comments": 0
+    },
+    {
+      "id": 6622349736,
+      "number": 4656,
+      "title": "MAINT: Enable type-aware ESLint promise-safety rules in frontend (#3729)",
+      "repo": "microsoft/PyRIT",
+      "status": "open",
+      "url": "https://github.com/microsoft/PyRIT/pull/4656",
+      "created_at": "2026-11-26",
+      "closed_at": null,
+      "comments": 0
+    },
+    {
+      "id": 6597868205,
+      "number": 2295,
+      "title": "feat(security): add local security triage queue pane mod (Part 1)",
+      "repo": "apache/magpie",
+      "status": "merged",
+      "url": "https://github.com/apache/magpie/pull/2295",
+      "created_at": "2026-11-25",
+      "closed_at": "2026-11-26",
+      "comments": 0
+    },
+    {
+      "id": 6402199572,
+      "number": 2103,
+      "title": "docs(antigravity): record the project-scoped ASF host access limitation (#2003)",
+      "repo": "apache/magpie",
+      "status": "merged",
+      "url": "https://github.com/apache/magpie/pull/2103",
+      "created_at": "2026-11-15",
+      "closed_at": "2026-11-26",
+      "comments": 1
+    },
+    {
+      "id": 6608367166,
+      "number": 2323,
+      "title": "feat(pairing): multi-agent review comparison pane \u2014 Part 2 (skill wiring & file IPC)",
+      "repo": "apache/magpie",
+      "status": "merged",
+      "url": "https://github.com/apache/magpie/pull/2323",
+      "created_at": "2026-11-25",
+      "closed_at": "2026-11-25",
+      "comments": 0
+    },
+    {
+      "id": 6605052804,
+      "number": 2313,
+      "title": "test(dev): treat vetted-ops as a checkout-only tool in family-plugin tests",
+      "repo": "apache/magpie",
+      "status": "merged",
+      "url": "https://github.com/apache/magpie/pull/2313",
+      "created_at": "2026-11-25",
+      "closed_at": "2026-11-25",
+      "comments": 0
+    },
+    {
+      "id": 6583576453,
+      "number": 2274,
+      "title": "feat(pairing): multi-agent review side-by-side comparison pane",
+      "repo": "apache/magpie",
+      "status": "merged",
+      "url": "https://github.com/apache/magpie/pull/2274",
+      "created_at": "2026-11-24",
+      "closed_at": "2026-11-25",
+      "comments": 2
+    },
+    {
+      "id": 6553227124,
+      "number": 2237,
+      "title": "feat(utilities): live token-cost and context meter band mod",
+      "repo": "apache/magpie",
+      "status": "merged",
+      "url": "https://github.com/apache/magpie/pull/2237",
+      "created_at": "2026-11-23",
+      "closed_at": "2026-11-25",
+      "comments": 1
+    },
+    {
+      "id": 6484214031,
+      "number": 4421,
+      "title": "MAINT: Adopt exactOptionalPropertyTypes in frontend (#3729)",
+      "repo": "microsoft/PyRIT",
+      "status": "merged",
+      "url": "https://github.com/microsoft/PyRIT/pull/4421",
+      "created_at": "2026-11-19",
+      "closed_at": "2026-11-25",
+      "comments": 0
+    },
+    {
+      "id": 6583187482,
+      "number": 2272,
+      "title": "feat(issue): issue sweep progress band above prompt",
+      "repo": "apache/magpie",
+      "status": "merged",
+      "url": "https://github.com/apache/magpie/pull/2272",
+      "created_at": "2026-11-24",
+      "closed_at": "2026-11-24",
+      "comments": 0
+    },
+    {
+      "id": 6468114206,
+      "number": 4380,
+      "title": "FIX: Detect time-based blind SQLi and RCE procedures in SQLInjectionOutputScorer",
+      "repo": "microsoft/PyRIT",
+      "status": "merged",
+      "url": "https://github.com/microsoft/PyRIT/pull/4380",
+      "created_at": "2026-11-18",
+      "closed_at": "2026-11-24",
+      "comments": 0
+    },
+    {
+      "id": 6541749381,
+      "number": 2234,
+      "title": "feat(utilities): commit attribution mod for Claude Code",
+      "repo": "apache/magpie",
+      "status": "merged",
+      "url": "https://github.com/apache/magpie/pull/2234",
+      "created_at": "2026-11-22",
+      "closed_at": "2026-11-23",
+      "comments": 0
+    },
+    {
+      "id": 6343340289,
+      "number": 4233,
+      "title": "FIX: Detect modern OpenSSH private keys in PathTraversalOutputScorer (#4232)",
+      "repo": "microsoft/PyRIT",
+      "status": "merged",
+      "url": "https://github.com/microsoft/PyRIT/pull/4233",
+      "created_at": "2026-11-12",
+      "closed_at": "2026-11-23",
+      "comments": 0
+    },
+    {
+      "id": 6539338567,
+      "number": 2221,
+      "title": "feat(pr-management): live triage sweep progress band mod (part of #1497)",
+      "repo": "apache/magpie",
+      "status": "merged",
+      "url": "https://github.com/apache/magpie/pull/2221",
+      "created_at": "2026-11-22",
+      "closed_at": "2026-11-22",
+      "comments": 0
+    },
+    {
+      "id": 6525727886,
+      "number": 2216,
+      "title": "feat(release-management): live vote-tally band mod for active release voting",
+      "repo": "apache/magpie",
+      "status": "merged",
+      "url": "https://github.com/apache/magpie/pull/2216",
+      "created_at": "2026-11-21",
+      "closed_at": "2026-11-22",
+      "comments": 0
+    },
+    {
+      "id": 6417250251,
+      "number": 2146,
+      "title": "fix(setup): split isolated.configured() into installed() and sandbox_active() (#2121)",
+      "repo": "apache/magpie",
+      "status": "merged",
+      "url": "https://github.com/apache/magpie/pull/2146",
+      "created_at": "2026-11-16",
+      "closed_at": "2026-11-22",
+      "comments": 2
+    },
+    {
+      "id": 6414290100,
+      "number": 2140,
+      "title": "docs(privacy-llm): document Grok / xAI as an opt-in harness model (#2111)",
+      "repo": "apache/magpie",
+      "status": "merged",
+      "url": "https://github.com/apache/magpie/pull/2140",
+      "created_at": "2026-11-16",
+      "closed_at": "2026-11-22",
+      "comments": 1
+    },
+    {
+      "id": 6507295816,
+      "number": 77373,
+      "title": "Escape Rich markup in airflow connections test error output",
+      "repo": "apache/airflow",
+      "status": "open",
+      "url": "https://github.com/apache/airflow/pull/77373",
+      "created_at": "2026-11-20",
+      "closed_at": null,
+      "comments": 0
+    },
+    {
+      "id": 6507099001,
+      "number": 77372,
+      "title": "Add Task SDK client contract tests for assets and dag runs",
+      "repo": "apache/airflow",
+      "status": "closed",
+      "url": "https://github.com/apache/airflow/pull/77372",
+      "created_at": "2026-11-20",
+      "closed_at": "2026-11-20",
+      "comments": 1
+    },
+    {
+      "id": 6506080784,
+      "number": 6866,
+      "title": "[Ops][topk] Validate parameter k range in torch.topk",
+      "repo": "google-pytorch/torch_tpu",
+      "status": "open",
+      "url": "https://github.com/google-pytorch/torch_tpu/pull/6866",
+      "created_at": "2026-11-20",
+      "closed_at": null,
+      "comments": 1
+    },
+    {
+      "id": 6505219825,
+      "number": 6864,
+      "title": "[Ops][eye] Validate non-negative dimensions in torch.eye",
+      "repo": "google-pytorch/torch_tpu",
+      "status": "open",
+      "url": "https://github.com/google-pytorch/torch_tpu/pull/6864",
+      "created_at": "2026-11-20",
+      "closed_at": null,
+      "comments": 1
+    },
     {
       "id": 6437804348,
       "number": 2152,
       "title": "fix(security-model-verify): harden model_pr.py dry-run, workdir safety, and path validation",
       "repo": "apache/magpie",
-      "status": "open",
+      "status": "merged",
       "url": "https://github.com/apache/magpie/pull/2152",
       "created_at": "2026-11-17",
-      "closed_at": null,
+      "closed_at": "2026-11-20",
       "comments": 0
+    },
+    {
+      "id": 5641959118,
+      "number": 73939,
+      "title": "API: Clarify docstrings and assert detail in Task State Store tests",
+      "repo": "apache/airflow",
+      "status": "closed",
+      "url": "https://github.com/apache/airflow/pull/73939",
+      "created_at": "2026-09-30",
+      "closed_at": "2026-11-20",
+      "comments": 2
+    },
+    {
+      "id": 6367105397,
+      "number": 6631,
+      "title": "[Ops][view_as_complex] Validate even storage offset in torch.view_as_complex",
+      "repo": "google-pytorch/torch_tpu",
+      "status": "closed",
+      "url": "https://github.com/google-pytorch/torch_tpu/pull/6631",
+      "created_at": "2026-11-13",
+      "closed_at": "2026-11-19",
+      "comments": 1
+    },
+    {
+      "id": 6468507620,
+      "number": 4382,
+      "title": "FIX: Detect piped script interpreters and modern reverse shells in ShellCommandOutputScorer",
+      "repo": "microsoft/PyRIT",
+      "status": "open",
+      "url": "https://github.com/microsoft/PyRIT/pull/4382",
+      "created_at": "2026-11-18",
+      "closed_at": null,
+      "comments": 3
     },
     {
       "id": 6279617895,
@@ -24,28 +310,6 @@
       "comments": 0
     },
     {
-      "id": 6417250251,
-      "number": 2146,
-      "title": "fix(setup): split isolated.configured() into installed() and sandbox_active() (#2121)",
-      "repo": "apache/magpie",
-      "status": "open",
-      "url": "https://github.com/apache/magpie/pull/2146",
-      "created_at": "2026-11-16",
-      "closed_at": null,
-      "comments": 0
-    },
-    {
-      "id": 6414290100,
-      "number": 2140,
-      "title": "docs(privacy-llm): document Grok / xAI as an opt-in harness model (#2111)",
-      "repo": "apache/magpie",
-      "status": "open",
-      "url": "https://github.com/apache/magpie/pull/2140",
-      "created_at": "2026-11-16",
-      "closed_at": null,
-      "comments": 1
-    },
-    {
       "id": 6402773233,
       "number": 2104,
       "title": "fix(dev): normalize workspace member paths to POSIX in check-workspace-members.py",
@@ -55,17 +319,6 @@
       "created_at": "2026-11-15",
       "closed_at": "2026-11-15",
       "comments": 0
-    },
-    {
-      "id": 6402199572,
-      "number": 2103,
-      "title": "docs(antigravity): document scoped egress-gateway route for ASF network grants (#2003)",
-      "repo": "apache/magpie",
-      "status": "open",
-      "url": "https://github.com/apache/magpie/pull/2103",
-      "created_at": "2026-11-15",
-      "closed_at": null,
-      "comments": 1
     },
     {
       "id": 6399925761,
@@ -99,17 +352,6 @@
       "created_at": "2026-11-14",
       "closed_at": "2026-11-14",
       "comments": 0
-    },
-    {
-      "id": 6367105397,
-      "number": 6631,
-      "title": "[Ops][view_as_complex] Validate even storage offset in torch.view_as_complex",
-      "repo": "google-pytorch/torch_tpu",
-      "status": "open",
-      "url": "https://github.com/google-pytorch/torch_tpu/pull/6631",
-      "created_at": "2026-11-13",
-      "closed_at": null,
-      "comments": 1
     },
     {
       "id": 6365032952,
@@ -153,18 +395,7 @@
       "url": "https://github.com/microsoft/PyRIT/pull/4236",
       "created_at": "2026-11-12",
       "closed_at": null,
-      "comments": 0
-    },
-    {
-      "id": 6343340289,
-      "number": 4233,
-      "title": "FIX: Detect modern OpenSSH private keys in PathTraversalOutputScorer (#4232)",
-      "repo": "microsoft/PyRIT",
-      "status": "open",
-      "url": "https://github.com/microsoft/PyRIT/pull/4233",
-      "created_at": "2026-11-12",
-      "closed_at": null,
-      "comments": 0
+      "comments": 2
     },
     {
       "id": 6195361695,
@@ -450,7 +681,7 @@
       "url": "https://github.com/vllm-project/semantic-router/pull/5650",
       "created_at": "2026-10-30",
       "closed_at": null,
-      "comments": 7
+      "comments": 11
     },
     {
       "id": 6072759166,
@@ -1278,17 +1509,6 @@
       "comments": 0
     },
     {
-      "id": 5641959118,
-      "number": 73939,
-      "title": "API: Clarify docstrings and assert detail in Task State Store tests",
-      "repo": "apache/airflow",
-      "status": "open",
-      "url": "https://github.com/apache/airflow/pull/73939",
-      "created_at": "2026-09-30",
-      "closed_at": null,
-      "comments": 1
-    },
-    {
       "id": 5592949596,
       "number": 73753,
       "title": "API: Translate domain ValueError in Task State Store route",
@@ -1451,7 +1671,7 @@
       "url": "https://github.com/layer5io/layer5-academy/pull/280",
       "created_at": "2026-09-20",
       "closed_at": null,
-      "comments": 15
+      "comments": 16
     },
     {
       "id": 5509749789,

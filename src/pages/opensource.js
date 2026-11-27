@@ -54,12 +54,12 @@ const OSS_PROJECTS = [
     roleType: 'committer',
     category: 'agents',
     repoMatcher: (repo) => repo.toLowerCase() === 'apache/magpie',
-    defaultMerged: 41,
-    defaultOpen: 5,
+    defaultMerged: 54,
+    defaultOpen: 4,
     logoType: 'img',
     logoSrc: '/img/apachelogo.png',
     description: 'Agent-assisted maintainership and development framework for Apache projects (triage, mentoring, human-reviewed agent drafting, and pairing).',
-    highlights: 'Authored review findings data models (#1920), live checklist tool-call feed (#2013), review findings pane UI mod (#1954), CI status check rollup verification (#2061, #2072), and duplicate-picker mod (#2076).',
+    highlights: 'Authored local security triage queue pane (#2295), multi-agent review comparison pane (#2274, #2323), live token-cost meter band (#2237), review findings data models (#1920), and interactive findings UI (#1954).',
     tech: ['Apache Foundation', 'Agentic Triage', 'Hook Manager', 'Security Testing', 'Python'],
     deepDiveUrl: '/opensource/magpie',
     githubUrl: 'https://github.com/search?q=repo%3Aapache%2Fmagpie+is%3Apr+author%3AKaap10&type=pullrequests',
@@ -72,12 +72,12 @@ const OSS_PROJECTS = [
     roleType: 'contributor',
     category: 'security',
     repoMatcher: (repo) => repo.toLowerCase() === 'microsoft/pyrit',
-    defaultMerged: 31,
-    defaultOpen: 2,
+    defaultMerged: 34,
+    defaultOpen: 3,
     logoType: 'img',
     logoSrc: '/img/mslogo.png',
     description: "Microsoft's open-source Python Risk Identification Tool for GenAI. Enables automated multi-turn adversarial attacks and red teaming for LLM systems.",
-    highlights: 'Built frontier chat template delimiter detection (#4042), regex template validation in SearchReplaceConverter (#4077), case-insensitive denylist checks (#4062), and multi-engine RCE gadgets in SSTI (#3541).',
+    highlights: 'Built time-based blind SQLi & RCE detection in SQLInjectionOutputScorer (#4380), OpenSSH key detection in PathTraversalOutputScorer (#4233), frontier chat template delimiter detection (#4042), and SearchReplaceConverter validation (#4077).',
     tech: ['AI Red Teaming', 'Jailbreak Scoring', 'XXE & Path Traversal', 'GenAI Security', 'Python'],
     deepDiveUrl: '/opensource/pyrit',
     githubUrl: 'https://github.com/search?q=repo%3Amicrosoft%2FPyRIT+is%3Apr+author%3AKaap10&type=pullrequests',
@@ -300,7 +300,7 @@ const OSS_PROJECTS = [
   },
 ];
 
-// Helper to compute exact project counts from the 186 verified GitHub PRs
+// Helper to compute exact project counts from the 206 verified GitHub PRs
 function computeVerifiedCounts() {
   const result = {
     totalMerged: 0,
@@ -379,10 +379,10 @@ export default function OpenSourcePage() {
 
             <div className={styles.statsBadgeRow}>
               <span className={styles.statsBadge}>
-                <strong className={styles.highlightCount}>{counts.totalMerged || 161}+</strong> Merged Pull Requests
+                <strong className={styles.highlightCount}>{counts.totalMerged || 177}+</strong> Merged Pull Requests
               </span>
               <span className={styles.statsBadge}>
-                <strong className={styles.highlightCountBlue}>{counts.totalOpen || 13}</strong> In-Progress Active PRs
+                <strong className={styles.highlightCountBlue}>{counts.totalOpen || 14}</strong> In-Progress Active PRs
               </span>
               <span className={styles.statsBadge}>
                 <strong className={styles.highlightCountPurple}>{counts.totalRepos || 31}</strong> Ecosystem Repositories

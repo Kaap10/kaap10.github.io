@@ -113,7 +113,7 @@ const config = {
       colorMode: {
         defaultMode: 'dark',
         respectPrefersColorScheme: false,
-        disableSwitch: false,
+        disableSwitch: true,
       },
       docs: {
         sidebar: {
@@ -159,12 +159,6 @@ const config = {
             position: 'right',
             html: '<img src="/img/leetcode.png" width="19" height="19" alt="LeetCode" style="display: inline-block; vertical-align: middle; object-fit: contain;" />',
             'aria-label': 'LeetCode profile',
-          },
-          {
-            href: 'https://medium.com/@kap10',
-            position: 'right',
-            html: '<img src="/img/medium.png" width="19" height="19" alt="Medium" style="display: inline-block; vertical-align: middle; object-fit: contain; border-radius: 4px;" />',
-            'aria-label': 'Medium profile',
           },
         ],
       },

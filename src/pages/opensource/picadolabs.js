@@ -43,9 +43,9 @@ const PICADOLABS_PROJECTS = [
       'Open-source developer CLI guiding engineers through structured development phases with zero-API overhead and persistent local context across any AI model.',
     license: 'Apache 2.0',
     downloads: '1.4k+ Downloads',
-    contributors: '28 Contributors',
+    contributors: '30 Contributors',
     releases: 'v1.4.0 (3 Releases)',
-    forks: '24 Forks',
+    forks: '27 Forks',
     installCmd: 'npm install -g build-with-ai',
     packageUrl: 'https://www.npmjs.com/package/build-with-ai',
     packageType: 'npm',
@@ -77,9 +77,9 @@ const PICADOLABS_PROJECTS = [
         'Designed a local-first memory architecture (.buildwithai/context.json) that preserves technical choices across sessions and dynamically injects dependencies to eliminate AI context drift and hallucinations',
         'Implemented an extensible prompt interpolation engine with prerequisite validation (requires/writes), automated clipboard synchronization, and deterministic documentation generation (README, BUILD_LOG, CONTEXT.md)',
         'Shipped 11 production workflow templates spanning SaaS MVPs, REST APIs, FastAPI, React Native (Expo), Electron, Discord Bots, AI Agent & RAG Pipelines, and Chrome Extensions, with custom JSON/HTTPS template loading support',
-        'Published as an open-source npm package (npm i -g build-with-ai) with 1.4k+ downloads, 28 community contributors, and 24 forks on GitHub under Apache-2.0',
+        'Published as an open-source npm package (npm i -g build-with-ai) with 1.4k+ downloads, 30 community contributors, and 27 forks on GitHub under Apache-2.0',
       ],
-      metricsDetail: 'npm install -g build-with-ai · 1.4k+ Downloads · 28 Contributors · 24 Forks · 100% Test Coverage · Apache 2.0 License',
+      metricsDetail: 'npm install -g build-with-ai · 1.4k+ Downloads · 30 Contributors · 27 Forks · 100% Test Coverage · Apache 2.0 License',
     },
   },
 
@@ -94,10 +94,10 @@ const PICADOLABS_PROJECTS = [
     cardDescription:
       'Sub-3ms Pareto Traffic Control Room UI with Thompson Sampling RL auto-tuning, dynamically optimizing cost, latency, and quality across OpenAI, Anthropic, Gemini, and local models.',
     license: 'Apache 2.0',
-    downloads: '3.4k+ Downloads',
+    downloads: '3.7k+ Downloads',
     contributors: '13 Contributors',
     releases: 'v1.2.0 (2 Releases)',
-    forks: '12 Forks',
+    forks: '15 Forks',
     installCmd: 'pip install model-router-cli',
     packageUrl: 'https://github.com/PicadoLabs/ai-model-router/releases',
     packageType: 'pip',
@@ -130,9 +130,9 @@ const PICADOLABS_PROJECTS = [
         'Drop-in OpenAI and Anthropic API-compatible proxy interface with unified streaming',
         'Thompson Sampling reinforcement learning agent auto-tuning routing weights from feedback signals',
         'Automated Pareto benchmark suite and cost-accuracy evaluator with distributed OpenTelemetry tracing',
-        '3.4k+ downloads, 13 contributors, and 12 forks across enterprise AI deployments',
+        '3.7k+ downloads, 13 contributors, and 15 forks across enterprise AI deployments',
       ],
-      metricsDetail: 'pip install model-router-cli · 3.4k+ Downloads · 13 Contributors · 12 Forks · Sub-3ms routing overhead · Apache 2.0',
+      metricsDetail: 'pip install model-router-cli · 3.7k+ Downloads · 13 Contributors · 15 Forks · Sub-3ms routing overhead · Apache 2.0',
     },
   },
 
@@ -147,10 +147,10 @@ const PICADOLABS_PROJECTS = [
     cardDescription:
       'An autonomous AI coding agent that plans, modifies, tests, and independently verifies real-world codebases with sandboxed isolation and automatic rollback.',
     license: 'Apache 2.0',
-    downloads: '1.1k+ Downloads',
+    downloads: '1.4k+ Downloads',
     contributors: '4 Contributors',
     releases: 'v0.1.1 (1 Release)',
-    forks: '3 Forks',
+    forks: '2 Forks',
     installCmd: 'pip install terminal-agent-cli',
     packageUrl: 'https://github.com/PicadoLabs/terminal-agent/releases',
     packageType: 'pip',
@@ -186,7 +186,7 @@ const PICADOLABS_PROJECTS = [
         'Independent sandboxed verification isolating test execution from agent generation',
         '12-category failure classification with automated SQLite rollback checkpoints',
       ],
-      metricsDetail: 'pip install terminal-agent-cli · 1.1k+ Downloads · 4 Contributors · 12 specialized CLI tools · Apache 2.0',
+      metricsDetail: 'pip install terminal-agent-cli · 1.4k+ Downloads · 4 Contributors · 12 specialized CLI tools · Apache 2.0',
     },
   },
 
@@ -201,7 +201,7 @@ const PICADOLABS_PROJECTS = [
     cardDescription:
       'A platform to benchmark, score, and diagnose autonomous AI coding agents on 12 polyglot software engineering tasks using deterministic rule-based scoring and full trace audits.',
     license: 'Apache 2.0',
-    downloads: '550+ Downloads',
+    downloads: '700+ Downloads',
     contributors: '4 Contributors',
     releases: 'v1.0.0 (1 Release)',
     forks: '3 Forks',
@@ -239,7 +239,7 @@ const PICADOLABS_PROJECTS = [
         'Full execution trace logging with microsecond timestamps and tool call inspection',
         'Custom task ingestion via declarative YAML specifications',
       ],
-      metricsDetail: 'pip install agentbench-core · 550+ Downloads · 4 Contributors · 100% deterministic evaluation · Apache 2.0',
+      metricsDetail: 'pip install agentbench-core · 700+ Downloads · 4 Contributors · 100% deterministic evaluation · Apache 2.0',
     },
   },
 ];
@@ -313,13 +313,13 @@ export default function PicadoLabsPage() {
                 <span>picadolabs.me</span>
               </a>
 
-              <Link
+              {/* <Link
                 to="/build-with-ai"
                 className={styles.secondaryBtn}
               >
                 <Sparkles size={14} style={{ color: 'var(--vg-accent)' }} />
                 <span>build-with-ai Showcase</span>
-              </Link>
+              </Link> */}
 
               <Link
                 to="/opensource"
@@ -334,7 +334,7 @@ export default function PicadoLabsPage() {
           <div className={styles.metricsGrid} style={{ marginTop: '2.5rem', marginBottom: '1.5rem' }}>
             <div className={styles.metricCard}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <span className={styles.metricValue} style={{ color: '#10B981' }}>6.4k+</span>
+                <span className={styles.metricValue} style={{ color: '#10B981' }}>7.2k+</span>
                 <Download size={18} style={{ color: '#10B981', opacity: 0.8 }} />
               </div>
               <span className={styles.metricLabel}>Total Downloads</span>
@@ -358,7 +358,7 @@ export default function PicadoLabsPage() {
 
             <div className={styles.metricCard}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <span className={styles.metricValue} style={{ color: '#FACC15' }}>42+</span>
+                <span className={styles.metricValue} style={{ color: '#FACC15' }}>47+</span>
                 <GitFork size={18} style={{ color: '#FACC15', opacity: 0.8 }} />
               </div>
               <span className={styles.metricLabel}>GitHub Forks</span>
@@ -629,7 +629,7 @@ export default function PicadoLabsPage() {
                     </div>
 
                     <div className={openStyles.cardActions}>
-                      {project.showcaseUrl && (
+                      {/* {project.showcaseUrl && (
                         <Link
                           to={project.showcaseUrl}
                           className={openStyles.actionBtn}
@@ -640,7 +640,7 @@ export default function PicadoLabsPage() {
                           <span>Showcase</span>
                           <ArrowUpRight size={13} />
                         </Link>
-                      )}
+                      )} */}
                       {project.github && (
                         <a
                           href={project.github}

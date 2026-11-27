@@ -104,12 +104,14 @@ const PROJECTS = [
     status: 'Live',
     statusType: 'live',
     isPinned: true,
+    downloads: '1.4k+ Downloads',
+    contributors: '30+ Contributors',
     tagline: 'Zero-API deterministic SDLC CLI for autonomous agent-driven workflow scaffolding and verification.',
     link: '/build-with-ai',
     techStack: ['nodejs', 'typescript', 'docker', 'react'],
     preview: {
       title: 'Zero-API deterministic SDLC CLI',
-      tag: '1.4k+ Downloads · 28+ Contributors',
+      tag: '1.4k+ Downloads · 30+ Contributors',
       headline: 'Zero-API deterministic SDLC CLI',
       badgeText: '1.4k+ Downloads',
       accentColor: '#38BDF8',
@@ -122,14 +124,16 @@ const PROJECTS = [
     status: 'Live',
     statusType: 'live',
     isPinned: false,
+    downloads: '3.7k+ Downloads',
+    contributors: '13+ Contributors',
     tagline: 'Cost-aware LLM routing and reinforcement learning gateway with latency optimization and failover fallbacks.',
     link: '/opensource/picadolabs',
     techStack: ['python', 'fastapi', 'redis', 'docker'],
     preview: {
       title: 'Cost-aware LLM routing & RL gateway',
-      tag: '3.4k+ Downloads · 13+ Contributors',
+      tag: '3.7k+ Downloads · 13+ Contributors',
       headline: 'Cost-aware LLM routing & RL gateway',
-      badgeText: '3.4k+ Downloads',
+      badgeText: '3.7k+ Downloads',
       accentColor: '#10B981',
       glowColor: 'rgba(16, 185, 129, 0.28)'
     }
@@ -140,14 +144,16 @@ const PROJECTS = [
     status: 'Live',
     statusType: 'live',
     isPinned: false,
+    downloads: '1.4k+ Downloads',
+    contributors: '4+ Contributors',
     tagline: 'Verify-first sandboxed coding agent executing end-to-end tasks with isolated CLI tool runners and rollback checkpoints.',
     link: '/opensource/picadolabs',
     techStack: ['python', 'docker', 'fastapi'],
     preview: {
       title: 'Verify-first sandboxed coding agent',
-      tag: '1.1k+ Downloads · 4+ Contributors',
+      tag: '1.4k+ Downloads · 4+ Contributors',
       headline: 'Verify-first sandboxed coding agent',
-      badgeText: '1.1k+ Downloads',
+      badgeText: '1.4k+ Downloads',
       accentColor: '#FACC15',
       glowColor: 'rgba(250, 204, 21, 0.28)'
     }
@@ -158,14 +164,16 @@ const PROJECTS = [
     status: 'Live',
     statusType: 'live',
     isPinned: false,
+    downloads: '700+ Downloads',
+    contributors: '4+ Contributors',
     tagline: 'Multi-turn coding agent eval suite benchmarking autonomous agents on polyglot tasks using deterministic rule-based scoring.',
     link: '/opensource/picadolabs',
     techStack: ['python', 'docker'],
     preview: {
       title: 'Multi-turn coding agent eval suite',
-      tag: '550+ Downloads · 4+ Contributors',
+      tag: '700+ Downloads · 4+ Contributors',
       headline: 'Multi-turn coding agent eval suite',
-      badgeText: '550+ Downloads',
+      badgeText: '700+ Downloads',
       accentColor: '#FF4D4F',
       glowColor: 'rgba(255, 77, 79, 0.28)'
     }
@@ -264,6 +272,14 @@ export default function ProjectsPage() {
             <p className={styles.pageSubtitle}>
               Production-oriented systems, autonomous AI agents, and full-stack platforms built around real engineering challenges.
             </p>
+            <div className={styles.statsBadgeRow}>
+              <span className={styles.statsBadge}>
+                <strong className={styles.highlightDownloads}>7.2k+</strong> Total Downloads
+              </span>
+              <span className={styles.statsBadge}>
+                <strong className={styles.highlightContributors}>42+</strong> Contributors
+              </span>
+            </div>
           </header>
 
           {/* 2-Column Grid Product Showcase Cards */}
@@ -286,7 +302,9 @@ export default function ProjectsPage() {
                       <span className={styles.dot} />
                     </div>
                     <div className={styles.browserAddressBar}>
-                      <span>{project.preview.tag}</span>
+                      <span className={styles.highlightDownloads}>{project.downloads}</span>
+                      <span className={styles.metricSep}>·</span>
+                      <span className={styles.highlightContributors}>{project.contributors}</span>
                     </div>
                   </div>
 
@@ -298,12 +316,6 @@ export default function ProjectsPage() {
                     <div className={styles.mockupGlowOrb} />
                     
                     <div className={styles.mockupContent}>
-                      <span 
-                        className={styles.mockupBadge}
-                        style={{ borderColor: project.preview.accentColor, color: project.preview.accentColor }}
-                      >
-                        {project.preview.badgeText}
-                      </span>
                       <h3 className={styles.mockupHeadline}>
                         {project.preview.headline}
                       </h3>

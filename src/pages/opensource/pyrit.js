@@ -36,13 +36,13 @@ const MicrosoftLogoIcon = ({ size = 16 }) => (
 const PYRIT_CARD = {
   id: 'pyrit',
   index: '02',
-  roleTag: 'Contributor · 31 Merged PRs · Microsoft AI Red Team',
+  roleTag: 'Contributor · 34 Merged PRs · Microsoft AI Red Team',
   icon: MicrosoftLogoIcon,
   title: 'microsoft/PyRIT',
   headline: 'Greedy Coordinate Gradient (GCG) Adversarial Jailbreak Optimization Engine & Robustness',
   cardDescription:
-    "Authored 31 Pull Requests across Microsoft's open-source AI Red Teaming framework (PyRIT), modularizing the Greedy Coordinate Gradient (GCG) adversarial engine, optimizing GPU VRAM deallocation, resolving SQLite concurrent evaluation locks, and hardening converter & attack builders.",
-  license: '31 Merged PRs',
+    "Authored 34 Pull Requests across Microsoft's open-source AI Red Teaming framework (PyRIT), modularizing the Greedy Coordinate Gradient (GCG) adversarial engine, optimizing GPU VRAM deallocation, resolving SQLite concurrent evaluation locks, and hardening converter & attack builders.",
+  license: '34 Merged PRs',
   techStack: [
     'Python 3.11+',
     'PyTorch',

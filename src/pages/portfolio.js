@@ -54,7 +54,7 @@ export default function PortfolioPage() {
                     />
                   </div>
                   <span className={styles.picadoText}>Picado Labs</span>
-                  <span className={styles.picadoBadge}>6.4k+</span>
+                  <span className={styles.picadoBadge}>7.2k+</span>
                   <ArrowRight size={14} className={styles.picadoArrow} />
                 </Link>
 
@@ -73,11 +73,16 @@ export default function PortfolioPage() {
                   <ArrowRight size={14} />
                 </Link>
 
-                <Link to="/blogs/intro" className={styles.heroLink}>
+                <a
+                  href="https://kap10.hashnode.dev/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.heroLink}
+                >
                   <BookOpen size={15} style={{ color: '#3B82F6' }} />
-                  <span>Blogs</span>
-                  <ArrowRight size={14} />
-                </Link>
+                  <span>Technical blogs</span>
+                  <ArrowUpRight size={14} />
+                </a>
 
                 <Link to="/" className={styles.heroLink}>
                   <Terminal size={15} style={{ color: '#22C55E' }} />

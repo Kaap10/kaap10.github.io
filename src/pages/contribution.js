@@ -18,7 +18,7 @@ export default function ContributionPage() {
   const [activeTab, setActiveTab] = useState('all'); // 'all' | 'merged' | 'open' | 'closed'
   const [searchQuery, setSearchQuery] = useState('');
   const [items, setItems] = useState(initialData.items || []);
-  const [totalCount, setTotalCount] = useState(initialData.total || 186);
+  const [totalCount, setTotalCount] = useState(initialData.total || 206);
 
   // Background fetch to sync latest PRs
   useEffect(() => {

@@ -9,9 +9,7 @@ import {
   CheckCircle2, 
   Globe, 
   Code2, 
-  Sparkles,
   Layers,
-  Terminal,
   ShieldCheck
 } from 'lucide-react';
 import styles from './styles.module.css';
@@ -33,7 +31,7 @@ export default function ExperienceSection() {
         {/* 1. Apache Magpie Committer (The Apache Software Foundation) */}
         <div className={styles.item} id="experience-apache-magpie">
           <div className={styles.iconCol}>
-            <div className={styles.iconCircle} style={{ borderColor: 'rgba(251, 146, 60, 0.35)' }}>
+            <div className={styles.iconCircle}>
               <img 
                 src="/img/apachelogo.png" 
                 alt="Apache" 
@@ -46,44 +44,39 @@ export default function ExperienceSection() {
 
           <div className={styles.contentCol}>
             <div className={styles.itemHeader}>
-              <div className={styles.roleTitleWrap}>
-                <h3 className={styles.itemTitle}>
-                  <a 
-                    href="https://github.com/apache/magpie" 
-                    target="_blank" 
-                    rel="noopener noreferrer" 
-                    className={styles.itemLink}
-                  >
-                    <span>Apache Magpie Committer</span>
-                    <ArrowUpRight size={13} />
-                  </a>
-                </h3>
-                <span 
-                  className={styles.companyTag}
-                  style={{ background: 'rgba(251, 146, 60, 0.1)', color: '#FB923C', borderColor: 'rgba(251, 146, 60, 0.25)' }}
+              <h3 className={styles.itemTitle}>
+                <a 
+                  href="https://github.com/apache/magpie" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className={styles.itemLink}
                 >
-                  The Apache Software Foundation
-                </span>
-              </div>
-              <span className={styles.period}>Nov'2026 — Present · Remote</span>
+                  <span>Apache Magpie Committer</span>
+                  <ArrowUpRight size={13} />
+                </a>
+              </h3>
+              <span className={styles.period}>
+                <span className={styles.liveDot} aria-hidden="true" />
+                <span>Nov'2026 — Present</span>
+              </span>
             </div>
 
-            {/* Badges */}
+            <div className={styles.roleSubtitle}>
+              The Apache Software Foundation · Remote
+            </div>
+
+            {/* Matte Metadata Badges */}
             <div className={styles.metricsRow}>
-              <span className={`${styles.metricBadge} ${styles.metricGreen}`}>
-                <CheckCircle2 size={12} />
-                <span>Present</span>
-              </span>
               <span className={`${styles.metricBadge} ${styles.metricBlue}`}>
                 <ShieldCheck size={12} />
                 <span>Official Committer</span>
               </span>
-              <span className={`${styles.metricBadge} ${styles.metricAmber}`}>
+              <span className={`${styles.metricBadge} ${styles.metricMatte}`}>
                 <span>Contributor (Aug'2026 — Nov'2026)</span>
               </span>
             </div>
 
-            <p className={styles.description}>
+            <p className={styles.leadDescription}>
               Elected as an official Committer for the Apache Magpie project.
             </p>
 
@@ -117,16 +110,20 @@ export default function ExperienceSection() {
 
           <div className={styles.contentCol}>
             <div className={styles.itemHeader}>
-              <div className={styles.roleTitleWrap}>
-                <h3 className={styles.itemTitle}>
-                  <Link to="/opensource/picadolabs" className={styles.itemLink}>
-                    <span>Building @ PicadoLabs</span>
-                    <ArrowUpRight size={13} />
-                  </Link>
-                </h3>
-                <span className={styles.companyTag}>Founder &amp; Maintainer</span>
-              </div>
-              <span className={styles.period}>July'2026 — Present</span>
+              <h3 className={styles.itemTitle}>
+                <Link to="/opensource/picadolabs" className={styles.itemLink}>
+                  <span>Building @ PicadoLabs</span>
+                  <ArrowUpRight size={13} />
+                </Link>
+              </h3>
+              <span className={styles.period}>
+                <span className={styles.liveDot} aria-hidden="true" />
+                <span>July'2026 — Present</span>
+              </span>
+            </div>
+
+            <div className={styles.roleSubtitle}>
+              Founder &amp; Maintainer
             </div>
 
             {/* Traction Badges */}
@@ -137,9 +134,9 @@ export default function ExperienceSection() {
               </span>
               <span className={`${styles.metricBadge} ${styles.metricGreen}`}>
                 <Download size={12} />
-                <span>6.4k+ Downloads</span>
+                <span>7.2k+ Downloads</span>
               </span>
-              <span className={`${styles.metricBadge} ${styles.metricPurple}`}>
+              <span className={`${styles.metricBadge} ${styles.metricMatte}`}>
                 <Layers size={12} />
                 <span>4 Core Systems</span>
               </span>
@@ -151,25 +148,26 @@ export default function ExperienceSection() {
           </div>
         </div>
 
-        {/* 2. Open Source Contributor */}
+        {/* 3. Open Source Contributor */}
         <div className={styles.item} id="experience-opensource">
           <div className={styles.iconCol}>
-            <div className={styles.iconCircle} style={{ borderColor: 'rgba(56, 189, 248, 0.3)' }}>
-              <GitPullRequest size={16} style={{ color: '#38BDF8' }} />
+            <div className={styles.iconCircle}>
+              <GitPullRequest size={15} style={{ color: '#38BDF8' }} />
             </div>
           </div>
 
           <div className={styles.contentCol}>
             <div className={styles.itemHeader}>
-              <div className={styles.roleTitleWrap}>
-                <h3 className={styles.itemTitle}>
-                  <Link to="/opensource" className={styles.itemLink}>
-                    <span>Open Source (Contributor &amp; Collaborator)</span>
-                    <ArrowUpRight size={13} />
-                  </Link>
-                </h3>
-              </div>
-              <span className={styles.period}>Aug'2026 — Present</span>
+              <h3 className={styles.itemTitle}>
+                <Link to="/opensource" className={styles.itemLink}>
+                  <span>Open Source Contributor</span>
+                  <ArrowUpRight size={13} />
+                </Link>
+              </h3>
+              <span className={styles.period}>
+                <span className={styles.liveDot} aria-hidden="true" />
+                <span>Aug'2026 — Present</span>
+              </span>
             </div>
 
             {/* Breakdown of Major Contributions */}
@@ -179,13 +177,12 @@ export default function ExperienceSection() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className={styles.subItem}
-                style={{ textDecoration: 'none' }}
               >
                 <span className={styles.subItemName}>
                   <img src="/img/apachelogo.png" alt="" width={15} height={15} style={{ objectFit: 'contain' }} />
                   <span>Apache Magpie (Committer)</span>
                 </span>
-                <span className={styles.subItemCount}>41 Merged PRs</span>
+                <span className={styles.subItemCount}>54 Merged PRs</span>
               </a>
 
               <a 
@@ -193,13 +190,12 @@ export default function ExperienceSection() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className={styles.subItem}
-                style={{ textDecoration: 'none' }}
               >
                 <span className={styles.subItemName}>
                   <img src="/img/mslogo.png" alt="" width={14} height={14} style={{ objectFit: 'contain' }} />
                   <span>Microsoft PyRIT (Contributor)</span>
                 </span>
-                <span className={styles.subItemCount}>31 Merged PRs</span>
+                <span className={styles.subItemCount}>34 Merged PRs</span>
               </a>
 
               <a 
@@ -207,7 +203,6 @@ export default function ExperienceSection() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className={styles.subItem}
-                style={{ textDecoration: 'none' }}
               >
                 <span className={styles.subItemName}>
                   <Code2 size={14} style={{ color: '#38BDF8' }} />
@@ -217,33 +212,39 @@ export default function ExperienceSection() {
               </a>
             </div>
 
-            <p className={styles.description} style={{ marginTop: '0.4rem' }}>
-              Engineered security evaluators, ReAct agent primitives, real-time async streaming pipelines, and review finding parsers across 161+ total merged pull requests.
+            <p className={styles.description} style={{ marginTop: '0.45rem' }}>
+              Engineered security evaluators, ReAct agent primitives, real-time async streaming pipelines, and review finding parsers across 177+ total merged pull requests.
             </p>
+
+            <div className={styles.subListFooter}>
+              <Link to="/opensource" className={styles.viewAllBtn}>
+                <span>View All</span>
+                <ArrowUpRight size={12} />
+              </Link>
+            </div>
           </div>
         </div>
 
-        {/* 3. Dazu Services */}
+        {/* 4. Dazu Services */}
         <div className={styles.item} id="experience-dazu">
           <div className={styles.iconCol}>
-            <div className={styles.iconCircle} style={{ borderColor: 'rgba(245, 158, 11, 0.3)' }}>
-              <Briefcase size={15} style={{ color: '#FBBF24' }} />
+            <div className={styles.iconCircle}>
+              <Briefcase size={15} style={{ color: '#A1A1AA' }} />
             </div>
           </div>
 
           <div className={styles.contentCol}>
             <div className={styles.itemHeader}>
-              <div className={styles.roleTitleWrap}>
-                <h3 className={styles.itemTitle}>Dazu Services (Startup)</h3>
-                <span className={styles.companyTag} style={{ background: 'rgba(245, 158, 11, 0.1)', color: '#FBBF24', borderColor: 'rgba(245, 158, 11, 0.25)' }}>
-                  Full Stack Developer Intern
-                </span>
-              </div>
+              <h3 className={styles.itemTitle}>Dazu Services (Startup)</h3>
               <span className={styles.period}>Aug'2025 — Oct'2025</span>
             </div>
 
+            <div className={styles.roleSubtitle}>
+              Full Stack Developer Intern
+            </div>
+
             <div className={styles.metricsRow}>
-              <span className={`${styles.metricBadge} ${styles.metricBlue}`}>
+              <span className={`${styles.metricBadge} ${styles.metricMatte}`}>
                 <span>React · TypeScript · Node.js · Supabase · Docker CI/CD</span>
               </span>
             </div>
@@ -254,19 +255,17 @@ export default function ExperienceSection() {
           </div>
         </div>
 
-        {/* 4. Freelancing */}
+        {/* 5. Freelancing */}
         <div className={styles.item} id="experience-freelancing">
           <div className={styles.iconCol}>
-            <div className={styles.iconCircle} style={{ borderColor: 'rgba(16, 185, 129, 0.3)' }}>
-              <Globe size={15} style={{ color: '#34D399' }} />
+            <div className={styles.iconCircle}>
+              <Globe size={15} style={{ color: '#A1A1AA' }} />
             </div>
           </div>
 
           <div className={styles.contentCol}>
             <div className={styles.itemHeader}>
-              <div className={styles.roleTitleWrap}>
-                <h3 className={styles.itemTitle}>Freelancing</h3>
-              </div>
+              <h3 className={styles.itemTitle}>Freelancing</h3>
               <span className={styles.period}>March'2025 — April'2025</span>
             </div>
 
