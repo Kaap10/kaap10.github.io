@@ -7,9 +7,9 @@
 .paletteOverlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.72);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+  background: rgba(0, 0, 0, 0.78);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   z-index: 999999;
   display: flex;
   align-items: flex-start;
@@ -18,7 +18,7 @@
   padding-left: 1rem;
   padding-right: 1rem;
   box-sizing: border-box;
-  animation: fadeIn 0.15s ease-out;
+  animation: fadeIn 0.12s ease-out;
 }
 
 @keyframes fadeIn {
@@ -27,42 +27,42 @@
 }
 
 @keyframes scaleUp {
-  from { opacity: 0; transform: scale(0.97) translateY(-8px); }
+  from { opacity: 0; transform: scale(0.98) translateY(-6px); }
   to { opacity: 1; transform: scale(1) translateY(0); }
 }
 
 /* Command Palette Modal Box */
 .paletteModal {
   width: 100%;
-  max-width: 620px;
-  background: var(--vg-bg-elevated, #262628);
-  border: 1px solid var(--vg-border-hover, rgba(255, 255, 255, 0.14));
-  border-radius: var(--vg-radius-lg, 12px);
-  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.85), 0 4px 20px rgba(0, 0, 0, 0.5);
+  max-width: 640px;
+  background: #0A0A0E;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.85);
   overflow: hidden;
   display: flex;
   flex-direction: column;
   color: var(--vg-text, #F5F5F7);
   font-family: var(--ifm-font-family-base, sans-serif);
-  animation: scaleUp 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: scaleUp 0.14s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .paletteSearchWrapper {
   display: flex;
   align-items: center;
-  padding: 0.95rem 1.25rem;
-  border-bottom: 1px solid var(--vg-border, rgba(255, 255, 255, 0.08));
+  padding: 0.9rem 1.15rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   gap: 0.75rem;
-  background: var(--vg-surface, #2E2E31);
+  background: #0E0E14;
 }
 
 .paletteFilterBar {
   display: flex;
   align-items: center;
-  gap: 0.4rem;
-  padding: 0.5rem 1.25rem;
-  background: var(--vg-surface, #2E2E31);
-  border-bottom: 1px solid var(--vg-border, rgba(255, 255, 255, 0.06));
+  gap: 0.35rem;
+  padding: 0.5rem 1.15rem;
+  background: #0B0B10;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
   overflow-x: auto;
 }
 
@@ -70,24 +70,24 @@
   font-size: 0.72rem;
   font-weight: 500;
   padding: 0.22rem 0.65rem;
-  border-radius: 9999px;
+  border-radius: 6px;
   background: transparent;
   border: 1px solid transparent;
-  color: var(--vg-text-muted, #A6A6AC);
+  color: #8E8E93;
   cursor: pointer;
   transition: all 0.12s ease;
   white-space: nowrap;
 }
 
 .paletteFilterBtn:hover {
-  color: var(--vg-text, #F5F5F7);
-  background: var(--vg-surface-strong, #38383C);
+  color: #F5F5F7;
+  background: rgba(255, 255, 255, 0.04);
 }
 
 .paletteFilterBtnActive {
-  background: rgba(255, 77, 79, 0.15);
-  border-color: rgba(255, 77, 79, 0.35);
-  color: var(--vg-accent, #FF4D4F);
+  background: rgba(56, 189, 248, 0.1);
+  border-color: rgba(56, 189, 248, 0.28);
+  color: #38BDF8;
   font-weight: 600;
 }
 
@@ -96,69 +96,85 @@
   background: transparent;
   border: none;
   outline: none;
-  color: var(--vg-text, #F5F5F7);
-  font-size: 1rem;
+  color: #F5F5F7;
+  font-size: 0.95rem;
   font-family: inherit;
 }
 
 .paletteInput::placeholder {
-  color: var(--vg-text-subtle, #787880);
+  color: #6E6E77;
 }
 
 .paletteShortcutBadge {
   font-family: var(--ifm-font-family-monospace, monospace);
-  font-size: 0.72rem;
+  font-size: 0.68rem;
   font-weight: 600;
-  padding: 0.2rem 0.55rem;
-  border-radius: var(--vg-radius-sm, 6px);
-  background: var(--vg-surface-strong, #38383C);
-  border: 1px solid var(--vg-border, rgba(255, 255, 255, 0.08));
-  color: var(--vg-text-muted, #A6A6AC);
+  padding: 0.18rem 0.5rem;
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  color: #A1A1AA;
   display: inline-flex;
   align-items: center;
   gap: 0.25rem;
+  flex-shrink: 0;
 }
 
 .paletteList {
-  max-height: 400px;
+  max-height: 410px;
   overflow-y: auto;
-  padding: 0.5rem;
+  padding: 0.45rem;
   display: flex;
   flex-direction: column;
   gap: 2px;
-  background: var(--vg-bg-elevated, #262628);
+  background: #0A0A0E;
+}
+
+.paletteEmpty {
+  padding: 2.5rem 1rem;
+  text-align: center;
+  color: #8E8E93;
+  font-size: 0.85rem;
 }
 
 .paletteSectionTitle {
-  font-size: 0.68rem;
+  font-size: 0.66rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: var(--vg-text-subtle, #787880);
-  padding: 0.65rem 0.75rem 0.25rem;
+  color: #6E6E77;
+  padding: 0.6rem 0.7rem 0.25rem;
 }
 
 .paletteItem {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.65rem 0.85rem;
-  border-radius: var(--vg-radius-sm, 6px);
+  gap: 0.75rem;
+  padding: 0.6rem 0.8rem;
+  border-radius: 7px;
   background: transparent;
   border: 1px solid transparent;
-  color: var(--vg-text, #F5F5F7);
+  color: #E4E4E7;
   cursor: pointer;
   font-size: 0.88rem;
-  transition: all var(--vg-transition-fast, 0.12s ease);
+  transition: background-color 0.1s ease, border-color 0.1s ease;
   width: 100%;
   text-align: left;
 }
 
 .paletteItem:hover,
 .paletteItemActive {
-  background: var(--vg-surface, #2E2E31);
-  border-color: var(--vg-border-hover, rgba(255, 255, 255, 0.16));
-  color: #ffffff;
+  background: #14141B;
+  border-color: rgba(255, 255, 255, 0.1);
+  color: #FFFFFF;
+}
+
+.paletteHighlight {
+  background: rgba(56, 189, 248, 0.18);
+  color: #38BDF8;
+  border-radius: 2px;
+  padding: 0 2px;
 }
 
 .paletteItemContent {
@@ -172,13 +188,13 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  font-size: 0.88rem;
+  font-size: 0.86rem;
   font-weight: 500;
 }
 
 .paletteItemSub {
-  font-size: 0.74rem;
-  color: var(--vg-text-subtle, #787880);
+  font-size: 0.72rem;
+  color: #787880;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -189,9 +205,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--vg-accent, #FF4D4F);
-  margin-right: 0.75rem;
+  color: #A1A1AA;
   flex-shrink: 0;
+}
+
+.paletteItemActive .paletteItemIcon {
+  color: #38BDF8;
 }
 
 .paletteToast {
@@ -199,8 +218,8 @@
   top: 14px;
   left: 50%;
   transform: translateX(-50%);
-  background: #18181D;
-  border: 1px solid var(--vg-accent, #FF4D4F);
+  background: #121218;
+  border: 1px solid rgba(52, 211, 153, 0.45);
   border-radius: 9999px;
   padding: 0.35rem 1rem;
   font-size: 0.78rem;
@@ -215,14 +234,20 @@
 }
 
 .paletteFooter {
-  padding: 0.65rem 1.25rem;
-  border-top: 1px solid var(--vg-border, rgba(255, 255, 255, 0.08));
-  background: var(--vg-bg, #121216);
+  padding: 0.6rem 1.15rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  background: #07070A;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 0.75rem;
-  color: var(--vg-text-muted, #A6A6AC);
+  font-size: 0.74rem;
+  color: #8E8E93;
+}
+
+.paletteCountMeta {
+  font-family: var(--ifm-font-family-monospace, monospace);
+  font-size: 0.71rem;
+  color: #6E6E77;
 }
 
 /* ==============================================================================

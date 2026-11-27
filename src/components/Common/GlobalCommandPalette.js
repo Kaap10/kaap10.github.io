@@ -13,7 +13,6 @@ import {
   Sparkles,
   CheckSquare,
   Timer,
-  Repeat,
   BarChart3,
   Search,
   GitPullRequest,
@@ -26,14 +25,13 @@ import {
   Flame,
   Globe,
   Mail,
-  Wrench,
-  Sun,
-  Moon,
   Database,
   Shield,
   Cpu,
-  Briefcase
+  Briefcase,
+  ShieldCheck
 } from 'lucide-react';
+import contributionsData from '@site/src/data/contributions.json';
 import styles from './commonComponents.module.css';
 
 // Master Command Registry
@@ -42,12 +40,38 @@ const COMMANDS = [
   {
     id: 'nav-portfolio',
     section: 'Navigation',
-    title: 'Go to Portfolio',
-    subtitle: 'Vardhman Gupta — AI Engineer',
-    keywords: ['portfolio', 'resume', 'cv', 'about', 'engineer', 'experience', 'vardhman'],
-    shortcut: 'G P',
+    title: 'Go to Portfolio (Home)',
+    subtitle: 'Vardhman Gupta — AI Agents, Dev Tools, LLM Security & OSS',
+    keywords: ['portfolio', 'home', 'resume', 'cv', 'about', 'engineer', 'experience', 'vardhman'],
     icon: <Compass size={16} />,
     path: '/portfolio',
+  },
+  {
+    id: 'nav-opensource',
+    section: 'Navigation',
+    title: 'Go to Open Source Hub',
+    subtitle: '177+ merged PRs across Apache, Microsoft PyRIT, DynaVec & PicadoLabs',
+    keywords: ['opensource', 'open source', 'bwa', 'build-with-ai', 'dynavec', 'apache', 'magpie', 'pr', 'github'],
+    icon: <GitPullRequest size={16} />,
+    path: '/opensource',
+  },
+  {
+    id: 'nav-projects',
+    section: 'Navigation',
+    title: 'Go to Projects',
+    subtitle: 'build-with-ai, ai-model-router, terminal-agent & agent-bench',
+    keywords: ['projects', 'repos', 'picadolabs', 'build-with-ai', 'ai-model-router', 'terminal-agent', 'agent-bench'],
+    icon: <Code2 size={16} />,
+    path: '/projects',
+  },
+  {
+    id: 'nav-tech-blogs',
+    section: 'Navigation',
+    title: 'Open Technical Blogs (Hashnode)',
+    subtitle: 'https://kap10.hashnode.dev/',
+    keywords: ['blogs', 'technical blogs', 'hashnode', 'articles', 'writing', 'engineering'],
+    icon: <BookOpen size={16} />,
+    path: 'https://kap10.hashnode.dev/',
   },
   {
     id: 'nav-workspace',
@@ -55,57 +79,24 @@ const COMMANDS = [
     title: 'Go to DevWorkspace Hub',
     subtitle: 'Integrated developer tooling & productivity suite',
     keywords: ['workspace', 'devworkspace', 'hub', 'suite', 'tools', 'whiteboard', 'notebook', 'tracker'],
-    shortcut: 'G W',
     icon: <Layers size={16} />,
     path: '/workspace',
   },
   {
-    id: 'nav-opensource',
+    id: 'nav-notes',
     section: 'Navigation',
-    title: 'Go to Open Source Hub',
-    subtitle: 'Apache, Microsoft PyRIT, Dynavec, Palinode & MCP contributions',
-    keywords: ['opensource', 'open source', 'bwa', 'build-with-ai', 'dynavec', 'apache', 'magpie', 'pr', 'github'],
-    shortcut: 'G O',
-    icon: <GitPullRequest size={16} />,
-    path: '/opensource',
-  },
-  {
-    id: 'nav-projects',
-    section: 'Navigation',
-    title: 'Go to Featured Projects',
-    subtitle: 'Karya AI, AuraNow, IncidentFlow & Autonomous Agent systems',
-    keywords: ['projects', 'repos', 'karya', 'auranow', 'incidentflow', 'terminal agent', 'code with buddy'],
-    shortcut: 'G J',
-    icon: <Code2 size={16} />,
-    path: '/projects',
-  },
-  {
-    id: 'nav-blogs',
-    section: 'Navigation',
-    title: 'Go to Technical Blogs',
-    subtitle: 'System Design, DSA, ML & Large Language Models',
-    keywords: ['blogs', 'articles', 'dsa', 'system design', 'machine learning', 'llm', 'transformers'],
-    shortcut: 'G L',
+    title: 'Go to Revision Notes',
+    subtitle: 'Core Python, Flask, System Design & Engineering Notes',
+    keywords: ['notes', 'docs', 'python', 'flask', 'dsa', 'system design', 'revision'],
     icon: <FileText size={16} />,
     path: '/blogs/intro',
   },
   {
-    id: 'nav-docs',
-    section: 'Navigation',
-    title: 'Go to Technical Documentation',
-    subtitle: 'Comprehensive guides and engineering references',
-    keywords: ['docs', 'documentation', 'guides', 'reference', 'manual', 'api'],
-    shortcut: 'G D',
-    icon: <BookOpen size={16} />,
-    path: '/docs',
-  },
-  {
     id: 'nav-terminal',
     section: 'Navigation',
-    title: 'Go to Workstation Terminal (Home)',
+    title: 'Go to Workstation Terminal',
     subtitle: 'Interactive Unix shell & developer terminal',
-    keywords: ['terminal', 'home', 'cli', 'bash', 'pty', 'shell', 'neofetch'],
-    shortcut: 'G H',
+    keywords: ['terminal', 'cli', 'bash', 'pty', 'shell', 'neofetch'],
     icon: <Terminal size={16} />,
     path: '/',
   },
@@ -115,17 +106,25 @@ const COMMANDS = [
     id: 'exp-timeline',
     section: 'Experience',
     title: 'Work Experience Timeline',
-    subtitle: 'PicadoLabs, Open Source, Dazu Services & Freelancing',
+    subtitle: 'Apache Magpie Committer, PicadoLabs, Open Source & Dazu Services',
     keywords: ['experience', 'work', 'career', 'jobs', 'roles', 'resume', 'timeline', 'employment'],
-    shortcut: 'G E',
     icon: <Briefcase size={16} />,
     path: '/portfolio#experience',
   },
   {
+    id: 'exp-apache-magpie',
+    section: 'Experience',
+    title: 'Apache Magpie Committer',
+    subtitle: 'The Apache Software Foundation · Nov 2026 – Present · Remote',
+    keywords: ['apache', 'magpie', 'committer', 'asf', 'foundation', 'vcs', 'gitlab', 'forgejo', 'osv', 'claude code'],
+    icon: <ShieldCheck size={16} />,
+    path: '/portfolio#experience-apache-magpie',
+  },
+  {
     id: 'exp-picadolabs',
     section: 'Experience',
-    title: 'Building @PicadoLabs: Founder & Maintainer',
-    subtitle: 'July 2026 – Present · 5.3k+ Downloads, 37+ Contributors, 4 Core Systems',
+    title: 'Building @ PicadoLabs: Founder & Maintainer',
+    subtitle: 'July 2026 – Present · 7.2k+ Downloads, 42+ Contributors, 4 Core Systems',
     keywords: ['picadolabs', 'founder', 'maintainer', 'ai', 'agents', 'experience', 'build-with-ai', 'router', 'agentbench', 'terminal agent'],
     icon: <Globe size={16} />,
     path: '/portfolio#experience-picadolabs',
@@ -133,9 +132,9 @@ const COMMANDS = [
   {
     id: 'exp-opensource',
     section: 'Experience',
-    title: 'Open Source (Contributor & Collaborator)',
-    subtitle: 'Aug 2026 – Present · Apache Magpie (31 PRs), PyRIT (21 PRs), DynaVec (21 PRs)',
-    keywords: ['opensource', 'open source', 'contributor', 'collaborator', 'apache', 'magpie', 'microsoft', 'pyrit', 'dynavec', 'experience', '138 prs'],
+    title: 'Open Source Contributor',
+    subtitle: 'Aug 2026 – Present · Apache Magpie (54 PRs), PyRIT (34 PRs), DynaVec (22 PRs)',
+    keywords: ['opensource', 'open source', 'contributor', 'collaborator', 'apache', 'magpie', 'microsoft', 'pyrit', 'dynavec', 'experience', '177 prs'],
     icon: <GitPullRequest size={16} />,
     path: '/portfolio#experience-opensource',
   },
@@ -152,65 +151,73 @@ const COMMANDS = [
     id: 'exp-freelancing',
     section: 'Experience',
     title: 'Freelancing: Delivered Website to Startup',
-    subtitle: 'March 2025 – April 2025 · Production platform delivery ($48 contract) · Next.js & Tailwind CSS',
-    keywords: ['freelance', 'freelancing', 'client', 'startup', 'contract', 'delivered', 'next.js', 'tailwind', 'experience'],
+    subtitle: 'March 2025 – April 2025 · Production platform delivery ($48 contract)',
+    keywords: ['freelance', 'freelancing', 'client', 'startup', 'contract', 'delivered', 'experience'],
     icon: <Code2 size={16} />,
     path: '/portfolio#experience-freelancing',
   },
 
-  // 3. Open Source Showcases (All Merged Work)
+  // 3. Open Source Showcases (Verified Live Data)
   {
     id: 'oss-feed',
     section: 'Open Source',
-    title: 'Open Source Hub: 138+ Merged Pull Requests',
+    title: 'Open Source Hub: 177+ Merged Pull Requests',
     subtitle: 'Full interactive feed across 31 repositories (Apache, Microsoft, DynaVec, PicadoLabs)',
-    keywords: ['opensource', 'open source', 'prs', 'merged', 'github', 'feed', '138 prs', 'contributions'],
-    shortcut: 'G O',
+    keywords: ['opensource', 'open source', 'prs', 'merged', 'github', 'feed', '177 prs', '206 prs', 'contributions'],
     icon: <GitPullRequest size={16} />,
     path: '/opensource',
   },
   {
+    id: 'oss-live-feed',
+    section: 'Open Source',
+    title: 'Live PR Activity Feed (206 Authored PRs)',
+    subtitle: 'Filterable list of all merged, open, and closed pull requests',
+    keywords: ['pr feed', 'contributions', 'activity', 'pull requests', '206'],
+    icon: <Activity size={16} />,
+    path: '/contribution',
+  },
+  {
     id: 'oss-magpie',
     section: 'Open Source',
-    title: 'Apache Magpie: 31 Merged Pull Requests',
-    subtitle: 'Agentic triage, RFC-AI-0004 standard, Copilot CLI, Aider, Goose & agent-iso sandbox',
-    keywords: ['apache', 'magpie', 'copilot', 'aider', 'goose', 'mcp', 'hitl', 'agent', '31 prs', 'pr 1887', 'pr 1891', 'pr 1855'],
+    title: 'Apache Magpie (Committer): 54 Merged PRs',
+    subtitle: 'Security triage queue, multi-agent review comparison, RFC-AI-0004 & agent-iso',
+    keywords: ['apache', 'magpie', 'committer', 'copilot', 'aider', 'goose', 'mcp', 'hitl', 'agent', '54 prs'],
     icon: <Shield size={16} />,
     path: '/opensource/magpie',
   },
   {
     id: 'oss-pyrit',
     section: 'Open Source',
-    title: 'Microsoft PyRIT: 21 Merged Pull Requests',
-    subtitle: 'AI Red Teaming, GCG Adversarial Pipeline, Path Traversal, XXE & SSTI mitigations',
-    keywords: ['microsoft', 'pyrit', 'gcg', 'jailbreak', 'red team', 'vram', 'torch', '21 prs', 'pr 3488', 'pr 3486', 'pr 3541'],
+    title: 'Microsoft PyRIT: 34 Merged PRs',
+    subtitle: 'AI Red Teaming, SQLi/PathTraversal/XXE/SSTI scorers & GCG adversarial pipeline',
+    keywords: ['microsoft', 'pyrit', 'gcg', 'jailbreak', 'red team', 'sqli', 'xxe', 'ssti', '34 prs'],
     icon: <Zap size={16} />,
     path: '/opensource/pyrit',
   },
   {
     id: 'oss-dynavec',
     section: 'Open Source',
-    title: 'Dynavec (Collaborator): 21 Merged Pull Requests',
-    subtitle: 'Serverless hybrid vector DB, ReAct agent primitives & real-time async streaming',
-    keywords: ['dynavec', 'vector', 'database', 'collaborator', 'fastmcp', 'dynamodb', 's3', '21 prs', 'pr 319', 'pr 328', 'pr 329'],
+    title: 'DynaVec (Collaborator): 22 Merged PRs',
+    subtitle: 'Serverless hybrid vector DB, ReAct agent primitives & CI regression evals',
+    keywords: ['dynavec', 'vector', 'database', 'collaborator', 'fastmcp', 'dynamodb', 's3', '22 prs'],
     icon: <Zap size={16} />,
     path: '/opensource/dynavec',
   },
   {
     id: 'oss-picadolabs',
     section: 'Open Source',
-    title: 'PicadoLabs: 5.3k+ Downloads & 37+ Contributors',
-    subtitle: 'Autonomous AI developer infrastructure org (Owner & Maintainer)',
-    keywords: ['picadolabs', 'org', 'maintainer', 'tools', 'developer tools', '5.3k downloads', '37 contributors', 'owner'],
+    title: 'PicadoLabs: 7.2k+ Downloads & 42+ Contributors',
+    subtitle: 'Autonomous AI developer infrastructure org (Founder & Maintainer)',
+    keywords: ['picadolabs', 'org', 'maintainer', 'tools', 'developer tools', '7.2k downloads', '42 contributors', 'owner'],
     icon: <Globe size={16} />,
     path: '/opensource/picadolabs',
   },
   {
     id: 'oss-sqlite-graph',
     section: 'Open Source',
-    title: 'SQLite-Graph-Memory: Native MCP & Graph RAG',
-    subtitle: 'Pure Python stdlib JSON-RPC 2.0 stdio server & NamedTemporaryFile bridge',
-    keywords: ['sqlite', 'graph', 'memory', 'mcp', 'rag', 'claude', 'cursor', 'namedtemporaryfile', 'pr 8', 'pr 10', 'pr 14'],
+    title: 'SQLite-Graph-Memory: 6 Merged PRs',
+    subtitle: 'Graph RAG over Markdown, MCP server runtime & JSON-RPC validation',
+    keywords: ['sqlite', 'graph', 'memory', 'mcp', 'rag', 'claude', 'cursor', '6 prs'],
     icon: <Database size={16} />,
     path: '/opensource/sqlite-graph-memory',
   },
@@ -218,8 +225,8 @@ const COMMANDS = [
     id: 'oss-palinode',
     section: 'Open Source',
     title: 'Palinode: Win32 Kernel Synchronization',
-    subtitle: 'Non-signalling WaitForSingleObject probing & STILL_ACTIVE 259 shield',
-    keywords: ['palinode', 'win32', 'kernel', 'waitforsingleobject', 'still_active', 'ast', 'pr 215', 'pr 207'],
+    subtitle: 'Non-signalling WaitForSingleObject probing & POSIX path guards',
+    keywords: ['palinode', 'win32', 'kernel', 'waitforsingleobject', 'ast'],
     icon: <Cpu size={16} />,
     path: '/opensource/palinode',
   },
@@ -227,76 +234,66 @@ const COMMANDS = [
     id: 'oss-quater',
     section: 'Open Source',
     title: 'Quater: Remote CLI Transport & RPC',
-    subtitle: 'Repeatable --header flags, Bearer auth merge engine & Python 3.11-3.14 CI',
-    keywords: ['quater', 'cli', 'header', 'bearer', 'auth', 'rpc', 'matrix', 'pr 192'],
+    subtitle: 'Repeatable --header flags, Bearer auth merge engine & Python CI',
+    keywords: ['quater', 'cli', 'header', 'bearer', 'auth', 'rpc'],
     icon: <Terminal size={16} />,
     path: '/opensource/quater',
   },
   {
     id: 'oss-layer5io',
     section: 'Open Source',
-    title: 'Layer5 Meshery: Design Engine & Catalog',
-    subtitle: 'Unified cloud native component catalog, SVG render pipelines & PR #1082',
-    keywords: ['layer5', 'meshery', 'catalog', 'svg', 'cloud native', 'pr 1082', 'pr 1083'],
+    title: 'Layer5 Meshery: 4 Merged PRs',
+    subtitle: 'Cloud native component catalog, Kind/Podman prerequisites & academy routes',
+    keywords: ['layer5', 'meshery', 'catalog', 'cloud native', 'kubernetes'],
     icon: <Sparkles size={16} />,
     path: '/opensource/layer5io',
   },
+
+  // 4. PicadoLabs Core Projects
   {
-    id: 'oss-bwa',
-    section: 'Open Source',
-    title: 'build-with-ai: Zero-API-Key Coding CLI',
-    subtitle: 'Autonomous AI terminal coding agent, multi-provider model routing (1.2k+ downloads)',
-    keywords: ['build-with-ai', 'bwa', 'cli', 'zero-api', 'npm', 'prompt engineering', 'coding agent'],
-    icon: <Sparkles size={16} />,
+    id: 'proj-bwa',
+    section: 'Projects',
+    title: 'build-with-ai: Zero-API Deterministic SDLC CLI',
+    subtitle: '1.4k+ Downloads · 30+ Contributors · Persistent .buildwithai/ memory',
+    keywords: ['build-with-ai', 'bwa', 'cli', 'zero-api', 'npm', 'sdlc', 'templates', '1.4k'],
+    icon: <Terminal size={16} />,
     path: '/build-with-ai',
   },
-
-  // 3. Featured Projects
   {
-    id: 'proj-karya',
+    id: 'proj-router',
     section: 'Projects',
-    title: 'Karya: Autonomous AI Task Execution Platform',
-    subtitle: 'Hierarchical multi-agent reasoning, DAG dependency scheduling',
-    keywords: ['karya', 'agent', 'dag', 'autonomous', 'ai platform', 'workflow'],
-    icon: <Sparkles size={16} />,
-    path: '/projects/karya',
+    title: 'ai-model-router: Cost-Aware LLM Routing & RL Gateway',
+    subtitle: '3.7k+ Downloads · 13+ Contributors · Sub-3ms Pareto Traffic Control',
+    keywords: ['ai-model-router', 'router', 'llm', 'thompson sampling', 'onnx', 'fastapi', '3.7k'],
+    icon: <Cpu size={16} />,
+    path: '/opensource/picadolabs#ai-model-router',
   },
   {
-    id: 'proj-auranow',
+    id: 'proj-terminal-agent',
     section: 'Projects',
-    title: 'AuraNow: Contextual Real-Time AI System',
-    subtitle: 'Adaptive user state modeling, low-latency contextual inference',
-    keywords: ['auranow', 'contextual', 'realtime', 'streaming', 'neural'],
-    icon: <Activity size={16} />,
-    path: '/projects/auranow',
-  },
-  {
-    id: 'proj-incidentflow',
-    section: 'Projects',
-    title: 'IncidentFlow: AI Incident Triage Engine',
-    subtitle: 'Automated telemetry root-cause clustering and diagnostic runbooks',
-    keywords: ['incidentflow', 'sre', 'incident', 'devops', 'triage', 'root cause'],
+    title: 'terminal-agent: Verify-First Sandboxed Coding Agent',
+    subtitle: '1.4k+ Downloads · 4+ Contributors · Docker isolation & SQLite rollback',
+    keywords: ['terminal-agent', 'coding agent', 'sandbox', 'docker', 'verify-first', '1.4k'],
     icon: <Shield size={16} />,
-    path: '/projects/incidentflow',
+    path: '/opensource/picadolabs#terminal-agent',
   },
   {
-    id: 'proj-code-with-buddy',
+    id: 'proj-agent-bench',
     section: 'Projects',
-    title: 'Code with Buddy: AI Pair Programming',
-    subtitle: 'Live collaborative coding with contextual LLM code analysis',
-    keywords: ['code with buddy', 'pair programming', 'editor', 'collaboration'],
-    icon: <Code2 size={16} />,
-    path: '/projects/code-with-buddy',
+    title: 'agent-bench: Multi-Turn Coding Agent Eval Suite',
+    subtitle: '700+ Downloads · 4+ Contributors · 12 polyglot benchmarks & 5D scoring',
+    keywords: ['agent-bench', 'benchmark', 'eval', 'ollama', 'yaml', '700'],
+    icon: <BarChart3 size={16} />,
+    path: '/opensource/picadolabs#agent-bench',
   },
 
-  // 4. DevWorkspace Tools
+  // 5. DevWorkspace Tools
   {
     id: 'ws-whiteboard',
     section: 'Workspace',
     title: 'Open Whiteboard Canvas (Excalidraw)',
     subtitle: 'Full-bleed architecture sketching and system diagrams',
     keywords: ['whiteboard', 'board', 'draw', 'excalidraw', 'diagram', 'architecture', 'sketch', 'canvas'],
-    shortcut: 'G B',
     icon: <PenTool size={16} />,
     path: '/workspace/whiteboard',
   },
@@ -306,7 +303,6 @@ const COMMANDS = [
     title: 'Open Developer Notebook',
     subtitle: 'Two-pane Markdown editor, code scratchpad & persistent notes',
     keywords: ['notebook', 'notes', 'markdown', 'onenote', 'notion', 'editor', 'scratchpad'],
-    shortcut: 'G N',
     icon: <BookOpen size={16} />,
     path: '/workspace/notebook',
   },
@@ -316,7 +312,6 @@ const COMMANDS = [
     title: 'Go to Productivity Tracker',
     subtitle: 'Unified tasks, daily habits matrix, focus timer & 52-week heatmap',
     keywords: ['tracker', 'today', 'dashboard', 'productivity', 'habits', 'tasks', 'focus', 'pomodoro'],
-    shortcut: 'G T',
     icon: <Activity size={16} />,
     path: '/workspace/tracker',
   },
@@ -384,35 +379,7 @@ const COMMANDS = [
     },
   },
 
-  // 5. Theme & System Control Actions
-  {
-    id: 'action-toggle-theme',
-    section: 'Actions',
-    title: 'Toggle Color Theme (Dark / Light)',
-    subtitle: 'Switch between Obsidian Darkness and Warm Paper light mode',
-    keywords: ['theme', 'dark', 'light', 'mode', 'color', 'toggle', 'switch', 'sun', 'moon'],
-    shortcut: 'T T',
-    icon: <Sun size={16} />,
-    action: ({ setToast }) => {
-      if (typeof document !== 'undefined') {
-        const toggleBtn =
-          document.querySelector('button[class*="colorModeToggle"]') ||
-          document.querySelector('.navbar__color-mode-toggle');
-        if (toggleBtn) {
-          toggleBtn.click();
-        } else {
-          const current = document.documentElement.getAttribute('data-theme') || 'dark';
-          const next = current === 'dark' ? 'light' : 'dark';
-          document.documentElement.setAttribute('data-theme', next);
-          try {
-            localStorage.setItem('theme', next);
-          } catch (_) {}
-        }
-        const updated = document.documentElement.getAttribute('data-theme') || 'dark';
-        setToast(`Theme switched to ${updated} mode`);
-      }
-    },
-  },
+  // 6. Quick Actions & Profiles
   {
     id: 'focus-25',
     section: 'Actions',
@@ -488,7 +455,6 @@ const COMMANDS = [
     section: 'Actions',
     title: 'Copy Portfolio URL to Clipboard',
     subtitle: 'https://kaap10.github.io/portfolio',
-    shortcut: 'C P',
     keywords: ['copy', 'portfolio', 'link', 'share', 'url'],
     icon: <Copy size={16} />,
     action: ({ setToast }) => {
@@ -503,7 +469,6 @@ const COMMANDS = [
     section: 'Actions',
     title: 'Copy Email Address to Clipboard',
     subtitle: 'vardhmangupta2004@gmail.com',
-    shortcut: 'C E',
     keywords: ['email', 'copy', 'mail', 'contact', 'reach out'],
     icon: <Mail size={16} />,
     action: ({ setToast }) => {
@@ -552,15 +517,6 @@ const COMMANDS = [
     action: () => window.open('https://leetcode.com/u/kap10/', '_blank'),
   },
   {
-    id: 'social-medium',
-    section: 'Actions',
-    title: 'Open Medium Blog Profile',
-    subtitle: 'Articles on software engineering and systems',
-    keywords: ['medium', 'blog', 'writing', 'articles'],
-    icon: <ExternalLink size={16} />,
-    action: () => window.open('https://medium.com/@kap10', '_blank'),
-  },
-  {
     id: 'social-email',
     section: 'Actions',
     title: 'Send Email to Vardhman Gupta',
@@ -580,29 +536,20 @@ function scoreCommand(cmd, query) {
   const section = cmd.section.toLowerCase();
   const keywords = (cmd.keywords || []).map((k) => k.toLowerCase());
 
-  // Exact title match
   if (title === q) return 1000;
-  // Title starts with query
   if (title.startsWith(q)) return 500;
-  // Title contains exact word
-  const words = title.split(/[\s:,\-()]+/);
+  const words = title.split(/[\s:,\-()]+/).filter(Boolean);
   if (words.some((w) => w === q)) return 350;
   if (words.some((w) => w.startsWith(q))) return 250;
-  // Title includes query
   if (title.includes(q)) return 180;
-  // Subtitle includes query
   if (subtitle.includes(q)) return 140;
-  // Keyword exact match
   if (keywords.some((k) => k === q)) return 160;
-  // Keyword starts with query
   if (keywords.some((k) => k.startsWith(q))) return 120;
-  // Keyword includes query
   if (keywords.some((k) => k.includes(q))) return 80;
-  // Section starts with query
   if (section.startsWith(q)) return 60;
   if (section.includes(q)) return 40;
 
-  // Multi-term token matching (e.g. "dazu intern", "react docker", "magpie pr", "work experience")
+  // Multi-term token matching
   const tokens = q.split(/\s+/).filter(Boolean);
   if (tokens.length > 1) {
     const fullHaystack = `${title} ${subtitle} ${section} ${keywords.join(' ')}`;
@@ -620,6 +567,62 @@ function scoreCommand(cmd, query) {
   return 0;
 }
 
+// Live PR search across verified GitHub contributions
+function searchPullRequests(query) {
+  const raw = query.trim().toLowerCase();
+  if (raw.length < 2 || !contributionsData?.items) return [];
+
+  const cleanNum = raw.startsWith('#') ? raw.slice(1) : raw;
+  const tokens = raw.split(/\s+/).filter(Boolean);
+  const matches = [];
+
+  for (const pr of contributionsData.items) {
+    const numStr = String(pr.number || '');
+    const titleLower = (pr.title || '').toLowerCase();
+    const repoLower = (pr.repo || '').toLowerCase();
+    let score = 0;
+
+    if (numStr === cleanNum) {
+      score = 950;
+    } else if (numStr.startsWith(cleanNum) && /^\d+$/.test(cleanNum)) {
+      score = 400;
+    } else if (tokens.every((t) => titleLower.includes(t) || repoLower.includes(t) || numStr.includes(t.replace('#', '')))) {
+      score = repoLower.includes(raw) ? 150 : 120;
+      if (pr.status === 'merged') score += 20;
+    }
+
+    if (score > 0) {
+      matches.push({ pr, score });
+    }
+  }
+
+  matches.sort((a, b) => b.score - a.score);
+  return matches.slice(0, 6).map(({ pr }) => ({
+    id: `pr-${pr.id}`,
+    section: 'Pull Requests',
+    title: `#${pr.number}: ${pr.title}`,
+    subtitle: `${pr.repo} · ${pr.status.toUpperCase()} · ${pr.closed_at || pr.created_at}`,
+    shortcut: pr.status.toUpperCase(),
+    icon: <GitPullRequest size={16} />,
+    path: pr.url,
+  }));
+}
+
+// Highlight matching substring inside title
+function HighlightMatch({ text, query }) {
+  const q = query.trim();
+  if (!q) return text;
+  const idx = text.toLowerCase().indexOf(q.toLowerCase());
+  if (idx === -1) return text;
+  return (
+    <>
+      {text.slice(0, idx)}
+      <mark className={styles.paletteHighlight}>{text.slice(idx, idx + q.length)}</mark>
+      {text.slice(idx + q.length)}
+    </>
+  );
+}
+
 const CATEGORY_CHIPS = ['All', 'Experience', 'Navigation', 'Open Source', 'Projects', 'Workspace', 'Actions'];
 
 export default function GlobalCommandPalette() {
@@ -634,27 +637,29 @@ export default function GlobalCommandPalette() {
   const listRef = useRef(null);
   const itemRefs = useRef([]);
   const toastTimeoutRef = useRef(null);
+  const toastTriggeredRef = useRef(false);
+  const pointerMovedRef = useRef(false);
   const history = useHistory();
 
   const showToast = (msg) => {
+    toastTriggeredRef.current = true;
     setToastMessage(msg);
     if (toastTimeoutRef.current) clearTimeout(toastTimeoutRef.current);
     toastTimeoutRef.current = setTimeout(() => {
       setToastMessage(null);
       setIsOpen(false);
-    }, 1100);
+    }, 1050);
   };
 
   const navigateTo = (path) => {
     if (!path) return;
     if (path.startsWith('http') || path.startsWith('mailto:')) {
-      window.open(path, path.startsWith('mailto:') ? '_self' : '_blank');
+      window.open(path, path.startsWith('mailto:') ? '_self' : '_blank', 'noopener,noreferrer');
     } else {
       try {
         const [targetPath, hash] = path.split('#');
         const currentPath = typeof window !== 'undefined' ? window.location.pathname : '';
 
-        // If navigating to an anchor on the same page, smooth scroll immediately
         if (hash && (currentPath === targetPath || (currentPath === '/' && targetPath === '/portfolio'))) {
           const el = document.getElementById(hash);
           if (el) {
@@ -669,7 +674,6 @@ export default function GlobalCommandPalette() {
           window.location.href = path;
         }
 
-        // Handle anchor scroll after route transition
         if (hash) {
           setTimeout(() => {
             const el = document.getElementById(hash);
@@ -686,18 +690,28 @@ export default function GlobalCommandPalette() {
 
   useEffect(() => {
     setMounted(true);
+    return () => {
+      if (toastTimeoutRef.current) clearTimeout(toastTimeoutRef.current);
+    };
   }, []);
 
-  // Global Keyboard Listener: Ctrl+K / Cmd+K and Ctrl+H / Cmd+H
+  // Global Keyboard Listener: Ctrl+K / Cmd+K (plus '/' when not in an input)
   useEffect(() => {
     const handleKeyDown = (e) => {
-      // Support Ctrl+K / Cmd+K or Ctrl+H / Cmd+H globally
-      if ((e.metaKey || e.ctrlKey) && (e.key === 'k' || e.key === 'K' || e.key === 'h' || e.key === 'H')) {
+      if ((e.metaKey || e.ctrlKey) && (e.key === 'k' || e.key === 'K')) {
         e.preventDefault();
         setIsOpen((prev) => !prev);
-      } else if (e.key === 'Escape' && isOpen) {
+      } else if (
+        e.key === '/' &&
+        !isOpen &&
+        !e.metaKey &&
+        !e.ctrlKey &&
+        !e.altKey &&
+        !/^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement?.tagName || '') &&
+        !document.activeElement?.isContentEditable
+      ) {
         e.preventDefault();
-        setIsOpen(false);
+        setIsOpen(true);
       }
     };
 
@@ -720,15 +734,16 @@ export default function GlobalCommandPalette() {
       setActiveCategory('All');
       setSelectedIndex(0);
       setToastMessage(null);
-      setTimeout(() => inputRef.current?.focus(), 40);
+      toastTriggeredRef.current = false;
+      pointerMovedRef.current = false;
+      setTimeout(() => inputRef.current?.focus(), 20);
     }
   }, [isOpen]);
 
-  // Scored & Category Filtered Commands
+  // Scored & Category Filtered Commands + Live PR Search
   const filtered = useMemo(() => {
     let list = COMMANDS;
 
-    // Filter by active category tab if selected
     if (activeCategory !== 'All') {
       list = list.filter((c) => c.section === activeCategory);
     }
@@ -737,7 +752,6 @@ export default function GlobalCommandPalette() {
       return list;
     }
 
-    // Score and sort results descending
     const scored = [];
     for (const cmd of list) {
       const score = scoreCommand(cmd, query);
@@ -747,7 +761,15 @@ export default function GlobalCommandPalette() {
     }
 
     scored.sort((a, b) => b.score - a.score);
-    return scored.map((s) => s.cmd);
+    const results = scored.map((s) => s.cmd);
+
+    // Append verified GitHub PR matches when searching across All or Open Source
+    if (activeCategory === 'All' || activeCategory === 'Open Source') {
+      const prMatches = searchPullRequests(query);
+      results.push(...prMatches);
+    }
+
+    return results;
   }, [query, activeCategory]);
 
   // Instant scroll without lag
@@ -763,13 +785,13 @@ export default function GlobalCommandPalette() {
   const executeCommand = (cmd) => {
     if (!cmd) return;
     if (cmd.action) {
+      toastTriggeredRef.current = false;
       cmd.action({
         navigate: navigateTo,
         setToast: showToast,
       });
-      // If it didn't trigger a toast, close immediately
-      if (!toastMessage) {
-        setTimeout(() => setIsOpen(false), 80);
+      if (!toastTriggeredRef.current) {
+        setTimeout(() => setIsOpen(false), 60);
       }
     } else if (cmd.path) {
       setIsOpen(false);
@@ -780,14 +802,24 @@ export default function GlobalCommandPalette() {
   const handleKeyDown = (e) => {
     if (e.key === 'ArrowDown') {
       e.preventDefault();
+      pointerMovedRef.current = false;
       if (filtered.length > 0) {
         setSelectedIndex((prev) => (prev + 1) % filtered.length);
       }
     } else if (e.key === 'ArrowUp') {
       e.preventDefault();
+      pointerMovedRef.current = false;
       if (filtered.length > 0) {
         setSelectedIndex((prev) => (prev - 1 + filtered.length) % filtered.length);
       }
+    } else if (e.key === 'Home') {
+      e.preventDefault();
+      pointerMovedRef.current = false;
+      setSelectedIndex(0);
+    } else if (e.key === 'End') {
+      e.preventDefault();
+      pointerMovedRef.current = false;
+      if (filtered.length > 0) setSelectedIndex(filtered.length - 1);
     } else if (e.key === 'Enter') {
       e.preventDefault();
       const selected = filtered[selectedIndex];
@@ -796,11 +828,19 @@ export default function GlobalCommandPalette() {
       }
     } else if (e.key === 'Tab') {
       e.preventDefault();
-      // Cycle through categories on Tab
       const currentIdx = CATEGORY_CHIPS.indexOf(activeCategory);
-      const nextCategory = CATEGORY_CHIPS[(currentIdx + 1) % CATEGORY_CHIPS.length];
+      const step = e.shiftKey ? -1 : 1;
+      const nextCategory = CATEGORY_CHIPS[(currentIdx + step + CATEGORY_CHIPS.length) % CATEGORY_CHIPS.length];
       setActiveCategory(nextCategory);
       setSelectedIndex(0);
+    } else if (e.key === 'Escape') {
+      e.preventDefault();
+      if (query.trim()) {
+        setQuery('');
+        setSelectedIndex(0);
+      } else {
+        setIsOpen(false);
+      }
     }
   };
 
@@ -813,32 +853,35 @@ export default function GlobalCommandPalette() {
         style={{ position: 'relative' }}
         onClick={(e) => e.stopPropagation()}
         onKeyDown={handleKeyDown}
+        onMouseMove={() => {
+          pointerMovedRef.current = true;
+        }}
       >
         {/* Action Toast Feedback Pill */}
         {toastMessage && (
           <div className={styles.paletteToast}>
-            <Check size={14} style={{ color: 'var(--vg-accent, #FF4D4F)' }} />
+            <Check size={14} style={{ color: '#34D399' }} />
             <span>{toastMessage}</span>
           </div>
         )}
 
         {/* Search Header */}
         <div className={styles.paletteSearchWrapper}>
-          <span style={{ color: 'var(--vg-accent, #FF4D4F)', display: 'flex' }}>
-            <Search size={18} />
+          <span style={{ color: '#38BDF8', display: 'flex' }}>
+            <Search size={17} />
           </span>
           <input
             ref={inputRef}
             type="text"
             className={styles.paletteInput}
-            placeholder="Search experience, open-source PRs, projects, or hit Tab..."
+            placeholder="Search experience, 206 PRs (#2295), projects, or hit Tab..."
             value={query}
             onChange={(e) => {
               setQuery(e.target.value);
               setSelectedIndex(0);
             }}
           />
-          <span className={styles.paletteShortcutBadge}>ESC</span>
+          <span className={styles.paletteShortcutBadge}>{query ? 'ESC clear' : 'ESC'}</span>
         </div>
 
         {/* Category Filter Chips Bar */}
@@ -862,23 +905,16 @@ export default function GlobalCommandPalette() {
         {/* Command List */}
         <div className={styles.paletteList} ref={listRef}>
           {filtered.length === 0 ? (
-            <div
-              style={{
-                padding: '2.5rem 1rem',
-                textAlign: 'center',
-                color: 'var(--vg-text-muted, #A6A6AC)',
-                fontSize: '0.85rem',
-              }}
-            >
-              No commands found matching "{query}"
+            <div className={styles.paletteEmpty}>
+              No commands or PRs found matching "{query}"
             </div>
           ) : (
             filtered.map((item, index) => {
               const isSelected = index === selectedIndex;
+              const prevItem = index > 0 ? filtered[index - 1] : null;
               const showSectionHeader =
-                !query.trim() &&
-                activeCategory === 'All' &&
-                (index === 0 || filtered[index - 1].section !== item.section);
+                (activeCategory === 'All' || item.section === 'Pull Requests') &&
+                (!prevItem || prevItem.section !== item.section);
 
               return (
                 <React.Fragment key={item.id}>
@@ -890,12 +926,16 @@ export default function GlobalCommandPalette() {
                     type="button"
                     className={`${styles.paletteItem} ${isSelected ? styles.paletteItemActive : ''}`}
                     onClick={() => executeCommand(item)}
-                    onMouseEnter={() => setSelectedIndex(index)}
+                    onMouseEnter={() => {
+                      if (pointerMovedRef.current) setSelectedIndex(index);
+                    }}
                   >
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', minWidth: 0 }}>
                       <span className={styles.paletteItemIcon}>{item.icon}</span>
                       <div className={styles.paletteItemContent}>
-                        <span className={styles.paletteItemTitle}>{item.title}</span>
+                        <span className={styles.paletteItemTitle}>
+                          <HighlightMatch text={item.title} query={query} />
+                        </span>
                         {item.subtitle && (
                           <span className={styles.paletteItemSub}>{item.subtitle}</span>
                         )}
@@ -923,17 +963,11 @@ export default function GlobalCommandPalette() {
               <kbd className={styles.paletteShortcutBadge}>↵</kbd> open
             </span>
             <span>
-              <kbd className={styles.paletteShortcutBadge}>Tab</kbd> switch tab
+              <kbd className={styles.paletteShortcutBadge}>Tab</kbd> category
             </span>
           </div>
-          <span
-            style={{
-              fontFamily: 'var(--ifm-font-family-monospace, monospace)',
-              fontSize: '0.72rem',
-              color: 'var(--vg-text-subtle, #787880)',
-            }}
-          >
-            Ctrl+K / Cmd+K
+          <span className={styles.paletteCountMeta}>
+            {filtered.length} {filtered.length === 1 ? 'result' : 'results'} · Ctrl+K
           </span>
         </div>
       </div>
